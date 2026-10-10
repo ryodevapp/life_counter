@@ -15,5 +15,8 @@ class MeetingLog {
 
   String? note;
 
+  /// 写真のファイル名（App Group の photos フォルダの中）
+  String? photoFile;
+
   DateTime createdAt = DateTime.now();
 }

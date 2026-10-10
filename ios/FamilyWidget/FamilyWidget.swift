@@ -1,143 +1,397 @@
 import WidgetKit
 import SwiftUI
+import ImageIO
 
-// アプリ(Flutter)が App Group に書いた値を表示する
+// アプリ(Flutter)が App Group に書いた値と写真を読む
 private let appGroup = "group.com.lifecounter.lifeCounter"
+private var defaults: UserDefaults? { UserDefaults(suiteName: appGroup) }
 
-struct FamilyEntry: TimelineEntry {
-    let date: Date
-    let label: String
-    let value: String
-    let unit: String
-    let sub: String
-    let style: String
+// MARK: - 色と書体(アプリの AppColors に合わせる)
+
+private enum Tone {
+    static let bg = Color(red: 0.992, green: 0.984, blue: 0.969)      // #FDFBF7
+    static let warm = Color(red: 0.973, green: 0.953, blue: 0.922)    // #F8F3EB
+    static let text = Color(red: 0.173, green: 0.145, blue: 0.125)    // #2C2520
+    static let muted = Color(red: 0.478, green: 0.439, blue: 0.408)   // #7A7068
+    static let accent = Color(red: 0.722, green: 0.471, blue: 0.306)  // #B8784E
 }
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> FamilyEntry {
-        FamilyEntry(date: Date(), label: "お母さんに会えるまで", value: "12", unit: "日",
-                    sub: "今年会えた日 3日", style: "warm")
-    }
+private func number(_ size: CGFloat) -> Font { .system(size: size, weight: .light, design: .serif) }
+private func label(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font { .system(size: size, weight: weight) }
 
-    func getSnapshot(in context: Context, completion: @escaping (FamilyEntry) -> Void) {
-        completion(read())
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<FamilyEntry>) -> Void) {
-        // 日付が変わったら「あと◯日」を進めるため、翌日0時にもう一度読む
-        let next = Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
-        completion(Timeline(entries: [read()], policy: .after(next)))
-    }
-
-    private func read() -> FamilyEntry {
-        let d = UserDefaults(suiteName: appGroup)
-        var value = d?.string(forKey: "value") ?? ""
-        var label = d?.string(forKey: "label") ?? "家族を登録すると、ここに表示されます"
-        // 次に会う日があれば、ウィジェット側で日数を数える(アプリを開かなくても進む)
-        if let ts = d?.object(forKey: "nextMeetEpoch") as? Double, let name = d?.string(forKey: "nextMeetName") {
-            let meet = Calendar.current.startOfDay(for: Date(timeIntervalSince1970: ts))
-            let today = Calendar.current.startOfDay(for: Date())
-            let days = Calendar.current.dateComponents([.day], from: today, to: meet).day ?? 0
-            if days > 0 {
-                label = "\(name)に会えるまで、あと"
-                value = "\(days)"
-            } else if days == 0 {
-                label = "今日、\(name)に会えます"
-                value = ""
-            }
-        }
-        return FamilyEntry(
-            date: Date(),
-            label: label,
-            value: value,
-            unit: value.isEmpty ? "" : (d?.string(forKey: "unit") ?? "日"),
-            sub: d?.string(forKey: "sub") ?? "",
-            style: d?.string(forKey: "style") ?? "warm"
-        )
-    }
+/// 写真を、ウィジェットの大きさに合わせて縮小して読む(メモリの上限に収めるため)
+private func loadPhoto(_ name: String?, maxPixel: CGFloat = 800) -> UIImage? {
+    guard let name = name,
+          let base = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
+    else { return nil }
+    let url = base.appendingPathComponent("photos").appendingPathComponent(name)
+    guard let src = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
+    let opts: [CFString: Any] = [
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceThumbnailMaxPixelSize: maxPixel,
+    ]
+    guard let cg = CGImageSourceCreateThumbnailAtIndex(src, 0, opts as CFDictionary) else { return nil }
+    return UIImage(cgImage: cg)
 }
 
-struct Palette {
-    let bg: Color
-    let fg: Color
-    let accent: Color
-    let muted: Color
-
-    static func of(_ style: String) -> Palette {
-        switch style {
-        case "night":
-            return Palette(bg: Color(red: 0.13, green: 0.12, blue: 0.11), fg: Color(red: 0.95, green: 0.92, blue: 0.89),
-                           accent: Color(red: 0.84, green: 0.60, blue: 0.43), muted: Color(red: 0.66, green: 0.62, blue: 0.58))
-        case "sakura":
-            return Palette(bg: Color(red: 0.99, green: 0.93, blue: 0.93), fg: Color(red: 0.24, green: 0.18, blue: 0.18),
-                           accent: Color(red: 0.80, green: 0.42, blue: 0.48), muted: Color(red: 0.55, green: 0.45, blue: 0.46))
-        case "sea":
-            return Palette(bg: Color(red: 0.91, green: 0.95, blue: 0.97), fg: Color(red: 0.14, green: 0.20, blue: 0.25),
-                           accent: Color(red: 0.25, green: 0.47, blue: 0.62), muted: Color(red: 0.42, green: 0.50, blue: 0.56))
-        default:
-            return Palette(bg: Color(red: 0.99, green: 0.98, blue: 0.97), fg: Color(red: 0.17, green: 0.15, blue: 0.13),
-                           accent: Color(red: 0.72, green: 0.47, blue: 0.31), muted: Color(red: 0.48, green: 0.44, blue: 0.41))
-        }
-    }
-}
-
-struct FamilyWidgetView: View {
-    var entry: FamilyEntry
-
-    var body: some View {
-        let p = Palette.of(entry.style)
-        VStack(alignment: .leading, spacing: 4) {
-            Text(entry.label)
-                .font(.system(size: 12))
-                .foregroundColor(p.muted)
-                .lineLimit(2)
-            if !entry.value.isEmpty {
-                HStack(alignment: .firstTextBaseline, spacing: 2) {
-                    Text(entry.value)
-                        .font(.system(size: 40, weight: .light, design: .serif))
-                        .foregroundColor(p.accent)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
-                    Text(entry.unit)
-                        .font(.system(size: 13))
-                        .foregroundColor(p.muted)
-                }
-            }
-            Spacer(minLength: 0)
-            if !entry.sub.isEmpty {
-                Text(entry.sub)
-                    .font(.system(size: 11))
-                    .foregroundColor(p.fg)
-                    .lineLimit(1)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .widgetBackground(p.bg)
-    }
+private func nextMidnight() -> Date {
+    Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
 }
 
 extension View {
-    // iOS 17 以降は containerBackground が必要。16 では従来どおり背景を敷く
+    /// iOS 17 以降は containerBackground で全面に敷く。16 では ZStack の後ろに敷く
     @ViewBuilder
-    func widgetBackground(_ color: Color) -> some View {
+    func widgetBackground<B: View>(@ViewBuilder _ background: () -> B) -> some View {
         if #available(iOS 17.0, *) {
-            self.containerBackground(color, for: .widget)
+            self.containerBackground(for: .widget) { background() }
         } else {
-            self.padding().background(color)
+            ZStack { background(); self.padding() }
         }
+    }
+}
+
+/// 写真の上の文字を読めるように、下から影を敷く
+private struct PhotoBackground: View {
+    let image: UIImage
+    var body: some View {
+        ZStack {
+            Image(uiImage: image).resizable().scaledToFill()
+            LinearGradient(colors: [.clear, .black.opacity(0.55)],
+                           startPoint: .center, endPoint: .bottom)
+        }
+    }
+}
+
+// MARK: - 次に会う日
+
+struct NextEntry: TimelineEntry {
+    let date: Date
+    let name: String?
+    let days: Int?
+    let meetDate: Date?
+    let photo: UIImage?
+    let yearCount: Int
+    let hasFamily: Bool
+}
+
+struct NextProvider: TimelineProvider {
+    func placeholder(in context: Context) -> NextEntry {
+        NextEntry(date: Date(), name: "お母さん", days: 21, meetDate: nil, photo: nil, yearCount: 3, hasFamily: true)
+    }
+    func getSnapshot(in context: Context, completion: @escaping (NextEntry) -> Void) {
+        completion(context.isPreview ? placeholder(in: context) : read())
+    }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<NextEntry>) -> Void) {
+        completion(Timeline(entries: [read()], policy: .after(nextMidnight())))
+    }
+
+    private func read() -> NextEntry {
+        let d = defaults
+        let isPro = d?.bool(forKey: "isPro") ?? false
+        var name: String? = nil, days: Int? = nil, meet: Date? = nil, photo: UIImage? = nil
+        if let ts = d?.object(forKey: "nextMeetEpoch") as? Double {
+            let cal = Calendar.current
+            let m = cal.startOfDay(for: Date(timeIntervalSince1970: ts))
+            let left = cal.dateComponents([.day], from: cal.startOfDay(for: Date()), to: m).day ?? -1
+            if left >= 0 {
+                name = d?.string(forKey: "nextMeetName")
+                days = left
+                meet = m
+                if isPro { photo = loadPhoto(d?.string(forKey: "nextMeetPhoto")) }
+            }
+        }
+        return NextEntry(date: Date(), name: name, days: days, meetDate: meet, photo: photo,
+                         yearCount: d?.integer(forKey: "yearCount") ?? 0,
+                         hasFamily: d?.bool(forKey: "hasFamily") ?? false)
+    }
+}
+
+private let meetFormatter: DateFormatter = {
+    let f = DateFormatter()
+    f.locale = Locale(identifier: "ja_JP")
+    f.dateFormat = "M月d日(E)"
+    return f
+}()
+
+struct NextWidgetView: View {
+    @Environment(\.widgetFamily) var family
+    let entry: NextEntry
+
+    var body: some View {
+        switch family {
+        case .accessoryInline: inline
+        case .accessoryRectangular: rectangular
+        case .accessoryCircular: circular
+        case .systemMedium: medium
+        default: small
+        }
+    }
+
+    // ロック画面
+    private var inline: some View {
+        Group {
+            if let n = entry.name, let d = entry.days {
+                Text(d == 0 ? "今日、\(n)に会えます" : "\(n)まで あと\(d)日")
+            } else {
+                Text("今年会えた日 \(entry.yearCount)日")
+            }
+        }.widgetBackground { Color.clear }
+    }
+
+    private var rectangular: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if let n = entry.name, let d = entry.days {
+                Text(d == 0 ? "今日、会えます" : "\(n)まで").font(label(12)).widgetAccentable()
+                Text(d == 0 ? n : "あと \(d) 日").font(.system(size: 22, weight: .semibold, design: .serif))
+            } else {
+                Text("今年、家族と会えた日").font(label(12)).widgetAccentable()
+                Text("\(entry.yearCount) 日").font(.system(size: 22, weight: .semibold, design: .serif))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .widgetBackground { Color.clear }
+    }
+
+    private var circular: some View {
+        VStack(spacing: -2) {
+            Text("\(entry.days ?? entry.yearCount)").font(.system(size: 20, weight: .semibold, design: .serif))
+            Text(entry.days != nil ? "日" : "会えた").font(label(9))
+        }
+        .widgetBackground { AccessoryWidgetBackground() }
+    }
+
+    // ホーム画面(小)
+    @ViewBuilder
+    private var small: some View {
+        if let n = entry.name, let d = entry.days {
+            if let photo = entry.photo {
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
+                    Text(d == 0 ? "今日、会えます" : "\(n)まで").font(label(12, .medium)).foregroundColor(.white.opacity(0.9))
+                    if d > 0 {
+                        HStack(alignment: .firstTextBaseline, spacing: 3) {
+                            Text("あと").font(label(11)).foregroundColor(.white.opacity(0.85))
+                            Text("\(d)").font(number(44)).foregroundColor(.white)
+                            Text("日").font(label(12)).foregroundColor(.white.opacity(0.85))
+                        }
+                    } else {
+                        Text(n).font(label(20, .semibold)).foregroundColor(.white)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .widgetBackground { PhotoBackground(image: photo) }
+            } else {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(d == 0 ? "今日、" : "\(n)に")
+                        .font(label(12)).foregroundColor(Tone.muted)
+                    Text(d == 0 ? "\(n)に会えます" : "会えるまで")
+                        .font(label(12)).foregroundColor(Tone.muted)
+                    Spacer(minLength: 0)
+                    if d > 0 {
+                        HStack(alignment: .firstTextBaseline, spacing: 3) {
+                            Text("あと").font(label(11)).foregroundColor(Tone.muted)
+                            Text("\(d)").font(number(48)).foregroundColor(Tone.accent)
+                            Text("日").font(label(12)).foregroundColor(Tone.muted)
+                        }
+                    }
+                    if let m = entry.meetDate {
+                        Text(meetFormatter.string(from: m)).font(label(11)).foregroundColor(Tone.text)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .widgetBackground { Tone.bg }
+            }
+        } else {
+            empty
+        }
+    }
+
+    // ホーム画面(中)
+    @ViewBuilder
+    private var medium: some View {
+        if let n = entry.name, let d = entry.days {
+            HStack(spacing: 14) {
+                Group {
+                    if let photo = entry.photo {
+                        Image(uiImage: photo).resizable().scaledToFill()
+                    } else {
+                        ZStack {
+                            Tone.warm
+                            Text(String(n.prefix(1))).font(.system(size: 40, weight: .light, design: .serif))
+                                .foregroundColor(Tone.accent)
+                        }
+                    }
+                }
+                .frame(width: 118, height: 118)
+                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("次に会う日").font(label(11)).foregroundColor(Tone.muted)
+                    Text(n).font(label(16, .semibold)).foregroundColor(Tone.text).lineLimit(1)
+                    Spacer(minLength: 0)
+                    if d == 0 {
+                        Text("今日、会えます").font(label(18, .semibold)).foregroundColor(Tone.accent)
+                    } else {
+                        HStack(alignment: .firstTextBaseline, spacing: 3) {
+                            Text("あと").font(label(12)).foregroundColor(Tone.muted)
+                            Text("\(d)").font(number(46)).foregroundColor(Tone.accent)
+                            Text("日").font(label(13)).foregroundColor(Tone.muted)
+                        }
+                    }
+                    if let m = entry.meetDate {
+                        Text(meetFormatter.string(from: m)).font(label(12)).foregroundColor(Tone.text)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            }
+            .widgetBackground { Tone.bg }
+        } else {
+            empty
+        }
+    }
+
+    private var empty: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(entry.hasFamily ? "今年、家族と会えた日" : "LifeCounter")
+                .font(label(12)).foregroundColor(Tone.muted)
+            if entry.hasFamily {
+                HStack(alignment: .firstTextBaseline, spacing: 3) {
+                    Text("\(entry.yearCount)").font(number(44)).foregroundColor(Tone.accent)
+                    Text("日").font(label(12)).foregroundColor(Tone.muted)
+                }
+            }
+            Spacer(minLength: 0)
+            Text(entry.hasFamily ? "次に会う日を入れると、ここで数えます" : "家族を登録すると、ここに表示されます")
+                .font(label(11)).foregroundColor(Tone.text).lineLimit(2)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .widgetBackground { Tone.bg }
+    }
+}
+
+struct FamilyWidget: Widget {
+    // 置き済みのウィジェットが消えないよう、kind は最初の版のまま
+    let kind = "FamilyWidget"
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: NextProvider()) { entry in
+            NextWidgetView(entry: entry)
+        }
+        .configurationDisplayName("次に会う日")
+        .description("次に家族に会える日まで、あと何日かを数えます")
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular, .accessoryInline, .accessoryCircular])
+    }
+}
+
+// MARK: - 思い出(Pro)
+
+struct Memory {
+    let photo: UIImage?
+    let y: Int, m: Int, d: Int
+    let name: String
+    let note: String
+    let yearsAgo: Int   // 「◯年前の今日」なら 1 以上
+}
+
+struct MemoryEntry: TimelineEntry {
+    let date: Date
+    let isPro: Bool
+    let memory: Memory?
+}
+
+struct MemoryProvider: TimelineProvider {
+    func placeholder(in context: Context) -> MemoryEntry {
+        MemoryEntry(date: Date(), isPro: true,
+                    memory: Memory(photo: nil, y: 2026, m: 8, d: 14, name: "お母さん", note: "母と温泉。よく笑ってた", yearsAgo: 0))
+    }
+    func getSnapshot(in context: Context, completion: @escaping (MemoryEntry) -> Void) {
+        completion(context.isPreview ? placeholder(in: context) : read())
+    }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<MemoryEntry>) -> Void) {
+        completion(Timeline(entries: [read()], policy: .after(nextMidnight())))
+    }
+
+    /// 「◯年前の今日」を優先し、なければ日替わりで1枚選ぶ
+    private func read() -> MemoryEntry {
+        let d = defaults
+        let isPro = d?.bool(forKey: "isPro") ?? false
+        guard isPro,
+              let json = d?.string(forKey: "memories"),
+              let data = json.data(using: .utf8),
+              let list = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
+              !list.isEmpty
+        else { return MemoryEntry(date: Date(), isPro: isPro, memory: nil) }
+
+        let cal = Calendar.current
+        let now = cal.dateComponents([.year, .month, .day], from: Date())
+        var pick = list.first { ($0["m"] as? Int) == now.month && ($0["d"] as? Int) == now.day && ($0["y"] as? Int ?? 0) < (now.year ?? 0) }
+        var yearsAgo = 0
+        if let p = pick { yearsAgo = (now.year ?? 0) - (p["y"] as? Int ?? 0) }
+        if pick == nil {
+            let day = cal.ordinality(of: .day, in: .year, for: Date()) ?? 0
+            pick = list[day % list.count]
+        }
+        let p = pick!
+        return MemoryEntry(date: Date(), isPro: true, memory: Memory(
+            photo: loadPhoto(p["f"] as? String, maxPixel: 1000),
+            y: p["y"] as? Int ?? 0, m: p["m"] as? Int ?? 0, d: p["d"] as? Int ?? 0,
+            name: p["n"] as? String ?? "", note: p["t"] as? String ?? "", yearsAgo: yearsAgo))
+    }
+}
+
+struct MemoryWidgetView: View {
+    let entry: MemoryEntry
+
+    var body: some View {
+        if let m = entry.memory, let photo = m.photo {
+            VStack(alignment: .leading, spacing: 4) {
+                if m.yearsAgo > 0 {
+                    Text("\(m.yearsAgo)年前の今日")
+                        .font(label(11, .semibold)).foregroundColor(.white)
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(Capsule().fill(Color.black.opacity(0.35)))
+                }
+                Spacer()
+                Text("\(m.y).\(m.m).\(m.d)  \(m.name)").font(label(11)).foregroundColor(.white.opacity(0.85))
+                if !m.note.isEmpty {
+                    Text(m.note).font(label(15, .medium)).foregroundColor(.white).lineLimit(2)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .widgetBackground { PhotoBackground(image: photo) }
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("思い出").font(label(12)).foregroundColor(Tone.muted)
+                Spacer(minLength: 0)
+                Text(entry.isPro ? "会えた日の記録に写真を添えると、\nここに思い出として表示されます"
+                                 : "会えた日の写真が、\nここに思い出として表示されます")
+                    .font(label(13)).foregroundColor(Tone.text).lineSpacing(3)
+                if !entry.isPro {
+                    Text("LifeCounter Pro").font(label(11, .semibold)).foregroundColor(Tone.accent)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .widgetBackground { Tone.warm }
+        }
+    }
+}
+
+struct MemoryWidget: Widget {
+    let kind = "MemoryWidget"
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: MemoryProvider()) { entry in
+            MemoryWidgetView(entry: entry)
+        }
+        .configurationDisplayName("思い出")
+        .description("家族と会えた日の写真を、日替わりで表示します")
+        .supportedFamilies([.systemMedium, .systemLarge])
     }
 }
 
 @main
-struct FamilyWidget: Widget {
-    let kind = "FamilyWidget"
-
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            FamilyWidgetView(entry: entry)
-        }
-        .configurationDisplayName("家族と過ごせる時間")
-        .description("次に会う日や、今年会えた日を表示します")
-        .supportedFamilies([.systemSmall, .systemMedium])
+struct LifeCounterWidgets: WidgetBundle {
+    var body: some Widget {
+        FamilyWidget()
+        MemoryWidget()
     }
 }

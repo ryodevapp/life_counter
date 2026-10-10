@@ -7,7 +7,6 @@ import '../../services/pro_service.dart';
 import '../../providers/important_person_provider.dart';
 import '../../providers/isar_provider.dart';
 import '../../services/widget_sync.dart';
-import '../../utils/prefs_keys.dart';
 import '../family/family_page.dart';
 import '../shared/app_colors.dart';
 import '../records/records_page.dart';
@@ -52,11 +51,8 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
       final persons = ref.read(importantPersonsProvider).valueOrNull;
       final logs = ref.read(meetingLogsProvider).valueOrNull;
       if (persons == null || logs == null) return;
-      final prefs = ref.read(sharedPreferencesProvider);
       final pro = ref.read(proProvider);
-      var style = prefs.getString(PrefsKeys.widgetStyle) ?? 'warm';
-      if (!pro.isPro && style != 'warm') style = 'warm';
-      WidgetSync.update(persons: persons, logs: logs, style: style);
+      WidgetSync.update(persons: persons, logs: logs, isPro: pro.isPro);
     }
     ref.listen(importantPersonsProvider, (_, _) => syncWidget());
     ref.listen(meetingLogsProvider, (_, _) => syncWidget());

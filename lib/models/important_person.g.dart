@@ -73,14 +73,19 @@ const ImportantPersonSchema = CollectionSchema(
       name: r'nickname',
       type: IsarType.string,
     ),
-    r'relation': PropertySchema(
+    r'photoFile': PropertySchema(
       id: 11,
+      name: r'photoFile',
+      type: IsarType.string,
+    ),
+    r'relation': PropertySchema(
+      id: 12,
       name: r'relation',
       type: IsarType.string,
       enumMap: _ImportantPersonrelationEnumValueMap,
     ),
     r'updatedAt': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -107,6 +112,12 @@ int _importantPersonEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.gender.name.length * 3;
   bytesCount += 3 + object.nickname.length * 3;
+  {
+    final value = object.photoFile;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.relation.name.length * 3;
   return bytesCount;
 }
@@ -128,8 +139,9 @@ void _importantPersonSerialize(
   writer.writeLong(offsets[8], object.meetingFrequency);
   writer.writeDateTime(offsets[9], object.nextMeetDate);
   writer.writeString(offsets[10], object.nickname);
-  writer.writeString(offsets[11], object.relation.name);
-  writer.writeDateTime(offsets[12], object.updatedAt);
+  writer.writeString(offsets[11], object.photoFile);
+  writer.writeString(offsets[12], object.relation.name);
+  writer.writeDateTime(offsets[13], object.updatedAt);
 }
 
 ImportantPerson _importantPersonDeserialize(
@@ -153,10 +165,11 @@ ImportantPerson _importantPersonDeserialize(
   object.meetingFrequency = reader.readLong(offsets[8]);
   object.nextMeetDate = reader.readDateTimeOrNull(offsets[9]);
   object.nickname = reader.readString(offsets[10]);
+  object.photoFile = reader.readStringOrNull(offsets[11]);
   object.relation = _ImportantPersonrelationValueEnumMap[
-          reader.readStringOrNull(offsets[11])] ??
+          reader.readStringOrNull(offsets[12])] ??
       Relation.other;
-  object.updatedAt = reader.readDateTime(offsets[12]);
+  object.updatedAt = reader.readDateTime(offsets[13]);
   return object;
 }
 
@@ -192,10 +205,12 @@ P _importantPersonDeserializeProp<P>(
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
+      return (reader.readStringOrNull(offset)) as P;
+    case 12:
       return (_ImportantPersonrelationValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Relation.other) as P;
-    case 12:
+    case 13:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1261,6 +1276,160 @@ extension ImportantPersonQueryFilter
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'photoFile',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'photoFile',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'photoFile',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'photoFile',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'photoFile',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      photoFileIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'photoFile',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
       relationEqualTo(
     Relation value, {
     bool caseSensitive = true,
@@ -1615,6 +1784,20 @@ extension ImportantPersonQuerySortBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByPhotoFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByPhotoFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       sortByRelation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'relation', Sort.asc);
@@ -1811,6 +1994,20 @@ extension ImportantPersonQuerySortThenBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByPhotoFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByPhotoFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       thenByRelation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'relation', Sort.asc);
@@ -1918,6 +2115,13 @@ extension ImportantPersonQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct> distinctByPhotoFile(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'photoFile', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ImportantPerson, ImportantPerson, QDistinct> distinctByRelation(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2012,6 +2216,12 @@ extension ImportantPersonQueryProperty
   QueryBuilder<ImportantPerson, String, QQueryOperations> nicknameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nickname');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, String?, QQueryOperations> photoFileProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'photoFile');
     });
   }
 

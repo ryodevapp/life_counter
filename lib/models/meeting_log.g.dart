@@ -36,6 +36,11 @@ const MeetingLogSchema = CollectionSchema(
       id: 3,
       name: r'personId',
       type: IsarType.long,
+    ),
+    r'photoFile': PropertySchema(
+      id: 4,
+      name: r'photoFile',
+      type: IsarType.string,
     )
   },
   estimateSize: _meetingLogEstimateSize,
@@ -91,6 +96,12 @@ int _meetingLogEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.photoFile;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -104,6 +115,7 @@ void _meetingLogSerialize(
   writer.writeDateTime(offsets[1], object.date);
   writer.writeString(offsets[2], object.note);
   writer.writeLong(offsets[3], object.personId);
+  writer.writeString(offsets[4], object.photoFile);
 }
 
 MeetingLog _meetingLogDeserialize(
@@ -118,6 +130,7 @@ MeetingLog _meetingLogDeserialize(
   object.id = id;
   object.note = reader.readStringOrNull(offsets[2]);
   object.personId = reader.readLong(offsets[3]);
+  object.photoFile = reader.readStringOrNull(offsets[4]);
   return object;
 }
 
@@ -136,6 +149,8 @@ P _meetingLogDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (reader.readLong(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -787,6 +802,158 @@ extension MeetingLogQueryFilter
       ));
     });
   }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'photoFile',
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'photoFile',
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'photoFile',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'photoFile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> photoFileMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'photoFile',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'photoFile',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition>
+      photoFileIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'photoFile',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension MeetingLogQueryObject
@@ -842,6 +1009,18 @@ extension MeetingLogQuerySortBy
   QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByPersonIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'personId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByPhotoFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByPhotoFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.desc);
     });
   }
 }
@@ -907,6 +1086,18 @@ extension MeetingLogQuerySortThenBy
       return query.addSortBy(r'personId', Sort.desc);
     });
   }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> thenByPhotoFile() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> thenByPhotoFileDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'photoFile', Sort.desc);
+    });
+  }
 }
 
 extension MeetingLogQueryWhereDistinct
@@ -933,6 +1124,13 @@ extension MeetingLogQueryWhereDistinct
   QueryBuilder<MeetingLog, MeetingLog, QDistinct> distinctByPersonId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'personId');
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QDistinct> distinctByPhotoFile(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'photoFile', caseSensitive: caseSensitive);
     });
   }
 }
@@ -966,6 +1164,12 @@ extension MeetingLogQueryProperty
   QueryBuilder<MeetingLog, int, QQueryOperations> personIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'personId');
+    });
+  }
+
+  QueryBuilder<MeetingLog, String?, QQueryOperations> photoFileProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'photoFile');
     });
   }
 }

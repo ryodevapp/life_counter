@@ -32,9 +32,12 @@ class ImportantPerson {
   /// 次に会う予定の日
   DateTime? nextMeetDate;
 
-  /// 誕生日（任意。年齢で登録するので、月日だけ別に持つ）
+  /// v1.2 の途中版で使った誕生日の欄（いまは生年月日から出すので使わない）
   int? birthdayMonth;
   int? birthdayDay;
+
+  /// 写真のファイル名（App Group の photos フォルダの中）
+  String? photoFile;
 
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/important_person.dart';
 import '../../services/life_calculator.dart';
+import '../../services/photo_store.dart';
+import '../family/family_avatar.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_picker.dart';
@@ -30,10 +32,9 @@ class ImportantPersonFormPage extends StatefulWidget {
 
 class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   final _nickController = TextEditingController();
-  int _age = 65;
-  int? _bMonth;
-  int? _bDay;
-  bool _ageTouched = false;
+  DateTime _birth = DateTime(1960, 1, 1);
+  String? _photo;
+  bool _birthTouched = false;
   Gender _gender = Gender.unspecified;
   int _freq = 2;
   Relation _relation = Relation.parent;
@@ -46,10 +47,9 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
     if (widget.person != null) {
       final p = widget.person!;
       _nickController.text = p.nickname;
-      _age = LifeCalculator.currentAge(p.birthDate);
-      _ageTouched = true;
-      _bMonth = p.birthdayMonth;
-      _bDay = p.birthdayDay;
+      _birth = p.birthDate;
+      _photo = p.photoFile;
+      _birthTouched = true;
       _gender = p.gender;
       _freq = snapToNearestFreq(p.meetingFrequency);
       _relation = p.relation;
@@ -70,14 +70,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
       AppToast.error(context, '呼び名を入力してください');
       return;
     }
-    // 生年月日を覚えていない人も多いので、年齢から誕生日を置く
-    // 編集で年齢を変えていなければ、今の生年月日をそのまま残す
-    final now = DateTime.now();
-    final keep = widget.person != null &&
-        LifeCalculator.currentAge(widget.person!.birthDate) == _age;
-    final birthDate = keep
-        ? widget.person!.birthDate
-        : DateTime(now.year - _age, now.month, now.day);
+    final birthDate = _birth;
     final person = widget.person ?? ImportantPerson();
     person
       ..nickname = nick
@@ -85,8 +78,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
       ..gender = _gender
       ..meetingFrequency = _freq
       ..relation = _relation
-      ..birthdayMonth = _bMonth
-      ..birthdayDay = _bDay;
+      ..photoFile = _photo;
     if (_relation == Relation.child) {
       person
         ..liveTogetherUntilAge = _untilAge
@@ -123,7 +115,26 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
+
+                  // 写真（任意。ウィジェットにも使う）
+                  Center(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final name = await PhotoStore.pick();
+                        if (name != null) setState(() => _photo = name);
+                      },
+                      child: Column(children: [
+                        FamilyAvatar(
+                            name: _nickController.text, photoFile: _photo, size: 72),
+                        const SizedBox(height: 6),
+                        Text(_photo == null ? '写真を選ぶ' : '写真を変える',
+                            style: GoogleFonts.zenKakuGothicNew(
+                                fontSize: 12, color: AppColors.accent)),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
                   // 関係
                   _label('関係', required: true),
@@ -177,43 +188,23 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                     const SizedBox(height: 16),
                   ],
 
-                  // 年齢
-                  _label('年齢', required: true),
-                  const SizedBox(height: 6),
-                  AppPicker<int>(
-                    value: _age,
-                    displayText: '$_age歳',
-                    title: '年齢',
-                    options: [
-                      for (var a = 0; a <= 105; a++)
-                        AppPickerOption(value: a, label: '$a歳'),
-                    ],
-                    onChanged: (v) => setState(() {
-                      _age = v;
-                      _ageTouched = true;
-                    }),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 誕生日（任意。節目の通知に使う）
-                  _label('誕生日(任意)'),
+                  // 生年月日（年齢と、誕生日の通知に使う）
+                  _label('生年月日', required: true),
                   const SizedBox(height: 6),
                   GestureDetector(
                     onTap: () async {
-                      final now = DateTime.now();
                       final picked = await showDatePicker(
                         context: context,
-                        initialDate: _bMonth != null
-                            ? DateTime(now.year, _bMonth!, _bDay!)
-                            : now,
-                        firstDate: DateTime(now.year, 1, 1),
-                        lastDate: DateTime(now.year, 12, 31),
-                        helpText: '誕生日(月と日)',
+                        initialDate: _birth,
+                        firstDate: DateTime(1915),
+                        lastDate: DateTime.now(),
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialDatePickerMode: DatePickerMode.year,
                       );
                       if (picked != null) {
                         setState(() {
-                          _bMonth = picked.month;
-                          _bDay = picked.day;
+                          _birth = picked;
+                          _birthTouched = true;
                         });
                       }
                     },
@@ -226,15 +217,17 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         border: Border.all(color: AppColors.border),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(
-                        _bMonth != null ? '$_bMonth月$_bDay日' : '入れると、当日にお知らせします',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 14,
-                          color: _bMonth != null
-                              ? AppColors.text
-                              : AppColors.textDisabled,
+                      child: Row(children: [
+                        Expanded(
+                          child: Text(
+                            '${_birth.year}年${_birth.month}月${_birth.day}日(${LifeCalculator.currentAge(_birth)}歳)',
+                            style: GoogleFonts.zenKakuGothicNew(
+                                fontSize: 15, color: AppColors.text),
+                          ),
                         ),
-                      ),
+                        Icon(Icons.calendar_today_rounded,
+                            color: AppColors.textMuted, size: 18),
+                      ]),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -338,12 +331,13 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
       onTap: () => setState(() {
         _relation = r;
         if (widget.person == null && r == Relation.partner) _freq = 365;
-        if (!_ageTouched) {
-          _age = switch (r) {
-            Relation.parent => 65,
-            Relation.child => 6,
-            Relation.partner => 40,
-            Relation.other => 70,
+        // 関係に合わせて、選びはじめの生年月日を変える（年の一覧から選びやすく）
+        if (!_birthTouched) {
+          _birth = switch (r) {
+            Relation.parent => DateTime(1960, 1, 1),
+            Relation.child => DateTime(2020, 1, 1),
+            Relation.partner => DateTime(1988, 1, 1),
+            Relation.other => DateTime(1950, 1, 1),
           };
         }
       }),

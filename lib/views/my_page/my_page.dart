@@ -12,10 +12,6 @@ import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../../services/pro_service.dart';
 import '../pro/pro_sheet.dart';
-import '../../services/widget_sync.dart';
-import '../../utils/prefs_keys.dart';
-import '../../providers/important_person_provider.dart';
-import '../../providers/isar_provider.dart';
 
 /// マイページタブ（プロトタイプのMyPageTab再現 + Epic 9 設定編集UI）
 class MyPage extends ConsumerWidget {
@@ -65,18 +61,6 @@ class MyPage extends ConsumerWidget {
             const SizedBox(height: 16),
 
             AppCard(
-              child: _settingsRow(
-                '\u{1F5BC}', 'ウィジェットの見た目',
-                WidgetSync.styles[ref.read(sharedPreferencesProvider)
-                            .getString(PrefsKeys.widgetStyle) ??
-                        'warm'] ??
-                    '',
-                onTap: () => _editWidgetStyle(context, ref),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            AppCard(
               child: _linkRow(
                 ref.watch(proProvider).isPro
                     ? 'LifeCounter Pro(購入済み)'
@@ -111,49 +95,6 @@ class MyPage extends ConsumerWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  // ─── ウィジェットの見た目（標準以外は Pro） ───
-  void _editWidgetStyle(BuildContext context, WidgetRef ref) {
-    final prefs = ref.read(sharedPreferencesProvider);
-    final current = prefs.getString(PrefsKeys.widgetStyle) ?? 'warm';
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.card,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const SizedBox(height: 16),
-          Text('ウィジェットの見た目',
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 16, fontWeight: FontWeight.w600)),
-          const SizedBox(height: 8),
-          for (final e in WidgetSync.styles.entries)
-            ListTile(
-              title: Text(e.value),
-              subtitle: e.key == 'warm' ? null : const Text('Pro'),
-              trailing: current == e.key
-                  ? const Icon(Icons.check, color: AppColors.accent)
-                  : null,
-              onTap: () async {
-                Navigator.of(ctx).pop();
-                if (e.key != 'warm' && !ref.read(proProvider).isPro) {
-                  await ProSheet.show(context);
-                  return;
-                }
-                await prefs.setString(PrefsKeys.widgetStyle, e.key);
-                final persons = ref.read(importantPersonsProvider).valueOrNull ?? [];
-                final logs = ref.read(meetingLogsProvider).valueOrNull ?? [];
-                await WidgetSync.update(persons: persons, logs: logs, style: e.key);
-                ref.invalidate(userSettingsProvider);
-              },
-            ),
-          const SizedBox(height: 8),
-        ]),
       ),
     );
   }

@@ -11,10 +11,8 @@ void main() {
   test('親がいれば母の日・父の日・敬老の日の1週間前、帰省前、誕生日', () {
     final mother = ImportantPerson()
       ..nickname = 'お母さん'
-      ..birthDate = DateTime(1960, 1, 1)
-      ..relation = Relation.parent
-      ..birthdayMonth = 11
-      ..birthdayDay = 3;
+      ..birthDate = DateTime(1960, 11, 3)
+      ..relation = Relation.parent;
     final list = Milestones.upcoming([mother], DateTime(2026, 10, 10));
     final titles = list.map((m) => m.title).toList();
     expect(list.first.when, DateTime(2026, 11, 3, 9));

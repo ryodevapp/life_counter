@@ -11,6 +11,8 @@ import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_input.dart';
 import '../shared/app_toast.dart';
+import '../../services/photo_store.dart';
+import 'family_avatar.dart';
 
 /// 会えた日を残すシート
 class MeetingLogSheet extends ConsumerStatefulWidget {
@@ -42,6 +44,7 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
       ? widget.date!
       : DateTime.now();
   bool _saving = false;
+  String? _photo;
 
   @override
   void dispose() {
@@ -57,7 +60,8 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
       final log = MeetingLog()
         ..personId = widget.person.id
         ..date = day
-        ..note = _note.text.trim().isEmpty ? null : _note.text.trim();
+        ..note = _note.text.trim().isEmpty ? null : _note.text.trim()
+        ..photoFile = _photo;
       await ref.read(meetingLogRepositoryProvider).add(log);
 
       final p = widget.person;
@@ -147,7 +151,29 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
               maxLength: 100,
               showBorder: true,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 4),
+            if (_photo != null) ...[
+              LogPhoto(photoFile: _photo, height: 140),
+              const SizedBox(height: 8),
+            ],
+            GestureDetector(
+              onTap: () async {
+                final name = await PhotoStore.pick();
+                if (name != null) setState(() => _photo = name);
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(children: [
+                  Icon(Icons.photo_outlined, size: 18, color: AppColors.accent),
+                  const SizedBox(width: 6),
+                  Text(_photo == null ? '写真を添える' : '写真を変える',
+                      style: GoogleFonts.zenKakuGothicNew(
+                          fontSize: 13, color: AppColors.accent)),
+                ]),
+              ),
+            ),
+            const SizedBox(height: 12),
             AppButton.primary(
                 onPressed: _saving ? null : _save, label: '残す'),
           ],

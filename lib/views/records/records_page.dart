@@ -10,6 +10,7 @@ import '../../providers/isar_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../utils/prefs_keys.dart';
 import '../family/meeting_log_sheet.dart';
+import '../family/family_avatar.dart';
 import '../shared/action_buttons.dart';
 import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
@@ -199,6 +200,10 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
                       fontWeight: FontWeight.w600,
                       color: AppColors.accent)),
               const SizedBox(height: 4),
+              if (l.photoFile != null) ...[
+                LogPhoto(photoFile: l.photoFile, height: 160),
+                const SizedBox(height: 8),
+              ],
               Text(l.note ?? '会えた',
                   style: GoogleFonts.zenKakuGothicNew(fontSize: 14, height: 1.6)),
             ]),

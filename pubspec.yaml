@@ -1,7 +1,7 @@
 name: life_counter
 description: "人生は有限だから、1日を大切に生きてほしい。"
 publish_to: 'none'
-version: 2.0.0+10
+version: 2.0.0+11
 
 environment:
   sdk: ^3.11.3
@@ -27,6 +27,8 @@ dependencies:
   in_app_purchase: ^3.3.1
   share_plus: ^13.3.1
   home_widget: ^0.10.0
+  image_picker: ^1.2.4
+  path_provider_foundation: ^2.6.0
 
 dev_dependencies:
   flutter_test:

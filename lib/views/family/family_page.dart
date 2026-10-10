@@ -19,6 +19,7 @@ import 'family_detail_page.dart';
 import 'family_time_view.dart';
 import 'meeting_log_sheet.dart';
 import 'next_meet_row.dart';
+import 'family_avatar.dart';
 import '../../services/pro_service.dart';
 import '../pro/pro_sheet.dart';
 
@@ -166,6 +167,8 @@ class _FamilyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
+            FamilyAvatar(name: person.nickname, photoFile: person.photoFile),
+            const SizedBox(width: 12),
             Expanded(
               child: Text(person.nickname,
                   style: GoogleFonts.zenKakuGothicNew(

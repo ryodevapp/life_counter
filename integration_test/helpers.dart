@@ -16,6 +16,9 @@ Future<void> shot(IntegrationTestWidgetsFlutterBinding binding,
 }
 
 Future<void> tapText(WidgetTester tester, String text) async {
+  // 小さい画面では画面外にあることがあるので、見える位置まで送ってから押す
+  await tester.ensureVisible(find.text(text).last);
+  await wait(tester, 400);
   await tester.tap(find.text(text).last);
   await wait(tester);
 }

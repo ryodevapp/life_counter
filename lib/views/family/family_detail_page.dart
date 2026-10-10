@@ -15,6 +15,7 @@ import '../shared/app_colors.dart';
 import 'family_time_view.dart';
 import 'meeting_log_sheet.dart';
 import 'next_meet_row.dart';
+import 'family_avatar.dart';
 import 'share_card_sheet.dart';
 
 /// 家族ひとりの詳細（一緒に過ごせる時間と、会えた日の記録）
@@ -65,6 +66,8 @@ class FamilyDetailPage extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 48),
         children: [
           Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            FamilyAvatar(name: p.nickname, photoFile: p.photoFile, size: 56),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,9 +169,18 @@ class FamilyDetailPage extends ConsumerWidget {
                                     color: AppColors.textMuted)),
                           ),
                           Expanded(
-                            child: Text(l.note ?? '会えた',
-                                style: GoogleFonts.zenKakuGothicNew(
-                                    fontSize: 14, height: 1.6)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (l.photoFile != null) ...[
+                                  LogPhoto(photoFile: l.photoFile, height: 140),
+                                  const SizedBox(height: 8),
+                                ],
+                                Text(l.note ?? '会えた',
+                                    style: GoogleFonts.zenKakuGothicNew(
+                                        fontSize: 14, height: 1.6)),
+                              ],
+                            ),
                           ),
                         ],
                       ),

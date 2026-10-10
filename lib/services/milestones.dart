@@ -35,8 +35,7 @@ class Milestones {
 
     for (final year in [now.year, now.year + 1]) {
       for (final p in persons) {
-        if (p.birthdayMonth == null || p.birthdayDay == null) continue;
-        add(DateTime(year, p.birthdayMonth!, p.birthdayDay!),
+        add(DateTime(year, p.birthDate.month, p.birthDate.day),
             '今日は、${p.nickname}の誕生日です', 'おめでとうを伝えてみませんか');
       }
       if (persons.any((p) => p.relation == Relation.parent)) {
