@@ -170,7 +170,7 @@ class YourTimeSection extends ConsumerWidget {
           const SizedBox(height: 6),
           Text(
             formatter.format(value),
-            style: GoogleFonts.cormorantGaramond(
+            style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
               fontSize: 26,
               fontWeight: FontWeight.w300,
             ),

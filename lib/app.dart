@@ -24,6 +24,16 @@ class LifeCounterApp extends ConsumerWidget {
         ),
       ),
       routerConfig: router,
+      // iPad では横に広がりすぎないよう、幅を抑えて中央に置く
+      builder: (context, child) => ColoredBox(
+        color: AppColors.bg,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

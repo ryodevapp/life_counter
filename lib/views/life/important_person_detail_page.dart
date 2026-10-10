@@ -154,7 +154,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
                     TextSpan(children: [
                       TextSpan(
                         text: '$lastMetDays',
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                           fontSize: 32,
                           fontWeight: FontWeight.w300,
                           color: lastMetDays > 60
@@ -209,7 +209,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               ),
               TextSpan(
                 text: value,
-                style: GoogleFonts.cormorantGaramond(
+                style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                   fontSize: 32,
                   fontWeight: FontWeight.w300,
                   color: valueColor ?? AppColors.text,

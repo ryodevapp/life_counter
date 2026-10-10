@@ -8,41 +8,41 @@ class AppTextStyles {
   AppTextStyles._();
 
   // Display (Cormorant Garamond)
-  static TextStyle get displayLarge => GoogleFonts.cormorantGaramond(
+  static TextStyle get displayLarge => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 80,
         fontWeight: FontWeight.w300,
         height: 1.0,
       );
 
-  static TextStyle get displayMedium => GoogleFonts.cormorantGaramond(
+  static TextStyle get displayMedium => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 48,
         fontWeight: FontWeight.w300,
         height: 1.0,
       );
 
-  static TextStyle get displaySmall => GoogleFonts.cormorantGaramond(
+  static TextStyle get displaySmall => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 32,
         fontWeight: FontWeight.w300,
       );
 
-  static TextStyle get headlineLarge => GoogleFonts.cormorantGaramond(
+  static TextStyle get headlineLarge => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 44,
         fontWeight: FontWeight.w300,
         height: 1.35,
       );
 
-  static TextStyle get headlineMedium => GoogleFonts.cormorantGaramond(
+  static TextStyle get headlineMedium => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 30,
         fontWeight: FontWeight.w300,
       );
 
-  static TextStyle get headlineSmall => GoogleFonts.cormorantGaramond(
+  static TextStyle get headlineSmall => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 24,
         fontWeight: FontWeight.w400,
       );
 
   // Counter (today tab)
-  static TextStyle get counter => GoogleFonts.cormorantGaramond(
+  static TextStyle get counter => GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
         fontSize: 76,
         fontWeight: FontWeight.w300,
         height: 1.0,

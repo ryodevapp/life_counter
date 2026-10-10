@@ -93,7 +93,7 @@ class NextMeetRow extends ConsumerWidget {
             _text('会えるまで、あと ', AppColors.textSecondary),
             Text(
               '$days',
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                 fontSize: 26,
                 color: AppColors.accent,
                 fontWeight: FontWeight.w500,

@@ -14,6 +14,8 @@ import '../shared/app_toast.dart';
 import '../../services/photo_store.dart';
 import 'family_avatar.dart';
 import 'quick_contact_row.dart';
+import '../../services/pro_service.dart';
+import '../pro/pro_sheet.dart';
 
 /// 会えた日を残すシート
 class MeetingLogSheet extends ConsumerStatefulWidget {
@@ -96,8 +98,20 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
       }
       await _maybeRequestReview();
       if (mounted) {
-        Navigator.of(context).pop();
-        AppToast.success(context, '残しました');
+        // 写真つきの思い出を初めて残した直後に、一度だけ Pro を案内する(満足した瞬間なので)
+        final prefs = ref.read(sharedPreferencesProvider);
+        final showPro = _photo != null &&
+            !ref.read(proProvider).isPro &&
+            !(prefs.getBool(PrefsKeys.proAfterMemoryShown) ?? false);
+        final nav = Navigator.of(context);
+        final parent = nav.context;
+        nav.pop();
+        if (parent.mounted) AppToast.success(parent, '残しました');
+        if (showPro) {
+          await prefs.setBool(PrefsKeys.proAfterMemoryShown, true);
+          await Future.delayed(const Duration(milliseconds: 900));
+          if (parent.mounted) await ProSheet.show(parent, afterMemory: true);
+        }
       }
     } catch (e) {
       debugPrint('Meeting log save error: $e');

@@ -11,17 +11,22 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		518FB7B6DC74B80A43E9022F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E2EDD2CAD0E6A424965269 /* SwiftUI.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
+		7BC0CED642D8FB5AB569BD90 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D8986C17E3DA43C3FA27DB /* WidgetShared.swift */; };
 		7D1E8ACE0464A63F352F1416 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2290B5853114929D84DA36F /* WidgetKit.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		9D7F02B3836E6A3668DD62A3 /* FamilyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC720B051909B66828B7296 /* FamilyWidget.swift */; };
+		ACBBC824EAF68BBD251B8977 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2290B5853114929D84DA36F /* WidgetKit.framework */; };
 		B5F58338C29DDEBCA7435E21 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E2EDD2CAD0E6A424965269 /* SwiftUI.framework */; };
 		BC99D085147855C1EA999BE0 /* FamilyWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB0F262D7E5B6734E50319A5 /* FamilyWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF00A3ED0C6F04000DB390EC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADFEF507D552FACE1FCC46C4 /* Foundation.framework */; };
 		CF85F23B56DCE0C06BE3D2C7 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAFD9E00FE633414D0DBFB26 /* Pods_RunnerTests.framework */; };
+		E1D864574B35BE8646C28758 /* WidgetPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27170D34C89C2405C4FC5118 /* WidgetPreview.swift */; };
+		FF497171A7F0937DB55A4EB0 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D8986C17E3DA43C3FA27DB /* WidgetShared.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +73,10 @@
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		15D8986C17E3DA43C3FA27DB /* WidgetShared.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetShared.swift; sourceTree = "<group>"; };
 		1BB40A46EADF29E7F03EA33D /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		20D88D249C3C6F463D2C47EA /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		27170D34C89C2405C4FC5118 /* WidgetPreview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetPreview.swift; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
@@ -115,6 +122,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0490056E6976CF8AA6491D4A /* Pods_Runner.framework in Frameworks */,
+				ACBBC824EAF68BBD251B8977 /* WidgetKit.framework in Frameworks */,
+				518FB7B6DC74B80A43E9022F /* SwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +162,7 @@
 				4DC720B051909B66828B7296 /* FamilyWidget.swift */,
 				65A065E8A4FF56DCCB81256D /* Info.plist */,
 				418BDF2EF889A49FA06D0739 /* FamilyWidget.entitlements */,
+				15D8986C17E3DA43C3FA27DB /* WidgetShared.swift */,
 			);
 			name = FamilyWidget;
 			path = FamilyWidget;
@@ -219,6 +229,7 @@
 				7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				C948564A831D7C8B7D1B3A6E /* Runner.entitlements */,
+				27170D34C89C2405C4FC5118 /* WidgetPreview.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -467,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D7F02B3836E6A3668DD62A3 /* FamilyWidget.swift in Sources */,
+				FF497171A7F0937DB55A4EB0 /* WidgetShared.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +497,8 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
+				7BC0CED642D8FB5AB569BD90 /* WidgetShared.swift in Sources */,
+				E1D864574B35BE8646C28758 /* WidgetPreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,7 +581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -587,6 +601,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -661,7 +676,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FamilyWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -727,7 +742,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -778,7 +793,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -800,6 +815,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -824,6 +840,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -848,7 +865,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FamilyWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -877,7 +894,7 @@
 				DEVELOPMENT_TEAM = QMKN44PKQ5;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FamilyWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

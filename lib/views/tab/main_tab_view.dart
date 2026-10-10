@@ -28,6 +28,19 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     NotificationService.refresh(ref.read(userSettingsProvider));
     // 購入の受け取り(ファミリー共有・中断した購入の完了)のため、起動時に Pro の監視を始める
     ref.read(proProvider);
+    // ウィジェットで押された「電話した」などを取り込む(起動時と、アプリに戻ったとき)
+    WidgetSync.importPending(ref.read(meetingLogRepositoryProvider));
+    _lifecycle = AppLifecycleListener(
+      onResume: () => WidgetSync.importPending(ref.read(meetingLogRepositoryProvider)),
+    );
+  }
+
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
   }
 
   int _currentIndex = 0;

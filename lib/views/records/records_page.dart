@@ -10,6 +10,7 @@ import '../../providers/isar_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../utils/prefs_keys.dart';
 import '../family/meeting_log_sheet.dart';
+import 'year_review_page.dart';
 import '../family/family_avatar.dart';
 import '../shared/action_buttons.dart';
 import '../shared/app_card.dart';
@@ -124,6 +125,15 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.accent)),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: TextButton(
+                onPressed: () => YearReviewPage.open(context),
+                child: Text('${DateTime.now().year}年のふりかえりを見る',
+                    style: GoogleFonts.zenKakuGothicNew(
+                        fontSize: 13, color: AppColors.accent, fontWeight: FontWeight.w600)),
               ),
             ),
             if (showBanner) ...[

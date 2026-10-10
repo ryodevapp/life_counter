@@ -99,7 +99,7 @@ class FamilyTimeView extends StatelessWidget {
               ),
             TextSpan(
               text: value,
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                 fontSize: 44,
                 fontWeight: FontWeight.w300,
                 color: AppColors.accent,

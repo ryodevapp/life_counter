@@ -19,4 +19,5 @@ class PrefsKeys {
   static const proPurchased = 'pro_purchased';
   static const widgetStyle = 'widget_style';
   static const firstRunGuide = 'first_run_guide';
+  static const proAfterMemoryShown = 'pro_after_memory_shown';
 }

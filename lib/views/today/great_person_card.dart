@@ -129,7 +129,7 @@ class _GreatPersonCardState extends State<GreatPersonCard> {
                     children: [
                       Text(
                         '${a['age']}歳',
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                           color: AppColors.accent,

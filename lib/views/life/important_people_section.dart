@@ -252,7 +252,7 @@ class _ImportantPeopleSectionState
           ),
           TextSpan(
             text: value,
-            style: GoogleFonts.cormorantGaramond(
+            style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
               fontSize: 22,
               fontWeight: FontWeight.w300,
               color: valueColor,

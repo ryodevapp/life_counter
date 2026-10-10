@@ -9,12 +9,14 @@ import 'package:life_counter/main.dart' as app;
 import 'package:life_counter/models/important_person.dart';
 import 'package:life_counter/models/meeting_log.dart';
 import 'package:life_counter/services/photo_store.dart';
+import 'package:life_counter/services/widget_sync.dart';
+import 'package:life_counter/repositories/meeting_log_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'helpers.dart';
 
 /// ウィジェットに渡るデータを調べる(Pro 購入済み・写真つき)
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('widget data with photos', (tester) async {
     final prefs = await SharedPreferences.getInstance();
@@ -58,5 +60,27 @@ void main() {
     }
     // ignore: avoid_print
     print('DIAG file exists = ${PhotoStore.file('ptest.png') != null}');
+    final members = await HomeWidget.getWidgetData<String>('members');
+    // ignore: avoid_print
+    print('DIAG members = $members');
+
+    // ウィジェットで「電話した」が押された状態を作り、取り込めるか
+    final t = DateTime.now().millisecondsSinceEpoch / 1000;
+    await HomeWidget.saveWidgetData<String>('pendingLogs', '[{"id":${p.id},"k":"call","t":$t}]');
+    final before = await isar.meetingLogs.count();
+    final n = await WidgetSync.importPending(MeetingLogRepository(isar));
+    final after = await isar.meetingLogs.count();
+    final last = (await isar.meetingLogs.where().findAll()).last;
+    // ignore: avoid_print
+    print('DIAG imported=$n before=$before after=$after kind=${last.kind}');
+    expect(n, 1);
+    expect(after, before + 1);
+    expect(last.kind, ContactKind.call);
+    expect(await HomeWidget.getWidgetData<String>('pendingLogs'), '[]');
+    // 購入済み・写真つきのふりかえり
+    await tester.tap(find.text('記録').last);
+    await wait(tester, 1500);
+    await tester.tap(byText('ふりかえりを見る').first);
+    await shot(binding, tester, '24_review_pro');
   });
 }

@@ -186,7 +186,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             const SizedBox(height: 8),
             Text(
               '日目です',
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                 fontSize: 20,
                 fontWeight: FontWeight.w300,
                 color: AppColors.textSecondary,
@@ -202,7 +202,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             Text(
               '親と、子どもと、\n大切な人と。',
               textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                 fontSize: 26,
                 fontWeight: FontWeight.w300,
                 height: 1.8,
@@ -231,7 +231,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 children: [
                   TextSpan(
                     text: 'でも\n今日という日は\n人生で',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 26,
                       fontWeight: FontWeight.w300,
                       height: 1.8,
@@ -239,7 +239,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   TextSpan(
                     text: 'たった一度きり',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 26,
                       fontWeight: FontWeight.w500,
                       height: 1.8,
@@ -248,7 +248,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   TextSpan(
                     text: 'です',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 26,
                       fontWeight: FontWeight.w300,
                       height: 1.8,
@@ -270,7 +270,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 children: [
                   TextSpan(
                     text: '後悔のない毎日を\n',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 22,
                       fontWeight: FontWeight.w300,
                       height: 1.8,
@@ -278,7 +278,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   TextSpan(
                     text: '一緒に重ねて',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
                       height: 1.8,
@@ -287,7 +287,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   TextSpan(
                     text: 'いきましょう',
-                    style: GoogleFonts.cormorantGaramond(
+                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                       fontSize: 22,
                       fontWeight: FontWeight.w300,
                       height: 1.8,

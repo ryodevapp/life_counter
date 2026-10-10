@@ -138,7 +138,7 @@ class _ShareCardSheetState extends State<ShareCardSheet> {
                         children: [
                           TextSpan(
                             text: value,
-                            style: GoogleFonts.cormorantGaramond(
+                            style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
                               fontSize: 88,
                               fontWeight: FontWeight.w300,
                               color: AppColors.accent,

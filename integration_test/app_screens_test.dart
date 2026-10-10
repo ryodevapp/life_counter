@@ -69,6 +69,10 @@ void main() {
     await wait(tester);
     await tester.tap(find.text('記録').last);
     await shot(binding, tester, '20_records');
+    await tester.tap(byText('ふりかえりを見る').first);
+    await shot(binding, tester, '23_review_free');
+    await tester.pageBack();
+    await wait(tester);
     await tester.tap(find.text('設定').last);
     await shot(binding, tester, '21_settings');
     await tester.tap(byText('LifeCounter Pro').first);
