@@ -18,4 +18,5 @@ class PrefsKeys {
   static const legacyUser = 'legacy_user';
   static const proPurchased = 'pro_purchased';
   static const widgetStyle = 'widget_style';
+  static const firstRunGuide = 'first_run_guide';
 }

@@ -40,7 +40,7 @@ class QuickContactRow extends ConsumerWidget {
     messenger.showSnackBar(
       SnackBar(
         content: Text(
-          '${person.nickname}と「${kind.label}」を残しました',
+          '「${kind.label}」を残しました',
           style: GoogleFonts.zenKakuGothicNew(
             fontSize: 14,
             color: Colors.white,

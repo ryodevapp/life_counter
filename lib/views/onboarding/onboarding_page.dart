@@ -51,7 +51,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _nextStep() {
-    if (_step < 3) {
+    // 価値を感じるまでを短くするため、説明は2画面だけ。そのあと家族の登録へ
+    if (_step < _lastStep) {
       setState(() => _step++);
     } else {
       _complete();
@@ -111,7 +112,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               // ページインジケーター
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (i) {
+                children: List.generate(_lastStep + 1, (i) {
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 400),
                     margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -138,7 +139,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   Expanded(
                     child: AppButton.primary(
                       onPressed: _nextStep,
-                      label: _step == 3 ? 'はじめる' : '次へ',
+                      label: _step == _lastStep ? '家族を登録する' : '次へ',
                     ),
                   ),
                 ],
@@ -150,6 +151,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       ),
     );
   }
+
+  static const _lastStep = 1;
 
   Widget _stepContent(int lifeDays, int remainingDays) {
     switch (_step) {

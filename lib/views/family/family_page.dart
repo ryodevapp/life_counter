@@ -19,10 +19,45 @@ import 'family_time_view.dart';
 import 'next_meet_row.dart';
 import 'family_avatar.dart';
 import 'quick_contact_row.dart';
+import 'widget_guide_sheet.dart';
+import '../../utils/prefs_keys.dart';
 import 'meeting_log_sheet.dart';
 import '../../services/contact_stats.dart';
 import '../../services/pro_service.dart';
 import '../pro/pro_sheet.dart';
+
+/// 初回だけ: 家族の登録画面を開き、登録できたらウィジェットの置き方を案内する
+class FirstRunGuide extends ConsumerStatefulWidget {
+  const FirstRunGuide({super.key, required this.child});
+  final Widget child;
+
+  @override
+  ConsumerState<FirstRunGuide> createState() => _FirstRunGuideState();
+}
+
+class _FirstRunGuideState extends ConsumerState<FirstRunGuide> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _run());
+  }
+
+  Future<void> _run() async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    if (!(prefs.getBool(PrefsKeys.firstRunGuide) ?? false)) return;
+    await prefs.setBool(PrefsKeys.firstRunGuide, false);
+    final repo = ref.read(importantPersonRepositoryProvider);
+    if (await repo.count() > 0 || !mounted) return;
+    final result = await ImportantPersonFormPage.show(context);
+    if (result == null || !mounted) return;
+    await repo.add(result);
+    await Future.delayed(const Duration(milliseconds: 600));
+    if (mounted) await WidgetGuideSheet.show(context);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}
 
 /// 家族タブ（最初の画面）
 class FamilyPage extends ConsumerWidget {

@@ -12,6 +12,7 @@ import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../../services/pro_service.dart';
 import '../pro/pro_sheet.dart';
+import '../family/widget_guide_sheet.dart';
 
 /// マイページタブ（プロトタイプのMyPageTab再現 + Epic 9 設定編集UI）
 class MyPage extends ConsumerWidget {
@@ -57,6 +58,12 @@ class MyPage extends ConsumerWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 16),
+
+            AppCard(
+              child: _linkRow('ウィジェットの置き方',
+                  onTap: () => WidgetGuideSheet.show(context)),
             ),
             const SizedBox(height: 16),
 

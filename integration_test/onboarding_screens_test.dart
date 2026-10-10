@@ -14,10 +14,10 @@ void main() {
     await tapText(tester, 'はじめる');
     await shot(binding, tester, '02_birth');
     await tapText(tester, '次へ');
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 2; i++) {
       await wait(tester, 2500);
       await shot(binding, tester, '03_step${i + 1}');
-      if (i < 3) await tapText(tester, '次へ');
+      if (i < 1) await tapText(tester, '次へ');
     }
   });
 }

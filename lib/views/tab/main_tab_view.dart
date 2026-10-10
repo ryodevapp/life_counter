@@ -39,7 +39,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   ];
 
   late final _pages = [
-    const FamilyPage(),
+    const FirstRunGuide(child: FamilyPage()),
     const RecordsPage(),
     const MyPage(),
   ];

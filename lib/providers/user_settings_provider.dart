@@ -55,6 +55,8 @@ class UserSettingsNotifier extends Notifier<UserSettings> {
   }
 
   Future<void> completeOnboarding() async {
+    // 初回だけ、家族の登録画面とウィジェットの置き方を続けて案内する
+    await _prefs.setBool(PrefsKeys.firstRunGuide, true);
     await _prefs.setBool(PrefsKeys.onboardingCompleted, true);
     state = state.copyWith(onboardingCompleted: true);
     await NotificationService.refresh(state);
