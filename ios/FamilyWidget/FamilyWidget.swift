@@ -29,7 +29,7 @@ struct FamilyWidget: Widget {
             NextWidgetView(entry: entry)
         }
         .configurationDisplayName("家族")
-        .description("次に会う日までの日数と、今月つながった日。電話した日などを、ここから残せます")
+        .description("次に会う日までの日数と、今月つながった日。話した日などを、ここから残せます")
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular, .accessoryInline, .accessoryCircular])
     }
 }

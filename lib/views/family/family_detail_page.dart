@@ -178,7 +178,7 @@ class FamilyDetailPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                '会えた日や電話した日に、ひとこと残せます',
+                '会えた日や話した日に、ひとこと残せます',
                 style: GoogleFonts.zenKakuGothicNew(
                   fontSize: 13,
                   color: AppColors.textMuted,

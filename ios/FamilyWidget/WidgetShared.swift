@@ -200,7 +200,8 @@ let meetFormatter: DateFormatter = {
 struct ContactButtons: View {
     let member: Member
     let compact: Bool
-    private let kinds: [(String, String)] = [("call", "phone"), ("video", "video"), ("message", "message")]
+    // 電話とビデオ通話は「話した」にまとめる
+    private let kinds: [(String, String)] = [("call", "phone"), ("message", "message")]
     var body: some View {
         HStack(spacing: compact ? 6 : 8) {
             ForEach(kinds, id: \.0) { k in
@@ -243,7 +244,7 @@ struct NextWidgetView: View {
 
     private var tappedText: String? {
         guard let k = entry.justTapped else { return nil }
-        let l = ["call": "電話した", "video": "ビデオ通話", "message": "メッセージ"][k] ?? "つながった"
+        let l = ["call": "話した", "video": "話した", "message": "メッセージ"][k] ?? "つながった"
         return "「\(l)」を残しました"
     }
 

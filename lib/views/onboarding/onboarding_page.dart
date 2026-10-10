@@ -51,7 +51,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _nextStep() {
-    // 価値を感じるまでを短くするため、説明は2画面だけ。そのあと家族の登録へ
+    // 説明は3画面(人生◯日目/一緒に過ごせる時間/できること)。そのあと家族の登録へ
     if (_step < _lastStep) {
       setState(() => _step++);
     } else {
@@ -152,7 +152,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  static const _lastStep = 1;
+  static const _lastStep = 2;
 
   Widget _stepContent(int lifeDays, int remainingDays) {
     switch (_step) {
@@ -220,44 +220,47 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ],
         );
       case 2:
-        // Step 3: たった一度きり
+        // Step 3: このアプリでできること(新しい使い方なので、登録の前に見せる)
+        Widget item(IconData icon, String title, String body) => Padding(
+              padding: const EdgeInsets.only(bottom: 26),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: AppColors.accentSurface2),
+                  child: Icon(icon, color: AppColors.accent, size: 22),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(title,
+                        style: GoogleFonts.zenKakuGothicNew(
+                            fontSize: 16, fontWeight: FontWeight.w600, height: 1.5)),
+                    const SizedBox(height: 4),
+                    Text(body,
+                        style: GoogleFonts.zenKakuGothicNew(
+                            fontSize: 13, height: 1.7, color: AppColors.textSecondary)),
+                  ]),
+                ),
+              ]),
+            );
         return Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('\u{1F932}', style: TextStyle(fontSize: 32)), // 🤲
-            const SizedBox(height: 40),
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'でも\n今日という日は\n人生で',
-                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
-                      fontSize: 26,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'たった一度きり',
-                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
-                      fontSize: 26,
-                      fontWeight: FontWeight.w500,
-                      height: 1.8,
-                      color: AppColors.accent,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'です',
-                    style: GoogleFonts.cormorantGaramond(fontFeatures: const [FontFeature.liningFigures()], 
-                      fontSize: 26,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
+            Center(
+              child: Text('このアプリでできること',
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 20, fontWeight: FontWeight.w600)),
             ),
+            const SizedBox(height: 32),
+            item(Icons.favorite_border, 'これから会える回数がわかる',
+                '親の年齢と、会う頻度から計算'),
+            item(Icons.event_outlined, '次に会う日を、楽しみに数える',
+                'ホーム画面で「あと◯日」と数える'),
+            item(Icons.touch_app_outlined, '会えた日・話した日を残す',
+                'ボタンひとつで残せて、積み重なる'),
           ],
         );
       case 3:

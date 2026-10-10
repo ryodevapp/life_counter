@@ -26,13 +26,17 @@ class MeetingLog {
 }
 
 /// 家族とのつながり方（先頭の met が、値の無い既存データの読み込み先になる）
+/// video は v2.0 の試作版の名残。画面では call と同じ「話した」として扱う
 enum ContactKind { met, call, video, message }
+
+/// 画面で選べるつながり方(電話とビデオ通話は「話した」にまとめる)
+const selectableContactKinds = [ContactKind.met, ContactKind.call, ContactKind.message];
 
 extension ContactKindLabel on ContactKind {
   String get label => switch (this) {
         ContactKind.met => '会えた',
-        ContactKind.call => '電話した',
-        ContactKind.video => 'ビデオ通話',
+        ContactKind.call => '話した',
+        ContactKind.video => '話した',
         ContactKind.message => 'メッセージ',
       };
 

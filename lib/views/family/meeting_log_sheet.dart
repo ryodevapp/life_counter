@@ -161,7 +161,7 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
               if (!widget.memoryMode)
                 Row(
                   children: [
-                    for (final k in ContactKind.values) ...[
+                    for (final k in selectableContactKinds) ...[
                       if (k != ContactKind.met) const SizedBox(width: 6),
                       Expanded(
                         child: GestureDetector(

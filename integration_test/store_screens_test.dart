@@ -34,6 +34,7 @@ void main() {
     await prefs.setBool('notification_enabled', false);
     await prefs.setBool('pro_purchased', true);
     await prefs.setBool('legacy_diary_banner_dismissed', true);
+    await prefs.setBool('family_tip_dismissed', true);
 
     app.main();
     await wait(tester, 3000);

@@ -10,12 +10,12 @@ import 'meeting_log_sheet.dart';
 IconData contactIcon(ContactKind k) => switch (k) {
   ContactKind.met => Icons.people_alt_outlined,
   ContactKind.call => Icons.call_outlined,
-  ContactKind.video => Icons.videocam_outlined,
+  ContactKind.video => Icons.call_outlined,
   ContactKind.message => Icons.chat_bubble_outline,
 };
 
 /// 家族のカードの下に並べる「つながった」ボタン。
-/// 電話・ビデオ・メッセージはワンタップで今日の記録にする(取り消しできる)。
+/// 話した(電話・ビデオ)・メッセージはワンタップで今日の記録にする(取り消しできる)。
 /// 会えた日は、写真とひとことを残せるシートを開く
 class QuickContactRow extends ConsumerWidget {
   const QuickContactRow({super.key, required this.person});
@@ -64,7 +64,7 @@ class QuickContactRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
-        for (final k in ContactKind.values)
+        for (final k in selectableContactKinds)
           Expanded(
             child: Semantics(
               button: true,

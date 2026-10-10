@@ -122,6 +122,7 @@ class FamilyPage extends ConsumerWidget {
                     ? _empty(context, ref)
                     : Column(
                         children: [
+                          const _HowToTip(),
                           for (final p in list) ...[
                             _FamilyCard(
                               person: p,
@@ -306,4 +307,69 @@ class _FamilyCard extends StatelessWidget {
       ),
     ),
   );
+}
+
+
+/// 使い方の案内(家族を登録したあと、閉じるまで出す)
+class _HowToTip extends ConsumerStatefulWidget {
+  const _HowToTip();
+
+  @override
+  ConsumerState<_HowToTip> createState() => _HowToTipState();
+}
+
+class _HowToTipState extends ConsumerState<_HowToTip> {
+  @override
+  Widget build(BuildContext context) {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    if (prefs.getBool(PrefsKeys.familyTipDismissed) ?? false) {
+      return const SizedBox.shrink();
+    }
+    Widget line(IconData icon, String text) => Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Icon(icon, size: 18, color: AppColors.accent),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(text,
+                  style: GoogleFonts.zenKakuGothicNew(fontSize: 13, height: 1.6)),
+            ),
+          ]),
+        );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 8),
+        decoration: BoxDecoration(
+          color: AppColors.accentSurface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('使い方',
+              style: GoogleFonts.zenKakuGothicNew(
+                  fontSize: 14, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 10),
+          line(Icons.touch_app_outlined, '会えた日・話した日に、カードの下のボタンを押して残します'),
+          line(Icons.event_outlined, '「次に会う日を入れる」で、帰省の日までを数えます'),
+          line(Icons.widgets_outlined, 'ホーム画面にウィジェットを置くと、毎日目に入ります'),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            TextButton(
+              onPressed: () => WidgetGuideSheet.show(context),
+              child: Text('ウィジェットの置き方',
+                  style: GoogleFonts.zenKakuGothicNew(fontSize: 13, color: AppColors.accent)),
+            ),
+            TextButton(
+              onPressed: () async {
+                await prefs.setBool(PrefsKeys.familyTipDismissed, true);
+                setState(() {});
+              },
+              child: Text('閉じる',
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+            ),
+          ]),
+        ]),
+      ),
+    );
+  }
 }

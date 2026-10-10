@@ -144,7 +144,7 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
             if (items.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32),
-                child: Text('家族と会えた日や電話した日を、\nここに残せます',
+                child: Text('家族と会えた日や話した日を、\nここに残せます',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.zenKakuGothicNew(
                         fontSize: 13, height: 1.8, color: AppColors.textMuted)),

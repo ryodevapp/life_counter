@@ -39,7 +39,7 @@ void main() {
     await shot(binding, tester, '13_family_list');
 
     // 電話した(ワンタップ)→ 取り消しの案内を撮る
-    await tapText(tester, '電話した');
+    await tapText(tester, '話した');
     await shot(binding, tester, '13b_quick_call');
     // 会えた日を残す(シート)
     await tester.ensureVisible(find.text('会えた').first);
