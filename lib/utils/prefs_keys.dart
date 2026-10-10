@@ -13,4 +13,5 @@ class PrefsKeys {
   static const recentQuestionIds = 'recent_question_ids';
   static const reviewRequestedDay2 = 'review_requested_day2';
   static const reviewRequestedDay7 = 'review_requested_day7';
+  static const reviewRequestedMeeting = 'review_requested_meeting';
 }

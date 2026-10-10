@@ -8,6 +8,7 @@ import 'app.dart';
 import 'services/notification_service.dart';
 import 'models/daily_record.dart';
 import 'models/important_person.dart';
+import 'models/meeting_log.dart';
 import 'providers/isar_provider.dart';
 import 'providers/user_settings_provider.dart';
 
@@ -19,7 +20,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [DailyRecordSchema, ImportantPersonSchema],
+    [DailyRecordSchema, ImportantPersonSchema, MeetingLogSchema],
     directory: dir.path,
   );
 

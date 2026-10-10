@@ -43,11 +43,11 @@ void main() {
       expect(remaining, greaterThan(0));
     });
 
-    test('remainingDays: 非常に高齢なら0', () {
+    test('remainingDays: 平均寿命を超えた高齢でも0にならない(平均余命で数える)', () {
       final birthDate = DateTime(1900, 1, 1);
       final remaining =
           LifeCalculator.remainingDays(birthDate, Gender.male);
-      expect(remaining, 0);
+      expect(remaining, greaterThan(0));
     });
 
     test('remainingYears: 正の整数を返す', () {

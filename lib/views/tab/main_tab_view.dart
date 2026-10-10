@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../providers/user_settings_provider.dart';
+import '../../services/notification_service.dart';
+import '../family/family_page.dart';
 import '../shared/app_colors.dart';
 import '../today/today_page.dart';
 import '../record/record_calendar_page.dart';
 import '../life/life_tab_page.dart';
 import '../my_page/my_page.dart';
 
-/// 4タブのメイン画面（プロトタイプのTabBar再現）
-class MainTabView extends StatefulWidget {
+/// 5タブのメイン画面（最初は家族）
+class MainTabView extends ConsumerStatefulWidget {
   const MainTabView({super.key});
 
   @override
-  State<MainTabView> createState() => _MainTabViewState();
+  ConsumerState<MainTabView> createState() => _MainTabViewState();
 }
 
-class _MainTabViewState extends State<MainTabView> {
+class _MainTabViewState extends ConsumerState<MainTabView> {
+  @override
+  void initState() {
+    super.initState();
+    // 起動のたびに、これから1週間分の通知を入れ直す（日数と問いかけを毎日変えるため）
+    NotificationService.refresh(ref.read(userSettingsProvider));
+  }
+
   int _currentIndex = 0;
   final _recordKey = GlobalKey<RecordCalendarPageState>();
 
   static const _tabs = [
+    _TabItem(icon: '\u2661', label: '家族'),    // ♡
     _TabItem(icon: '\u25C9', label: '今日'),    // ◉
     _TabItem(icon: '\u25A6', label: '記録'),    // ▦
     _TabItem(icon: '\u221E', label: '人生'),    // ∞
@@ -26,6 +38,7 @@ class _MainTabViewState extends State<MainTabView> {
   ];
 
   late final _pages = [
+    const FamilyPage(),
     const TodayPage(),
     RecordCalendarPage(key: _recordKey),
     const LifeTabPage(),
@@ -89,7 +102,7 @@ class _MainTabViewState extends State<MainTabView> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   setState(() => _currentIndex = i);
-                  if (i == 1) _recordKey.currentState?.reload();
+                  if (i == 2) _recordKey.currentState?.reload();
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 14),

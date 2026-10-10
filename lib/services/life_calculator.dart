@@ -1,4 +1,5 @@
 import '../models/important_person.dart';
+import 'life_table.dart';
 
 /// 寿命・人生日数の計算ロジック
 class LifeCalculator {
@@ -45,11 +46,10 @@ class LifeCalculator {
     return age;
   }
 
-  /// 平均寿命までの残り日数
+  /// これからの日数の目安（年齢ごとの平均余命から。家族タブと同じ基準）
   static int remainingDays(DateTime birthDate, Gender gender) {
-    final al = averageLifespan(gender);
-    final daysSinceBirth = DateTime.now().difference(birthDate).inDays;
-    return (al * 365.25 - daysSinceBirth).floor().clamp(0, 999999);
+    final years = LifeTable.expectancyFromBirth(birthDate, gender);
+    return (years * 365.25).floor().clamp(0, 999999);
   }
 
   /// 健康寿命までの残り日数
@@ -59,10 +59,8 @@ class LifeCalculator {
     return (hl * 365.25 - daysSinceBirth).floor().clamp(0, 999999);
   }
 
-  /// 残り年数
+  /// これからの年数の目安（年齢ごとの平均余命から）
   static int remainingYears(DateTime birthDate, Gender gender) {
-    final al = averageLifespan(gender);
-    final age = currentAge(birthDate);
-    return (al - age).floor().clamp(0, 999);
+    return LifeTable.expectancyFromBirth(birthDate, gender).floor().clamp(0, 999);
   }
 }

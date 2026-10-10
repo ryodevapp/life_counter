@@ -37,35 +37,12 @@ class YourTimeSection extends ConsumerWidget {
     final healthyRemaining =
         LifeCalculator.healthyRemainingDays(birthDate, gender);
     final age = LifeCalculator.currentAge(birthDate);
-    final al = LifeCalculator.averageLifespan(gender);
     final hl = LifeCalculator.healthyLifespan(gender);
     final remainingYears = LifeCalculator.remainingYears(birthDate, gender);
-    final pastAL = age >= al;
     final pastHL = age >= hl;
 
     // プログレスバーの割合
     final lifePct = lifeDays / (lifeDays + remainingDays);
-
-    if (pastAL) {
-      return AppCard(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          children: [
-            const Text('\u{1F31F}', style: TextStyle(fontSize: 32)),
-            const SizedBox(height: 16),
-            Text(
-              '平均を超えて生きている、\nすばらしい人生です',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                height: 1.7,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
 
     return Column(
       children: [
@@ -81,7 +58,7 @@ class YourTimeSection extends ConsumerWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '日（平均寿命まで）',
+                '日　これからの時間の目安',
                 style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.textMuted,
                 ),
@@ -92,7 +69,7 @@ class YourTimeSection extends ConsumerWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: 'そのうち、健康でいられるのは約 ',
+                        text: 'そのうち、元気に動ける時間は約 ',
                         style: AppTextStyles.bodySmall.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -135,7 +112,7 @@ class YourTimeSection extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('誕生', style: _barLabel),
-                  Text('平均寿命', style: _barLabel),
+                  Text('平均余命', style: _barLabel),
                 ],
               ),
             ],
@@ -148,13 +125,15 @@ class YourTimeSection extends ConsumerWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
+          // 小さい画面(iPhone SE)で「年50冊」の行がはみ出さないよう、少し縦長にする
+          childAspectRatio: 0.9,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            _remainingCard('\u2600\uFE0F', '残りの週末', remainingYears * 52, '回'),
-            _remainingCard('\u{1F33B}', '残りの夏', remainingYears, '回'),
-            _remainingCard('\u{1F338}', '残りの桜', remainingYears, '回'),
-            _remainingCard('\u{1F38D}', '残りの正月', remainingYears, '回'),
+            _remainingCard('\u2600\uFE0F', 'これからの週末', remainingYears * 52, '回'),
+            _remainingCard('\u{1F33B}', 'これからの夏', remainingYears, '回'),
+            _remainingCard('\u{1F338}', 'これからの桜', remainingYears, '回'),
+            _remainingCard('\u{1F38D}', 'これからの正月', remainingYears, '回'),
             _remainingCard('\u{1F4DA}', '読める本', remainingYears * 50, '冊',
                 sub: '年50冊'),
             _remainingCard('\u{1F3AC}', '観れる映画', remainingYears * 20, '本',

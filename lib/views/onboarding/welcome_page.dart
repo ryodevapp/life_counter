@@ -75,7 +75,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように',
+                  '今日が人生の何日目か\n知っていますか\n\n家族と過ごせる時間を知って\n一日一日を大切に過ごせるように',
                   textAlign: TextAlign.center,
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textSecondary,

@@ -77,7 +77,7 @@ class MyPage extends ConsumerWidget {
             const SizedBox(height: 28),
 
             Text(
-              'LifeCounter v1.0.2',
+              'LifeCounter v1.1.0',
               style: AppTextStyles.caption
                   .copyWith(fontSize: 11, color: AppColors.textDisabled),
             ),
@@ -93,7 +93,7 @@ class MyPage extends ConsumerWidget {
     final uri = Uri(
       scheme: 'mailto',
       path: 'ryo.nakano.biz+lifecounter@gmail.com',
-      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter v1.0.2',
+      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter v1.1.0',
     );
     launchUrl(uri);
   }

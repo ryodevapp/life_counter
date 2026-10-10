@@ -9,7 +9,6 @@ import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
-import '../shared/app_input.dart';
 import '../shared/count_up_text.dart';
 import 'welcome_page.dart';
 import 'birth_input_page.dart';
@@ -71,29 +70,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       record.todayGoal = _goalController.text;
       await repo.save(record);
     }
-    // 通知許可リクエスト
+    // 通知許可リクエスト（通知の予約は completeOnboarding の中で行う）
     await NotificationService.requestPermission();
-    // 通知スケジュール
-    if (_birthDate != null) {
-      final q = _questions[DateTime.now().day % _questions.length];
-      await NotificationService.scheduleMorningNotification(
-        hour: 7,
-        minute: 0,
-        birthDate: _birthDate!,
-        gender: _gender,
-        questionText: q['t']!,
-      );
-    }
     await ref.read(userSettingsProvider.notifier).completeOnboarding();
   }
-
-  static const _questions = [
-    {'id': 'p1', 'c': 'P', 't': '今日、あなたを笑顔にしてくれそうなことは？'},
-    {'id': 'e1', 'c': 'E', 't': '今日、時間を忘れるほど没頭したいことは？'},
-    {'id': 'r1', 'c': 'R', 't': '今日、誰かに「ありがとう」を伝えるとしたら？'},
-    {'id': 'm1', 'c': 'M', 't': '今日という日を、どんな意味のある1日にしたい？'},
-    {'id': 'a1', 'c': 'A', 't': '今日、小さくても達成したいことは何？'},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -212,38 +192,26 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ],
         );
       case 1:
-        // Step 2: 残りの人生
+        // Step 2: 家族と過ごせる時間
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'あなたの残りの人生は',
-              style: AppTextStyles.bodyLarge
-                  .copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: 20),
-            CountUpText(
-              target: remainingDays,
+              '親と、子どもと、\n大切な人と。',
+              textAlign: TextAlign.center,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 72,
+                fontSize: 26,
                 fontWeight: FontWeight.w300,
-                color: AppColors.accent,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '日です',
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                color: AppColors.textSecondary,
+                height: 1.8,
               ),
             ),
             const SizedBox(height: 32),
             Text(
-              'この日々を\nどう過ごしますか？',
+              '一緒に過ごせる時間は、\n思っているより短いのかもしれません',
+              textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textMuted,
+                height: 2.0,
               ),
             ),
           ],
@@ -306,7 +274,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     ),
                   ),
                   TextSpan(
-                    text: '一緒に積み重ねて',
+                    text: '一緒に重ねて',
                     style: GoogleFonts.cormorantGaramond(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -327,25 +295,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            Container(
-              width: 40,
-              height: 1,
-              color: AppColors.accent.withValues(alpha: 0.3),
-            ),
-            const SizedBox(height: 40),
             Text(
-              '今日を素晴らしい一日にするために\n何をしますか？',
+              'はじめに、家族を登録します',
               style: AppTextStyles.bodyLarge
                   .copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            AppInput(
-              controller: _goalController,
-              placeholder: '小さなことでOK',
-              maxLength: 200,
-              textAlign: TextAlign.center,
-              showBorder: true,
             ),
           ],
         );

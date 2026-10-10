@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/important_person.dart';
-import '../../utils/date_validator.dart';
+import '../../services/life_calculator.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_picker.dart';
@@ -30,12 +30,13 @@ class ImportantPersonFormPage extends StatefulWidget {
 
 class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   final _nickController = TextEditingController();
-  int _year = 1965;
-  int _month = 4;
-  int _day = 1;
+  int _age = 65;
+  bool _ageTouched = false;
   Gender _gender = Gender.unspecified;
-  int _freq = 4;
-  DateTime? _lastMet;
+  int _freq = 2;
+  Relation _relation = Relation.parent;
+  int _untilAge = 18;
+  int _afterFreq = 4;
 
   @override
   void initState() {
@@ -43,12 +44,13 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
     if (widget.person != null) {
       final p = widget.person!;
       _nickController.text = p.nickname;
-      _year = p.birthDate.year;
-      _month = p.birthDate.month;
-      _day = p.birthDate.day;
+      _age = LifeCalculator.currentAge(p.birthDate);
+      _ageTouched = true;
       _gender = p.gender;
       _freq = snapToNearestFreq(p.meetingFrequency);
-      _lastMet = p.lastMetDate;
+      _relation = p.relation;
+      _untilAge = p.untilAge;
+      _afterFreq = snapToNearestFreq(p.afterFrequency);
     }
   }
 
@@ -61,22 +63,29 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   void _submit() {
     final nick = _nickController.text.trim();
     if (nick.isEmpty) {
-      AppToast.error(context, 'ニックネームを入力してください');
+      AppToast.error(context, '呼び名を入力してください');
       return;
     }
-    final error = DateValidator.validateBirthDate(_year, _month, _day);
-    if (error != null) {
-      AppToast.error(context, error);
-      return;
-    }
-    final birthDate = DateTime(_year, _month, _day);
+    // 生年月日を覚えていない人も多いので、年齢から誕生日を置く
+    // 編集で年齢を変えていなければ、今の生年月日をそのまま残す
+    final now = DateTime.now();
+    final keep = widget.person != null &&
+        LifeCalculator.currentAge(widget.person!.birthDate) == _age;
+    final birthDate = keep
+        ? widget.person!.birthDate
+        : DateTime(now.year - _age, now.month, now.day);
     final person = widget.person ?? ImportantPerson();
     person
       ..nickname = nick
       ..birthDate = birthDate
       ..gender = _gender
       ..meetingFrequency = _freq
-      ..lastMetDate = _lastMet;
+      ..relation = _relation;
+    if (_relation == Relation.child) {
+      person
+        ..liveTogetherUntilAge = _untilAge
+        ..afterLeavingFrequency = _afterFreq;
+    }
     Navigator.of(context).pop(person);
   }
 
@@ -102,7 +111,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isEdit ? '大切な人を編集' : '大切な人を追加',
+                    isEdit ? '家族を編集' : '家族を追加',
                     style: GoogleFonts.zenKakuGothicNew(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -110,129 +119,119 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // ニックネーム
-                  _label('ニックネーム', required: true),
-                  const SizedBox(height: 6),
-                  AppInput(
-                    controller: _nickController,
-                    placeholder: '例: お母さん',
-                    maxLength: 20,
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 性別
-                  _label('性別'),
+                  // 関係
+                  _label('関係', required: true),
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      for (final g in [
-                        (Gender.male, '男性'),
-                        (Gender.female, '女性'),
-                        (Gender.unspecified, '選択しない'),
+                      for (final r in [
+                        Relation.parent,
+                        Relation.child,
+                        Relation.partner,
+                        Relation.other,
                       ]) ...[
-                        if (g.$1 != Gender.male) const SizedBox(width: 8),
-                        Expanded(child: _genderBtn(g.$1, g.$2)),
+                        if (r != Relation.parent) const SizedBox(width: 6),
+                        Expanded(child: _relationBtn(r)),
                       ],
                     ],
                   ),
                   const SizedBox(height: 16),
 
-                  // 生年月日
-                  _label('生年月日', required: true),
+                  // 呼び名
+                  _label('呼び名', required: true),
                   const SizedBox(height: 6),
-                  GestureDetector(
-                    onTap: () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime(_year, _month, _day),
-                        firstDate: DateTime(1920),
-                        lastDate: DateTime.now(),
-                      );
-                      if (picked != null) {
-                        setState(() {
-                          _year = picked.year;
-                          _month = picked.month;
-                          _day = picked.day;
-                        });
-                      }
+                  AppInput(
+                    controller: _nickController,
+                    placeholder: switch (_relation) {
+                      Relation.parent => '例: お母さん',
+                      Relation.child => '例: ゆい',
+                      Relation.partner => '例: 妻',
+                      Relation.other => '例: おばあちゃん',
                     },
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
-                      decoration: BoxDecoration(
-                        color: AppColors.bgWarm,
-                        border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '$_year年$_month月$_day日',
-                              style: GoogleFonts.zenKakuGothicNew(
-                                fontSize: 15,
-                                color: AppColors.text,
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.calendar_today_rounded,
-                              color: AppColors.textMuted, size: 18),
-                        ],
-                      ),
-                    ),
+                    maxLength: 20,
                   ),
                   const SizedBox(height: 16),
 
-                  // 会う頻度
-                  _label('会う頻度', required: true),
+                  // 性別（子どもは計算に使わないので聞かない）
+                  if (_relation != Relation.child) ...[
+                    _label('性別'),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        for (final g in [
+                          (Gender.male, '男性'),
+                          (Gender.female, '女性'),
+                          (Gender.unspecified, '選択しない'),
+                        ]) ...[
+                          if (g.$1 != Gender.male) const SizedBox(width: 8),
+                          Expanded(child: _genderBtn(g.$1, g.$2)),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // 年齢
+                  _label('年齢', required: true),
                   const SizedBox(height: 6),
                   AppPicker<int>(
-                    value: _freq,
-                    displayText: freqToLabel(_freq),
-                    title: '会う頻度',
-                    options: meetingFrequencies
-                        .map((f) =>
-                            AppPickerOption(value: f.annual, label: f.label))
-                        .toList(),
-                    onChanged: (v) => setState(() => _freq = v),
+                    value: _age,
+                    displayText: '$_age歳',
+                    title: '年齢',
+                    options: [
+                      for (var a = 0; a <= 105; a++)
+                        AppPickerOption(value: a, label: '$a歳'),
+                    ],
+                    onChanged: (v) => setState(() {
+                      _age = v;
+                      _ageTouched = true;
+                    }),
                   ),
                   const SizedBox(height: 16),
 
-                  // 最後に会った日
-                  _label('最後に会った日（任意）'),
-                  const SizedBox(height: 6),
-                  GestureDetector(
-                    onTap: () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: _lastMet ?? DateTime.now(),
-                        firstDate: DateTime(1920),
-                        lastDate: DateTime.now(),
-                      );
-                      if (picked != null) setState(() => _lastMet = picked);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: AppColors.bgWarm,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        _lastMet != null
-                            ? '${_lastMet!.year}/${_lastMet!.month}/${_lastMet!.day}'
-                            : '選択してください',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 14,
-                          color: _lastMet != null
-                              ? AppColors.text
-                              : AppColors.textDisabled,
-                        ),
-                      ),
+                  if (_relation == Relation.child) ...[
+                    _label('何歳まで一緒に暮らす'),
+                    const SizedBox(height: 6),
+                    AppPicker<int>(
+                      value: _untilAge,
+                      displayText: '$_untilAge歳まで',
+                      title: '何歳まで一緒に暮らす',
+                      options: [
+                        for (var a = 15; a <= 30; a++)
+                          AppPickerOption(value: a, label: '$a歳まで'),
+                      ],
+                      onChanged: (v) => setState(() => _untilAge = v),
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 16),
+                    _label('家を出たあと、会う頻度'),
+                    const SizedBox(height: 6),
+                    AppPicker<int>(
+                      value: _afterFreq,
+                      displayText: freqToLabel(_afterFreq),
+                      title: '家を出たあと、会う頻度',
+                      options: meetingFrequencies
+                          .map((f) =>
+                              AppPickerOption(value: f.annual, label: f.label))
+                          .toList(),
+                      onChanged: (v) => setState(() => _afterFreq = v),
+                    ),
+                    const SizedBox(height: 16),
+                  ] else ...[
+                    // 会う頻度
+                    _label('会う頻度', required: true),
+                    const SizedBox(height: 6),
+                    AppPicker<int>(
+                      value: _freq,
+                      displayText: freqToLabel(_freq),
+                      title: '会う頻度',
+                      options: meetingFrequencies
+                          .map((f) =>
+                              AppPickerOption(value: f.annual, label: f.label))
+                          .toList(),
+                      onChanged: (v) => setState(() => _freq = v),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
 
                   Row(
                     children: [
@@ -280,6 +279,42 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
             ),
           ),
       ]),
+    );
+  }
+
+  Widget _relationBtn(Relation r) {
+    final sel = _relation == r;
+    return GestureDetector(
+      onTap: () => setState(() {
+        _relation = r;
+        if (widget.person == null && r == Relation.partner) _freq = 365;
+        if (!_ageTouched) {
+          _age = switch (r) {
+            Relation.parent => 65,
+            Relation.child => 6,
+            Relation.partner => 40,
+            Relation.other => 70,
+          };
+        }
+      }),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+        decoration: BoxDecoration(
+          color: sel ? AppColors.accentSurface2 : AppColors.bgWarm,
+          border: Border.all(
+              color: sel ? AppColors.borderAccent : AppColors.border),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Text(r.label,
+              maxLines: 1,
+              style: GoogleFonts.zenKakuGothicNew(
+                fontSize: 11,
+                fontWeight: sel ? FontWeight.w600 : FontWeight.w400,
+                color: sel ? AppColors.accent : AppColors.textSecondary,
+              )),
+        ),
+      ),
     );
   }
 

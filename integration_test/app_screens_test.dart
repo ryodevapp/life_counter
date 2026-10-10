@@ -1,0 +1,69 @@
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:life_counter/main.dart' as app;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'helpers.dart';
+
+/// オンボーディングを終えた状態から、家族の登録・記録・各タブ
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('app screens', (tester) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('birth_date', DateTime(1986, 5, 1).millisecondsSinceEpoch);
+    await prefs.setString('gender', 'male');
+    await prefs.setBool('onboarding_completed', true);
+    await prefs.setBool('notification_enabled', false);
+
+    app.main();
+    await wait(tester, 3000);
+    await shot(binding, tester, '10_family_empty');
+
+    // 親を追加(初期値: 65歳・年に1〜2回)
+    await tapText(tester, '家族を追加する');
+    await shot(binding, tester, '11_form_parent');
+    await tester.enterText(find.byType(EditableText).first, 'お母さん');
+    await wait(tester);
+    await tapText(tester, '追加');
+
+    // 子どもを追加(初期値: 6歳・18歳まで)
+    await tapText(tester, '+ 家族を追加');
+    await tapText(tester, '子ども');
+    await tester.enterText(find.byType(EditableText).first, 'ゆい');
+    await wait(tester);
+    await shot(binding, tester, '12_form_child');
+    await tapText(tester, '追加');
+    await shot(binding, tester, '13_family_list');
+
+    // 会えた日を残す
+    await tester.tap(find.text('会えた日を残す').first);
+    await wait(tester);
+    await tester.enterText(find.byType(EditableText).last, '母と温泉。よく笑ってた');
+    await wait(tester);
+    await shot(binding, tester, '14_log_sheet');
+    await tapText(tester, '残す');
+    await wait(tester, 2000);
+
+    // 詳細
+    await tester.tap(find.text('お母さん').first);
+    await shot(binding, tester, '15_detail');
+    await tester.pageBack();
+    await wait(tester);
+
+    // 今日の日記を書いてから、各タブ
+    await tester.tap(find.text('今日').last);
+    await wait(tester);
+    final fields = find.byType(EditableText);
+    await tester.enterText(fields.at(0), '家族が元気でいること');
+    await tester.enterText(fields.at(1), '子どもと公園へ行く');
+    await tester.enterText(fields.at(2), '夕焼けがきれいだった');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await wait(tester, 2500);
+    for (final tab in ['今日', '記録', '人生', 'マイページ']) {
+      await tester.tap(find.text(tab).last);
+      await shot(binding, tester, '2x_tab_$tab');
+    }
+  });
+}

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_settings.dart';
 import '../models/important_person.dart';
 import '../utils/prefs_keys.dart';
+import '../services/notification_service.dart';
 
 /// SharedPreferencesのプロバイダー
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -50,11 +51,13 @@ class UserSettingsNotifier extends Notifier<UserSettings> {
     await _prefs.setInt(PrefsKeys.birthDate, birthDate.millisecondsSinceEpoch);
     await _prefs.setString(PrefsKeys.gender, gender.name);
     state = state.copyWith(birthDate: birthDate, gender: gender);
+    await NotificationService.refresh(state);
   }
 
   Future<void> completeOnboarding() async {
     await _prefs.setBool(PrefsKeys.onboardingCompleted, true);
     state = state.copyWith(onboardingCompleted: true);
+    await NotificationService.refresh(state);
   }
 
   Future<void> updateNightMode(int hour, int minute) async {
@@ -76,5 +79,6 @@ class UserSettingsNotifier extends Notifier<UserSettings> {
       notificationHour: hour,
       notificationMinute: minute,
     );
+    await NotificationService.refresh(state);
   }
 }
