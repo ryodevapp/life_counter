@@ -90,7 +90,9 @@ class ProSheet extends ConsumerWidget {
                   onPressed: pro.busy ? null : notifier.restore,
                   child: Text('購入を復元する',
                       style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 13, color: AppColors.textMuted)),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textSecondary)),
                 ),
               ),
             ],

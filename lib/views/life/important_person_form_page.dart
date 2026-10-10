@@ -4,6 +4,8 @@ import '../../models/important_person.dart';
 import '../../services/life_calculator.dart';
 import '../../services/photo_store.dart';
 import '../family/family_avatar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../services/pro_service.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_picker.dart';
@@ -131,6 +133,20 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         Text(_photo == null ? '写真を選ぶ' : '写真を変える',
                             style: GoogleFonts.zenKakuGothicNew(
                                 fontSize: 12, color: AppColors.accent)),
+                        // ウィジェットに写真が出ない理由が分かるように(未購入のあいだだけ)
+                        if (_photo != null)
+                          Consumer(builder: (context, ref, _) {
+                            if (ref.watch(proProvider).isPro) {
+                              return const SizedBox.shrink();
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text('ホーム画面のウィジェットに写真を出すのは Pro の機能です',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.zenKakuGothicNew(
+                                      fontSize: 11, color: AppColors.textMuted)),
+                            );
+                          }),
                       ]),
                     ),
                   ),

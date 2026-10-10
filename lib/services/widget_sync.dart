@@ -57,6 +57,8 @@ class WidgetSync {
           'nextMeetEpoch', next == null ? null : next.nextMeetDate!.millisecondsSinceEpoch / 1000);
       await HomeWidget.saveWidgetData<String>('nextMeetName', next?.nickname);
       await HomeWidget.saveWidgetData<String>('nextMeetPhoto', next?.photoFile);
+      // 未購入でも「写真を付けている」ことは渡す(ウィジェットで「写真つきは Pro」と伝えるため)
+      await HomeWidget.saveWidgetData<bool>('nextMeetHasPhoto', next?.photoFile != null);
       await HomeWidget.saveWidgetData<String>('memories', jsonEncode(memories));
       for (final k in _kinds) {
         await HomeWidget.updateWidget(iOSName: k);

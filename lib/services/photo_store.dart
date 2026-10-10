@@ -29,6 +29,9 @@ class PhotoStore {
     }
   }
 
+  /// 保存先のフォルダ（確認用）
+  static String? get dirPath => _dir?.path;
+
   static File? file(String? name) {
     if (name == null || _dir == null) return null;
     final f = File('${_dir!.path}/$name');

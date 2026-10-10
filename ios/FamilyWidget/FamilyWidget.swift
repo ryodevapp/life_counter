@@ -73,11 +73,13 @@ struct NextEntry: TimelineEntry {
     let photo: UIImage?
     let yearCount: Int
     let hasFamily: Bool
+    /// 写真を付けているのに未購入(「写真つきは Pro」と出す)
+    let photoLocked: Bool
 }
 
 struct NextProvider: TimelineProvider {
     func placeholder(in context: Context) -> NextEntry {
-        NextEntry(date: Date(), name: "お母さん", days: 21, meetDate: nil, photo: nil, yearCount: 3, hasFamily: true)
+        NextEntry(date: Date(), name: "お母さん", days: 21, meetDate: nil, photo: nil, yearCount: 3, hasFamily: true, photoLocked: false)
     }
     func getSnapshot(in context: Context, completion: @escaping (NextEntry) -> Void) {
         completion(context.isPreview ? placeholder(in: context) : read())
@@ -90,6 +92,7 @@ struct NextProvider: TimelineProvider {
         let d = defaults
         let isPro = d?.bool(forKey: "isPro") ?? false
         var name: String? = nil, days: Int? = nil, meet: Date? = nil, photo: UIImage? = nil
+        var locked = false
         if let ts = d?.object(forKey: "nextMeetEpoch") as? Double {
             let cal = Calendar.current
             let m = cal.startOfDay(for: Date(timeIntervalSince1970: ts))
@@ -99,11 +102,13 @@ struct NextProvider: TimelineProvider {
                 days = left
                 meet = m
                 if isPro { photo = loadPhoto(d?.string(forKey: "nextMeetPhoto")) }
+                else { locked = d?.bool(forKey: "nextMeetHasPhoto") ?? false }
             }
         }
         return NextEntry(date: Date(), name: name, days: days, meetDate: meet, photo: photo,
                          yearCount: d?.integer(forKey: "yearCount") ?? 0,
-                         hasFamily: d?.bool(forKey: "hasFamily") ?? false)
+                         hasFamily: d?.bool(forKey: "hasFamily") ?? false,
+                         photoLocked: locked)
     }
 }
 
@@ -195,7 +200,9 @@ struct NextWidgetView: View {
                             Text("日").font(label(12)).foregroundColor(Tone.muted)
                         }
                     }
-                    if let m = entry.meetDate {
+                    if entry.photoLocked {
+                        Text("写真つきは Pro").font(label(10, .semibold)).foregroundColor(Tone.accent)
+                    } else if let m = entry.meetDate {
                         Text(meetFormatter.string(from: m)).font(label(11)).foregroundColor(Tone.text)
                     }
                 }
@@ -241,6 +248,9 @@ struct NextWidgetView: View {
                     }
                     if let m = entry.meetDate {
                         Text(meetFormatter.string(from: m)).font(label(12)).foregroundColor(Tone.text)
+                    }
+                    if entry.photoLocked {
+                        Text("写真つきは LifeCounter Pro").font(label(10, .semibold)).foregroundColor(Tone.accent)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

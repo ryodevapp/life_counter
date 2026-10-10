@@ -58,8 +58,8 @@ class AppButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           textStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
           ),
         ),
         child: child,
