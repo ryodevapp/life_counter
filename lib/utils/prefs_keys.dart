@@ -17,4 +17,5 @@ class PrefsKeys {
   static const legacyDiaryBannerDismissed = 'legacy_diary_banner_dismissed';
   static const legacyUser = 'legacy_user';
   static const proPurchased = 'pro_purchased';
+  static const widgetStyle = 'widget_style';
 }

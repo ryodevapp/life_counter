@@ -5,6 +5,9 @@ import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
 import '../../services/pro_service.dart';
 import '../../providers/important_person_provider.dart';
+import '../../providers/isar_provider.dart';
+import '../../services/widget_sync.dart';
+import '../../utils/prefs_keys.dart';
 import '../family/family_page.dart';
 import '../shared/app_colors.dart';
 import '../records/records_page.dart';
@@ -44,6 +47,21 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
 
   @override
   Widget build(BuildContext context) {
+    // 家族・記録・見た目が変わったら、ウィジェットを更新する
+    void syncWidget() {
+      final persons = ref.read(importantPersonsProvider).valueOrNull;
+      final logs = ref.read(meetingLogsProvider).valueOrNull;
+      if (persons == null || logs == null) return;
+      final prefs = ref.read(sharedPreferencesProvider);
+      final pro = ref.read(proProvider);
+      var style = prefs.getString(PrefsKeys.widgetStyle) ?? 'warm';
+      if (!pro.isPro && style != 'warm') style = 'warm';
+      WidgetSync.update(persons: persons, logs: logs, style: style);
+    }
+    ref.listen(importantPersonsProvider, (_, _) => syncWidget());
+    ref.listen(meetingLogsProvider, (_, _) => syncWidget());
+    ref.listen(proProvider.select((p) => p.isPro), (_, _) => syncWidget());
+
     // 家族や通知の設定が変わったら、節目の通知を入れ直す
     ref.listen(importantPersonsProvider, (_, next) {
       final persons = next.valueOrNull;

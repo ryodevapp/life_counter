@@ -58,6 +58,7 @@ class ProSheet extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             _point('家族を4人以上登録できます'),
+            _point('ウィジェットの見た目を選べます(夜・さくら・海)'),
             _point('1回の購入で、家族(ファミリー共有)も使えます'),
             _point('買い切りです。毎月の支払いはありません'),
             const SizedBox(height: 24),
