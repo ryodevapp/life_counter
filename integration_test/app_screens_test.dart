@@ -38,8 +38,12 @@ void main() {
     await tapText(tester, '追加');
     await shot(binding, tester, '13_family_list');
 
-    // 会えた日を残す
-    await tester.tap(find.text('会えた日を残す').first);
+    // 電話した(ワンタップ)→ 取り消しの案内を撮る
+    await tapText(tester, '電話した');
+    await shot(binding, tester, '13b_quick_call');
+    // 会えた日を残す(シート)
+    await tester.ensureVisible(find.text('会えた').first);
+    await tester.tap(find.text('会えた').first);
     await wait(tester);
     await tester.enterText(find.byType(EditableText).last, '母と温泉。よく笑ってた');
     await wait(tester);
@@ -48,6 +52,8 @@ void main() {
     await wait(tester, 2000);
 
     // 詳細
+    await tester.ensureVisible(find.text('お母さん').first);
+    await wait(tester, 400);
     await tester.tap(find.text('お母さん').first);
     await shot(binding, tester, '15_detail');
     await tester.pageBack();

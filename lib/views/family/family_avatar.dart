@@ -31,11 +31,14 @@ class FamilyAvatar extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: file == null
-          ? Text(name.isEmpty ? '' : name.characters.first,
+          ? Text(
+              name.isEmpty ? '' : name.characters.first,
               style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: size * 0.4,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.accent))
+                fontSize: size * 0.4,
+                fontWeight: FontWeight.w500,
+                color: AppColors.accent,
+              ),
+            )
           : null,
     );
   }
@@ -54,8 +57,12 @@ class LogPhoto extends StatelessWidget {
     if (file == null) return const SizedBox.shrink();
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: Image.file(file,
-          height: height, width: double.infinity, fit: BoxFit.cover),
+      child: Image.file(
+        file,
+        height: height,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

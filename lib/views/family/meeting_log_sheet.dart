@@ -13,16 +13,32 @@ import '../shared/app_input.dart';
 import '../shared/app_toast.dart';
 import '../../services/photo_store.dart';
 import 'family_avatar.dart';
+import 'quick_contact_row.dart';
 
 /// 会えた日を残すシート
 class MeetingLogSheet extends ConsumerStatefulWidget {
-  const MeetingLogSheet({super.key, required this.person, this.date});
+  const MeetingLogSheet({
+    super.key,
+    required this.person,
+    this.date,
+    this.kind,
+    this.memoryMode = false,
+  });
 
   final ImportantPerson person;
   final DateTime? date;
+  final ContactKind? kind;
 
-  static Future<void> show(BuildContext context, ImportantPerson person,
-      {DateTime? date}) {
+  /// 一緒に暮らす子どもの「思い出」(つながり方は選ばせない)
+  final bool memoryMode;
+
+  static Future<void> show(
+    BuildContext context,
+    ImportantPerson person, {
+    DateTime? date,
+    ContactKind? kind,
+    bool memoryMode = false,
+  }) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -30,7 +46,12 @@ class MeetingLogSheet extends ConsumerStatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => MeetingLogSheet(person: person, date: date),
+      builder: (_) => MeetingLogSheet(
+        person: person,
+        date: date,
+        kind: kind,
+        memoryMode: memoryMode,
+      ),
     );
   }
 
@@ -40,11 +61,13 @@ class MeetingLogSheet extends ConsumerStatefulWidget {
 
 class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
   final _note = TextEditingController();
-  late DateTime _date = (widget.date != null && widget.date!.isBefore(DateTime.now()))
+  late DateTime _date =
+      (widget.date != null && widget.date!.isBefore(DateTime.now()))
       ? widget.date!
       : DateTime.now();
   bool _saving = false;
   String? _photo;
+  late ContactKind _kind = widget.kind ?? ContactKind.met;
 
   @override
   void dispose() {
@@ -61,11 +84,13 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
         ..personId = widget.person.id
         ..date = day
         ..note = _note.text.trim().isEmpty ? null : _note.text.trim()
-        ..photoFile = _photo;
+        ..photoFile = _photo
+        ..kind = _kind;
       await ref.read(meetingLogRepositoryProvider).add(log);
 
       final p = widget.person;
-      if (p.lastMetDate == null || p.lastMetDate!.isBefore(day)) {
+      if (_kind == ContactKind.met &&
+          (p.lastMetDate == null || p.lastMetDate!.isBefore(day))) {
         p.lastMetDate = day;
         await ref.read(importantPersonRepositoryProvider).update(p);
       }
@@ -103,80 +128,157 @@ class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
       padding: EdgeInsets.fromLTRB(24, 24, 24, 24 + bottom),
       child: SafeArea(
         top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${widget.person.nickname}と会えた日',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.memoryMode
+                    ? '${widget.person.nickname}との思い出'
+                    : '${widget.person.nickname}とつながった日',
                 style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 17, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 4),
-            Text('電話やビデオ通話の日も、残して大丈夫です',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textMuted)),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () async {
-                final picked = await showDatePicker(
-                  context: context,
-                  initialDate: _date,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now(),
-                );
-                if (picked != null) setState(() => _date = picked);
-              },
-              child: Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  color: AppColors.bgWarm,
-                  border: Border.all(color: AppColors.border),
-                  borderRadius: BorderRadius.circular(12),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
                 ),
-                child: Row(children: [
-                  Expanded(
-                    child: Text('${_date.year}年${_date.month}月${_date.day}日',
-                        style: GoogleFonts.zenKakuGothicNew(fontSize: 15)),
+              ),
+              const SizedBox(height: 16),
+              // つながり方(1行に4つ。キーボードが出てもシートが収まるように)
+              if (!widget.memoryMode)
+                Row(
+                  children: [
+                    for (final k in ContactKind.values) ...[
+                      if (k != ContactKind.met) const SizedBox(width: 6),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _kind = k),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              color: _kind == k
+                                  ? AppColors.accentSurface2
+                                  : AppColors.bgWarm,
+                              border: Border.all(
+                                color: _kind == k
+                                    ? AppColors.borderAccent
+                                    : AppColors.border,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  contactIcon(k),
+                                  size: 18,
+                                  color: _kind == k
+                                      ? AppColors.accent
+                                      : AppColors.textMuted,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  k.label,
+                                  maxLines: 1,
+                                  style: GoogleFonts.zenKakuGothicNew(
+                                    fontSize: 11,
+                                    fontWeight: _kind == k
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    color: _kind == k
+                                        ? AppColors.accent
+                                        : AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              const SizedBox(height: 16),
+              GestureDetector(
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _date,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now(),
+                  );
+                  if (picked != null) setState(() => _date = picked);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
                   ),
-                  Icon(Icons.calendar_today_rounded,
-                      color: AppColors.textMuted, size: 18),
-                ]),
+                  decoration: BoxDecoration(
+                    color: AppColors.bgWarm,
+                    border: Border.all(color: AppColors.border),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${_date.year}年${_date.month}月${_date.day}日',
+                          style: GoogleFonts.zenKakuGothicNew(fontSize: 15),
+                        ),
+                      ),
+                      Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.textMuted,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            AppInput(
-              controller: _note,
-              placeholder: 'ひとこと(例:母と温泉。よく笑ってた)',
-              maxLength: 100,
-              showBorder: true,
-            ),
-            const SizedBox(height: 4),
-            if (_photo != null) ...[
-              LogPhoto(photoFile: _photo, height: 140),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
+              AppInput(
+                controller: _note,
+                placeholder: 'ひとこと(例:母と温泉。よく笑ってた)',
+                maxLength: 100,
+                showBorder: true,
+              ),
+              const SizedBox(height: 4),
+              if (_photo != null) ...[
+                LogPhoto(photoFile: _photo, height: 140),
+                const SizedBox(height: 8),
+              ],
+              GestureDetector(
+                onTap: () async {
+                  final name = await PhotoStore.pick();
+                  if (name != null) setState(() => _photo = name);
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.photo_outlined,
+                        size: 18,
+                        color: AppColors.accent,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _photo == null ? '写真を添える' : '写真を変える',
+                        style: GoogleFonts.zenKakuGothicNew(
+                          fontSize: 13,
+                          color: AppColors.accent,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              AppButton.primary(onPressed: _saving ? null : _save, label: '残す'),
             ],
-            GestureDetector(
-              onTap: () async {
-                final name = await PhotoStore.pick();
-                if (name != null) setState(() => _photo = name);
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(children: [
-                  Icon(Icons.photo_outlined, size: 18, color: AppColors.accent),
-                  const SizedBox(width: 6),
-                  Text(_photo == null ? '写真を添える' : '写真を変える',
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 13, color: AppColors.accent)),
-                ]),
-              ),
-            ),
-            const SizedBox(height: 12),
-            AppButton.primary(
-                onPressed: _saving ? null : _save, label: '残す'),
-          ],
+          ),
         ),
       ),
     );

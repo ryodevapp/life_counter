@@ -27,8 +27,11 @@ class NextMeetRow extends ConsumerWidget {
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
-      initialDate: person.nextMeetDate != null &&
-              !person.nextMeetDate!.isBefore(DateTime(now.year, now.month, now.day))
+      initialDate:
+          person.nextMeetDate != null &&
+              !person.nextMeetDate!.isBefore(
+                DateTime(now.year, now.month, now.day),
+              )
           ? person.nextMeetDate!
           : now,
       firstDate: DateTime(now.year, now.month, now.day),
@@ -50,55 +53,88 @@ class NextMeetRow extends ConsumerWidget {
     final days = daysUntil(person);
 
     if (days == null) {
-      return _link('次に会う日を入れる', () => _pick(context, ref),
-          color: AppColors.textMuted);
+      return _link(
+        '次に会う日を入れる',
+        () => _pick(context, ref),
+        color: AppColors.textMuted,
+      );
     }
     if (days < 0) {
-      return Row(children: [
-        Expanded(
-          child: _text('${person.nickname}と、会えましたか?', AppColors.textSecondary),
-        ),
-        _link('記録する', () async {
-          await MeetingLogSheet.show(context, person, date: person.nextMeetDate);
-          await _clear(ref);
-        }),
-        _link('予定を消す', () => _clear(ref), color: AppColors.textMuted),
-      ]);
+      return Row(
+        children: [
+          Expanded(
+            child: _text(
+              '${person.nickname}と、会えましたか?',
+              AppColors.textSecondary,
+            ),
+          ),
+          _link('記録する', () async {
+            await MeetingLogSheet.show(
+              context,
+              person,
+              date: person.nextMeetDate,
+            );
+            await _clear(ref);
+          }),
+          _link('予定を消す', () => _clear(ref), color: AppColors.textMuted),
+        ],
+      );
     }
     return GestureDetector(
       onTap: () => _pick(context, ref),
       behavior: HitTestBehavior.opaque,
-      child: Row(crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic, children: [
-        if (days == 0)
-          _text('今日、会えます', AppColors.accent, bold: true)
-        else ...[
-          _text('会えるまで、あと ', AppColors.textSecondary),
-          Text('$days',
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          if (days == 0)
+            _text('今日、会えます', AppColors.accent, bold: true)
+          else ...[
+            _text('会えるまで、あと ', AppColors.textSecondary),
+            Text(
+              '$days',
               style: GoogleFonts.cormorantGaramond(
-                  fontSize: 26, color: AppColors.accent, fontWeight: FontWeight.w500)),
-          _text(' 日', AppColors.textSecondary),
+                fontSize: 26,
+                color: AppColors.accent,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            _text(' 日', AppColors.textSecondary),
+          ],
+          const Spacer(),
+          Icon(
+            Icons.edit_calendar_outlined,
+            size: 16,
+            color: AppColors.textMuted,
+          ),
         ],
-        const Spacer(),
-        Icon(Icons.edit_calendar_outlined, size: 16, color: AppColors.textMuted),
-      ]),
+      ),
     );
   }
 
-  static Widget _text(String t, Color c, {bool bold = false}) => Text(t,
-      style: GoogleFonts.zenKakuGothicNew(
-          fontSize: 13, color: c, fontWeight: bold ? FontWeight.w600 : FontWeight.w400));
+  static Widget _text(String t, Color c, {bool bold = false}) => Text(
+    t,
+    style: GoogleFonts.zenKakuGothicNew(
+      fontSize: 13,
+      color: c,
+      fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
+    ),
+  );
 
-  static Widget _link(String t, VoidCallback onTap, {Color? color}) => GestureDetector(
+  static Widget _link(String t, VoidCallback onTap, {Color? color}) =>
+      GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-          child: Text(t,
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: color ?? AppColors.accent)),
+          child: Text(
+            t,
+            style: GoogleFonts.zenKakuGothicNew(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: color ?? AppColors.accent,
+            ),
+          ),
         ),
       );
 }

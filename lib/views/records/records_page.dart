@@ -105,7 +105,7 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
             Center(child: Text('RECORDS', style: AppTextStyles.labelUppercase)),
             const SizedBox(height: 14),
             Center(
-              child: Text('家族と過ごした日',
+              child: Text('家族とつながった日',
                   style: GoogleFonts.zenKakuGothicNew(
                       fontSize: 20, fontWeight: FontWeight.w500)),
             ),
@@ -118,7 +118,7 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.borderAccent),
                 ),
-                child: Text('+ 会えた日を残す',
+                child: Text('+ つながった日を残す',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.zenKakuGothicNew(
                         fontSize: 14,
@@ -194,7 +194,7 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
           ),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(name ?? '家族',
+              Text('${name ?? '家族'} ・ ${l.kind.label}',
                   style: GoogleFonts.zenKakuGothicNew(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -204,7 +204,8 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
                 LogPhoto(photoFile: l.photoFile, height: 160),
                 const SizedBox(height: 8),
               ],
-              Text(l.note ?? '会えた',
+              if (l.note != null)
+                Text(l.note!,
                   style: GoogleFonts.zenKakuGothicNew(fontSize: 14, height: 1.6)),
             ]),
           ),

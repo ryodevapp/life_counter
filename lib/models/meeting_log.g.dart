@@ -27,18 +27,24 @@ const MeetingLogSchema = CollectionSchema(
       name: r'date',
       type: IsarType.dateTime,
     ),
-    r'note': PropertySchema(
+    r'kind': PropertySchema(
       id: 2,
+      name: r'kind',
+      type: IsarType.string,
+      enumMap: _MeetingLogkindEnumValueMap,
+    ),
+    r'note': PropertySchema(
+      id: 3,
       name: r'note',
       type: IsarType.string,
     ),
     r'personId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'personId',
       type: IsarType.long,
     ),
     r'photoFile': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'photoFile',
       type: IsarType.string,
     )
@@ -90,6 +96,7 @@ int _meetingLogEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.kind.name.length * 3;
   {
     final value = object.note;
     if (value != null) {
@@ -113,9 +120,10 @@ void _meetingLogSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeDateTime(offsets[1], object.date);
-  writer.writeString(offsets[2], object.note);
-  writer.writeLong(offsets[3], object.personId);
-  writer.writeString(offsets[4], object.photoFile);
+  writer.writeString(offsets[2], object.kind.name);
+  writer.writeString(offsets[3], object.note);
+  writer.writeLong(offsets[4], object.personId);
+  writer.writeString(offsets[5], object.photoFile);
 }
 
 MeetingLog _meetingLogDeserialize(
@@ -128,9 +136,12 @@ MeetingLog _meetingLogDeserialize(
   object.createdAt = reader.readDateTime(offsets[0]);
   object.date = reader.readDateTime(offsets[1]);
   object.id = id;
-  object.note = reader.readStringOrNull(offsets[2]);
-  object.personId = reader.readLong(offsets[3]);
-  object.photoFile = reader.readStringOrNull(offsets[4]);
+  object.kind =
+      _MeetingLogkindValueEnumMap[reader.readStringOrNull(offsets[2])] ??
+          ContactKind.met;
+  object.note = reader.readStringOrNull(offsets[3]);
+  object.personId = reader.readLong(offsets[4]);
+  object.photoFile = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -146,15 +157,31 @@ P _meetingLogDeserializeProp<P>(
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (_MeetingLogkindValueEnumMap[reader.readStringOrNull(offset)] ??
+          ContactKind.met) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readLong(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _MeetingLogkindEnumValueMap = {
+  r'met': r'met',
+  r'call': r'call',
+  r'video': r'video',
+  r'message': r'message',
+};
+const _MeetingLogkindValueEnumMap = {
+  r'met': ContactKind.met,
+  r'call': ContactKind.call,
+  r'video': ContactKind.video,
+  r'message': ContactKind.message,
+};
 
 Id _meetingLogGetId(MeetingLog object) {
   return object.id;
@@ -603,6 +630,136 @@ extension MeetingLogQueryFilter
     });
   }
 
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindEqualTo(
+    ContactKind value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindGreaterThan(
+    ContactKind value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindLessThan(
+    ContactKind value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindBetween(
+    ContactKind lower,
+    ContactKind upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'kind',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'kind',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'kind',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'kind',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> kindIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'kind',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<MeetingLog, MeetingLog, QAfterFilterCondition> noteIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -988,6 +1145,18 @@ extension MeetingLogQuerySortBy
     });
   }
 
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByKind() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByKindDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.desc);
+    });
+  }
+
   QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> sortByNote() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'note', Sort.asc);
@@ -1063,6 +1232,18 @@ extension MeetingLogQuerySortThenBy
     });
   }
 
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> thenByKind() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> thenByKindDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kind', Sort.desc);
+    });
+  }
+
   QueryBuilder<MeetingLog, MeetingLog, QAfterSortBy> thenByNote() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'note', Sort.asc);
@@ -1114,6 +1295,13 @@ extension MeetingLogQueryWhereDistinct
     });
   }
 
+  QueryBuilder<MeetingLog, MeetingLog, QDistinct> distinctByKind(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'kind', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<MeetingLog, MeetingLog, QDistinct> distinctByNote(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1152,6 +1340,12 @@ extension MeetingLogQueryProperty
   QueryBuilder<MeetingLog, DateTime, QQueryOperations> dateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'date');
+    });
+  }
+
+  QueryBuilder<MeetingLog, ContactKind, QQueryOperations> kindProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'kind');
     });
   }
 

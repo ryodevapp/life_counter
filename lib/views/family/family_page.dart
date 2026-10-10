@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../models/important_person.dart';
-import '../../models/meeting_log.dart';
 import '../../providers/important_person_provider.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/user_settings_provider.dart';
@@ -17,9 +16,11 @@ import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
 import 'family_detail_page.dart';
 import 'family_time_view.dart';
-import 'meeting_log_sheet.dart';
 import 'next_meet_row.dart';
 import 'family_avatar.dart';
+import 'quick_contact_row.dart';
+import 'meeting_log_sheet.dart';
+import '../../services/contact_stats.dart';
 import '../../services/pro_service.dart';
 import '../pro/pro_sheet.dart';
 
@@ -54,15 +55,22 @@ class FamilyPage extends ConsumerWidget {
           children: [
             Text('FAMILY', style: AppTextStyles.labelUppercase),
             const SizedBox(height: 14),
-            Text('家族と過ごせる時間',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 20, fontWeight: FontWeight.w500)),
+            Text(
+              '家族と過ごせる時間',
+              style: GoogleFonts.zenKakuGothicNew(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             if (myBirth != null) ...[
               const SizedBox(height: 8),
               Text(
-                  '今日は、人生 ${NumberFormat('#,###', 'ja_JP').format(LifeCalculator.lifeDays(myBirth))}日目',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13, color: AppColors.textMuted)),
+                '今日は、人生 ${NumberFormat('#,###', 'ja_JP').format(LifeCalculator.lifeDays(myBirth))}日目',
+                style: GoogleFonts.zenKakuGothicNew(
+                  fontSize: 13,
+                  color: AppColors.textMuted,
+                ),
+              ),
             ],
             const SizedBox(height: 28),
             if (myBirth == null)
@@ -73,41 +81,43 @@ class FamilyPage extends ConsumerWidget {
                   padding: EdgeInsets.all(24),
                   child: CircularProgressIndicator(),
                 ),
-                error: (e, _) => Text('読み込めませんでした',
-                    style: AppTextStyles.bodySmall),
+                error: (e, _) =>
+                    Text('読み込めませんでした', style: AppTextStyles.bodySmall),
                 data: (list) => list.isEmpty
                     ? _empty(context, ref)
-                    : Column(children: [
-                        for (final p in list) ...[
-                          _FamilyCard(
-                            person: p,
-                            time: FamilyTime.of(p,
+                    : Column(
+                        children: [
+                          for (final p in list) ...[
+                            _FamilyCard(
+                              person: p,
+                              time: FamilyTime.of(
+                                p,
                                 myBirthDate: myBirth,
-                                myGender: settings.gender),
-                            metThisYear: _metThisYear(logs, p.id),
-                          ),
-                          const SizedBox(height: 14),
-                        ],
-                        _addButton(context, ref),
-                        const SizedBox(height: 20),
-                        Text('${LifeTable.source}の平均余命をもとにした目安です',
+                                myGender: settings.gender,
+                              ),
+                              metThisYear: ContactStats.metThisYear(logs, p.id),
+                              connectedThisMonth:
+                                  ContactStats.connectedThisMonth(logs, p.id),
+                            ),
+                            const SizedBox(height: 14),
+                          ],
+                          _addButton(context, ref),
+                          const SizedBox(height: 20),
+                          Text(
+                            '${LifeTable.source}の平均余命をもとにした目安です',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.zenKakuGothicNew(
-                                fontSize: 11,
-                                color: AppColors.textDisabled)),
-                      ]),
+                              fontSize: 11,
+                              color: AppColors.textDisabled,
+                            ),
+                          ),
+                        ],
+                      ),
               ),
           ],
         ),
       ),
     );
-  }
-
-  static int _metThisYear(List<MeetingLog> logs, int personId) {
-    final year = DateTime.now().year;
-    return logs
-        .where((l) => l.personId == personId && l.date.year == year)
-        .length;
   }
 
   Widget _empty(BuildContext context, WidgetRef ref) {
@@ -118,11 +128,16 @@ class FamilyPage extends ConsumerWidget {
             '親や子ども、パートナー。\n家族を登録すると、\nこれから一緒に過ごせる時間がわかります',
             textAlign: TextAlign.center,
             style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 14, height: 1.9, color: AppColors.textSecondary),
+              fontSize: 14,
+              height: 1.9,
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: 24),
           AppButton.primary(
-              onPressed: () => addPerson(context, ref), label: '家族を追加する'),
+            onPressed: () => addPerson(context, ref),
+            label: '家族を追加する',
+          ),
         ],
       ),
     );
@@ -138,10 +153,13 @@ class FamilyPage extends ConsumerWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: AppColors.borderAccent),
         ),
-        child: Text('+ 家族を追加',
-            textAlign: TextAlign.center,
-            style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textSecondary)),
+        child: Text(
+          '+ 家族を追加',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
       ),
     );
   }
@@ -152,11 +170,13 @@ class _FamilyCard extends StatelessWidget {
     required this.person,
     required this.time,
     required this.metThisYear,
+    required this.connectedThisMonth,
   });
 
   final ImportantPerson person;
   final FamilyTime time;
   final int metThisYear;
+  final int connectedThisMonth;
 
   @override
   Widget build(BuildContext context) {
@@ -166,16 +186,22 @@ class _FamilyCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            FamilyAvatar(name: person.nickname, photoFile: person.photoFile),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(person.nickname,
+          Row(
+            children: [
+              FamilyAvatar(name: person.nickname, photoFile: person.photoFile),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  person.nickname,
                   style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
-            _chip('${person.relation.label}・$age歳'),
-          ]),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              _chip('${person.relation.label}・$age歳'),
+            ],
+          ),
           const SizedBox(height: 16),
           FamilyTimeView(person: person, time: time),
           const SizedBox(height: 14),
@@ -183,40 +209,66 @@ class _FamilyCard extends StatelessWidget {
           const SizedBox(height: 10),
           const Divider(height: 1, color: AppColors.border),
           const SizedBox(height: 12),
-          Row(children: [
-            Expanded(
-              child: Text(
-                metThisYear > 0 ? '今年会えた日  $metThisYear日' : 'まだ記録がありません',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textMuted),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => MeetingLogSheet.show(context, person),
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                child: Text('会えた日を残す',
+          if (time.summersAtHome != null) ...[
+            // 一緒に暮らしている子ども: 「会えた」「電話した」は意味がないので、思い出を残す形に
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '今年の思い出 $metThisYear件',
                     style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.accent)),
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () =>
+                      MeetingLogSheet.show(context, person, memoryMode: true),
+                  icon: Icon(
+                    Icons.photo_outlined,
+                    size: 18,
+                    color: AppColors.accent,
+                  ),
+                  label: Text(
+                    '思い出を残す',
+                    style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ] else ...[
+            Text(
+              '今月つながった日 $connectedThisMonth日 ・ 今年会えた日 $metThisYear日',
+              style: GoogleFonts.zenKakuGothicNew(
+                fontSize: 12,
+                color: AppColors.textMuted,
               ),
             ),
-          ]),
+            const SizedBox(height: 6),
+            QuickContactRow(person: person),
+          ],
         ],
       ),
     );
   }
 
   static Widget _chip(String text) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.accentSurface,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(text,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 11, color: AppColors.accent)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    decoration: BoxDecoration(
+      color: AppColors.accentSurface,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Text(
+      text,
+      style: GoogleFonts.zenKakuGothicNew(
+        fontSize: 11,
+        color: AppColors.accent,
+      ),
+    ),
+  );
 }

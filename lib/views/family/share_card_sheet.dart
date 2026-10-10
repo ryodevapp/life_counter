@@ -27,10 +27,12 @@ class ShareCardSheet extends StatefulWidget {
   final FamilyTime time;
   final int metThisYear;
 
-  static Future<void> show(BuildContext context,
-      {required ImportantPerson person,
-      required FamilyTime time,
-      required int metThisYear}) {
+  static Future<void> show(
+    BuildContext context, {
+    required ImportantPerson person,
+    required FamilyTime time,
+    required int metThisYear,
+  }) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -38,8 +40,8 @@ class ShareCardSheet extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => ShareCardSheet(
-          person: person, time: time, metThisYear: metThisYear),
+      builder: (_) =>
+          ShareCardSheet(person: person, time: time, metThisYear: metThisYear),
     );
   }
 
@@ -62,7 +64,11 @@ class _ShareCardSheetState extends State<ShareCardSheet> {
       return ('${p.nickname}に会えるまで、あと', '$days', '日');
     }
     if (p.relation == Relation.child && widget.time.summersAtHome != null) {
-      return ('${p.nickname}と一緒に暮らす夏休みは、これから', '${widget.time.summersAtHome}', '回');
+      return (
+        '${p.nickname}と一緒に暮らす夏休みは、これから',
+        '${widget.time.summersAtHome}',
+        '回',
+      );
     }
     return ('${p.nickname}と、これから会えるのは 約', '${widget.time.meetCount}', '回');
   }
@@ -79,12 +85,15 @@ class _ShareCardSheetState extends State<ShareCardSheet> {
       await file.writeAsBytes(bytes!.buffer.asUint8List());
       if (!mounted) return;
       final box = context.findRenderObject() as RenderBox?;
-      await SharePlus.instance.share(ShareParams(
-        files: [XFile(file.path, mimeType: 'image/png')],
-        text: '家族と過ごせる時間を、数えて残すアプリ LifeCounter\n$appStoreUrl',
-        sharePositionOrigin:
-            box != null ? box.localToGlobal(Offset.zero) & box.size : null,
-      ));
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'image/png')],
+          text: '家族と過ごせる時間を、数えて残すアプリ LifeCounter\n$appStoreUrl',
+          sharePositionOrigin: box != null
+              ? box.localToGlobal(Offset.zero) & box.size
+              : null,
+        ),
+      );
     } catch (e) {
       debugPrint('Share error: $e');
       if (mounted) AppToast.error(context, '共有できませんでした');
@@ -100,49 +109,72 @@ class _ShareCardSheetState extends State<ShareCardSheet> {
       top: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          RepaintBoundary(
-            key: _key,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(28, 36, 28, 24),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF4E7DC),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(children: [
-                Text(label,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 15, color: AppColors.textSecondary, height: 1.6)),
-                const SizedBox(height: 8),
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: value,
-                      style: GoogleFonts.cormorantGaramond(
-                          fontSize: 88,
-                          fontWeight: FontWeight.w300,
-                          color: AppColors.accent,
-                          height: 1.1)),
-                  TextSpan(
-                      text: ' $unit',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RepaintBoundary(
+              key: _key,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(28, 36, 28, 24),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF4E7DC),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      label,
+                      textAlign: TextAlign.center,
                       style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 18, color: AppColors.textMuted)),
-                ])),
-                const SizedBox(height: 28),
-                Text('LifeCounter  家族と過ごせる時間',
-                    style: GoogleFonts.zenKakuGothicNew(
+                        fontSize: 15,
+                        color: AppColors.textSecondary,
+                        height: 1.6,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: value,
+                            style: GoogleFonts.cormorantGaramond(
+                              fontSize: 88,
+                              fontWeight: FontWeight.w300,
+                              color: AppColors.accent,
+                              height: 1.1,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' $unit',
+                            style: GoogleFonts.zenKakuGothicNew(
+                              fontSize: 18,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    Text(
+                      'LifeCounter  家族と過ごせる時間',
+                      style: GoogleFonts.zenKakuGothicNew(
                         fontSize: 11,
                         letterSpacing: 1,
-                        color: AppColors.textMuted)),
-              ]),
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          AppButton.primary(
+            const SizedBox(height: 20),
+            AppButton.primary(
               onPressed: _sharing ? null : _share,
-              label: _sharing ? '準備しています…' : '画像を共有する'),
-        ]),
+              label: _sharing ? '準備しています…' : '画像を共有する',
+            ),
+          ],
+        ),
       ),
     );
   }

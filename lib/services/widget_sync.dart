@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
 import '../models/important_person.dart';
 import '../models/meeting_log.dart';
+import 'contact_stats.dart';
 
 /// ホーム画面・ロック画面のウィジェットに、表示する値を渡す（App Group 経由）
 ///
@@ -51,8 +52,9 @@ class WidgetSync {
 
       await HomeWidget.saveWidgetData<bool>('isPro', isPro);
       await HomeWidget.saveWidgetData<bool>('hasFamily', persons.isNotEmpty);
+      await HomeWidget.saveWidgetData<int>('yearCount', ContactStats.familyMetThisYear(logs));
       await HomeWidget.saveWidgetData<int>(
-          'yearCount', logs.where((l) => l.date.year == now.year).length);
+          'monthConnected', ContactStats.familyConnectedThisMonth(logs));
       await HomeWidget.saveWidgetData<double>(
           'nextMeetEpoch', next == null ? null : next.nextMeetDate!.millisecondsSinceEpoch / 1000);
       await HomeWidget.saveWidgetData<String>('nextMeetName', next?.nickname);

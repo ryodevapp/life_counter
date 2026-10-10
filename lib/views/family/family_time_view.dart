@@ -32,8 +32,12 @@ class FamilyTimeView extends StatelessWidget {
         ..add(_line('一緒に暮らす夏休みは、これから'))
         ..add(_number('${time.summersAtHome}', '回'))
         ..add(const SizedBox(height: 8))
-        ..add(_line(
-            '家を出たあとも、${meetPhrase(person.afterFrequency).replaceAll('会うなら', '')}会えるなら 約${_fmt.format(time.meetCountAfterLeaving)}回'))
+        ..add(
+          _line(
+            // 数字と「回」の間で改行しないよう、ワードジョイナー(U+2060)でつなぐ
+            '家を出たあとも、${meetPhrase(person.afterFrequency).replaceAll('会うなら', '')}なら 約${_fmt.format(time.meetCountAfterLeaving)}\u2060回',
+          ),
+        )
         ..add(const SizedBox(height: 6))
         ..add(_soft('今年の夏休みは、どこへ行こう'));
     } else {
@@ -63,37 +67,53 @@ class FamilyTimeView extends StatelessWidget {
     );
   }
 
-  static Widget _line(String text) => Text(text,
-      style: GoogleFonts.zenKakuGothicNew(
-          fontSize: 13, color: AppColors.textSecondary, height: 1.6));
+  static Widget _line(String text) => Text(
+    text,
+    style: GoogleFonts.zenKakuGothicNew(
+      fontSize: 13,
+      color: AppColors.textSecondary,
+      height: 1.6,
+    ),
+  );
 
-  static Widget _soft(String text) => Text(text,
-      style: GoogleFonts.zenKakuGothicNew(
-          fontSize: 13, color: AppColors.accent, height: 1.6));
+  static Widget _soft(String text) => Text(
+    text,
+    style: GoogleFonts.zenKakuGothicNew(
+      fontSize: 13,
+      color: AppColors.accent,
+      height: 1.6,
+    ),
+  );
 
   static Widget _number(String value, String unit, {bool approx = false}) =>
-      Text.rich(TextSpan(
-        children: [
-          if (approx)
+      Text.rich(
+        TextSpan(
+          children: [
+            if (approx)
+              TextSpan(
+                text: '約 ',
+                style: GoogleFonts.zenKakuGothicNew(
+                  fontSize: 14,
+                  color: AppColors.textMuted,
+                ),
+              ),
             TextSpan(
-              text: '約 ',
+              text: value,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 44,
+                fontWeight: FontWeight.w300,
+                color: AppColors.accent,
+                height: 1.2,
+              ),
+            ),
+            TextSpan(
+              text: ' $unit',
               style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 14, color: AppColors.textMuted),
+                fontSize: 14,
+                color: AppColors.textMuted,
+              ),
             ),
-          TextSpan(
-            text: value,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 44,
-              fontWeight: FontWeight.w300,
-              color: AppColors.accent,
-              height: 1.2,
-            ),
-          ),
-          TextSpan(
-            text: ' $unit',
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 14, color: AppColors.textMuted),
-          ),
-        ],
-      ));
+          ],
+        ),
+      );
 }
