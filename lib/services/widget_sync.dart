@@ -13,7 +13,7 @@ class WidgetSync {
 
   /// ウィジェットの見た目（warm は無料。night / sakura / sea は Pro）
   static const styles = {
-    'warm': 'あたたかい(標準)',
+    'warm': '標準',
     'night': '夜',
     'sakura': 'さくら',
     'sea': '海',

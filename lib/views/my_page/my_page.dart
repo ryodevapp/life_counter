@@ -335,10 +335,16 @@ class MyPage extends ConsumerWidget {
             Text(label,
                 style: GoogleFonts.zenKakuGothicNew(
                     fontSize: 14, color: AppColors.text)),
-            const Spacer(),
-            Text('$value \u203A',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 13, color: AppColors.textMuted)),
+            const SizedBox(width: 12),
+            // 値が長くても行からはみ出さないよう、右寄せで省略する
+            Expanded(
+              child: Text('$value \u203A',
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13, color: AppColors.textMuted)),
+            ),
           ],
         ),
       ),

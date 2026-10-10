@@ -65,5 +65,7 @@ void main() {
     await shot(binding, tester, '20_records');
     await tester.tap(find.text('設定').last);
     await shot(binding, tester, '21_settings');
+    await tester.tap(byText('LifeCounter Pro').first);
+    await shot(binding, tester, '22_pro_sheet');
   });
 }
