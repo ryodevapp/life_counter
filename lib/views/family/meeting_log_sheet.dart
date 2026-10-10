@@ -14,11 +14,13 @@ import '../shared/app_toast.dart';
 
 /// 会えた日を残すシート
 class MeetingLogSheet extends ConsumerStatefulWidget {
-  const MeetingLogSheet({super.key, required this.person});
+  const MeetingLogSheet({super.key, required this.person, this.date});
 
   final ImportantPerson person;
+  final DateTime? date;
 
-  static Future<void> show(BuildContext context, ImportantPerson person) {
+  static Future<void> show(BuildContext context, ImportantPerson person,
+      {DateTime? date}) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -26,7 +28,7 @@ class MeetingLogSheet extends ConsumerStatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => MeetingLogSheet(person: person),
+      builder: (_) => MeetingLogSheet(person: person, date: date),
     );
   }
 
@@ -36,7 +38,9 @@ class MeetingLogSheet extends ConsumerStatefulWidget {
 
 class _MeetingLogSheetState extends ConsumerState<MeetingLogSheet> {
   final _note = TextEditingController();
-  DateTime _date = DateTime.now();
+  late DateTime _date = (widget.date != null && widget.date!.isBefore(DateTime.now()))
+      ? widget.date!
+      : DateTime.now();
   bool _saving = false;
 
   @override

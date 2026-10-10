@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../models/important_person.dart';
 import '../../models/meeting_log.dart';
 import '../../providers/important_person_provider.dart';
@@ -17,12 +18,21 @@ import '../shared/app_text_styles.dart';
 import 'family_detail_page.dart';
 import 'family_time_view.dart';
 import 'meeting_log_sheet.dart';
+import 'next_meet_row.dart';
+import '../../services/pro_service.dart';
+import '../pro/pro_sheet.dart';
 
 /// 家族タブ（最初の画面）
 class FamilyPage extends ConsumerWidget {
   const FamilyPage({super.key});
 
   static Future<void> addPerson(BuildContext context, WidgetRef ref) async {
+    final count = await ref.read(importantPersonRepositoryProvider).count();
+    if (!ref.read(proProvider).canAddFamily(count)) {
+      if (context.mounted) await ProSheet.show(context, reachedLimit: true);
+      return;
+    }
+    if (!context.mounted) return;
     final result = await ImportantPersonFormPage.show(context);
     if (result != null) {
       await ref.read(importantPersonRepositoryProvider).add(result);
@@ -46,6 +56,13 @@ class FamilyPage extends ConsumerWidget {
             Text('家族と過ごせる時間',
                 style: GoogleFonts.zenKakuGothicNew(
                     fontSize: 20, fontWeight: FontWeight.w500)),
+            if (myBirth != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                  '今日は、人生 ${NumberFormat('#,###', 'ja_JP').format(LifeCalculator.lifeDays(myBirth))}日目',
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13, color: AppColors.textMuted)),
+            ],
             const SizedBox(height: 28),
             if (myBirth == null)
               const SizedBox.shrink()
@@ -158,7 +175,9 @@ class _FamilyCard extends StatelessWidget {
           ]),
           const SizedBox(height: 16),
           FamilyTimeView(person: person, time: time),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
+          NextMeetRow(person: person),
+          const SizedBox(height: 10),
           const Divider(height: 1, color: AppColors.border),
           const SizedBox(height: 12),
           Row(children: [

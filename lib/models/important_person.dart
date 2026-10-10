@@ -28,6 +28,14 @@ class ImportantPerson {
   /// 子ども: 家を出たあと、年に会う回数
   int? afterLeavingFrequency;
 
+  // v1.2 新規フィールド
+  /// 次に会う予定の日
+  DateTime? nextMeetDate;
+
+  /// 誕生日（任意。年齢で登録するので、月日だけ別に持つ）
+  int? birthdayMonth;
+  int? birthdayDay;
+
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 

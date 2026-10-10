@@ -14,6 +14,8 @@ import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
 import 'family_time_view.dart';
 import 'meeting_log_sheet.dart';
+import 'next_meet_row.dart';
+import 'share_card_sheet.dart';
 
 /// 家族ひとりの詳細（一緒に過ごせる時間と、会えた日の記録）
 class FamilyDetailPage extends ConsumerWidget {
@@ -77,6 +79,13 @@ class FamilyDetailPage extends ConsumerWidget {
                 ],
               ),
             ),
+            _textButton('共有', AppColors.accent, () {
+              final year = DateTime.now().year;
+              ShareCardSheet.show(context,
+                  person: p,
+                  time: time,
+                  metThisYear: logs.where((l) => l.date.year == year).length);
+            }),
             _textButton('編集', AppColors.accent, () async {
               final result =
                   await ImportantPersonFormPage.show(context, person: p);
@@ -98,6 +107,11 @@ class FamilyDetailPage extends ConsumerWidget {
           ]),
           const SizedBox(height: 20),
           AppCard(child: FamilyTimeView(person: p, time: time)),
+          const SizedBox(height: 12),
+          AppCard(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: NextMeetRow(person: p),
+          ),
           if (lastMetDays != null) ...[
             const SizedBox(height: 12),
             AppCard(

@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
+import '../../services/pro_service.dart';
+import '../../providers/important_person_provider.dart';
 import '../family/family_page.dart';
 import '../shared/app_colors.dart';
-import '../today/today_page.dart';
-import '../record/record_calendar_page.dart';
-import '../life/life_tab_page.dart';
+import '../records/records_page.dart';
 import '../my_page/my_page.dart';
 
-/// 5タブのメイン画面（最初は家族）
+/// 3タブのメイン画面（家族・記録・設定）
 class MainTabView extends ConsumerStatefulWidget {
   const MainTabView({super.key});
 
@@ -24,29 +24,39 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     super.initState();
     // 起動のたびに、これから1週間分の通知を入れ直す（日数と問いかけを毎日変えるため）
     NotificationService.refresh(ref.read(userSettingsProvider));
+    // 購入の受け取り(ファミリー共有・中断した購入の完了)のため、起動時に Pro の監視を始める
+    ref.read(proProvider);
   }
 
   int _currentIndex = 0;
-  final _recordKey = GlobalKey<RecordCalendarPageState>();
 
   static const _tabs = [
     _TabItem(icon: '\u2661', label: '家族'),    // ♡
-    _TabItem(icon: '\u25C9', label: '今日'),    // ◉
     _TabItem(icon: '\u25A6', label: '記録'),    // ▦
-    _TabItem(icon: '\u221E', label: '人生'),    // ∞
-    _TabItem(icon: '\u25C7', label: 'マイページ'), // ◇
+    _TabItem(icon: '\u25C7', label: '設定'),    // ◇
   ];
 
   late final _pages = [
     const FamilyPage(),
-    const TodayPage(),
-    RecordCalendarPage(key: _recordKey),
-    const LifeTabPage(),
+    const RecordsPage(),
     const MyPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    // 家族や通知の設定が変わったら、節目の通知を入れ直す
+    ref.listen(importantPersonsProvider, (_, next) {
+      final persons = next.valueOrNull;
+      if (persons != null) {
+        NotificationService.refreshMilestones(ref.read(userSettingsProvider), persons);
+      }
+    });
+    ref.listen(userSettingsProvider.select((s) => s.notificationEnabled), (_, _) {
+      final persons = ref.read(importantPersonsProvider).valueOrNull;
+      if (persons != null) {
+        NotificationService.refreshMilestones(ref.read(userSettingsProvider), persons);
+      }
+    });
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       backgroundColor: AppColors.bg,
@@ -100,10 +110,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
             return Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() => _currentIndex = i);
-                  if (i == 2) _recordKey.currentState?.reload();
-                },
+                onTap: () => setState(() => _currentIndex = i),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   child: Column(

@@ -31,6 +31,8 @@ class ImportantPersonFormPage extends StatefulWidget {
 class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   final _nickController = TextEditingController();
   int _age = 65;
+  int? _bMonth;
+  int? _bDay;
   bool _ageTouched = false;
   Gender _gender = Gender.unspecified;
   int _freq = 2;
@@ -46,6 +48,8 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
       _nickController.text = p.nickname;
       _age = LifeCalculator.currentAge(p.birthDate);
       _ageTouched = true;
+      _bMonth = p.birthdayMonth;
+      _bDay = p.birthdayDay;
       _gender = p.gender;
       _freq = snapToNearestFreq(p.meetingFrequency);
       _relation = p.relation;
@@ -80,7 +84,9 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
       ..birthDate = birthDate
       ..gender = _gender
       ..meetingFrequency = _freq
-      ..relation = _relation;
+      ..relation = _relation
+      ..birthdayMonth = _bMonth
+      ..birthdayDay = _bDay;
     if (_relation == Relation.child) {
       person
         ..liveTogetherUntilAge = _untilAge
@@ -186,6 +192,50 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       _age = v;
                       _ageTouched = true;
                     }),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // 誕生日（任意。節目の通知に使う）
+                  _label('誕生日(任意)'),
+                  const SizedBox(height: 6),
+                  GestureDetector(
+                    onTap: () async {
+                      final now = DateTime.now();
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: _bMonth != null
+                            ? DateTime(now.year, _bMonth!, _bDay!)
+                            : now,
+                        firstDate: DateTime(now.year, 1, 1),
+                        lastDate: DateTime(now.year, 12, 31),
+                        helpText: '誕生日(月と日)',
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          _bMonth = picked.month;
+                          _bDay = picked.day;
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 14),
+                      decoration: BoxDecoration(
+                        color: AppColors.bgWarm,
+                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        _bMonth != null ? '$_bMonth月$_bDay日' : '入れると、当日にお知らせします',
+                        style: GoogleFonts.zenKakuGothicNew(
+                          fontSize: 14,
+                          color: _bMonth != null
+                              ? AppColors.text
+                              : AppColors.textDisabled,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
 

@@ -27,45 +27,60 @@ const ImportantPersonSchema = CollectionSchema(
       name: r'birthDate',
       type: IsarType.dateTime,
     ),
-    r'createdAt': PropertySchema(
+    r'birthdayDay': PropertySchema(
       id: 2,
+      name: r'birthdayDay',
+      type: IsarType.long,
+    ),
+    r'birthdayMonth': PropertySchema(
+      id: 3,
+      name: r'birthdayMonth',
+      type: IsarType.long,
+    ),
+    r'createdAt': PropertySchema(
+      id: 4,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'gender': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'gender',
       type: IsarType.string,
       enumMap: _ImportantPersongenderEnumValueMap,
     ),
     r'lastMetDate': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'lastMetDate',
       type: IsarType.dateTime,
     ),
     r'liveTogetherUntilAge': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'liveTogetherUntilAge',
       type: IsarType.long,
     ),
     r'meetingFrequency': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'meetingFrequency',
       type: IsarType.long,
     ),
+    r'nextMeetDate': PropertySchema(
+      id: 9,
+      name: r'nextMeetDate',
+      type: IsarType.dateTime,
+    ),
     r'nickname': PropertySchema(
-      id: 7,
+      id: 10,
       name: r'nickname',
       type: IsarType.string,
     ),
     r'relation': PropertySchema(
-      id: 8,
+      id: 11,
       name: r'relation',
       type: IsarType.string,
       enumMap: _ImportantPersonrelationEnumValueMap,
     ),
     r'updatedAt': PropertySchema(
-      id: 9,
+      id: 12,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -104,14 +119,17 @@ void _importantPersonSerialize(
 ) {
   writer.writeLong(offsets[0], object.afterLeavingFrequency);
   writer.writeDateTime(offsets[1], object.birthDate);
-  writer.writeDateTime(offsets[2], object.createdAt);
-  writer.writeString(offsets[3], object.gender.name);
-  writer.writeDateTime(offsets[4], object.lastMetDate);
-  writer.writeLong(offsets[5], object.liveTogetherUntilAge);
-  writer.writeLong(offsets[6], object.meetingFrequency);
-  writer.writeString(offsets[7], object.nickname);
-  writer.writeString(offsets[8], object.relation.name);
-  writer.writeDateTime(offsets[9], object.updatedAt);
+  writer.writeLong(offsets[2], object.birthdayDay);
+  writer.writeLong(offsets[3], object.birthdayMonth);
+  writer.writeDateTime(offsets[4], object.createdAt);
+  writer.writeString(offsets[5], object.gender.name);
+  writer.writeDateTime(offsets[6], object.lastMetDate);
+  writer.writeLong(offsets[7], object.liveTogetherUntilAge);
+  writer.writeLong(offsets[8], object.meetingFrequency);
+  writer.writeDateTime(offsets[9], object.nextMeetDate);
+  writer.writeString(offsets[10], object.nickname);
+  writer.writeString(offsets[11], object.relation.name);
+  writer.writeDateTime(offsets[12], object.updatedAt);
 }
 
 ImportantPerson _importantPersonDeserialize(
@@ -123,19 +141,22 @@ ImportantPerson _importantPersonDeserialize(
   final object = ImportantPerson();
   object.afterLeavingFrequency = reader.readLongOrNull(offsets[0]);
   object.birthDate = reader.readDateTime(offsets[1]);
-  object.createdAt = reader.readDateTime(offsets[2]);
+  object.birthdayDay = reader.readLongOrNull(offsets[2]);
+  object.birthdayMonth = reader.readLongOrNull(offsets[3]);
+  object.createdAt = reader.readDateTime(offsets[4]);
   object.gender =
-      _ImportantPersongenderValueEnumMap[reader.readStringOrNull(offsets[3])] ??
+      _ImportantPersongenderValueEnumMap[reader.readStringOrNull(offsets[5])] ??
           Gender.male;
   object.id = id;
-  object.lastMetDate = reader.readDateTimeOrNull(offsets[4]);
-  object.liveTogetherUntilAge = reader.readLongOrNull(offsets[5]);
-  object.meetingFrequency = reader.readLong(offsets[6]);
-  object.nickname = reader.readString(offsets[7]);
+  object.lastMetDate = reader.readDateTimeOrNull(offsets[6]);
+  object.liveTogetherUntilAge = reader.readLongOrNull(offsets[7]);
+  object.meetingFrequency = reader.readLong(offsets[8]);
+  object.nextMeetDate = reader.readDateTimeOrNull(offsets[9]);
+  object.nickname = reader.readString(offsets[10]);
   object.relation = _ImportantPersonrelationValueEnumMap[
-          reader.readStringOrNull(offsets[8])] ??
+          reader.readStringOrNull(offsets[11])] ??
       Relation.other;
-  object.updatedAt = reader.readDateTime(offsets[9]);
+  object.updatedAt = reader.readDateTime(offsets[12]);
   return object;
 }
 
@@ -151,24 +172,30 @@ P _importantPersonDeserializeProp<P>(
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
+      return (reader.readDateTime(offset)) as P;
+    case 5:
       return (_ImportantPersongenderValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Gender.male) as P;
-    case 4:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 5:
-      return (reader.readLongOrNull(offset)) as P;
     case 6:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 8:
+      return (reader.readLong(offset)) as P;
+    case 9:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 10:
+      return (reader.readString(offset)) as P;
+    case 11:
       return (_ImportantPersonrelationValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Relation.other) as P;
-    case 9:
+    case 12:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -415,6 +442,154 @@ extension ImportantPersonQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'birthDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'birthdayDay',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'birthdayDay',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'birthdayDay',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'birthdayDay',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'birthdayDay',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayDayBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'birthdayDay',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'birthdayMonth',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'birthdayMonth',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'birthdayMonth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'birthdayMonth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'birthdayMonth',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthdayMonthBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'birthdayMonth',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -876,6 +1051,80 @@ extension ImportantPersonQueryFilter
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nextMeetDate',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nextMeetDate',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nextMeetDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nextMeetDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nextMeetDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      nextMeetDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nextMeetDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
       nicknameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1241,6 +1490,34 @@ extension ImportantPersonQuerySortBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthdayDay() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayDay', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthdayDayDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayDay', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthdayMonth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayMonth', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthdayMonthDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayMonth', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1306,6 +1583,20 @@ extension ImportantPersonQuerySortBy
       sortByMeetingFrequencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'meetingFrequency', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByNextMeetDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextMeetDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByNextMeetDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextMeetDate', Sort.desc);
     });
   }
 
@@ -1379,6 +1670,34 @@ extension ImportantPersonQuerySortThenBy
       thenByBirthDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'birthDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthdayDay() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayDay', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthdayDayDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayDay', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthdayMonth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayMonth', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthdayMonthDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthdayMonth', Sort.desc);
     });
   }
 
@@ -1464,6 +1783,20 @@ extension ImportantPersonQuerySortThenBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByNextMeetDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextMeetDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByNextMeetDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nextMeetDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       thenByNickname() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nickname', Sort.asc);
@@ -1523,6 +1856,20 @@ extension ImportantPersonQueryWhereDistinct
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
+      distinctByBirthdayDay() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'birthdayDay');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
+      distinctByBirthdayMonth() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'birthdayMonth');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
       distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -1554,6 +1901,13 @@ extension ImportantPersonQueryWhereDistinct
       distinctByMeetingFrequency() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'meetingFrequency');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
+      distinctByNextMeetDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nextMeetDate');
     });
   }
 
@@ -1601,6 +1955,19 @@ extension ImportantPersonQueryProperty
     });
   }
 
+  QueryBuilder<ImportantPerson, int?, QQueryOperations> birthdayDayProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'birthdayDay');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, int?, QQueryOperations>
+      birthdayMonthProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'birthdayMonth');
+    });
+  }
+
   QueryBuilder<ImportantPerson, DateTime, QQueryOperations>
       createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1632,6 +1999,13 @@ extension ImportantPersonQueryProperty
       meetingFrequencyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'meetingFrequency');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, DateTime?, QQueryOperations>
+      nextMeetDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nextMeetDate');
     });
   }
 

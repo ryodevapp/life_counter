@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'services/notification_service.dart';
+import 'services/pro_service.dart';
 import 'models/daily_record.dart';
 import 'models/important_person.dart';
 import 'models/meeting_log.dart';
@@ -18,6 +19,7 @@ void main() async {
   await NotificationService.initialize();
 
   final prefs = await SharedPreferences.getInstance();
+  await ProState.markLegacyUserOnce(prefs);
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
     [DailyRecordSchema, ImportantPersonSchema, MeetingLogSchema],

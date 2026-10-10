@@ -1,4 +1,5 @@
-import 'package:flutter/services.dart';
+import 'package:isar/isar.dart';
+import 'package:life_counter/models/daily_record.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -52,18 +53,17 @@ void main() {
     await tester.pageBack();
     await wait(tester);
 
-    // 今日の日記を書いてから、各タブ
-    await tester.tap(find.text('今日').last);
+    // 以前からの利用者の日記(v1.0 のデータ)を入れて、記録タブを見る
+    final isar = Isar.getInstance()!;
+    await isar.writeTxn(() => isar.dailyRecords.put(DailyRecord()
+      ..date = DateTime.now().subtract(const Duration(days: 30))
+      ..gratitude = '家族が元気でいること'
+      ..reflectionGood = '夕焼けがきれいだった'));
+    await tester.tap(find.text('家族').last);
     await wait(tester);
-    final fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), '家族が元気でいること');
-    await tester.enterText(fields.at(1), '子どもと公園へ行く');
-    await tester.enterText(fields.at(2), '夕焼けがきれいだった');
-    await tester.testTextInput.receiveAction(TextInputAction.done);
-    await wait(tester, 2500);
-    for (final tab in ['今日', '記録', '人生', 'マイページ']) {
-      await tester.tap(find.text(tab).last);
-      await shot(binding, tester, '2x_tab_$tab');
-    }
+    await tester.tap(find.text('記録').last);
+    await shot(binding, tester, '20_records');
+    await tester.tap(find.text('設定').last);
+    await shot(binding, tester, '21_settings');
   });
 }

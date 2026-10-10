@@ -10,6 +10,8 @@ import '../shared/app_colors.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
+import '../../services/pro_service.dart';
+import '../pro/pro_sheet.dart';
 
 /// マイページタブ（プロトタイプのMyPageTab再現 + Epic 9 設定編集UI）
 class MyPage extends ConsumerWidget {
@@ -33,7 +35,7 @@ class MyPage extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(20, 48, 20, 130),
         child: Column(
           children: [
-            Text('MY PAGE', style: AppTextStyles.labelUppercase),
+            Text('SETTINGS', style: AppTextStyles.labelUppercase),
             const SizedBox(height: 28),
 
             AppCard(
@@ -59,6 +61,16 @@ class MyPage extends ConsumerWidget {
             const SizedBox(height: 16),
 
             AppCard(
+              child: _linkRow(
+                ref.watch(proProvider).isPro
+                    ? 'LifeCounter Pro(購入済み)'
+                    : 'LifeCounter Pro',
+                onTap: () => ProSheet.show(context),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            AppCard(
               child: Column(
                 children: [
                   _linkRow('フィードバックを送る',
@@ -77,7 +89,7 @@ class MyPage extends ConsumerWidget {
             const SizedBox(height: 28),
 
             Text(
-              'LifeCounter v1.1.0',
+              'LifeCounter v2.0.0',
               style: AppTextStyles.caption
                   .copyWith(fontSize: 11, color: AppColors.textDisabled),
             ),
@@ -93,7 +105,7 @@ class MyPage extends ConsumerWidget {
     final uri = Uri(
       scheme: 'mailto',
       path: 'ryo.nakano.biz+lifecounter@gmail.com',
-      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter v1.1.0',
+      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter v2.0.0',
     );
     launchUrl(uri);
   }

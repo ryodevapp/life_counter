@@ -1,11 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import '../models/important_person.dart';
 import '../models/user_settings.dart';
+import 'milestones.dart';
 
 /// ローカル通知サービス
 class NotificationService {
@@ -61,22 +61,16 @@ class NotificationService {
   }
 
   static const _weekIds = [100, 101, 102, 103, 104, 105, 106];
-  static List<String>? _questions;
-
-  static Future<List<String>> _loadQuestions() async {
-    if (_questions != null) return _questions!;
-    try {
-      final json =
-          await rootBundle.loadString('assets/data/coaching_questions.json');
-      _questions = (jsonDecode(json) as List)
-          .map((q) => q['text'] as String)
-          .toList();
-    } catch (e) {
-      debugPrint('Notification questions load error: $e');
-      _questions = const ['今日、感謝できることは何ですか?'];
-    }
-    return _questions!;
-  }
+  /// 朝の通知の本文（家族に向けた、やさしい言葉。名前は出さず、催促しない）
+  static const _messages = [
+    '今日も、いい一日になりますように',
+    '家族に、ひとこと送ってみるのもいいかもしれません',
+    '次に会える日を、楽しみに',
+    '今日の小さな出来事を、だれかに話してみませんか',
+    '会えた日は、ひとことだけ残しておけます',
+    '声を聞くだけでも、うれしいものです',
+    '今日という日は、たった一度きり',
+  ];
 
   /// 設定に合わせて、これから7日分の朝の通知を入れ直す
   /// （1件を毎日くり返す形だと、日数と問いかけが登録した日のまま止まるため）
@@ -89,7 +83,6 @@ class NotificationService {
           birthDate == null) {
         return;
       }
-      final questions = await _loadQuestions();
       final fmt = NumberFormat('#,###', 'ja_JP');
       final first =
           _nextInstanceOfTime(settings.notificationHour, settings.notificationMinute);
@@ -104,7 +97,7 @@ class NotificationService {
         await _plugin.zonedSchedule(
           _weekIds[i],
           '人生 ${fmt.format(lifeDays)}日目',
-          questions[dayOfYear % questions.length],
+          _messages[dayOfYear % _messages.length],
           when,
           const NotificationDetails(
             iOS: DarwinNotificationDetails(
@@ -134,6 +127,45 @@ class NotificationService {
     await _plugin.cancel(0);
     for (final id in _weekIds) {
       await _plugin.cancel(id);
+    }
+  }
+
+  static const _milestoneBaseId = 200;
+  static const _milestoneMax = 50;
+
+  /// 節目の通知を入れ直す（家族が変わったとき、通知の設定を変えたとき）
+  static Future<void> refreshMilestones(
+      UserSettings settings, List<ImportantPerson> persons) async {
+    try {
+      for (var i = 0; i < _milestoneMax; i++) {
+        await _plugin.cancel(_milestoneBaseId + i);
+      }
+      if (!settings.notificationEnabled || !settings.onboardingCompleted) return;
+      final items = Milestones.upcoming(persons, DateTime.now());
+      for (var i = 0; i < items.length && i < _milestoneMax; i++) {
+        final m = items[i];
+        await _plugin.zonedSchedule(
+          _milestoneBaseId + i,
+          m.title,
+          m.body,
+          tz.TZDateTime.from(m.when, tz.local),
+          const NotificationDetails(
+            iOS: DarwinNotificationDetails(
+                presentAlert: true, presentBadge: false, presentSound: true),
+            android: AndroidNotificationDetails(
+              _morningChannelId,
+              _morningChannelName,
+              importance: Importance.high,
+              priority: Priority.high,
+            ),
+          ),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime,
+        );
+      }
+    } catch (e) {
+      debugPrint('Milestone refresh error: $e');
     }
   }
 
