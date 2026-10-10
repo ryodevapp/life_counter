@@ -41,6 +41,42 @@ private struct Tile<V: View>: View {
     }
 }
 
+/// ストア用: ホーム画面にウィジェットを置いた見本(見出しなし)
+struct HomeScreenMock: View {
+    private func icon(_ c: Color) -> some View {
+        RoundedRectangle(cornerRadius: 14, style: .continuous).fill(c.opacity(0.85)).frame(width: 62, height: 62)
+    }
+    var body: some View {
+        ZStack {
+            LinearGradient(colors: [Color(red: 0.93, green: 0.80, blue: 0.68), Color(red: 0.55, green: 0.62, blue: 0.72)],
+                           startPoint: .top, endPoint: .bottom).ignoresSafeArea()
+            VStack(spacing: 22) {
+                NextWidgetView(entry: entry(mom, photo: true), familyOverride: .systemMedium)
+                    .environment(\.widgetPreviewHarness, true)
+                    .frame(width: 338, height: 158)
+                    .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                HStack(spacing: 22) {
+                    NextWidgetView(entry: entry(dad), familyOverride: .systemSmall)
+                        .environment(\.widgetPreviewHarness, true)
+                        .frame(width: 158, height: 158)
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                    VStack(spacing: 22) {
+                        HStack(spacing: 22) { icon(.white); icon(.orange) }
+                        HStack(spacing: 22) { icon(.green); icon(.blue) }
+                    }
+                }
+                MemoryWidgetView(entry: MemoryEntry(date: Date(), isPro: true,
+                    memory: Memory(photo: samplePhoto(), y: 2025, m: 10, d: 20, name: "お母さん", note: "母と温泉。よく笑ってた", yearsAgo: 1)))
+                    .environment(\.widgetPreviewHarness, true)
+                    .frame(width: 338, height: 158)
+                    .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                Spacer()
+            }
+            .padding(.top, 70)
+        }
+    }
+}
+
 struct WidgetPreviewGrid: View {
     let page: Int
     private let small = CGSize(width: 158, height: 158)
@@ -49,6 +85,10 @@ struct WidgetPreviewGrid: View {
     private let rect = CGSize(width: 160, height: 72)
 
     var body: some View {
+        if page == 2 { HomeScreenMock() } else { grid }
+    }
+
+    private var grid: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 if page == 0 {
