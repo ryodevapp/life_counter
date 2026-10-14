@@ -71,6 +71,27 @@ void main() {
     });
   });
 
+  test('drops times far in the past or future', () {
+    final t = now.millisecondsSinceEpoch / 1000;
+    expect(
+        parsePendingStamps(
+            jsonEncode([
+              {'d': '2026-10-15', 's': 'happy', 't': 1e13},
+              {'d': '2026-10-15', 's': 'happy', 't': t + 7200},
+              {'d': '2026-10-15', 's': 'happy', 't': t - 3 * 86400},
+            ]),
+            now),
+        isEmpty);
+  });
+
+  test('keeps stamps tapped while importing', () {
+    final a = {'d': '2026-10-15', 's': 'happy', 't': 1};
+    final b = {'d': '2026-10-15', 's': 'calm', 't': 2};
+    expect(remainingAfterImport(jsonEncode([a]), jsonEncode([a, b])), jsonEncode([b]));
+    expect(remainingAfterImport(jsonEncode([a]), jsonEncode([a])), '[]');
+    expect(remainingAfterImport(jsonEncode([a]), null), '[]');
+  });
+
   group('widgetStampWins', () {
     test('widget wins when the app has no stamp time or an older one', () {
       expect(widgetStampWins(null, now), isTrue);

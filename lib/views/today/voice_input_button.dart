@@ -37,6 +37,7 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
             },
             onError: (_) {
               if (mounted) setState(() => _listening = false);
+              _tellUnavailable();
             },
           );
     } catch (_) {
@@ -46,8 +47,10 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
       _tellUnavailable();
       return;
     }
+    if (!mounted) return;
     setState(() => _listening = true);
-    await _speech.listen(
+    try {
+      await _speech.listen(
       listenOptions: SpeechListenOptions(
         localeId: 'ja_JP',
         onDevice: true,
@@ -60,12 +63,17 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
         }
       },
     );
+    } catch (_) {
+      // マイクが使えない、この端末の中で文字にできない、など
+      if (mounted) setState(() => _listening = false);
+      _tellUnavailable();
+    }
   }
 
   void _tellUnavailable() {
     if (_toldUnavailable || !mounted) return;
     _toldUnavailable = true;
-    AppToast.error(context, '設定アプリでマイクと音声認識を許可すると、声で入力できます');
+    AppToast.error(context, '声で入力できませんでした。設定アプリでマイクと音声認識を許可すると使えます');
   }
 
   @override

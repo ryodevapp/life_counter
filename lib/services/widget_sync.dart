@@ -72,10 +72,33 @@ List<PendingStamp> parsePendingStamps(String? raw, DateTime now) {
     } else {
       continue;
     }
-    final at = DateTime.fromMillisecondsSinceEpoch((t * 1000).round());
+    // 押した時刻は「2日前〜1時間後」だけ受け取る(極端な値で落ちたり、未来の値で後勝ちを奪ったりしないように)
+    final ms = t * 1000;
+    if (!ms.isFinite) continue;
+    final earliest = now.subtract(const Duration(days: 2)).millisecondsSinceEpoch;
+    final latest = now.add(const Duration(hours: 1)).millisecondsSinceEpoch;
+    if (ms < earliest || ms > latest) continue;
+    final at = DateTime.fromMillisecondsSinceEpoch(ms.round());
     result.add(PendingStamp(date: dateOnly(date), stampId: stampId, at: at));
   }
   return result;
+}
+
+/// 取り込んだ束 [imported] に入っていた分を、今の束 [latest] から除いた JSON
+String remainingAfterImport(String imported, String? latest) {
+  if (latest == null || latest == imported) return '[]';
+  try {
+    final done = jsonDecode(imported);
+    final now = jsonDecode(latest);
+    if (done is! List || now is! List) return '[]';
+    final doneKeys = done.map(jsonEncode).toSet();
+    return jsonEncode([
+      for (final e in now)
+        if (!doneKeys.contains(jsonEncode(e))) e,
+    ]);
+  } catch (_) {
+    return '[]';
+  }
 }
 
 /// ウィジェットで押したものを採るか。アプリで後から押し直していれば採らない
@@ -105,16 +128,24 @@ class WidgetSync {
     try {
       await _ensureReady();
       final raw = await HomeWidget.getWidgetData<String>('pendingStamps');
-      // 先に空にしてから取り込む(二重に取り込まないため)
-      await HomeWidget.saveWidgetData<String>('pendingStamps', '[]');
+      if (raw == null || raw == '[]') return 0;
       var count = 0;
+      // 取り込みは何度やっても結果が同じ(後勝ち)なので、取り込んでから消す
       for (final p in parsePendingStamps(raw, DateTime.now())) {
-        final record = await repo.getByDate(p.date);
-        if (!widgetStampWins(record?.stampAt, p.at)) continue;
-        await repo.setStamp(p.date, p.stampId,
-            questionId: bank.forDate(p.date).id, at: p.at);
-        count++;
+        try {
+          final record = await repo.getByDate(p.date);
+          if (!widgetStampWins(record?.stampAt, p.at)) continue;
+          await repo.setStamp(p.date, p.stampId,
+              questionId: bank.forDate(p.date).id, at: p.at);
+          count++;
+        } catch (e) {
+          debugPrint('Widget stamp import error: $e');
+        }
       }
+      // 読んだあとにウィジェットで押された分は残す
+      final latest = await HomeWidget.getWidgetData<String>('pendingStamps');
+      await HomeWidget.saveWidgetData<String>(
+          'pendingStamps', remainingAfterImport(raw, latest));
       return count;
     } catch (e) {
       debugPrint('Widget import error: $e');

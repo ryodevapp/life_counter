@@ -6,6 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../models/daily_record.dart';
 import '../../models/stamp.dart';
 import '../../providers/isar_provider.dart';
+import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
@@ -381,7 +382,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 }
 
 /// カード内インライン編集ウィジェット
-class _InlineEditCard extends StatefulWidget {
+class _InlineEditCard extends ConsumerStatefulWidget {
   const _InlineEditCard({
     required this.record,
     required this.onSave,
@@ -393,10 +394,10 @@ class _InlineEditCard extends StatefulWidget {
   final VoidCallback onCancel;
 
   @override
-  State<_InlineEditCard> createState() => _InlineEditCardState();
+  ConsumerState<_InlineEditCard> createState() => _InlineEditCardState();
 }
 
-class _InlineEditCardState extends State<_InlineEditCard> {
+class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
   late final TextEditingController _answerCtrl;
   late final TextEditingController _gratitudeCtrl;
   late final TextEditingController _goalCtrl;
@@ -431,7 +432,12 @@ class _InlineEditCardState extends State<_InlineEditCard> {
   }
 
   Future<void> _save() async {
-    final r = widget.record;
+    // 開いてからほかの画面やウィジェットで変わった項目(スタンプなど)を消さないよう、読み直してから書く
+    final r = await ref
+            .read(dailyRecordRepositoryProvider)
+            .getByDate(widget.record.date) ??
+        widget.record;
+    r.morningQuestionId ??= ref.read(questionBankProvider).forDate(r.date).id;
     r.answer = _answerCtrl.text.trim().isNotEmpty ? _answerCtrl.text : null;
     r.gratitude = _gratitudeCtrl.text.isNotEmpty ? _gratitudeCtrl.text : null;
     r.todayGoal = _goalCtrl.text.isNotEmpty ? _goalCtrl.text : null;

@@ -94,6 +94,20 @@ class _BucketRow extends StatelessWidget {
     return Dismissible(
       key: ValueKey(item.id),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (_) => showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          content: Text('「${item.title}」を消しますか？'),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('やめる')),
+            TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text('消す')),
+          ],
+        ),
+      ),
       onDismissed: (_) => onDelete(),
       background: Container(
         alignment: Alignment.centerRight,

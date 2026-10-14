@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import '../models/user_settings.dart';
@@ -19,6 +20,13 @@ class NotificationService {
     if (_initialized) return;
     try {
       tz.initializeTimeZones();
+      // 端末のタイムゾーンを使う(設定しないと UTC 扱いになり、朝7時が日本の16時になる)
+      try {
+        final local = await FlutterTimezone.getLocalTimezone();
+        tz.setLocalLocation(tz.getLocation(local.identifier));
+      } catch (e) {
+        debugPrint('Timezone error: $e');
+      }
       const android = AndroidInitializationSettings('@mipmap/ic_launcher');
       const darwin = DarwinInitializationSettings(
         requestAlertPermission: false,
@@ -59,52 +67,73 @@ class NotificationService {
     return false;
   }
 
+  static Future<void> _queue = Future.value();
+  static int _generation = 0;
+
+  /// 最後に予約した中身(同じなら入れ直さない)
+  static String? _scheduledSignature;
+
   /// 朝の通知を、日付ごとに先の60日分入れ直す
   /// (1件を毎日くり返す形だと、日数と問いが予約した日のまま止まるため)
-  static Future<void> refresh(UserSettings settings, QuestionBank bank) async {
-    try {
-      await cancelMorningNotification();
-      final birthDate = settings.birthDate;
-      if (!settings.notificationEnabled ||
-          !settings.onboardingCompleted ||
-          birthDate == null) {
-        return;
-      }
-      final items = buildMorningSchedule(
-        now: DateTime.now(),
-        birthDate: birthDate,
-        hour: settings.notificationHour,
-        minute: settings.notificationMinute,
-        bank: bank,
-      );
-      for (final m in items) {
-        await _plugin.zonedSchedule(
-          m.id,
-          m.title,
-          m.body,
-          // 端末の時刻の日時を、そのままの瞬間として渡す(tz.local に頼らない)
-          tz.TZDateTime.from(m.when, tz.UTC),
-          const NotificationDetails(
-            iOS: DarwinNotificationDetails(
-              presentAlert: true,
-              presentBadge: false,
-              presentSound: true,
-            ),
-            android: AndroidNotificationDetails(
-              _morningChannelId,
-              _morningChannelName,
-              importance: Importance.high,
-              priority: Priority.high,
-            ),
+  /// 呼ばれた順に1本ずつ走らせ、後から呼ばれたら古いほうは途中でやめる
+  static Future<void> refresh(UserSettings settings, QuestionBank bank) {
+    final generation = ++_generation;
+    _queue = _queue
+        .then((_) => _refresh(settings, bank, generation))
+        .catchError((Object e) => debugPrint('Notification refresh error: $e'));
+    return _queue;
+  }
+
+  static Future<void> _refresh(
+      UserSettings settings, QuestionBank bank, int generation) async {
+    bool stale() => generation != _generation;
+    final birthDate = settings.birthDate;
+    final enabled = settings.notificationEnabled &&
+        settings.onboardingCompleted &&
+        birthDate != null;
+    final items = enabled
+        ? buildMorningSchedule(
+            now: DateTime.now(),
+            birthDate: birthDate,
+            hour: settings.notificationHour,
+            minute: settings.notificationMinute,
+            bank: bank,
+          )
+        : const <MorningItem>[];
+    final signature =
+        items.map((m) => '${m.id}|${m.when}|${m.title}|${m.body}').join('\n');
+    if (signature == _scheduledSignature) return;
+
+    await cancelMorningNotification();
+    _scheduledSignature = null;
+    for (final m in items) {
+      if (stale()) return;
+      await _plugin.zonedSchedule(
+        m.id,
+        m.title,
+        m.body,
+        tz.TZDateTime(tz.local, m.when.year, m.when.month, m.when.day,
+            m.when.hour, m.when.minute),
+        const NotificationDetails(
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: false,
+            presentSound: true,
           ),
-          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
-        );
-      }
-    } catch (e) {
-      debugPrint('Notification refresh error: $e');
+          android: AndroidNotificationDetails(
+            _morningChannelId,
+            _morningChannelName,
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        // 端末の時刻の「朝7時」として予約する(旅行先でも現地の朝に届く)
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+      );
     }
+    if (!stale()) _scheduledSignature = signature;
   }
 
   static Future<void> cancelMorningNotification() async {

@@ -20,6 +20,13 @@ class BucketItemRepository {
       {int? personId, String? sourceQuestionId}) async {
     final trimmed = title.trim();
     if (trimmed.isEmpty) return;
+    // 同じものを何度も入れない(まだのものに同じ文があれば足さない)
+    final exists = await _isar.bucketItems
+        .filter()
+        .titleEqualTo(trimmed)
+        .doneAtIsNull()
+        .isNotEmpty();
+    if (exists) return;
     final item = BucketItem()
       ..title = trimmed
       ..personId = personId

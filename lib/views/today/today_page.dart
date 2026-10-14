@@ -36,6 +36,12 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   String? _stampId;
   String? _lastYearAnswer;
 
+  /// 答える欄を書き換えて、まだ保存していない
+  bool _dirty = false;
+
+  /// 入力中に0時を過ぎたので、欄から離れたら切り替える
+  bool _switchPending = false;
+
   Timer? _idleTimer;
   Timer? _midnightTimer;
   late final AppLifecycleListener _lifecycleListener;
@@ -50,7 +56,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
     // フォーカスが外れた時に保存
     _answerFocus.addListener(() {
-      if (!_answerFocus.hasFocus) _saveAnswer();
+      if (_answerFocus.hasFocus) return;
+      _saveAnswer();
+      if (_switchPending) _switchDayIfNeeded();
     });
 
     _lifecycleListener = AppLifecycleListener(
@@ -131,8 +139,14 @@ class _TodayPageState extends ConsumerState<TodayPage> {
       if (!mounted || date != _date) return;
       setState(() {
         _stampId = record?.stamp;
-        _answerController.text = record?.answer ?? '';
-        _lastYearAnswer = lastYear?.answer;
+        // 入力中の文は上書きしない
+        if (!_dirty && !_answerFocus.hasFocus) {
+          _answerController.text = record?.answer ?? '';
+        }
+        // 1年前の答えは、同じ問いに答えていたときだけ出す
+        _lastYearAnswer = lastYear?.morningQuestionId == _question.id
+            ? lastYear?.answer
+            : null;
       });
     } catch (e) {
       debugPrint('Today record load error: $e');
@@ -162,6 +176,12 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   Future<void> _switchDayIfNeeded() async {
     final today = dateOnly(DateTime.now());
     if (today == _date) return;
+    // 入力中なら、欄から離れるまで待つ(書いている途中で欄が空にならないように)
+    if (_answerFocus.hasFocus) {
+      _switchPending = true;
+      return;
+    }
+    _switchPending = false;
     await _saveAnswer();
     if (!mounted) return;
     setState(() {
@@ -177,6 +197,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
   // 入力変更時: 2秒アイドルで保存
   void _onAnswerChanged(String _) {
+    _dirty = true;
     _idleTimer?.cancel();
     _idleTimer = Timer(const Duration(milliseconds: 2000), () {
       if (mounted) _saveAnswer();
@@ -184,8 +205,11 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     setState(() {}); // 「やりたいことリストに入れる」の出し入れのため
   }
 
+  /// 書き換えたときだけ保存する(ほかの画面で直した答えを、古い文で上書きしないように)
   Future<void> _saveAnswer() async {
     _idleTimer?.cancel();
+    if (!_dirty) return;
+    _dirty = false;
     try {
       await ref.read(dailyRecordRepositoryProvider).setAnswer(
           _date, _answerController.text,
@@ -222,7 +246,6 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
   @override
   void dispose() {
-    _saveAnswer();
     _idleTimer?.cancel();
     _midnightTimer?.cancel();
     _lifecycleListener.dispose();

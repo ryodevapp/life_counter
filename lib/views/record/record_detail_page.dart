@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/daily_record.dart';
 import '../../models/stamp.dart';
+import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
@@ -84,7 +85,12 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
   }
 
   Future<void> _save() async {
-    final r = widget.record;
+    // 開いてからほかの画面やウィジェットで変わった項目(スタンプなど)を消さないよう、読み直してから書く
+    final r = await ref
+            .read(dailyRecordRepositoryProvider)
+            .getByDate(widget.record.date) ??
+        widget.record;
+    r.morningQuestionId ??= ref.read(questionBankProvider).forDate(r.date).id;
     r.answer = _answerCtrl.text.trim().isNotEmpty ? _answerCtrl.text : null;
     r.gratitude =
         _gratitudeCtrl.text.isNotEmpty ? _gratitudeCtrl.text : null;
