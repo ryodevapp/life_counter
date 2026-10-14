@@ -86,7 +86,9 @@ class TodayQuestionCard extends StatelessWidget {
               VoiceInputButton(onResult: (text) {
                 final current = answerController.text;
                 var joined = current.isEmpty ? text : '$current $text';
-                if (joined.length > 1000) joined = joined.substring(0, 1000);
+                if (joined.characters.length > 1000) {
+                  joined = joined.characters.take(1000).toString();
+                }
                 answerController.text = joined;
                 onAnswerChanged(joined);
               }),

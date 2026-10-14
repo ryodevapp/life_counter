@@ -16,22 +16,24 @@ class BucketItemRepository {
   Future<List<BucketItem>> getAll() async =>
       sortBucketItems(await _isar.bucketItems.where().findAll());
 
-  Future<void> add(String title,
+  /// 足したら true。空か、まだのものに同じ文があれば足さずに false
+  Future<bool> add(String title,
       {int? personId, String? sourceQuestionId}) async {
     final trimmed = title.trim();
-    if (trimmed.isEmpty) return;
+    if (trimmed.isEmpty) return false;
     // 同じものを何度も入れない(まだのものに同じ文があれば足さない)
     final exists = await _isar.bucketItems
         .filter()
         .titleEqualTo(trimmed)
         .doneAtIsNull()
         .isNotEmpty();
-    if (exists) return;
+    if (exists) return false;
     final item = BucketItem()
       ..title = trimmed
       ..personId = personId
       ..sourceQuestionId = sourceQuestionId;
     await _isar.writeTxn(() => _isar.bucketItems.put(item));
+    return true;
   }
 
   Future<void> toggleDone(int id) async {

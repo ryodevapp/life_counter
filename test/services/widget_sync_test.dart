@@ -90,6 +90,9 @@ void main() {
     expect(remainingAfterImport(jsonEncode([a]), jsonEncode([a, b])), jsonEncode([b]));
     expect(remainingAfterImport(jsonEncode([a]), jsonEncode([a])), '[]');
     expect(remainingAfterImport(jsonEncode([a]), null), '[]');
+    // キーの並びが違っても同じ件とみなす
+    expect(remainingAfterImport('[{"d":"2026-10-15","s":"happy","t":1}]',
+        '[{"t":1,"d":"2026-10-15","s":"happy"}]'), '[]');
   });
 
   group('widgetStampWins', () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../providers/question_bank_provider.dart';
+import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
@@ -118,6 +119,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   setState(() => _currentIndex = i);
+                  if (i == 0) ref.read(todayReloadProvider.notifier).state++;
                   if (i == 1) _recordKey.currentState?.reload();
                 },
                 child: Padding(

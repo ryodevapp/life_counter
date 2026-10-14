@@ -35,9 +35,10 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
                 if (mounted) setState(() => _listening = false);
               }
             },
-            onError: (_) {
+            onError: (error) {
               if (mounted) setState(() => _listening = false);
-              _tellUnavailable();
+              // 聞き取れなかっただけのときは何も言わない。使えない理由があるときだけ知らせる
+              if (error.permanent) _tellUnavailable();
             },
           );
     } catch (_) {

@@ -91,10 +91,12 @@ String remainingAfterImport(String imported, String? latest) {
     final done = jsonDecode(imported);
     final now = jsonDecode(latest);
     if (done is! List || now is! List) return '[]';
-    final doneKeys = done.map(jsonEncode).toSet();
+    // Swift はキーの並びを決めずに書くので、値を決まった順でつないで見分ける
+    String key(Object? e) => e is Map ? '${e['d']}|${e['s']}|${e['t']}' : '$e';
+    final doneKeys = done.map(key).toSet();
     return jsonEncode([
       for (final e in now)
-        if (!doneKeys.contains(jsonEncode(e))) e,
+        if (!doneKeys.contains(key(e))) e,
     ]);
   } catch (_) {
     return '[]';

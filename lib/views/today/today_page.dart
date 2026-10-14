@@ -9,6 +9,7 @@ import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
+import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/morning_schedule.dart';
 import '../../services/widget_sync.dart';
@@ -215,6 +216,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
           _date, _answerController.text,
           questionId: _question.id);
     } catch (e) {
+      _dirty = true; // 次の機会にもう一度保存する
       debugPrint('Auto save error: $e');
     }
   }
@@ -238,10 +240,12 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   Future<void> _addToBucket() async {
     final title = _answerController.text.trim();
     if (title.isEmpty) return;
-    await ref
+    final added = await ref
         .read(bucketItemRepositoryProvider)
         .add(title, sourceQuestionId: _question.id);
-    if (mounted) AppToast.success(context, 'やりたいことリストに入れました');
+    if (!mounted) return;
+    AppToast.success(
+        context, added ? 'やりたいことリストに入れました' : 'もう、やりたいことリストに入っています');
   }
 
   @override
@@ -256,6 +260,8 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 今日タブに戻ったら、ほかの画面で直した答えを読み直す(入力中は上書きしない)
+    ref.listen(todayReloadProvider, (_, _) => _loadDay());
     final settings = ref.watch(userSettingsProvider);
     final birthDate = settings.birthDate;
     if (birthDate == null) {
