@@ -44,6 +44,9 @@ post_install do |installer|
       if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 15.0
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
       end
+      # Xcode 27 の lipo は1つずつしか確かめられず、Flutter の2つまとめた確認が失敗するため、
+      # シミュレーター向けは Apple Silicon(arm64)だけにする。実機向けには関係しない
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'x86_64'
     end
   end
 end

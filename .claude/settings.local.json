@@ -38,5 +38,8 @@
       "Bash(git push:*)",
       "Bash(gh api:*)"
     ]
+  },
+  "sandbox": {
+    "excludedCommands": ["flutter *", "dart *", "pod *", "xcodebuild *", "xcrun *"]
   }
 }

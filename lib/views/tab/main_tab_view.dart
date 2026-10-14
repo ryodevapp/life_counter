@@ -62,7 +62,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   @override
   Widget build(BuildContext context) {
     // 通知の時刻・生年月日などを変えたら入れ直す
-    ref.listen(userSettingsProvider, (_, __) => _refreshNotifications());
+    ref.listen(userSettingsProvider, (_, _) => _refreshNotifications());
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       backgroundColor: AppColors.bg,

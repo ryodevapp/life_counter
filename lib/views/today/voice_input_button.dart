@@ -48,8 +48,8 @@ class _VoiceInputButtonState extends State<VoiceInputButton> {
     }
     setState(() => _listening = true);
     await _speech.listen(
-      localeId: 'ja_JP',
       listenOptions: SpeechListenOptions(
+        localeId: 'ja_JP',
         onDevice: true,
         partialResults: false,
         cancelOnError: true,
