@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/important_person.dart';
 import '../../models/user_settings.dart';
+import '../../providers/important_person_provider.dart';
+import '../../providers/isar_provider.dart';
+import '../../providers/question_bank_provider.dart';
 import '../../providers/user_settings_provider.dart';
+import '../../services/record_export.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_toast.dart';
@@ -61,6 +66,9 @@ class MyPage extends ConsumerWidget {
             AppCard(
               child: Column(
                 children: [
+                  _linkRow('記録を書き出す',
+                      onTap: () => _exportRecords(context, ref)),
+                  _divider(),
                   _linkRow('フィードバックを送る',
                       onTap: () => _sendFeedback(context)),
                   _divider(),
@@ -272,6 +280,27 @@ class MyPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// 記録をテキストにして共有シートに渡す(ファイルは作らない)
+  static Future<void> _exportRecords(BuildContext context, WidgetRef ref) async {
+    final box = context.findRenderObject() as RenderBox?;
+    final records = await ref.read(dailyRecordRepositoryProvider).getAll();
+    final buckets = await ref.read(bucketItemRepositoryProvider).getAll();
+    final persons = ref.read(importantPersonsProvider).valueOrNull ?? const [];
+    final text = exportRecordsAsText(
+      records,
+      buckets,
+      ref.read(questionBankProvider),
+      personNames: {for (final p in persons) p.id: p.nickname},
+    );
+    await SharePlus.instance.share(ShareParams(
+      text: text,
+      subject: 'LifeCounter の記録',
+      // iPad は共有の吹き出しの位置が要る
+      sharePositionOrigin:
+          box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+    ));
   }
 
   static Widget _linkRow(String label, {VoidCallback? onTap}) {

@@ -3,6 +3,7 @@ import '../shared/app_segmented_control.dart';
 import '../shared/app_text_styles.dart';
 import 'your_time_section.dart';
 import 'important_people_section.dart';
+import 'bucket_section.dart';
 
 /// 人生タブ（セグメンテッドコントロール付き）
 class LifeTabPage extends StatefulWidget {
@@ -39,6 +40,8 @@ class _LifeTabPageState extends State<LifeTabPage> {
               const YourTimeSection()
             else
               const ImportantPeopleSection(),
+            const SizedBox(height: 32),
+            const BucketSection(),
           ],
         ),
       ),

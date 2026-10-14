@@ -1,0 +1,2195 @@
+{
+  "status": "draft",
+  "questions": [
+    {
+      "id": "q001",
+      "category": "self",
+      "text": "今日という日に、名前をつけるとしたら？",
+      "dayOfYear": 1
+    },
+    {
+      "id": "q002",
+      "category": "people",
+      "text": "大切な人に、照れくさくて言えない言葉は？",
+      "dayOfYear": 2
+    },
+    {
+      "id": "q003",
+      "category": "life",
+      "text": "いまの暮らしの中で、感謝したいものは？",
+      "dayOfYear": 3
+    },
+    {
+      "id": "q004",
+      "category": "self",
+      "text": "最近、ほっとできた時間はいつでしたか？",
+      "dayOfYear": 4
+    },
+    {
+      "id": "q005",
+      "category": "people",
+      "text": "家族と一緒に乗りこえた出来事はありますか？",
+      "dayOfYear": 5
+    },
+    {
+      "id": "q006",
+      "category": "bucket",
+      "text": "いつか見てみたい自然の風景は？",
+      "dayOfYear": 6
+    },
+    {
+      "id": "q007",
+      "category": "self",
+      "text": "今日、心が晴れそうなことを1つ挙げると？",
+      "dayOfYear": 7
+    },
+    {
+      "id": "q008",
+      "category": "life",
+      "text": "これから身につけたい力は何ですか？",
+      "dayOfYear": 8
+    },
+    {
+      "id": "q009",
+      "category": "people",
+      "text": "最近、誰かを思い出して心が温かくなりましたか？",
+      "dayOfYear": 9
+    },
+    {
+      "id": "e2",
+      "category": "self",
+      "text": "好きなことに使える30分があったら、何をする？",
+      "dayOfYear": 10
+    },
+    {
+      "id": "q010",
+      "category": "self",
+      "text": "最近、季節のものを味わいましたか？",
+      "dayOfYear": 11
+    },
+    {
+      "id": "q011",
+      "category": "people",
+      "text": "家族から受け継いだもので、大事にしているものは？",
+      "dayOfYear": 12
+    },
+    {
+      "id": "q012",
+      "category": "life",
+      "text": "あなたがつい応援したくなる人は？",
+      "dayOfYear": 13
+    },
+    {
+      "id": "q013",
+      "category": "self",
+      "text": "今日、誰かの話でおもしろかったことは？",
+      "dayOfYear": 14
+    },
+    {
+      "id": "q014",
+      "category": "people",
+      "text": "大切な人と、ゆっくり話すならどこで？",
+      "dayOfYear": 15
+    },
+    {
+      "id": "q015",
+      "category": "bucket",
+      "text": "いつか挑戦してみたいスポーツは？",
+      "dayOfYear": 16
+    },
+    {
+      "id": "q016",
+      "category": "self",
+      "text": "最近、ちょっと背伸びして挑戦したことは？",
+      "dayOfYear": 17
+    },
+    {
+      "id": "q017",
+      "category": "life",
+      "text": "「ありがとう」と言われてうれしかった仕事は？",
+      "dayOfYear": 18
+    },
+    {
+      "id": "q018",
+      "category": "people",
+      "text": "今日、誰かに声をかけるとしたら誰に？",
+      "dayOfYear": 19
+    },
+    {
+      "id": "q019",
+      "category": "self",
+      "text": "最近、自分の声に耳をすませたことは？",
+      "dayOfYear": 20
+    },
+    {
+      "id": "q020",
+      "category": "self",
+      "text": "今日、窓の外に何が見えますか？",
+      "dayOfYear": 21
+    },
+    {
+      "id": "q021",
+      "category": "people",
+      "text": "大切な人が、あなたに教えてくれたことは？",
+      "dayOfYear": 22
+    },
+    {
+      "id": "q022",
+      "category": "life",
+      "text": "これから出会いたい人は、どんな人ですか？",
+      "dayOfYear": 23
+    },
+    {
+      "id": "q023",
+      "category": "self",
+      "text": "いま、ほしいのは休息と刺激のどちらですか？",
+      "dayOfYear": 24
+    },
+    {
+      "id": "q024",
+      "category": "people",
+      "text": "家族とのやりとりで、くすっと笑えた話は？",
+      "dayOfYear": 25
+    },
+    {
+      "id": "q025",
+      "category": "bucket",
+      "text": "見に行ってみたいお祭りやイベントは？",
+      "dayOfYear": 26
+    },
+    {
+      "id": "q026",
+      "category": "self",
+      "text": "今日の自分に、ひとことかけるとしたら？",
+      "dayOfYear": 27
+    },
+    {
+      "id": "m4",
+      "category": "life",
+      "text": "あなたが大切にしている価値観を、今日どう体現する？",
+      "dayOfYear": 28
+    },
+    {
+      "id": "q027",
+      "category": "people",
+      "text": "家族の得意なことで、尊敬しているものは？",
+      "dayOfYear": 29
+    },
+    {
+      "id": "a5",
+      "category": "self",
+      "text": "今日、1つだけ習慣を変えるとしたら何を変える？",
+      "dayOfYear": 30
+    },
+    {
+      "id": "q028",
+      "category": "self",
+      "text": "今日、肩の力を抜いてもいいことはどれですか？",
+      "dayOfYear": 31
+    },
+    {
+      "id": "q029",
+      "category": "people",
+      "text": "大切な人に会いに行くなら、何を持っていく？",
+      "dayOfYear": 32
+    },
+    {
+      "id": "q030",
+      "category": "life",
+      "text": "あなたが大切にしたい価値観を、3つ挙げると？",
+      "dayOfYear": 33
+    },
+    {
+      "id": "q031",
+      "category": "self",
+      "text": "最近、昔の自分より成長したと感じる点は？",
+      "dayOfYear": 34
+    },
+    {
+      "id": "q032",
+      "category": "people",
+      "text": "子どもの頃、家族と過ごした季節の行事は？",
+      "dayOfYear": 35
+    },
+    {
+      "id": "q033",
+      "category": "bucket",
+      "text": "行ってみたい国はどこですか？",
+      "dayOfYear": 36
+    },
+    {
+      "id": "q034",
+      "category": "self",
+      "text": "今日、「ありがたいな」と感じた場面は？",
+      "dayOfYear": 37
+    },
+    {
+      "id": "q035",
+      "category": "life",
+      "text": "あなたが安心できる居場所はどこですか？",
+      "dayOfYear": 38
+    },
+    {
+      "id": "q036",
+      "category": "people",
+      "text": "友だちにもらった言葉で、支えになったものは？",
+      "dayOfYear": 39
+    },
+    {
+      "id": "q037",
+      "category": "self",
+      "text": "最近、思い出し笑いをしたことはありますか？",
+      "dayOfYear": 40
+    },
+    {
+      "id": "q038",
+      "category": "self",
+      "text": "今日、10分早く起きられたら何をしますか？",
+      "dayOfYear": 41
+    },
+    {
+      "id": "q039",
+      "category": "people",
+      "text": "最近、誰かの話をじっくり聞けましたか？",
+      "dayOfYear": 42
+    },
+    {
+      "id": "q040",
+      "category": "life",
+      "text": "あなたが尊敬する生き方は、どんなもの？",
+      "dayOfYear": 43
+    },
+    {
+      "id": "q041",
+      "category": "self",
+      "text": "いま、自分が満たされていると感じることは？",
+      "dayOfYear": 44
+    },
+    {
+      "id": "q042",
+      "category": "people",
+      "text": "大切な人と一緒に見た景色で、心に残るものは？",
+      "dayOfYear": 45
+    },
+    {
+      "id": "q043",
+      "category": "bucket",
+      "text": "子どもの頃にやりたかったことで、いまできることは？",
+      "dayOfYear": 46
+    },
+    {
+      "id": "q044",
+      "category": "self",
+      "text": "いま、ちょっと試してみたい新しいことは？",
+      "dayOfYear": 47
+    },
+    {
+      "id": "q045",
+      "category": "life",
+      "text": "あなたが人に贈りたい「よいもの」は何ですか？",
+      "dayOfYear": 48
+    },
+    {
+      "id": "q046",
+      "category": "people",
+      "text": "家族に似ていると言われるところは？",
+      "dayOfYear": 49
+    },
+    {
+      "id": "a1",
+      "category": "self",
+      "text": "今日、小さくても達成したいことは何？",
+      "dayOfYear": 50
+    },
+    {
+      "id": "q047",
+      "category": "self",
+      "text": "今日、何も予定のない時間があったら？",
+      "dayOfYear": 51
+    },
+    {
+      "id": "q048",
+      "category": "people",
+      "text": "最近、誰かに「おつかれさま」と言いましたか？",
+      "dayOfYear": 52
+    },
+    {
+      "id": "q049",
+      "category": "life",
+      "text": "子どもの頃の夢は、いまのあなたとつながっている？",
+      "dayOfYear": 53
+    },
+    {
+      "id": "q050",
+      "category": "self",
+      "text": "いまの気分を天気にたとえると？",
+      "dayOfYear": 54
+    },
+    {
+      "id": "q051",
+      "category": "people",
+      "text": "昔の先生や先輩で、感謝したい人はいますか？",
+      "dayOfYear": 55
+    },
+    {
+      "id": "q052",
+      "category": "bucket",
+      "text": "もう一度行きたい思い出の場所は？",
+      "dayOfYear": 56
+    },
+    {
+      "id": "q053",
+      "category": "self",
+      "text": "今日、香りで楽しみたいものは？",
+      "dayOfYear": 57
+    },
+    {
+      "id": "q054",
+      "category": "life",
+      "text": "あなたにとって「家族」とは何でしょう？",
+      "dayOfYear": 58
+    },
+    {
+      "id": "q055",
+      "category": "people",
+      "text": "家族の誕生日に、どんな思い出がありますか？",
+      "dayOfYear": 59
+    },
+    {
+      "id": "q056",
+      "category": "self",
+      "text": "いま、身のまわりで気に入っている道具は？",
+      "dayOfYear": 60
+    },
+    {
+      "id": "q057",
+      "category": "self",
+      "text": "最近、「おいしい」と心から思ったものは？",
+      "dayOfYear": 61
+    },
+    {
+      "id": "q058",
+      "category": "people",
+      "text": "最近、懐かしい人から連絡はありましたか？",
+      "dayOfYear": 62
+    },
+    {
+      "id": "q059",
+      "category": "life",
+      "text": "あなたが自然体でいられる相手は誰ですか？",
+      "dayOfYear": 63
+    },
+    {
+      "id": "q060",
+      "category": "self",
+      "text": "最近、自分で決めてよかったと思うことは？",
+      "dayOfYear": 64
+    },
+    {
+      "id": "q061",
+      "category": "people",
+      "text": "大切な人の写真を、最近見返しましたか？",
+      "dayOfYear": 65
+    },
+    {
+      "id": "q062",
+      "category": "bucket",
+      "text": "いつか作ってみたい料理は？",
+      "dayOfYear": 66
+    },
+    {
+      "id": "q063",
+      "category": "self",
+      "text": "今日、好きな飲みものを飲むならどれにする？",
+      "dayOfYear": 67
+    },
+    {
+      "id": "q064",
+      "category": "life",
+      "text": "誰かの役に立てたと感じたのはどんなとき？",
+      "dayOfYear": 68
+    },
+    {
+      "id": "q065",
+      "category": "people",
+      "text": "大切な人と一緒に笑い転げた思い出は？",
+      "dayOfYear": 69
+    },
+    {
+      "id": "q066",
+      "category": "self",
+      "text": "最近、思わず声を出して笑ったのはどんなとき？",
+      "dayOfYear": 70
+    },
+    {
+      "id": "q067",
+      "category": "self",
+      "text": "最近、いい匂いだなと感じたものは？",
+      "dayOfYear": 71
+    },
+    {
+      "id": "q068",
+      "category": "people",
+      "text": "誰かに教えてあげて、喜ばれたことは？",
+      "dayOfYear": 72
+    },
+    {
+      "id": "q069",
+      "category": "life",
+      "text": "あなたにとって、人とのつながりとは？",
+      "dayOfYear": 73
+    },
+    {
+      "id": "q070",
+      "category": "self",
+      "text": "いま、少し気がかりなことはありますか？",
+      "dayOfYear": 74
+    },
+    {
+      "id": "q071",
+      "category": "people",
+      "text": "子どもの頃の誕生日で、覚えている日は？",
+      "dayOfYear": 75
+    },
+    {
+      "id": "q072",
+      "category": "bucket",
+      "text": "大切な人と一緒に見たいものは？",
+      "dayOfYear": 76
+    },
+    {
+      "id": "q073",
+      "category": "self",
+      "text": "今日、1つ片づけるとしたら何を？",
+      "dayOfYear": 77
+    },
+    {
+      "id": "q074",
+      "category": "life",
+      "text": "あなたにとって、忘れたくない景色は？",
+      "dayOfYear": 78
+    },
+    {
+      "id": "q075",
+      "category": "people",
+      "text": "大切な人に教わったことで、いまも役立つことは？",
+      "dayOfYear": 79
+    },
+    {
+      "id": "q076",
+      "category": "self",
+      "text": "今日、夕方の自分にどんな時間を残したい？",
+      "dayOfYear": 80
+    },
+    {
+      "id": "q077",
+      "category": "people",
+      "text": "大切な人との思い出の食べものは何ですか？",
+      "dayOfYear": 81
+    },
+    {
+      "id": "q078",
+      "category": "self",
+      "text": "いま聴きたい音楽は、どんな曲ですか？",
+      "dayOfYear": 82
+    },
+    {
+      "id": "q079",
+      "category": "life",
+      "text": "仕事や役割の中で、やりがいを感じるときは？",
+      "dayOfYear": 83
+    },
+    {
+      "id": "q080",
+      "category": "self",
+      "text": "今日、目にとまった色は何色でしたか？",
+      "dayOfYear": 84
+    },
+    {
+      "id": "q081",
+      "category": "people",
+      "text": "子どもの頃、家族に言われてうれしかった言葉は？",
+      "dayOfYear": 85
+    },
+    {
+      "id": "q082",
+      "category": "bucket",
+      "text": "友だちと一緒にやってみたいことは？",
+      "dayOfYear": 86
+    },
+    {
+      "id": "q083",
+      "category": "self",
+      "text": "いま、いちばん落ち着く時間帯はいつですか？",
+      "dayOfYear": 87
+    },
+    {
+      "id": "q084",
+      "category": "life",
+      "text": "人生で、勇気を出してよかった場面は？",
+      "dayOfYear": 88
+    },
+    {
+      "id": "q085",
+      "category": "people",
+      "text": "大切な人と出会ったきっかけを覚えていますか？",
+      "dayOfYear": 89
+    },
+    {
+      "id": "q086",
+      "category": "self",
+      "text": "いま、もう少し大事にしたい時間は？",
+      "dayOfYear": 90
+    },
+    {
+      "id": "q087",
+      "category": "people",
+      "text": "家族の思い出で、次の世代に伝えたい話は？",
+      "dayOfYear": 91
+    },
+    {
+      "id": "q088",
+      "category": "self",
+      "text": "いま、続けたいと思っている小さな習慣は？",
+      "dayOfYear": 92
+    },
+    {
+      "id": "q089",
+      "category": "life",
+      "text": "これまでの選択で、よかったと思うことは？",
+      "dayOfYear": 93
+    },
+    {
+      "id": "q090",
+      "category": "self",
+      "text": "今日、5分だけ自由に使えるなら何をする？",
+      "dayOfYear": 94
+    },
+    {
+      "id": "r2",
+      "category": "people",
+      "text": "大切な人に、今日伝えたい一言は？",
+      "dayOfYear": 95
+    },
+    {
+      "id": "q091",
+      "category": "bucket",
+      "text": "一度は乗ってみたい乗りものは？",
+      "dayOfYear": 96
+    },
+    {
+      "id": "q092",
+      "category": "self",
+      "text": "最近、「よくやったな」と思えたことは？",
+      "dayOfYear": 97
+    },
+    {
+      "id": "q093",
+      "category": "life",
+      "text": "あなたにとって、大切な人とはどんな人？",
+      "dayOfYear": 98
+    },
+    {
+      "id": "q094",
+      "category": "people",
+      "text": "昔、誰かに励まされて救われたことは？",
+      "dayOfYear": 99
+    },
+    {
+      "id": "q095",
+      "category": "self",
+      "text": "最近、小さな勇気を出せたことはありますか？",
+      "dayOfYear": 100
+    },
+    {
+      "id": "q096",
+      "category": "people",
+      "text": "大切な人と一緒に作ったものはありますか？",
+      "dayOfYear": 101
+    },
+    {
+      "id": "q097",
+      "category": "self",
+      "text": "最近、自分の意外な一面に気づきましたか？",
+      "dayOfYear": 102
+    },
+    {
+      "id": "q098",
+      "category": "life",
+      "text": "人生で、誇りに思っている選択は何ですか？",
+      "dayOfYear": 103
+    },
+    {
+      "id": "q099",
+      "category": "self",
+      "text": "最近、思いきってよかったことは何ですか？",
+      "dayOfYear": 104
+    },
+    {
+      "id": "q100",
+      "category": "people",
+      "text": "家族と囲んだ食卓で、よく話していたことは？",
+      "dayOfYear": 105
+    },
+    {
+      "id": "q101",
+      "category": "bucket",
+      "text": "一度は泊まりがけで行きたい場所は？",
+      "dayOfYear": 106
+    },
+    {
+      "id": "q102",
+      "category": "self",
+      "text": "最近、思わず写真に撮りたくなったものは？",
+      "dayOfYear": 107
+    },
+    {
+      "id": "q103",
+      "category": "life",
+      "text": "人生の楽しみを、3つ挙げるとしたら？",
+      "dayOfYear": 108
+    },
+    {
+      "id": "q104",
+      "category": "people",
+      "text": "子どもの頃、家族とした遊びで覚えているものは？",
+      "dayOfYear": 109
+    },
+    {
+      "id": "q105",
+      "category": "self",
+      "text": "最近、心に残った言葉はありますか？",
+      "dayOfYear": 110
+    },
+    {
+      "id": "q106",
+      "category": "people",
+      "text": "家族の手料理で、作り方を聞いておきたいものは？",
+      "dayOfYear": 111
+    },
+    {
+      "id": "q107",
+      "category": "self",
+      "text": "今日、自分の機嫌をとる方法は何ですか？",
+      "dayOfYear": 112
+    },
+    {
+      "id": "q108",
+      "category": "life",
+      "text": "人から言われて、自信になった言葉は？",
+      "dayOfYear": 113
+    },
+    {
+      "id": "q109",
+      "category": "self",
+      "text": "最近、ふと懐かしくなったものは何ですか？",
+      "dayOfYear": 114
+    },
+    {
+      "id": "r1",
+      "category": "people",
+      "text": "今日、誰かに「ありがとう」を伝えるとしたら？",
+      "dayOfYear": 115
+    },
+    {
+      "id": "q110",
+      "category": "bucket",
+      "text": "来年までにやってみたいことは？",
+      "dayOfYear": 116
+    },
+    {
+      "id": "q111",
+      "category": "self",
+      "text": "最近、自分のために使ってよかったお金は？",
+      "dayOfYear": 117
+    },
+    {
+      "id": "q112",
+      "category": "life",
+      "text": "あなたの強みを、ひと言で言うと？",
+      "dayOfYear": 118
+    },
+    {
+      "id": "m2",
+      "category": "people",
+      "text": "あなたの行動が誰かの助けになるとしたら、今日何をする？",
+      "dayOfYear": 119
+    },
+    {
+      "id": "a3",
+      "category": "self",
+      "text": "今週中にやり遂げたいことは？今日はそのために何ができる？",
+      "dayOfYear": 120
+    },
+    {
+      "id": "q113",
+      "category": "people",
+      "text": "離れて暮らす家族に、いま伝えたいことは？",
+      "dayOfYear": 121
+    },
+    {
+      "id": "q114",
+      "category": "self",
+      "text": "今日の空を見て、何を感じましたか？",
+      "dayOfYear": 122
+    },
+    {
+      "id": "q115",
+      "category": "life",
+      "text": "これから先も、ずっと続けたいことは？",
+      "dayOfYear": 123
+    },
+    {
+      "id": "q116",
+      "category": "self",
+      "text": "最近、肩の荷がおりたことはありますか？",
+      "dayOfYear": 124
+    },
+    {
+      "id": "q117",
+      "category": "people",
+      "text": "子どもの頃、家で楽しみにしていた行事は？",
+      "dayOfYear": 125
+    },
+    {
+      "id": "q118",
+      "category": "bucket",
+      "text": "いつか歩いてみたい道は？",
+      "dayOfYear": 126
+    },
+    {
+      "id": "q119",
+      "category": "self",
+      "text": "最近、心がざわついたとき、何で落ち着きましたか？",
+      "dayOfYear": 127
+    },
+    {
+      "id": "q120",
+      "category": "life",
+      "text": "「こんな人になりたい」と思う人はいますか？",
+      "dayOfYear": 128
+    },
+    {
+      "id": "q121",
+      "category": "people",
+      "text": "子どもの頃の家の、好きだった場所は？",
+      "dayOfYear": 129
+    },
+    {
+      "id": "q122",
+      "category": "self",
+      "text": "いま、手放してもいいと思えるものは？",
+      "dayOfYear": 130
+    },
+    {
+      "id": "q123",
+      "category": "people",
+      "text": "誰かと一緒なら、やってみたいことは？",
+      "dayOfYear": 131
+    },
+    {
+      "id": "q124",
+      "category": "self",
+      "text": "いま、学んでみたいことは何ですか？",
+      "dayOfYear": 132
+    },
+    {
+      "id": "q125",
+      "category": "life",
+      "text": "あなたにとって、心が満たされる仕事とは？",
+      "dayOfYear": 133
+    },
+    {
+      "id": "q126",
+      "category": "self",
+      "text": "最近、気持ちよく体を動かせたのはいつ？",
+      "dayOfYear": 134
+    },
+    {
+      "id": "q127",
+      "category": "people",
+      "text": "家族との思い出を、1枚の絵にするなら？",
+      "dayOfYear": 135
+    },
+    {
+      "id": "q128",
+      "category": "bucket",
+      "text": "いつか食べに行きたいお店は？",
+      "dayOfYear": 136
+    },
+    {
+      "id": "q129",
+      "category": "self",
+      "text": "いま、自分にとっての「ごほうび」は何ですか？",
+      "dayOfYear": 137
+    },
+    {
+      "id": "q130",
+      "category": "life",
+      "text": "これまでに、乗りこえてきた壁は何ですか？",
+      "dayOfYear": 138
+    },
+    {
+      "id": "q131",
+      "category": "people",
+      "text": "近所や職場で、ありがたいと思う人は？",
+      "dayOfYear": 139
+    },
+    {
+      "id": "q132",
+      "category": "self",
+      "text": "いま、気になっている季節のものは？",
+      "dayOfYear": 140
+    },
+    {
+      "id": "q133",
+      "category": "people",
+      "text": "最近、家族のことでうれしかったことは？",
+      "dayOfYear": 141
+    },
+    {
+      "id": "q134",
+      "category": "self",
+      "text": "今日、大切にしたいひと言は何ですか？",
+      "dayOfYear": 142
+    },
+    {
+      "id": "q135",
+      "category": "life",
+      "text": "あなたの人生を本にするなら、題名は？",
+      "dayOfYear": 143
+    },
+    {
+      "id": "q136",
+      "category": "self",
+      "text": "最近、新しく知っておもしろかったことは？",
+      "dayOfYear": 144
+    },
+    {
+      "id": "q137",
+      "category": "people",
+      "text": "大切な人に、いつか聞いてみたい質問は？",
+      "dayOfYear": 145
+    },
+    {
+      "id": "q138",
+      "category": "bucket",
+      "text": "身につけてみたい特技は？",
+      "dayOfYear": 146
+    },
+    {
+      "id": "q139",
+      "category": "self",
+      "text": "今日の朝ごはんで、おいしかったものは？",
+      "dayOfYear": 147
+    },
+    {
+      "id": "q140",
+      "category": "people",
+      "text": "家族と過ごす年末年始の、好きな過ごし方は？",
+      "dayOfYear": 148
+    },
+    {
+      "id": "q141",
+      "category": "life",
+      "text": "1年後の今日、どんな自分でいたいですか？",
+      "dayOfYear": 149
+    },
+    {
+      "id": "q142",
+      "category": "self",
+      "text": "いま、自分を元気にしてくれるものは？",
+      "dayOfYear": 150
+    },
+    {
+      "id": "q143",
+      "category": "people",
+      "text": "家族の写真で、好きな1枚はどれですか？",
+      "dayOfYear": 151
+    },
+    {
+      "id": "q144",
+      "category": "self",
+      "text": "いまの自分が得意だと思えることは？",
+      "dayOfYear": 152
+    },
+    {
+      "id": "q145",
+      "category": "life",
+      "text": "人生の中で、いちばん成長できた時期は？",
+      "dayOfYear": 153
+    },
+    {
+      "id": "q146",
+      "category": "self",
+      "text": "いま、心地よいと感じる服はどれですか？",
+      "dayOfYear": 154
+    },
+    {
+      "id": "q147",
+      "category": "people",
+      "text": "最近、誰かとゆっくり話せましたか？",
+      "dayOfYear": 155
+    },
+    {
+      "id": "q148",
+      "category": "self",
+      "text": "今日、ひとりの時間に何をしたいですか？",
+      "dayOfYear": 156
+    },
+    {
+      "id": "q149",
+      "category": "bucket",
+      "text": "習ってみたい楽器は何ですか？",
+      "dayOfYear": 157
+    },
+    {
+      "id": "q150",
+      "category": "people",
+      "text": "最近、誰かの成長を感じたことはありますか？",
+      "dayOfYear": 158
+    },
+    {
+      "id": "q151",
+      "category": "life",
+      "text": "これからの1年で、大切にしたいテーマは？",
+      "dayOfYear": 159
+    },
+    {
+      "id": "q152",
+      "category": "self",
+      "text": "いま、自分の中で大切に育てている気持ちは？",
+      "dayOfYear": 160
+    },
+    {
+      "id": "q153",
+      "category": "people",
+      "text": "最近、誰かのやさしさに触れた場面は？",
+      "dayOfYear": 161
+    },
+    {
+      "id": "q154",
+      "category": "self",
+      "text": "今日、自分にやさしくするとしたら何をしますか？",
+      "dayOfYear": 162
+    },
+    {
+      "id": "q155",
+      "category": "life",
+      "text": "時間の使い方で、見直したいことはありますか？",
+      "dayOfYear": 163
+    },
+    {
+      "id": "q156",
+      "category": "self",
+      "text": "いま、気に入っている言葉や口ぐせは？",
+      "dayOfYear": 164
+    },
+    {
+      "id": "q157",
+      "category": "people",
+      "text": "最近、誰かと手紙やメッセージを交わしましたか？",
+      "dayOfYear": 165
+    },
+    {
+      "id": "q158",
+      "category": "self",
+      "text": "今日、ひとつ「ていねい」にできることは？",
+      "dayOfYear": 166
+    },
+    {
+      "id": "q159",
+      "category": "bucket",
+      "text": "いつか育ててみたい植物は？",
+      "dayOfYear": 167
+    },
+    {
+      "id": "q160",
+      "category": "people",
+      "text": "友だちとの思い出の場所はどこですか？",
+      "dayOfYear": 168
+    },
+    {
+      "id": "q161",
+      "category": "life",
+      "text": "人生の中で、ゆずれないものは何ですか？",
+      "dayOfYear": 169
+    },
+    {
+      "id": "q162",
+      "category": "self",
+      "text": "最近、気持ちが軽くなったきっかけは？",
+      "dayOfYear": 170
+    },
+    {
+      "id": "q163",
+      "category": "people",
+      "text": "家族から教わった料理や家事はありますか？",
+      "dayOfYear": 171
+    },
+    {
+      "id": "q164",
+      "category": "self",
+      "text": "今日のお昼に、何を食べたい気分ですか？",
+      "dayOfYear": 172
+    },
+    {
+      "id": "q165",
+      "category": "life",
+      "text": "これからも学び続けたいことは何ですか？",
+      "dayOfYear": 173
+    },
+    {
+      "id": "q166",
+      "category": "self",
+      "text": "最近、思いがけずうれしかったことは？",
+      "dayOfYear": 174
+    },
+    {
+      "id": "q167",
+      "category": "people",
+      "text": "家族の中で、あなただけが知っている話は？",
+      "dayOfYear": 175
+    },
+    {
+      "id": "q168",
+      "category": "self",
+      "text": "今日の自分の調子を、10点満点でつけると？",
+      "dayOfYear": 176
+    },
+    {
+      "id": "q169",
+      "category": "bucket",
+      "text": "行ってみたい美術館や博物館は？",
+      "dayOfYear": 177
+    },
+    {
+      "id": "q170",
+      "category": "people",
+      "text": "家族と一緒に過ごす時間で、増やしたいものは？",
+      "dayOfYear": 178
+    },
+    {
+      "id": "q171",
+      "category": "life",
+      "text": "今年の自分は、去年の自分とどこが違う？",
+      "dayOfYear": 179
+    },
+    {
+      "id": "q172",
+      "category": "self",
+      "text": "最近、季節の変わり目を感じたのはどんなとき？",
+      "dayOfYear": 180
+    },
+    {
+      "id": "q173",
+      "category": "people",
+      "text": "友だちの好きなところを、1つ挙げると？",
+      "dayOfYear": 181
+    },
+    {
+      "id": "q174",
+      "category": "self",
+      "text": "最近、心が動いた本や映画のひと場面は？",
+      "dayOfYear": 182
+    },
+    {
+      "id": "q175",
+      "category": "life",
+      "text": "人生で、手放してよかったものは何ですか？",
+      "dayOfYear": 183
+    },
+    {
+      "id": "q176",
+      "category": "self",
+      "text": "いまの暮らしで、気に入っているところは？",
+      "dayOfYear": 184
+    },
+    {
+      "id": "q177",
+      "category": "people",
+      "text": "家族の好きな季節を知っていますか？",
+      "dayOfYear": 185
+    },
+    {
+      "id": "q178",
+      "category": "self",
+      "text": "今日の終わりに、どんな気分でいたいですか？",
+      "dayOfYear": 186
+    },
+    {
+      "id": "q179",
+      "category": "bucket",
+      "text": "いつか撮ってみたい写真は？",
+      "dayOfYear": 187
+    },
+    {
+      "id": "q180",
+      "category": "people",
+      "text": "家族の中での、あなたの役割は何ですか？",
+      "dayOfYear": 188
+    },
+    {
+      "id": "q181",
+      "category": "life",
+      "text": "将来の自分に、手紙を書くなら何を伝える？",
+      "dayOfYear": 189
+    },
+    {
+      "id": "q182",
+      "category": "self",
+      "text": "今日、耳に入ってきた音で心地よいものは？",
+      "dayOfYear": 190
+    },
+    {
+      "id": "q183",
+      "category": "people",
+      "text": "大切な人と、また行きたい場所はどこ？",
+      "dayOfYear": 191
+    },
+    {
+      "id": "q184",
+      "category": "self",
+      "text": "最近、感動した景色や場面はありますか？",
+      "dayOfYear": 192
+    },
+    {
+      "id": "q185",
+      "category": "life",
+      "text": "あなたにとって、幸せを感じる瞬間は？",
+      "dayOfYear": 193
+    },
+    {
+      "id": "q186",
+      "category": "self",
+      "text": "最近、わくわくした瞬間はいつでしたか？",
+      "dayOfYear": 194
+    },
+    {
+      "id": "q187",
+      "category": "people",
+      "text": "家族の口ぐせで、思い出すものはありますか？",
+      "dayOfYear": 195
+    },
+    {
+      "id": "q188",
+      "category": "self",
+      "text": "最近、手を使って作ったものはありますか？",
+      "dayOfYear": 196
+    },
+    {
+      "id": "q189",
+      "category": "bucket",
+      "text": "いつか登ってみたい山は？",
+      "dayOfYear": 197
+    },
+    {
+      "id": "r4",
+      "category": "people",
+      "text": "今日、誰かのためにできる小さなことは？",
+      "dayOfYear": 198
+    },
+    {
+      "id": "q190",
+      "category": "life",
+      "text": "今日の過ごし方は、大切なものとつながっている？",
+      "dayOfYear": 199
+    },
+    {
+      "id": "a4",
+      "category": "self",
+      "text": "今日の終わりに「やってよかった」と思えることは何？",
+      "dayOfYear": 200
+    },
+    {
+      "id": "q191",
+      "category": "people",
+      "text": "大切な人の「らしさ」が出る瞬間は？",
+      "dayOfYear": 201
+    },
+    {
+      "id": "q192",
+      "category": "self",
+      "text": "今日、立ち止まって眺めたいものは？",
+      "dayOfYear": 202
+    },
+    {
+      "id": "m3",
+      "category": "life",
+      "text": "10年後の自分が今日の自分を見たら、何と言うだろう？",
+      "dayOfYear": 203
+    },
+    {
+      "id": "q193",
+      "category": "self",
+      "text": "今日、楽しみにしていることは何ですか？",
+      "dayOfYear": 204
+    },
+    {
+      "id": "q194",
+      "category": "people",
+      "text": "最近、誰かのために時間を使いましたか？",
+      "dayOfYear": 205
+    },
+    {
+      "id": "q195",
+      "category": "self",
+      "text": "今日、少し早く寝られたら何をしたい？",
+      "dayOfYear": 206
+    },
+    {
+      "id": "q196",
+      "category": "bucket",
+      "text": "始めてみたい趣味は何ですか？",
+      "dayOfYear": 207
+    },
+    {
+      "id": "q197",
+      "category": "people",
+      "text": "最近、誰かにもらってうれしかったものは？",
+      "dayOfYear": 208
+    },
+    {
+      "id": "q198",
+      "category": "life",
+      "text": "5年後、どんな毎日を過ごしていたいですか？",
+      "dayOfYear": 209
+    },
+    {
+      "id": "q199",
+      "category": "self",
+      "text": "今日、誰にも急かされずにしたいことは？",
+      "dayOfYear": 210
+    },
+    {
+      "id": "q200",
+      "category": "people",
+      "text": "家族と行った旅行で、思い出す景色は？",
+      "dayOfYear": 211
+    },
+    {
+      "id": "q201",
+      "category": "self",
+      "text": "今日、うまくいったことを1つ挙げると？",
+      "dayOfYear": 212
+    },
+    {
+      "id": "q202",
+      "category": "life",
+      "text": "いまの自分を、昔の自分はどう思うでしょう？",
+      "dayOfYear": 213
+    },
+    {
+      "id": "q203",
+      "category": "self",
+      "text": "最近、ぐっすり眠れた日は何をしていましたか？",
+      "dayOfYear": 214
+    },
+    {
+      "id": "q204",
+      "category": "people",
+      "text": "大切な人に、今年中に会えるとしたらいつ？",
+      "dayOfYear": 215
+    },
+    {
+      "id": "q205",
+      "category": "self",
+      "text": "最近、自分をほめてあげたいことは？",
+      "dayOfYear": 216
+    },
+    {
+      "id": "q206",
+      "category": "bucket",
+      "text": "いつか訪ねてみたい街は？",
+      "dayOfYear": 217
+    },
+    {
+      "id": "q207",
+      "category": "people",
+      "text": "大切な人と、次の休みに何をしたいですか？",
+      "dayOfYear": 218
+    },
+    {
+      "id": "q208",
+      "category": "life",
+      "text": "人生で、誰かに受け取ってほしいものは？",
+      "dayOfYear": 219
+    },
+    {
+      "id": "q209",
+      "category": "self",
+      "text": "今日、いつもより少しゆっくり歩くなら、どこを？",
+      "dayOfYear": 220
+    },
+    {
+      "id": "q210",
+      "category": "people",
+      "text": "近くにいる人に、今日できる小さな手助けは？",
+      "dayOfYear": 221
+    },
+    {
+      "id": "q211",
+      "category": "self",
+      "text": "いま、気持ちをひと言で言うと？",
+      "dayOfYear": 222
+    },
+    {
+      "id": "m5",
+      "category": "life",
+      "text": "もし残りの人生が1年だったら、今日何をする？",
+      "dayOfYear": 223
+    },
+    {
+      "id": "q212",
+      "category": "self",
+      "text": "今日、寝る前にしたいことは何ですか？",
+      "dayOfYear": 224
+    },
+    {
+      "id": "q213",
+      "category": "people",
+      "text": "大切な人の笑顔を思い浮かべると、誰が浮かぶ？",
+      "dayOfYear": 225
+    },
+    {
+      "id": "q214",
+      "category": "self",
+      "text": "今日、外に出て見つけたいものは何ですか？",
+      "dayOfYear": 226
+    },
+    {
+      "id": "q215",
+      "category": "people",
+      "text": "大切な人にとって、あなたはどんな存在ですか？",
+      "dayOfYear": 227
+    },
+    {
+      "id": "q216",
+      "category": "life",
+      "text": "これからも大事にしたい友人との関係は？",
+      "dayOfYear": 228
+    },
+    {
+      "id": "q217",
+      "category": "self",
+      "text": "今日、ゆっくり味わいたい時間はどれですか？",
+      "dayOfYear": 229
+    },
+    {
+      "id": "q218",
+      "category": "bucket",
+      "text": "一度は食べてみたい料理は？",
+      "dayOfYear": 230
+    },
+    {
+      "id": "q219",
+      "category": "people",
+      "text": "離れて暮らす大切な人と、話したいことは？",
+      "dayOfYear": 231
+    },
+    {
+      "id": "q220",
+      "category": "self",
+      "text": "最近、上手になったと感じることは？",
+      "dayOfYear": 232
+    },
+    {
+      "id": "q221",
+      "category": "life",
+      "text": "あなたが「自分らしい」と思える選択は？",
+      "dayOfYear": 233
+    },
+    {
+      "id": "q222",
+      "category": "self",
+      "text": "最近、心がふっとゆるんだ瞬間は？",
+      "dayOfYear": 234
+    },
+    {
+      "id": "q223",
+      "category": "people",
+      "text": "友だちとの何気ない会話で、楽しかったことは？",
+      "dayOfYear": 235
+    },
+    {
+      "id": "p5",
+      "category": "self",
+      "text": "最近見た美しい景色や、心に残った瞬間は？",
+      "dayOfYear": 236
+    },
+    {
+      "id": "q224",
+      "category": "people",
+      "text": "最近、誰かと一緒に笑ったのはいつですか？",
+      "dayOfYear": 237
+    },
+    {
+      "id": "q225",
+      "category": "life",
+      "text": "人生で、ずっと持っていたい気持ちは？",
+      "dayOfYear": 238
+    },
+    {
+      "id": "q226",
+      "category": "self",
+      "text": "いま、頭の中をいちばん占めていることは？",
+      "dayOfYear": 239
+    },
+    {
+      "id": "q227",
+      "category": "bucket",
+      "text": "いつか話せるようになりたい言葉は？",
+      "dayOfYear": 240
+    },
+    {
+      "id": "q228",
+      "category": "people",
+      "text": "家族と一緒に聴いた曲で、覚えているものは？",
+      "dayOfYear": 241
+    },
+    {
+      "id": "q229",
+      "category": "self",
+      "text": "今週、うれしかった小さな出来事は？",
+      "dayOfYear": 242
+    },
+    {
+      "id": "e3",
+      "category": "life",
+      "text": "子どもの頃に夢中になっていたことは何？今もできる？",
+      "dayOfYear": 243
+    },
+    {
+      "id": "q230",
+      "category": "self",
+      "text": "今日の天気に合う過ごし方は何でしょう？",
+      "dayOfYear": 244
+    },
+    {
+      "id": "q231",
+      "category": "people",
+      "text": "大切な人と過ごす時間で、好きなひとときは？",
+      "dayOfYear": 245
+    },
+    {
+      "id": "q232",
+      "category": "self",
+      "text": "最近、迷ったけれど選んでよかったことは？",
+      "dayOfYear": 246
+    },
+    {
+      "id": "r3",
+      "category": "people",
+      "text": "最近、誰かにしてもらって嬉しかったことは？",
+      "dayOfYear": 247
+    },
+    {
+      "id": "q233",
+      "category": "life",
+      "text": "これからの暮らしで、減らしたいものは？",
+      "dayOfYear": 248
+    },
+    {
+      "id": "q234",
+      "category": "self",
+      "text": "今日、新しく覚えたいことはありますか？",
+      "dayOfYear": 249
+    },
+    {
+      "id": "q235",
+      "category": "bucket",
+      "text": "季節ごとにやってみたいことは？",
+      "dayOfYear": 250
+    },
+    {
+      "id": "q236",
+      "category": "people",
+      "text": "大切な人が喜ぶことを、1つ挙げると？",
+      "dayOfYear": 251
+    },
+    {
+      "id": "q237",
+      "category": "self",
+      "text": "最近、自分の手で育てているものはありますか？",
+      "dayOfYear": 252
+    },
+    {
+      "id": "q238",
+      "category": "life",
+      "text": "年を重ねたら、どんな人でいたいですか？",
+      "dayOfYear": 253
+    },
+    {
+      "id": "q239",
+      "category": "self",
+      "text": "今日、口ずさみたくなる歌はありますか？",
+      "dayOfYear": 254
+    },
+    {
+      "id": "q240",
+      "category": "people",
+      "text": "家族から聞いた、自分の小さい頃の話は？",
+      "dayOfYear": 255
+    },
+    {
+      "id": "q241",
+      "category": "self",
+      "text": "最近、つい夢中になって時間を忘れたことは？",
+      "dayOfYear": 256
+    },
+    {
+      "id": "q242",
+      "category": "people",
+      "text": "昔の友だちで、元気か気になる人はいますか？",
+      "dayOfYear": 257
+    },
+    {
+      "id": "q243",
+      "category": "life",
+      "text": "あなたにとって、豊かな暮らしとは？",
+      "dayOfYear": 258
+    },
+    {
+      "id": "q244",
+      "category": "self",
+      "text": "最近、ちょっとした発見がありましたか？",
+      "dayOfYear": 259
+    },
+    {
+      "id": "q245",
+      "category": "bucket",
+      "text": "一度は見てみたい舞台やライブは？",
+      "dayOfYear": 260
+    },
+    {
+      "id": "q246",
+      "category": "people",
+      "text": "大切な人に、手紙を書くとしたら最初の一文は？",
+      "dayOfYear": 261
+    },
+    {
+      "id": "q247",
+      "category": "self",
+      "text": "今日の小さな目標を1つ決めるなら？",
+      "dayOfYear": 262
+    },
+    {
+      "id": "q248",
+      "category": "life",
+      "text": "理想の休日を、思い描いてみると？",
+      "dayOfYear": 263
+    },
+    {
+      "id": "q249",
+      "category": "self",
+      "text": "最近、「これでいい」と思えたことは何ですか？",
+      "dayOfYear": 264
+    },
+    {
+      "id": "q250",
+      "category": "people",
+      "text": "大切な人に、最近「元気？」と聞きましたか？",
+      "dayOfYear": 265
+    },
+    {
+      "id": "p2",
+      "category": "self",
+      "text": "最近、心が温かくなった瞬間は？",
+      "dayOfYear": 266
+    },
+    {
+      "id": "q251",
+      "category": "people",
+      "text": "家族とけんかして、仲直りした思い出は？",
+      "dayOfYear": 267
+    },
+    {
+      "id": "q252",
+      "category": "life",
+      "text": "あなたが季節の中でいちばん好きな時期は？",
+      "dayOfYear": 268
+    },
+    {
+      "id": "q253",
+      "category": "self",
+      "text": "いま、いちばん食べたいものは？",
+      "dayOfYear": 269
+    },
+    {
+      "id": "q254",
+      "category": "bucket",
+      "text": "家族と一緒にやってみたいことは？",
+      "dayOfYear": 270
+    },
+    {
+      "id": "q255",
+      "category": "people",
+      "text": "家族が大切にしていた言葉はありますか？",
+      "dayOfYear": 271
+    },
+    {
+      "id": "q256",
+      "category": "self",
+      "text": "最近、つい手に取ってしまうものは？",
+      "dayOfYear": 272
+    },
+    {
+      "id": "q257",
+      "category": "life",
+      "text": "あなたの毎日を支えている小さな習慣は？",
+      "dayOfYear": 273
+    },
+    {
+      "id": "q258",
+      "category": "self",
+      "text": "今日、何をしているときがいちばん落ち着く？",
+      "dayOfYear": 274
+    },
+    {
+      "id": "q259",
+      "category": "people",
+      "text": "最近、誰かに助けてもらったことは？",
+      "dayOfYear": 275
+    },
+    {
+      "id": "q260",
+      "category": "self",
+      "text": "今日、ちょっとした楽しみを1つ足すなら？",
+      "dayOfYear": 276
+    },
+    {
+      "id": "q261",
+      "category": "people",
+      "text": "大切な人が大事にしているものは何でしょう？",
+      "dayOfYear": 277
+    },
+    {
+      "id": "q262",
+      "category": "life",
+      "text": "あなたが自然と力を注いでしまうことは？",
+      "dayOfYear": 278
+    },
+    {
+      "id": "p1",
+      "category": "self",
+      "text": "今日、あなたを笑顔にしてくれそうなことは？",
+      "dayOfYear": 279
+    },
+    {
+      "id": "q263",
+      "category": "bucket",
+      "text": "やってみたい手づくりのものは？",
+      "dayOfYear": 280
+    },
+    {
+      "id": "q264",
+      "category": "people",
+      "text": "子どもの頃、家族とよく出かけた場所は？",
+      "dayOfYear": 281
+    },
+    {
+      "id": "q265",
+      "category": "self",
+      "text": "最近、だれかの親切に気づいたことは？",
+      "dayOfYear": 282
+    },
+    {
+      "id": "q266",
+      "category": "life",
+      "text": "人生で、思い出すだけで力がわく日は？",
+      "dayOfYear": 283
+    },
+    {
+      "id": "q267",
+      "category": "self",
+      "text": "最近、自分の好きなところを1つ挙げると？",
+      "dayOfYear": 284
+    },
+    {
+      "id": "q268",
+      "category": "people",
+      "text": "大切な人と、次に一緒にしたいことは？",
+      "dayOfYear": 285
+    },
+    {
+      "id": "q269",
+      "category": "self",
+      "text": "今日、自分にかけてあげたい言葉は？",
+      "dayOfYear": 286
+    },
+    {
+      "id": "q270",
+      "category": "people",
+      "text": "友だちと交わした約束で、覚えているものは？",
+      "dayOfYear": 287
+    },
+    {
+      "id": "q271",
+      "category": "life",
+      "text": "人生で出会えてよかったと思う本や作品は？",
+      "dayOfYear": 288
+    },
+    {
+      "id": "e1",
+      "category": "self",
+      "text": "今日、時間を忘れるほど没頭したいことは？",
+      "dayOfYear": 289
+    },
+    {
+      "id": "q272",
+      "category": "bucket",
+      "text": "一度は行ってみたい場所は？",
+      "dayOfYear": 290
+    },
+    {
+      "id": "q273",
+      "category": "people",
+      "text": "大切な人の声を、最近聞きましたか？",
+      "dayOfYear": 291
+    },
+    {
+      "id": "p4",
+      "category": "self",
+      "text": "今日、自分にご褒美をあげるとしたら何をする？",
+      "dayOfYear": 292
+    },
+    {
+      "id": "q274",
+      "category": "life",
+      "text": "どんな言葉を、自分の座右の銘にしたい？",
+      "dayOfYear": 293
+    },
+    {
+      "id": "q275",
+      "category": "people",
+      "text": "家族の若い頃の話で、知っていることは？",
+      "dayOfYear": 294
+    },
+    {
+      "id": "q276",
+      "category": "self",
+      "text": "今日、そっとやめてみたいことは？",
+      "dayOfYear": 295
+    },
+    {
+      "id": "q277",
+      "category": "self",
+      "text": "今日、少しだけ丁寧にしたいことは何ですか？",
+      "dayOfYear": 296
+    },
+    {
+      "id": "q278",
+      "category": "people",
+      "text": "最近、誰かのいいところを見つけましたか？",
+      "dayOfYear": 297
+    },
+    {
+      "id": "q279",
+      "category": "life",
+      "text": "これまでの人生で、転機になった出来事は？",
+      "dayOfYear": 298
+    },
+    {
+      "id": "q280",
+      "category": "self",
+      "text": "最近、自分の好きなものが増えましたか？",
+      "dayOfYear": 299
+    },
+    {
+      "id": "q281",
+      "category": "bucket",
+      "text": "いつか会いに行きたい人は？",
+      "dayOfYear": 300
+    },
+    {
+      "id": "q282",
+      "category": "people",
+      "text": "家族と一緒に撮りたい写真はありますか？",
+      "dayOfYear": 301
+    },
+    {
+      "id": "q283",
+      "category": "self",
+      "text": "最近、思わずにっこりした出来事は？",
+      "dayOfYear": 302
+    },
+    {
+      "id": "q284",
+      "category": "life",
+      "text": "人生で、思いがけずよかった寄り道は？",
+      "dayOfYear": 303
+    },
+    {
+      "id": "r5",
+      "category": "people",
+      "text": "しばらく会っていない人で、連絡したい人はいる？",
+      "dayOfYear": 304
+    },
+    {
+      "id": "q285",
+      "category": "self",
+      "text": "今日、身のまわりで1つ整えるなら何を？",
+      "dayOfYear": 305
+    },
+    {
+      "id": "q286",
+      "category": "self",
+      "text": "最近、自分らしいと感じた瞬間は？",
+      "dayOfYear": 306
+    },
+    {
+      "id": "q287",
+      "category": "people",
+      "text": "誰かと一緒にいると落ち着くのは、なぜでしょう？",
+      "dayOfYear": 307
+    },
+    {
+      "id": "q288",
+      "category": "life",
+      "text": "人生で、大切なことを教えてくれた出来事は？",
+      "dayOfYear": 308
+    },
+    {
+      "id": "q289",
+      "category": "self",
+      "text": "最近、ささやかな贅沢をしましたか？",
+      "dayOfYear": 309
+    },
+    {
+      "id": "q290",
+      "category": "bucket",
+      "text": "大切な人に贈ってみたい体験は？",
+      "dayOfYear": 310
+    },
+    {
+      "id": "q291",
+      "category": "people",
+      "text": "家族の好きな歌や映画を知っていますか？",
+      "dayOfYear": 311
+    },
+    {
+      "id": "q292",
+      "category": "self",
+      "text": "今日、後回しにしてもいいことは何ですか？",
+      "dayOfYear": 312
+    },
+    {
+      "id": "q293",
+      "category": "life",
+      "text": "あなたにとって「いい1日」の条件は？",
+      "dayOfYear": 313
+    },
+    {
+      "id": "q294",
+      "category": "people",
+      "text": "大切な人の好きな食べものを知っていますか？",
+      "dayOfYear": 314
+    },
+    {
+      "id": "q295",
+      "category": "self",
+      "text": "最近、思っていたよりうまくいったことは？",
+      "dayOfYear": 315
+    },
+    {
+      "id": "e5",
+      "category": "self",
+      "text": "今日、いつもと違うルートや方法を試してみるとしたら？",
+      "dayOfYear": 316
+    },
+    {
+      "id": "q296",
+      "category": "people",
+      "text": "家族と食べた料理で、忘れられない味は？",
+      "dayOfYear": 317
+    },
+    {
+      "id": "q297",
+      "category": "life",
+      "text": "人生で、あなたを笑顔にしてきたものは？",
+      "dayOfYear": 318
+    },
+    {
+      "id": "q298",
+      "category": "self",
+      "text": "最近、すっきりしたことは何ですか？",
+      "dayOfYear": 319
+    },
+    {
+      "id": "q299",
+      "category": "bucket",
+      "text": "いつか泊まってみたい宿は？",
+      "dayOfYear": 320
+    },
+    {
+      "id": "q300",
+      "category": "people",
+      "text": "最近、誰かを笑顔にできたことはありますか？",
+      "dayOfYear": 321
+    },
+    {
+      "id": "q301",
+      "category": "self",
+      "text": "今朝、目が覚めて最初に思ったことは？",
+      "dayOfYear": 322
+    },
+    {
+      "id": "q302",
+      "category": "life",
+      "text": "時間が限られているとしたら、何を優先したい？",
+      "dayOfYear": 323
+    },
+    {
+      "id": "q303",
+      "category": "people",
+      "text": "家族と過ごした休みで、思い出に残る1日は？",
+      "dayOfYear": 324
+    },
+    {
+      "id": "q304",
+      "category": "self",
+      "text": "今日、ひと息つきたいのはどんな場所ですか？",
+      "dayOfYear": 325
+    },
+    {
+      "id": "q305",
+      "category": "self",
+      "text": "今日、自分にご苦労さまと言えることは？",
+      "dayOfYear": 326
+    },
+    {
+      "id": "q306",
+      "category": "people",
+      "text": "大切な人の、尊敬しているところは？",
+      "dayOfYear": 327
+    },
+    {
+      "id": "q307",
+      "category": "life",
+      "text": "これからの人生で、増やしたい時間は？",
+      "dayOfYear": 328
+    },
+    {
+      "id": "m1",
+      "category": "self",
+      "text": "今日という日を、どんな意味のある1日にしたい？",
+      "dayOfYear": 329
+    },
+    {
+      "id": "q308",
+      "category": "bucket",
+      "text": "一度は体験してみたい仕事や作業は？",
+      "dayOfYear": 330
+    },
+    {
+      "id": "q309",
+      "category": "people",
+      "text": "大切な人の話を、最後まで聞けていますか？",
+      "dayOfYear": 331
+    },
+    {
+      "id": "q310",
+      "category": "self",
+      "text": "最近、ふだんと違う道を通りましたか？",
+      "dayOfYear": 332
+    },
+    {
+      "id": "q311",
+      "category": "life",
+      "text": "毎日の中で、守りたいリズムは何ですか？",
+      "dayOfYear": 333
+    },
+    {
+      "id": "q312",
+      "category": "people",
+      "text": "誰かと分け合って食べたもので、うれしかったものは？",
+      "dayOfYear": 334
+    },
+    {
+      "id": "q313",
+      "category": "self",
+      "text": "最近、うまく力を抜けたのはどんなとき？",
+      "dayOfYear": 335
+    },
+    {
+      "id": "q314",
+      "category": "self",
+      "text": "いまの自分に、ちょうどいいペースは？",
+      "dayOfYear": 336
+    },
+    {
+      "id": "q315",
+      "category": "people",
+      "text": "最近、家族と交わした会話で心に残ったことは？",
+      "dayOfYear": 337
+    },
+    {
+      "id": "q316",
+      "category": "life",
+      "text": "自分を支えてくれた経験を1つ挙げると？",
+      "dayOfYear": 338
+    },
+    {
+      "id": "q317",
+      "category": "self",
+      "text": "今日の予定で、いちばん楽しみなのはどれ？",
+      "dayOfYear": 339
+    },
+    {
+      "id": "q318",
+      "category": "bucket",
+      "text": "いつか読んでみたい本は？",
+      "dayOfYear": 340
+    },
+    {
+      "id": "q319",
+      "category": "people",
+      "text": "昔、誰かと一緒にがんばったことは？",
+      "dayOfYear": 341
+    },
+    {
+      "id": "q320",
+      "category": "self",
+      "text": "今日、静かに過ごしたい時間はありますか？",
+      "dayOfYear": 342
+    },
+    {
+      "id": "q321",
+      "category": "life",
+      "text": "あなたが心から「好き」と言えることは？",
+      "dayOfYear": 343
+    },
+    {
+      "id": "q322",
+      "category": "people",
+      "text": "友だちと夢中で遊んだ思い出は何ですか？",
+      "dayOfYear": 344
+    },
+    {
+      "id": "q323",
+      "category": "self",
+      "text": "最近、何かを待つのが楽しかったことは？",
+      "dayOfYear": 345
+    },
+    {
+      "id": "q324",
+      "category": "self",
+      "text": "最近、読んで（見て）よかったものは？",
+      "dayOfYear": 346
+    },
+    {
+      "id": "q325",
+      "category": "people",
+      "text": "誰かに「ありがとう」を言いそびれたことは？",
+      "dayOfYear": 347
+    },
+    {
+      "id": "q326",
+      "category": "life",
+      "text": "10年前の自分に、伝えたいことは何ですか？",
+      "dayOfYear": 348
+    },
+    {
+      "id": "e4",
+      "category": "self",
+      "text": "今日、新しいことに挑戦するとしたら？",
+      "dayOfYear": 349
+    },
+    {
+      "id": "q327",
+      "category": "bucket",
+      "text": "いつか見てみたい景色は？",
+      "dayOfYear": 350
+    },
+    {
+      "id": "q328",
+      "category": "people",
+      "text": "家族の匂いや音で、思い出すものは？",
+      "dayOfYear": 351
+    },
+    {
+      "id": "a2",
+      "category": "self",
+      "text": "昨日の自分より、少しだけ成長できることは？",
+      "dayOfYear": 352
+    },
+    {
+      "id": "q329",
+      "category": "life",
+      "text": "お金や時間に関係なく、続けたいことは？",
+      "dayOfYear": 353
+    },
+    {
+      "id": "q330",
+      "category": "people",
+      "text": "大切な人の話で、もっと聞いてみたいことは？",
+      "dayOfYear": 354
+    },
+    {
+      "id": "p3",
+      "category": "self",
+      "text": "今日、感謝できることを3つ挙げるとしたら？",
+      "dayOfYear": 355
+    },
+    {
+      "id": "q331",
+      "category": "self",
+      "text": "今日、何に「いいね」と言いたいですか？",
+      "dayOfYear": 356
+    },
+    {
+      "id": "q332",
+      "category": "people",
+      "text": "大切な人と、季節の行事を楽しむなら何を？",
+      "dayOfYear": 357
+    },
+    {
+      "id": "q333",
+      "category": "life",
+      "text": "あなたにとっての「ふるさと」はどこですか？",
+      "dayOfYear": 358
+    },
+    {
+      "id": "q334",
+      "category": "self",
+      "text": "最近、「楽しかった」と言えた日はいつ？",
+      "dayOfYear": 359
+    },
+    {
+      "id": "q335",
+      "category": "bucket",
+      "text": "大切な人と一緒に行きたい旅先は？",
+      "dayOfYear": 360
+    },
+    {
+      "id": "q336",
+      "category": "people",
+      "text": "子どもの頃、家族と見たテレビ番組は？",
+      "dayOfYear": 361
+    },
+    {
+      "id": "q337",
+      "category": "self",
+      "text": "いま、続けていてよかったと思う習慣は？",
+      "dayOfYear": 362
+    },
+    {
+      "id": "q338",
+      "category": "life",
+      "text": "人生で、もっと時間をかけたいことは？",
+      "dayOfYear": 363
+    },
+    {
+      "id": "q339",
+      "category": "people",
+      "text": "大切な人に贈り物をするなら、何を選ぶ？",
+      "dayOfYear": 364
+    },
+    {
+      "id": "q340",
+      "category": "self",
+      "text": "いま、部屋の中で好きな場所はどこですか？",
+      "dayOfYear": 365
+    }
+  ]
+}

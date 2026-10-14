@@ -5,14 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
+import '../../models/daily_record.dart';
+import '../../models/question.dart';
 import '../../providers/isar_provider.dart';
+import '../../providers/question_bank_provider.dart';
 import '../../providers/user_settings_provider.dart';
-import '../../services/life_calculator.dart';
+import '../../services/morning_schedule.dart';
+import '../../services/widget_sync.dart';
+import '../../utils/date_only.dart';
 import '../../utils/prefs_keys.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
-import '../shared/app_card.dart';
-import '../shared/app_input.dart';
+import '../shared/app_toast.dart';
+import 'today_question_card.dart';
 
 class TodayPage extends ConsumerStatefulWidget {
   const TodayPage({super.key});
@@ -22,41 +27,52 @@ class TodayPage extends ConsumerStatefulWidget {
 }
 
 class _TodayPageState extends ConsumerState<TodayPage> {
-  final _gratitudeController = TextEditingController();
-  final _goalController = TextEditingController();
-  final _goodController = TextEditingController();
-  final _tomorrowMessageController = TextEditingController();
+  final _answerController = TextEditingController();
+  final _answerFocus = FocusNode();
 
-  final _gratitudeFocus = FocusNode();
-  final _goalFocus = FocusNode();
-  final _goodFocus = FocusNode();
-  final _tomorrowMessageFocus = FocusNode();
+  /// 画面に出している日。保存はいつもこの日に付ける(真夜中をまたいでも前日の問いに付く)
+  DateTime _date = dateOnly(DateTime.now());
+  late Question _question;
+  String? _stampId;
+  String? _lastYearAnswer;
 
   Timer? _idleTimer;
+  Timer? _midnightTimer;
   late final AppLifecycleListener _lifecycleListener;
 
   @override
   void initState() {
     super.initState();
-    _loadTodayRecord();
+    _question = ref.read(questionBankProvider).forDate(_date);
+    _syncWidget();
+    _scheduleMidnight();
     _checkReviewTiming();
 
     // フォーカスが外れた時に保存
-    for (final fn in [_gratitudeFocus, _goalFocus, _goodFocus, _tomorrowMessageFocus]) {
-      fn.addListener(() {
-        if (!fn.hasFocus) _saveAll();
-      });
-    }
+    _answerFocus.addListener(() {
+      if (!_answerFocus.hasFocus) _saveAnswer();
+    });
 
-    // アプリがバックグラウンドに移行した時に保存
     _lifecycleListener = AppLifecycleListener(
       onStateChange: (state) {
-        if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-          _saveAll();
+        // アプリがバックグラウンドに移行した時に保存
+        if (state == AppLifecycleState.inactive ||
+            state == AppLifecycleState.paused) {
+          _saveAnswer();
+        }
+        // 戻ってきたら、日付の切り替えと、ウィジェットで押したスタンプを取り込む
+        if (state == AppLifecycleState.resumed) {
+          _switchDayIfNeeded().then((_) => _syncWidget());
         }
       },
     );
   }
+
+  static bool _hasEntry(DailyRecord r) =>
+      r.stamp != null ||
+      r.answer != null ||
+      r.reflectionGood != null ||
+      r.tomorrowMessage != null;
 
   /// レビュー依頼のタイミングをチェック
   Future<void> _checkReviewTiming() async {
@@ -64,31 +80,26 @@ class _TodayPageState extends ConsumerState<TodayPage> {
       final prefs = ref.read(sharedPreferencesProvider);
       final repo = ref.read(dailyRecordRepositoryProvider);
 
-      // 前日に夜の記入があるか確認
+      // 前日に記録があるか確認
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
       final yesterdayRecord = await repo.getByDate(yesterday);
-      final hasYesterdayEvening = yesterdayRecord?.reflectionGood != null ||
-          yesterdayRecord?.tomorrowMessage != null;
+      if (yesterdayRecord == null || !_hasEntry(yesterdayRecord)) return;
 
-      if (!hasYesterdayEvening) return;
-
-      // 全レコードから夜の記入がある日数をカウント
+      // 記録がある日数をカウント
       final allRecords = await repo.getAll();
-      final eveningDays = allRecords
-          .where((r) => r.reflectionGood != null || r.tomorrowMessage != null)
-          .length;
+      final eveningDays = allRecords.where(_hasEntry).length;
 
       final alreadyDay2 = prefs.getBool(PrefsKeys.reviewRequestedDay2) ?? false;
       final alreadyDay7 = prefs.getBool(PrefsKeys.reviewRequestedDay7) ?? false;
 
       bool shouldRequest = false;
 
-      // Day 2: 夜の記入が2日以上 & まだ表示していない
+      // Day 2: 記録が2日以上 & まだ表示していない
       if (eveningDays >= 2 && !alreadyDay2) {
         await prefs.setBool(PrefsKeys.reviewRequestedDay2, true);
         shouldRequest = true;
       }
-      // Day 7: 夜の記入が7日以上 & まだ表示していない
+      // Day 7: 記録が7日以上 & まだ表示していない
       else if (eveningDays >= 7 && !alreadyDay7) {
         await prefs.setBool(PrefsKeys.reviewRequestedDay7, true);
         shouldRequest = true;
@@ -109,62 +120,114 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     }
   }
 
-  Future<void> _loadTodayRecord() async {
+
+  /// 画面の日の問い・スタンプ・答え・1年前の答えを読む
+  Future<void> _loadDay() async {
     try {
       final repo = ref.read(dailyRecordRepositoryProvider);
-      final record = await repo.getOrCreate(DateTime.now());
-      if (mounted) {
-        setState(() {
-          _gratitudeController.text = record.gratitude ?? '';
-          _goalController.text = record.todayGoal ?? '';
-          _goodController.text = record.reflectionGood ?? '';
-          _tomorrowMessageController.text = record.tomorrowMessage ?? '';
-        });
-      }
+      final date = _date;
+      final record = await repo.getByDate(date);
+      final lastYear = await repo.getOneYearAgo(date);
+      if (!mounted || date != _date) return;
+      setState(() {
+        _stampId = record?.stamp;
+        _answerController.text = record?.answer ?? '';
+        _lastYearAnswer = lastYear?.answer;
+      });
     } catch (e) {
       debugPrint('Today record load error: $e');
     }
   }
 
-  // 入力変更時: 2秒アイドルで保存
-  void _onFieldChanged(String _) {
-    _idleTimer?.cancel();
-    _idleTimer = Timer(const Duration(milliseconds: 2000), () {
-      if (mounted) _saveAll();
-    });
+  /// ウィジェットで押したスタンプを取り込み、画面とウィジェットを今の状態にそろえる
+  Future<void> _syncWidget() async {
+    final bank = ref.read(questionBankProvider);
+    await WidgetSync.importPending(ref.read(dailyRecordRepositoryProvider), bank);
+    await _loadDay();
+    await WidgetSync.update(
+      birthDate: ref.read(userSettingsProvider).birthDate,
+      bank: bank,
+      todayStampId: _stampId,
+    );
   }
 
-  Future<void> _saveAll() async {
+  void _scheduleMidnight() {
+    _midnightTimer?.cancel();
+    final now = DateTime.now();
+    final next = DateTime(now.year, now.month, now.day + 1);
+    _midnightTimer = Timer(next.difference(now) + const Duration(seconds: 1),
+        _switchDayIfNeeded);
+  }
+
+  Future<void> _switchDayIfNeeded() async {
+    final today = dateOnly(DateTime.now());
+    if (today == _date) return;
+    await _saveAnswer();
+    if (!mounted) return;
+    setState(() {
+      _date = today;
+      _question = ref.read(questionBankProvider).forDate(today);
+      _stampId = null;
+      _lastYearAnswer = null;
+      _answerController.clear();
+    });
+    _scheduleMidnight();
+    await _loadDay();
+  }
+
+  // 入力変更時: 2秒アイドルで保存
+  void _onAnswerChanged(String _) {
+    _idleTimer?.cancel();
+    _idleTimer = Timer(const Duration(milliseconds: 2000), () {
+      if (mounted) _saveAnswer();
+    });
+    setState(() {}); // 「やりたいことリストに入れる」の出し入れのため
+  }
+
+  Future<void> _saveAnswer() async {
+    _idleTimer?.cancel();
     try {
-      final repo = ref.read(dailyRecordRepositoryProvider);
-      final record = await repo.getOrCreate(DateTime.now());
-      record.gratitude =
-          _gratitudeController.text.isNotEmpty ? _gratitudeController.text : null;
-      record.todayGoal =
-          _goalController.text.isNotEmpty ? _goalController.text : null;
-      record.reflectionGood =
-          _goodController.text.isNotEmpty ? _goodController.text : null;
-      record.tomorrowMessage = _tomorrowMessageController.text.isNotEmpty
-          ? _tomorrowMessageController.text
-          : null;
-      await repo.save(record);
+      await ref.read(dailyRecordRepositoryProvider).setAnswer(
+          _date, _answerController.text,
+          questionId: _question.id);
     } catch (e) {
       debugPrint('Auto save error: $e');
     }
   }
 
+  Future<void> _onStamp(String? stampId) async {
+    setState(() => _stampId = stampId);
+    try {
+      await ref
+          .read(dailyRecordRepositoryProvider)
+          .setStamp(_date, stampId, questionId: _question.id);
+      await WidgetSync.update(
+        birthDate: ref.read(userSettingsProvider).birthDate,
+        bank: ref.read(questionBankProvider),
+        todayStampId: stampId,
+      );
+    } catch (e) {
+      debugPrint('Stamp save error: $e');
+    }
+  }
+
+  Future<void> _addToBucket() async {
+    final title = _answerController.text.trim();
+    if (title.isEmpty) return;
+    await ref
+        .read(bucketItemRepositoryProvider)
+        .add(title, sourceQuestionId: _question.id);
+    if (mounted) AppToast.success(context, 'やりたいことリストに入れました');
+  }
+
   @override
   void dispose() {
+    _saveAnswer();
     _idleTimer?.cancel();
+    _midnightTimer?.cancel();
     _lifecycleListener.dispose();
-    _gratitudeFocus.dispose();
-    _goalFocus.dispose();
-    _goodFocus.dispose();
-    _tomorrowMessageFocus.dispose();
-    _gratitudeController.dispose();
-    _goalController.dispose();
-    _goodController.dispose();
-    _tomorrowMessageController.dispose();
+    _answerFocus.dispose();
+    _answerController.dispose();
     super.dispose();
   }
 
@@ -176,9 +239,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
       return const Center(child: Text('オンボーディングを完了してください'));
     }
 
-    final lifeDays = LifeCalculator.lifeDays(birthDate);
+    final lifeDays = lifeDaysOn(birthDate, _date);
     final formatter = NumberFormat('#,###', 'ja_JP');
-    final now = DateTime.now();
+    final now = _date;
     final dateStr =
         '${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
 
@@ -216,87 +279,19 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
             const SizedBox(height: 8),
 
-            // 朝の問いかけ（1枚のカード）
-            AppCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _questionField(
-                    'いま感謝していることは？',
-                    _gratitudeController,
-                    'ひとつでも、いくつでも',
-                    focusNode: _gratitudeFocus,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  const SizedBox(height: 24),
-                  _questionField(
-                    '今日を素晴らしい一日にするために、何をする？',
-                    _goalController,
-                    '小さなことでOK',
-                    focusNode: _goalFocus,
-                    textInputAction: TextInputAction.next,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // 夜の問いかけ（1枚のカード）
-            AppCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _questionField(
-                    '今日、嬉しかったことは？',
-                    _goodController,
-                    'どんな小さなことでも',
-                    focusNode: _goodFocus,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  const SizedBox(height: 24),
-                  _questionField(
-                    '明日の自分に一言伝えるなら？',
-                    _tomorrowMessageController,
-                    '自由にどうぞ',
-                    focusNode: _tomorrowMessageFocus,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ],
-              ),
+            TodayQuestionCard(
+              question: _question,
+              answerController: _answerController,
+              answerFocus: _answerFocus,
+              selectedStampId: _stampId,
+              lastYearAnswer: _lastYearAnswer,
+              onStamp: _onStamp,
+              onAnswerChanged: _onAnswerChanged,
+              onAddToBucket: _addToBucket,
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _questionField(
-    String label,
-    TextEditingController controller,
-    String placeholder, {
-    FocusNode? focusNode,
-    TextInputAction? textInputAction,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSecondary,
-                height: 1.6)),
-        const SizedBox(height: 12),
-        AppInput(
-          controller: controller,
-          placeholder: placeholder,
-          maxLength: 200,
-          focusNode: focusNode,
-          textInputAction: textInputAction,
-          onChanged: _onFieldChanged,
-        ),
-      ],
     );
   }
 }

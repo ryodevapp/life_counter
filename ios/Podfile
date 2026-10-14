@@ -1,5 +1,5 @@
-# iOS 16.0+ (Flutter minimum) / Target: iOS 17.0+
-platform :ios, '16.0'
+# アプリ本体は iOS 15.0 以上(ホーム画面のウィジェットだけ iOS 17.0 以上)
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,5 +39,11 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    # 新しい Xcode は iOS 15 未満を対象にできないため、それより古い指定の Pod だけ 15.0 に上げる
+    target.build_configurations.each do |config|
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 15.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
+    end
   end
 end

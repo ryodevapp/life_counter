@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/daily_record.dart';
+import '../../models/stamp.dart';
+import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
@@ -9,7 +12,7 @@ import '../shared/app_input.dart';
 import '../shared/action_buttons.dart';
 
 /// 記録詳細画面（閲覧 + 編集モード対応）
-class RecordDetailPage extends StatefulWidget {
+class RecordDetailPage extends ConsumerStatefulWidget {
   const RecordDetailPage({
     super.key,
     required this.record,
@@ -24,11 +27,14 @@ class RecordDetailPage extends StatefulWidget {
   final Future<void> Function(DailyRecord) onSave;
 
   @override
-  State<RecordDetailPage> createState() => _RecordDetailPageState();
+  ConsumerState<RecordDetailPage> createState() => _RecordDetailPageState();
 }
 
-class _RecordDetailPageState extends State<RecordDetailPage> {
+class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
   bool _editing = false;
+
+  // v1.1.0 今日の問いへの答え
+  late final TextEditingController _answerCtrl;
 
   // v1.0.1 新フィールド
   late final TextEditingController _gratitudeCtrl;
@@ -45,6 +51,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   @override
   void initState() {
     super.initState();
+    _answerCtrl = TextEditingController(text: widget.record.answer ?? '');
     _gratitudeCtrl =
         TextEditingController(text: widget.record.gratitude ?? '');
     _tomorrowMsgCtrl =
@@ -64,6 +71,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
 
   @override
   void dispose() {
+    _answerCtrl.dispose();
     _gratitudeCtrl.dispose();
     _tomorrowMsgCtrl.dispose();
     _goalCtrl.dispose();
@@ -77,6 +85,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
 
   Future<void> _save() async {
     final r = widget.record;
+    r.answer = _answerCtrl.text.trim().isNotEmpty ? _answerCtrl.text : null;
     r.gratitude =
         _gratitudeCtrl.text.isNotEmpty ? _gratitudeCtrl.text : null;
     r.tomorrowMessage =
@@ -95,6 +104,12 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   }
 
   bool get _hasContent =>
+      widget.record.stamp != null ||
+      widget.record.answer != null ||
+      _hasDiaryFields;
+
+  /// v1.0 系の4つの欄(感謝・今日の目標・嬉しかったこと・明日の自分へ)のどれかがある
+  bool get _hasDiaryFields =>
       widget.record.gratitude != null ||
       widget.record.todayGoal != null ||
       widget.record.reflectionGood != null ||
@@ -171,8 +186,47 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     );
   }
 
+  /// 今日の問いの文(見つからなければ null)
+  String? get _questionText {
+    final id = widget.record.morningQuestionId;
+    return id == null ? null : ref.read(questionBankProvider).byId(id)?.text;
+  }
+
   List<Widget> _buildViewMode() {
     final widgets = <Widget>[];
+
+    // 今日の問いのカード(問い + スタンプ + 答え)
+    final stamp = stampById(widget.record.stamp);
+    final answer = widget.record.answer;
+    if (stamp != null || answer != null) {
+      final questionText = _questionText;
+      widgets.add(AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (questionText != null) ...[
+              Text(questionText,
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textSecondary,
+                      height: 1.6)),
+              const SizedBox(height: 12),
+            ],
+            if (stamp != null)
+              Text(stamp.emoji, style: const TextStyle(fontSize: 28)),
+            if (stamp != null && answer != null) const SizedBox(height: 10),
+            if (answer != null)
+              Text(answer,
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.text,
+                      height: 1.7)),
+          ],
+        ),
+      ));
+    }
 
     // 朝のカード（感謝 + 今日を素晴らしい一日に）
     final morningFields = <Widget>[];
@@ -184,6 +238,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
       morningFields.add(_viewField('今日を素晴らしい一日にするために', widget.record.todayGoal!));
     }
     if (morningFields.isNotEmpty) {
+      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: 14));
       widgets.add(AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: morningFields)));
     }
 
@@ -234,7 +289,14 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
 
     final widgets = <Widget>[];
 
+    // 今日の問いへの答え
+    widgets.add(AppCard(
+      child: _editField(_questionText ?? '今日の問い', _answerCtrl),
+    ));
+    if (!_hasDiaryFields) return widgets;
+
     // 朝のカード
+    widgets.add(const SizedBox(height: 14));
     widgets.add(AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

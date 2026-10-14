@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../models/daily_record.dart';
+import '../../models/stamp.dart';
 import '../../providers/isar_provider.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_text_styles.dart';
@@ -43,12 +44,11 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (mounted) setState(() => _records = records);
   }
 
-  Set<DateTime> get _recordDates {
-    return _records
-        .where((r) => _hasContent(r))
-        .map((r) => DateTime(r.date.year, r.date.month, r.date.day))
-        .toSet();
-  }
+  /// 記録がある日 → その日の記録
+  Map<DateTime, DailyRecord> get _recordsByDate => {
+        for (final r in _records.where(_hasContent))
+          DateTime(r.date.year, r.date.month, r.date.day): r,
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -196,8 +196,21 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         ),
         eventLoader: (day) {
           final normalized = DateTime(day.year, day.month, day.day);
-          return _recordDates.contains(normalized) ? [true] : [];
+          final r = _recordsByDate[normalized];
+          return r == null ? [] : [r];
         },
+        calendarBuilders: CalendarBuilders(
+          // スタンプがある日はその絵、ない日は点
+          markerBuilder: (context, day, events) {
+            if (events.isEmpty) return null;
+            final stamp = stampById((events.first as DailyRecord).stamp);
+            if (stamp == null) return null;
+            return Positioned(
+              bottom: 0,
+              child: Text(stamp.emoji, style: const TextStyle(fontSize: 11)),
+            );
+          },
+        ),
         onDaySelected: (selected, focused) async {
           final repo = ref.read(dailyRecordRepositoryProvider);
           final record = await repo.getOrCreate(selected);
@@ -214,7 +227,9 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   }
 
   bool _hasContent(DailyRecord r) {
-    return r.gratitude != null ||
+    return r.stamp != null ||
+        r.answer != null ||
+        r.gratitude != null ||
         r.todayGoal != null ||
         r.reflectionGood != null ||
         r.tomorrowMessage != null ||
@@ -303,6 +318,13 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 
   List<Widget> _buildInlineFields(DailyRecord r) {
     final fields = <(String, String)>[];
+    final stamp = stampById(r.stamp);
+    if (stamp != null || r.answer != null) {
+      fields.add((
+        '今日の問い',
+        [if (stamp != null) stamp.emoji, if (r.answer != null) r.answer!].join('  '),
+      ));
+    }
     if (r.gratitude != null) fields.add(('感謝していること', r.gratitude!));
     if (r.todayGoal != null) fields.add(('今日やること', r.todayGoal!));
     if (r.reflectionGood != null) fields.add(('嬉しかったこと', r.reflectionGood!));
@@ -375,14 +397,23 @@ class _InlineEditCard extends StatefulWidget {
 }
 
 class _InlineEditCardState extends State<_InlineEditCard> {
+  late final TextEditingController _answerCtrl;
   late final TextEditingController _gratitudeCtrl;
   late final TextEditingController _goalCtrl;
   late final TextEditingController _goodCtrl;
   late final TextEditingController _tomorrowMsgCtrl;
 
+  /// v1.0 系の4つの欄のどれかがある記録だけ、その欄を編集に出す
+  bool get _hasDiaryFields =>
+      widget.record.gratitude != null ||
+      widget.record.todayGoal != null ||
+      widget.record.reflectionGood != null ||
+      widget.record.tomorrowMessage != null;
+
   @override
   void initState() {
     super.initState();
+    _answerCtrl = TextEditingController(text: widget.record.answer ?? '');
     _gratitudeCtrl = TextEditingController(text: widget.record.gratitude ?? '');
     _goalCtrl = TextEditingController(text: widget.record.todayGoal ?? '');
     _goodCtrl = TextEditingController(text: widget.record.reflectionGood ?? '');
@@ -391,6 +422,7 @@ class _InlineEditCardState extends State<_InlineEditCard> {
 
   @override
   void dispose() {
+    _answerCtrl.dispose();
     _gratitudeCtrl.dispose();
     _goalCtrl.dispose();
     _goodCtrl.dispose();
@@ -400,6 +432,7 @@ class _InlineEditCardState extends State<_InlineEditCard> {
 
   Future<void> _save() async {
     final r = widget.record;
+    r.answer = _answerCtrl.text.trim().isNotEmpty ? _answerCtrl.text : null;
     r.gratitude = _gratitudeCtrl.text.isNotEmpty ? _gratitudeCtrl.text : null;
     r.todayGoal = _goalCtrl.text.isNotEmpty ? _goalCtrl.text : null;
     r.reflectionGood = _goodCtrl.text.isNotEmpty ? _goodCtrl.text : null;
@@ -465,13 +498,17 @@ class _InlineEditCardState extends State<_InlineEditCard> {
             ],
           ),
           const SizedBox(height: 16),
-          _editField('感謝していること', _gratitudeCtrl),
-          const SizedBox(height: 12),
-          _editField('今日やること', _goalCtrl),
-          const SizedBox(height: 12),
-          _editField('嬉しかったこと', _goodCtrl),
-          const SizedBox(height: 12),
-          _editField('明日の自分へ', _tomorrowMsgCtrl),
+          _editField('今日の問い', _answerCtrl),
+          if (_hasDiaryFields) ...[
+            const SizedBox(height: 12),
+            _editField('感謝していること', _gratitudeCtrl),
+            const SizedBox(height: 12),
+            _editField('今日やること', _goalCtrl),
+            const SizedBox(height: 12),
+            _editField('嬉しかったこと', _goodCtrl),
+            const SizedBox(height: 12),
+            _editField('明日の自分へ', _tomorrowMsgCtrl),
+          ],
         ],
       ),
     );

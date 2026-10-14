@@ -14,6 +14,8 @@ class AppInput extends StatelessWidget {
     this.showBorder = false,
     this.focusNode,
     this.textInputAction,
+    this.minLines,
+    this.maxLines = 1,
   });
 
   final TextEditingController? controller;
@@ -24,6 +26,8 @@ class AppInput extends StatelessWidget {
   final bool showBorder;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  final int? minLines;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,8 @@ class AppInput extends StatelessWidget {
       textInputAction: textInputAction,
       textAlign: textAlign,
       maxLength: maxLength,
+      minLines: minLines,
+      maxLines: maxLines,
       onChanged: onChanged,
       style: GoogleFonts.zenKakuGothicNew(
         fontSize: 14,

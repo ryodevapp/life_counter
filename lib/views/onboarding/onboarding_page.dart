@@ -73,27 +73,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     }
     // 通知許可リクエスト
     await NotificationService.requestPermission();
-    // 通知スケジュール
-    if (_birthDate != null) {
-      final q = _questions[DateTime.now().day % _questions.length];
-      await NotificationService.scheduleMorningNotification(
-        hour: 7,
-        minute: 0,
-        birthDate: _birthDate!,
-        gender: _gender,
-        questionText: q['t']!,
-      );
-    }
+    // 朝の通知は、オンボーディングの完了を受けて MainTabView が予約する
     await ref.read(userSettingsProvider.notifier).completeOnboarding();
   }
-
-  static const _questions = [
-    {'id': 'p1', 'c': 'P', 't': '今日、あなたを笑顔にしてくれそうなことは？'},
-    {'id': 'e1', 'c': 'E', 't': '今日、時間を忘れるほど没頭したいことは？'},
-    {'id': 'r1', 'c': 'R', 't': '今日、誰かに「ありがとう」を伝えるとしたら？'},
-    {'id': 'm1', 'c': 'M', 't': '今日という日を、どんな意味のある1日にしたい？'},
-    {'id': 'a1', 'c': 'A', 't': '今日、小さくても達成したいことは何？'},
-  ];
 
   @override
   Widget build(BuildContext context) {

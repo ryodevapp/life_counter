@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import '../models/daily_record.dart';
+import '../utils/date_only.dart';
 
 class DailyRecordRepository {
   DailyRecordRepository(this._isar);
@@ -52,6 +53,32 @@ class DailyRecordRepository {
     record.updatedAt = DateTime.now();
     await _isar.writeTxn(() => _isar.dailyRecords.put(record));
   }
+
+  /// 今日の問いのスタンプを残す。null で取り消し
+  Future<void> setStamp(DateTime date, String? stampId,
+      {required String questionId, DateTime? at}) async {
+    final record = await getOrCreate(date);
+    record
+      ..stamp = stampId
+      ..stampAt = at ?? DateTime.now()
+      ..morningQuestionId = questionId;
+    await save(record);
+  }
+
+  /// 今日の問いへの答えを残す。空なら null で保存する
+  Future<void> setAnswer(DateTime date, String? answer,
+      {required String questionId}) async {
+    final trimmed = answer?.trim();
+    final record = await getOrCreate(date);
+    record
+      ..answer = (trimmed == null || trimmed.isEmpty) ? null : answer
+      ..morningQuestionId = questionId;
+    await save(record);
+  }
+
+  /// 1年前の同じ日の記録(2月29日は前年の2月28日)
+  Future<DailyRecord?> getOneYearAgo(DateTime date) =>
+      getByDate(oneYearAgo(dateOnly(date)));
 
   Future<void> delete(int id) async {
     await _isar.writeTxn(() => _isar.dailyRecords.delete(id));

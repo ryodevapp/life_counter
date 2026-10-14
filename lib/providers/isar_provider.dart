@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
+import '../repositories/bucket_item_repository.dart';
 import '../repositories/daily_record_repository.dart';
 import '../repositories/important_person_repository.dart';
 
@@ -15,4 +16,8 @@ final dailyRecordRepositoryProvider = Provider<DailyRecordRepository>((ref) {
 final importantPersonRepositoryProvider =
     Provider<ImportantPersonRepository>((ref) {
   return ImportantPersonRepository(ref.watch(isarProvider));
+});
+
+final bucketItemRepositoryProvider = Provider<BucketItemRepository>((ref) {
+  return BucketItemRepository(ref.watch(isarProvider));
 });

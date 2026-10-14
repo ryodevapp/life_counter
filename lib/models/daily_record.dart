@@ -25,6 +25,11 @@ class DailyRecord {
   String? gratitude;        // 「今 感謝していることはある？」
   String? tomorrowMessage;  // 「明日の自分に一言伝えるなら？」
 
+  // v1.1.0 新規フィールド(今日の問いへの答え。問いの id は morningQuestionId)
+  String? stamp;   // スタンプの id(lib/models/stamp.dart)
+  String? answer;  // 話す・書く欄の文
+  DateTime? stampAt; // スタンプを押した(取り消した)時刻。ウィジェットとアプリの後勝ちに使う
+
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 }

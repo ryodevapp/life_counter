@@ -6,9 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'services/notification_service.dart';
+import 'services/question_bank.dart';
+import 'models/bucket_item.dart';
 import 'models/daily_record.dart';
 import 'models/important_person.dart';
 import 'providers/isar_provider.dart';
+import 'providers/question_bank_provider.dart';
 import 'providers/user_settings_provider.dart';
 
 void main() async {
@@ -17,9 +20,10 @@ void main() async {
   await NotificationService.initialize();
 
   final prefs = await SharedPreferences.getInstance();
+  final questionBank = await QuestionBank.load();
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [DailyRecordSchema, ImportantPersonSchema],
+    [DailyRecordSchema, ImportantPersonSchema, BucketItemSchema],
     directory: dir.path,
   );
 
@@ -28,6 +32,7 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         isarProvider.overrideWithValue(isar),
+        questionBankProvider.overrideWithValue(questionBank),
       ],
       child: const LifeCounterApp(),
     ),
