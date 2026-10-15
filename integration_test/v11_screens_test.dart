@@ -6,8 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'helpers.dart';
 
 /// v1.1 の主な画面を、ユーザーの流れのとおりに撮る(生年月日を入れた状態から始める)
+/// 切り替えの途中(アニメーションの最中)も撮って、崩れがないかを見る
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  Future<void> midShot(WidgetTester tester, String name) async {
+    await tester.pump(const Duration(milliseconds: 90));
+    await binding.takeScreenshot(name);
+  }
 
   testWidgets('v1.1 screens', (tester) async {
     final prefs = await SharedPreferences.getInstance();
@@ -20,29 +26,51 @@ void main() {
 
     // 今日: 気分のカードと、今日の問いのカード
     await shot(binding, tester, '01_today');
-    await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -400));
-    await wait(tester);
-    await shot(binding, tester, '01b_today_scrolled');
-    await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, 400));
-    await wait(tester);
-
     await tester.tap(find.text('うれしい'));
+    await midShot(tester, '01m_mood_tapping');
     await wait(tester);
-    await tester.enterText(find.byType(TextField).first, '近所を散歩して、金木犀の香りがした');
+    await tester.enterText(find.byType(TextField).first,
+        'ああいいと思います ああこれ入力されてるかどうかわかんなくない ああ文字反映されてますか あいうえおかきくけこさしすせそ');
     await wait(tester, 2600); // 2秒の自動保存を待つ
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
+    await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -500));
+    await wait(tester);
     await shot(binding, tester, '02_today_answered');
 
-    // 記録: 一覧(日付と気分 → 問い → 答え)
+    // 記録: リスト → カレンダー → ふりかえり(切り替えの途中も撮る)
     await tapText(tester, '記録');
     await shot(binding, tester, '03_records_list');
-    await tapText(tester, 'ふりかえり');
-    await shot(binding, tester, '04_records_reflection');
+    await tester.tap(find.text('カレンダー').last);
+    await midShot(tester, '03m_switch_to_calendar');
+    await wait(tester);
+    await shot(binding, tester, '04_records_calendar');
+    await tester.tap(find.text('ふりかえり').last);
+    await midShot(tester, '04m_switch_to_reflection');
+    await wait(tester);
+    await shot(binding, tester, '05_records_reflection');
+    await tester.tap(find.text('リスト').last);
+    await midShot(tester, '05m_switch_to_list');
+    await wait(tester);
 
-    // 人生: やりたいこと(バケットリスト)
+    // 人生: やりたいこと(バケットリスト)を、書く → 追加 → できた → メニュー まで
     await tapText(tester, '人生');
     await tapText(tester, 'やりたいこと');
-    await shot(binding, tester, '05_life_bucket');
+    await shot(binding, tester, '06_bucket_empty');
+    await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
+    await wait(tester);
+    await shot(binding, tester, '07_bucket_typing');
+    await tapText(tester, '追加');
+    await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
+    await tapText(tester, '追加');
+    FocusManager.instance.primaryFocus?.unfocus();
+    await wait(tester);
+    await shot(binding, tester, '08_bucket_two_items');
+    await tester.tap(find.bySemanticsLabel('押すと、できたにする').last);
+    await wait(tester);
+    await shot(binding, tester, '09_bucket_done');
+    await tester.tap(find.byTooltip('そのほかの操作').first);
+    await wait(tester);
+    await shot(binding, tester, '10_bucket_menu');
   });
 }

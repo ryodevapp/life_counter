@@ -74,6 +74,24 @@ void main() {
       expect(find.textContaining('バケットリスト'), findsOneWidget);
     });
 
+    testWidgets('while listening, the hint sits below the field, never on the text',
+        (tester) async {
+      await host(
+          tester,
+          TodayQuestionCard(
+            question: self,
+            answerController: TextEditingController(
+                text: 'ああいいと思います ああこれ入力されてるかどうかわかんなくない ああ文字反映されてますか あいうえおかきくけこさしすせそ'),
+            onAnswerChanged: (_) {},
+            initiallyListening: true,
+          ));
+      await tester.pump(const Duration(milliseconds: 300));
+      final hint = find.textContaining('聞いています');
+      expect(hint, findsOneWidget);
+      final field = tester.getRect(find.byType(TextField));
+      expect(tester.getRect(hint).top, greaterThanOrEqualTo(field.bottom));
+    });
+
     testWidgets('no streak or count text is shown', (tester) async {
       await pump(tester, lastYear: 'x');
       expect(find.textContaining('連続'), findsNothing);

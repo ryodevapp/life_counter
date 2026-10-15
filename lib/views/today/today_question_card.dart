@@ -84,7 +84,7 @@ class _MoodButton extends StatelessWidget {
                   color:
                       selected ? AppColors.accentSurface2 : AppColors.bgWarm,
                   border: Border.all(
-                      color: selected ? AppColors.accent : Colors.transparent,
+                      color: AppColors.accent.withValues(alpha: selected ? 1 : 0),
                       width: 1.5),
                 ),
                 child: Text(stamp.emoji, style: const TextStyle(fontSize: 24)),
@@ -115,7 +115,11 @@ class TodayQuestionCard extends StatefulWidget {
     this.answerFocus,
     this.lastYearAnswer,
     this.onAddToBucket,
+    @visibleForTesting this.initiallyListening = false,
   });
+
+  /// テストで「聞いている間」の見た目を確かめるためだけに使う
+  final bool initiallyListening;
 
   final Question question;
   final TextEditingController answerController;
@@ -132,7 +136,7 @@ class TodayQuestionCard extends StatefulWidget {
 
 class _TodayQuestionCardState extends State<TodayQuestionCard> {
   static const _maxChars = 1000;
-  bool _listening = false;
+  late bool _listening = widget.initiallyListening;
 
   /// 話し始めたときの欄の文(話した分はこの後ろにつなぐ)
   String _base = '';
@@ -212,20 +216,6 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                 ),
               ),
               Positioned(
-                left: 16,
-                right: 60,
-                bottom: 18,
-                child: IgnorePointer(
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 150),
-                    opacity: _listening ? 1 : 0,
-                    child: Text('聞いています…(もう一度押すと止まります)',
-                        style: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 12, color: AppColors.accent)),
-                  ),
-                ),
-              ),
-              Positioned(
                 right: 10,
                 bottom: 10,
                 child: VoiceInputButton(
@@ -238,6 +228,31 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                 ),
               ),
             ],
+          ),
+          // 聞いている間だけ、欄の下に出す(欄の中の文と重ならないように)
+          AnimatedSize(
+            duration: const Duration(milliseconds: 180),
+            child: _listening
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                              color: AppColors.accent, shape: BoxShape.circle),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text('聞いています。話し終えたら ■ を押してください',
+                              style: GoogleFonts.zenKakuGothicNew(
+                                  fontSize: 12, color: AppColors.accent)),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox(width: double.infinity),
           ),
           if (widget.lastYearAnswer != null &&
               widget.lastYearAnswer!.trim().isNotEmpty) ...[

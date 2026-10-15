@@ -123,9 +123,8 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
                       padding: const EdgeInsets.symmetric(vertical: 9),
                       decoration: BoxDecoration(
                         // 選んだタブは、ガラスの上に控えめなアクセント色の丸を敷く
-                        color: isActive
-                            ? AppColors.accentSurface2
-                            : Colors.transparent,
+                        color: AppColors.accentSurface2
+                            .withValues(alpha: isActive ? 0.15 : 0),
                         borderRadius: BorderRadius.circular(26),
                       ),
                       child: Column(
