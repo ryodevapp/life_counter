@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_counter/models/question.dart';
 import 'package:life_counter/services/question_bank.dart';
@@ -124,5 +125,21 @@ void main() {
     test('all は365件', () {
       expect(bank.all.length, 365);
     });
+  });
+
+  test('すべての問いに、もう一歩の問いがある(短く、命令せず、「なぜ」で問わない)', () {
+    for (final q in _loadFromFile()) {
+      final f = q.followUp;
+      expect(f, isNotNull, reason: q.id);
+      expect(f!.endsWith('？'), isTrue, reason: '${q.id}: $f');
+      expect(f.characters.length, lessThanOrEqualTo(30), reason: '${q.id}: $f');
+      for (final w in [
+        ..._forbiddenWords,
+        'なぜ', 'どうして', 'してください', 'しましょう', '最期', '後悔'
+      ]) {
+        expect(f.contains(w), isFalse, reason: '${q.id}: $f');
+      }
+      expect(f, isNot(q.text), reason: q.id);
+    }
   });
 }

@@ -92,6 +92,42 @@ void main() {
       expect(tester.getRect(hint).top, greaterThanOrEqualTo(field.bottom));
     });
 
+    testWidgets('follow-up appears only after writing pauses, and tapping continues the answer',
+        (tester) async {
+      const q = Question(
+          id: 'q3',
+          category: 'self',
+          text: '人生を変えた本は？',
+          dayOfYear: 3,
+          followUp: 'その本の、どんなところが今も残っている？');
+      final controller = TextEditingController();
+      final changes = <String>[];
+      await host(
+          tester,
+          TodayQuestionCard(
+            question: q,
+            answerController: controller,
+            onAnswerChanged: changes.add,
+          ));
+      // 答える前は出さない
+      expect(find.text(q.followUp!), findsNothing);
+      await tester.enterText(find.byType(TextField), '祖父の星の図鑑');
+      await tester.pump(const Duration(milliseconds: 500));
+      // 書いている途中は出さない
+      expect(find.text(q.followUp!), findsNothing);
+      await tester.pump(const Duration(milliseconds: 1200));
+      await tester.pumpAndSettle();
+      expect(find.text(q.followUp!), findsOneWidget);
+      // 押すと、答えの続きに改行が入る(答えは消えない)
+      await tester.tap(find.text(q.followUp!));
+      expect(controller.text, '祖父の星の図鑑\n');
+      expect(changes.last, '祖父の星の図鑑\n');
+      // 答えを空にすると引っこむ
+      await tester.enterText(find.byType(TextField), '');
+      await tester.pumpAndSettle();
+      expect(find.text(q.followUp!), findsNothing);
+    });
+
     testWidgets('no streak or count text is shown', (tester) async {
       await pump(tester, lastYear: 'x');
       expect(find.textContaining('連続'), findsNothing);

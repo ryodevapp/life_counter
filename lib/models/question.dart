@@ -12,11 +12,15 @@ class Question {
   /// 1〜365。この問いを出す日(`questionDayOfYear` の値)。
   final int dayOfYear;
 
+  /// もう一歩の問い。答えを書いたあとにだけ、小さく出す(「なぜ」ではなく「何が・どんな」で深める)
+  final String? followUp;
+
   const Question({
     required this.id,
     required this.category,
     required this.text,
     required this.dayOfYear,
+    this.followUp,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,7 @@ class Question {
       category: json['category'] as String,
       text: json['text'] as String,
       dayOfYear: json['dayOfYear'] as int,
+      followUp: json['followUp'] as String?,
     );
   }
 

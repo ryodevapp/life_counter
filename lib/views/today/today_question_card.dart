@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
@@ -139,6 +142,69 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
   /// 話し始めたときの欄の文(話した分はこの後ろにつなぐ)
   String _base = '';
 
+  /// もう一歩の問いを出しているか。書き終えて少し手が止まったら出し、そのあとは書き足していても出したまま
+  /// (答えを空にしたら引っこめる)
+  bool _showFollowUp = false;
+  Timer? _idle;
+
+  /// 書く手が止まってから、もう一歩の問いを出すまでの間
+  static const _followUpDelay = Duration(milliseconds: 1500);
+
+  @override
+  void initState() {
+    super.initState();
+    _showFollowUp = widget.answerController.text.trim().isNotEmpty;
+    widget.answerController.addListener(_onAnswerEdited);
+  }
+
+  @override
+  void didUpdateWidget(TodayQuestionCard old) {
+    super.didUpdateWidget(old);
+    if (old.answerController != widget.answerController) {
+      old.answerController.removeListener(_onAnswerEdited);
+      widget.answerController.addListener(_onAnswerEdited);
+    }
+    // 日付が変わって別の問いになったら、出し直す
+    if (old.question.id != widget.question.id) {
+      _showFollowUp = widget.answerController.text.trim().isNotEmpty;
+    }
+  }
+
+  @override
+  void dispose() {
+    _idle?.cancel();
+    widget.answerController.removeListener(_onAnswerEdited);
+    super.dispose();
+  }
+
+  void _onAnswerEdited() {
+    final hasText = widget.answerController.text.trim().isNotEmpty;
+    _idle?.cancel();
+    if (!hasText) {
+      if (_showFollowUp) setState(() => _showFollowUp = false);
+      return;
+    }
+    if (_showFollowUp) return;
+    _idle = Timer(_followUpDelay, () {
+      if (mounted && widget.answerController.text.trim().isNotEmpty) {
+        setState(() => _showFollowUp = true);
+      }
+    });
+  }
+
+  /// もう一歩の問いを押したら、答えの続きに改行を入れて、そのまま書けるようにする
+  void _continueWriting() {
+    final c = widget.answerController;
+    final text = c.text.endsWith('\n') ? c.text : '${c.text}\n';
+    if (text.characters.length > _maxChars) return;
+    c.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+    widget.onAnswerChanged(text);
+    widget.answerFocus?.requestFocus();
+  }
+
   void _onWords(String words, bool isFinal) {
     final joined = words.isEmpty
         ? _base
@@ -174,7 +240,7 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
               TextField(
                 controller: widget.answerController,
                 focusNode: widget.answerFocus,
-                minLines: 4,
+                minLines: 3,
                 maxLines: 10,
                 maxLength: _maxChars,
                 onChanged: widget.onAnswerChanged,
@@ -240,6 +306,23 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                   )
                 : const SizedBox(width: double.infinity),
           ),
+          // もう一歩の問い(答えを書いたあとにだけ。答えなくても何も起きない)
+          AnimatedSize(
+            duration: AppMotion.slow,
+            curve: Curves.easeOutCubic,
+            child: AnimatedOpacity(
+              duration: AppMotion.slow,
+              opacity: _showFollowUp && !_listening ? 1 : 0,
+              child: _showFollowUp &&
+                      !_listening &&
+                      widget.question.followUp != null
+                  ? _FollowUp(
+                      text: widget.question.followUp!,
+                      onTap: _continueWriting,
+                    )
+                  : const SizedBox(width: double.infinity),
+            ),
+          ),
           if (widget.lastYearAnswer != null &&
               widget.lastYearAnswer!.trim().isNotEmpty) ...[
             const SizedBox(height: AppSpacing.l),
@@ -271,6 +354,63 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// もう一歩の問い。押すと答えの続きを書ける
+class _FollowUp extends StatelessWidget {
+  const _FollowUp({required this.text, required this.onTap});
+
+  final String text;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'もう一歩。$text',
+      hint: '答えの続きを書く',
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(top: AppSpacing.m),
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.m),
+          decoration: BoxDecoration(
+            color: AppColors.accentSurface,
+            borderRadius: BorderRadius.circular(AppRadius.field),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 3),
+                child: Icon(CupertinoIcons.arrow_turn_down_right,
+                    size: 16, color: AppColors.accent),
+              ),
+              const SizedBox(width: AppSpacing.s),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('もう一歩',
+                        style: AppTextStyles.captionLabel
+                            .copyWith(color: AppColors.accent)),
+                    const SizedBox(height: 2),
+                    Text(text,
+                        style: AppTextStyles.callout
+                            .copyWith(color: AppColors.text)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
