@@ -58,6 +58,8 @@ struct LifeDaysView: View {
                     .minimumScaleFactor(0.6)
                     .lineLimit(1)
                     .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
+                    // iOS 26 の色合いを付ける表示・透明な表示で、主役の数字として色付けされる
+                    .widgetAccentable()
                 Text("日目")
                     .font(.system(size: 13, weight: .light))
                     .foregroundStyle(Tone.muted)
@@ -86,6 +88,7 @@ struct TodayQuestionView: View {
                     .lineLimit(3)
                     .minimumScaleFactor(0.8)
                     .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
+                    .widgetAccentable()
                 Spacer(minLength: 0)
                 HStack {
                     ForEach(stampDefs, id: \.id) { s in

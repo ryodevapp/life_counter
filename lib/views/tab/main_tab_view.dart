@@ -6,6 +6,7 @@ import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
+import '../shared/glass_surface.dart';
 import '../today/today_page.dart';
 import '../record/record_calendar_page.dart';
 import '../life/life_tab_page.dart';
@@ -89,71 +90,76 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     );
   }
 
+  /// 内容の上に浮かぶ、ガラスのカプセル型のタブバー(下の内容が透けて見える)
   Widget _buildTabBar() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColors.bg.withValues(alpha: 0.0),
-            AppColors.bg,
-          ],
-          stops: const [0.0, 0.25],
-        ),
-      ),
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 30),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border),
-          boxShadow: AppColors.cardShadow,
-        ),
-        child: Row(
-          children: List.generate(_tabs.length, (i) {
-            final tab = _tabs[i];
-            final isActive = i == _currentIndex;
-            return Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() => _currentIndex = i);
-                  if (i == 0) ref.read(todayReloadProvider.notifier).state++;
-                  if (i == 1) _recordKey.currentState?.reload();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        tab.icon,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: isActive
-                              ? AppColors.accent
-                              : AppColors.textDisabled,
-                        ),
+    return SafeArea(
+      top: false,
+      minimum: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GlassSurface(
+          borderRadius: 32,
+          padding: const EdgeInsets.all(6),
+          child: Row(
+            children: List.generate(_tabs.length, (i) {
+              final tab = _tabs[i];
+              final isActive = i == _currentIndex;
+              return Expanded(
+                child: Semantics(
+                  button: true,
+                  selected: isActive,
+                  label: tab.label,
+                  excludeSemantics: true,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      setState(() => _currentIndex = i);
+                      if (i == 0) ref.read(todayReloadProvider.notifier).state++;
+                      if (i == 1) _recordKey.currentState?.reload();
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOut,
+                      padding: const EdgeInsets.symmetric(vertical: 9),
+                      decoration: BoxDecoration(
+                        // 選んだタブは、ガラスの上に控えめなアクセント色の丸を敷く
+                        color: isActive
+                            ? AppColors.accentSurface2
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(26),
                       ),
-                      const SizedBox(height: 3),
-                      Text(
-                        tab.label,
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 11,
-                          fontWeight:
-                              isActive ? FontWeight.w600 : FontWeight.w400,
-                          color: isActive
-                              ? AppColors.accent
-                              : AppColors.textDisabled,
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            tab.icon,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: isActive
+                                  ? AppColors.accent
+                                  : AppColors.textMuted,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            tab.label,
+                            style: GoogleFonts.zenKakuGothicNew(
+                              fontSize: 11,
+                              fontWeight:
+                                  isActive ? FontWeight.w600 : FontWeight.w400,
+                              color: isActive
+                                  ? AppColors.accent
+                                  : AppColors.textMuted,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );

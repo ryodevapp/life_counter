@@ -28,6 +28,18 @@ class AppColors {
   static const Color border = Color(0x0F2C2520);
   static const Color borderAccent = Color(0x40B8784E);
 
+  // Glass(内容の上に浮かぶタブバーなどだけに使う)
+  static const Color glassFill = Color(0xA6FFFFFF); // 白 65%
+  static const Color glassHighlight = Color(0xD9FFFFFF); // 上の縁の明るさ 85%
+  static const Color glassEdge = Color(0x80FFFFFF); // 細い明るい縁 50%
+  static const List<BoxShadow> glassShadow = [
+    BoxShadow(
+      color: Color(0x142C2520),
+      offset: Offset(0, 8),
+      blurRadius: 24,
+    ),
+  ];
+
   // Shadow
   static const List<BoxShadow> cardShadow = [
     BoxShadow(
