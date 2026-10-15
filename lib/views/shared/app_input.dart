@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
+import 'app_text_styles.dart';
 
 /// プロトタイプのInコンポーネント再現
 class AppInput extends StatelessWidget {
@@ -40,37 +41,30 @@ class AppInput extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       onChanged: onChanged,
-      style: GoogleFonts.zenKakuGothicNew(
-        fontSize: 14,
-        fontWeight: FontWeight.w300,
-        color: AppColors.text,
-      ),
+      style: AppTextStyles.callout,
       decoration: InputDecoration(
         hintText: placeholder,
-        hintStyle: GoogleFonts.zenKakuGothicNew(
-          fontSize: 14,
-          fontWeight: FontWeight.w300,
-          color: AppColors.textDisabled,
-        ),
+        hintStyle: AppTextStyles.callout.copyWith(color: AppColors.textDisabled),
         filled: true,
         fillColor: AppColors.bgWarm,
         counterText: '',
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        // 高さ 48 以上(callout の1行 24 + 上下 12)
+        contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.l, vertical: AppSpacing.m),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: showBorder
               ? const BorderSide(color: AppColors.border)
               : BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: showBorder
               ? const BorderSide(color: AppColors.border)
               : BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: showBorder
               ? const BorderSide(color: AppColors.borderAccent)
               : BorderSide.none,

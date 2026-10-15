@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_toast.dart';
 
 /// 欄の中の右下に置くマイクのボタン。話している間も文字にして渡す(文字にするのは端末の中だけ)
@@ -29,7 +30,9 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
     with SingleTickerProviderStateMixin {
   final _speech = SpeechToText();
   late final AnimationController _pulse = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 900));
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
   bool _ready = false;
   bool _listening = false;
   bool _toldUnavailable = false;
@@ -55,7 +58,8 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
       return;
     }
     try {
-      _ready = _ready ||
+      _ready =
+          _ready ||
           await _speech.initialize(
             onStatus: (status) {
               if (status == SpeechToText.doneStatus ||
@@ -102,8 +106,7 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
   void _tellUnavailable() {
     if (_toldUnavailable || !mounted) return;
     _toldUnavailable = true;
-    AppToast.error(
-        context, '声で入力できませんでした。設定アプリでマイクと音声認識を許可すると使えます');
+    AppToast.error(context, '声で入力できませんでした。設定アプリでマイクと音声認識を許可すると使えます');
   }
 
   @override
@@ -119,35 +122,38 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
       button: true,
       label: _listening ? '話すのをやめる' : '声で入力する',
       excludeSemantics: true,
+      // 見た目は 36 の丸のまま、押せる範囲は 44 に広げる
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: _toggle,
-        child: AnimatedBuilder(
-          animation: _pulse,
-          builder: (context, child) => Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _listening ? AppColors.accent : AppColors.card,
-              boxShadow: [
-                if (_listening)
-                  BoxShadow(
-                    color: AppColors.accent.withValues(alpha: 0.35),
-                    blurRadius: 4 + 10 * _pulse.value,
-                    spreadRadius: 1 + 4 * _pulse.value,
-                  )
-                else
-                  const BoxShadow(
-                    color: Color(0x142C2520),
-                    blurRadius: 4,
-                    offset: Offset(0, 1),
-                  ),
-              ],
-            ),
-            child: Icon(
-              _listening ? Icons.stop_rounded : Icons.mic_none_rounded,
-              size: 20,
-              color: _listening ? Colors.white : AppColors.textSecondary,
+        child: SizedBox.square(
+          dimension: AppSpacing.minTap,
+          child: Center(
+            child: AnimatedBuilder(
+              animation: _pulse,
+              builder: (context, child) => Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _listening ? AppColors.accent : AppColors.card,
+                  boxShadow: [
+                    if (_listening)
+                      BoxShadow(
+                        color: AppColors.accent.withValues(alpha: 0.35),
+                        blurRadius: 4 + 10 * _pulse.value,
+                        spreadRadius: 1 + 4 * _pulse.value,
+                      )
+                    else
+                      ...AppColors.cardShadow,
+                  ],
+                ),
+                child: Icon(
+                  _listening ? Icons.stop_rounded : Icons.mic_none_rounded,
+                  size: 20,
+                  color: _listening ? Colors.white : AppColors.textSecondary,
+                ),
+              ),
             ),
           ),
         ),

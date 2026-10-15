@@ -72,6 +72,66 @@ class AppTextStyles {
         color: AppColors.textSecondary,
       );
 
+  // ── デザインシステムの7段(design/design-system.md の「3. 文字」)。新しく書く文字はここから選ぶ ──
+
+  /// 大きな数字(人生タブなど)
+  static TextStyle get display => GoogleFonts.cormorantGaramond(
+        fontSize: 34,
+        fontWeight: FontWeight.w300,
+        height: 1.1,
+        color: AppColors.text,
+      );
+
+  /// 画面の題・詳しい画面の題
+  static TextStyle get title => GoogleFonts.zenKakuGothicNew(
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        height: 1.35,
+        color: AppColors.text,
+      );
+
+  /// カードの題・問いの文
+  static TextStyle get headline => GoogleFonts.zenKakuGothicNew(
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+        height: 1.4,
+        color: AppColors.text,
+      );
+
+  /// 本文・答え
+  static TextStyle get body => GoogleFonts.zenKakuGothicNew(
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        height: 1.65,
+        color: AppColors.text,
+      );
+
+  /// 一覧の本文・説明
+  static TextStyle get callout => GoogleFonts.zenKakuGothicNew(
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+        height: 1.6,
+        color: AppColors.text,
+      );
+
+  /// 日付・補足
+  static TextStyle get footnote => GoogleFonts.zenKakuGothicNew(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        height: 1.5,
+        color: AppColors.textMuted,
+      );
+
+  /// 小さい見出し(「今日の問い」など)・ラベル
+  static TextStyle get captionLabel => GoogleFonts.zenKakuGothicNew(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        height: 1.4,
+        color: AppColors.textMuted,
+      );
+
+  // ── ここから下は以前の名前(新しく使わない。直すときに上の7段へ寄せる) ──
+
   // Labels（カード内ヘッダー等）
   static TextStyle get label => GoogleFonts.zenKakuGothicNew(
         fontSize: 12, // 旧10 → 12

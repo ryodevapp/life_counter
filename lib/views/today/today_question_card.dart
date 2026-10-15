@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
 import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
+import '../shared/app_text_styles.dart';
 import 'voice_input_button.dart';
 
 /// 「今日はどんな一日だった？」に、気分を1つ選んで答える
@@ -21,12 +22,8 @@ class MoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(moodQuestion,
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.text)),
-          const SizedBox(height: 14),
+          Text(moodQuestion, style: AppTextStyles.headline),
+          const SizedBox(height: AppSpacing.m),
           Row(
             children: [
               for (final s in stamps)
@@ -70,33 +67,32 @@ class _MoodButton extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 150),
+          duration: AppMotion.fast,
           opacity: dimmed ? 0.55 : 1,
           child: Column(
             children: [
               AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
+                duration: AppMotion.fast,
                 width: 48,
                 height: 48,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color:
-                      selected ? AppColors.accentSurface2 : AppColors.bgWarm,
+                  color: selected ? AppColors.accentSurface2 : AppColors.bgWarm,
                   border: Border.all(
-                      color: AppColors.accent.withValues(alpha: selected ? 1 : 0),
-                      width: 1.5),
+                    color: AppColors.accent.withValues(alpha: selected ? 1 : 0),
+                    width: 1.5,
+                  ),
                 ),
-                child: Text(stamp.emoji, style: const TextStyle(fontSize: 24)),
+                child: Text(stamp.emoji, style: AppTextStyles.title),
               ),
-              const SizedBox(height: 6),
-              Text(stamp.label,
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 11,
-                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                      color: selected
-                          ? AppColors.accent
-                          : AppColors.textSecondary)),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                stamp.label,
+                style: AppTextStyles.captionLabel.copyWith(
+                  color: selected ? AppColors.accent : AppColors.textSecondary,
+                ),
+              ),
             ],
           ),
         ),
@@ -156,31 +152,27 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
     if (isFinal) _base = text;
   }
 
+  static final _noBorder = AppColors.accent.withValues(alpha: 0);
+
   OutlineInputBorder _border(Color color) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: color),
-      );
+    borderRadius: BorderRadius.circular(AppRadius.md),
+    borderSide: BorderSide(color: color),
+  );
 
   @override
   Widget build(BuildContext context) {
-    final showBucket = widget.question.isBucket &&
+    final showBucket =
+        widget.question.isBucket &&
         widget.onAddToBucket != null &&
         widget.answerController.text.trim().isNotEmpty;
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('今日の問い',
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 12, letterSpacing: 1.5, color: AppColors.textMuted)),
-          const SizedBox(height: 10),
-          Text(widget.question.text,
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.text,
-                  height: 1.6)),
-          const SizedBox(height: 16),
+          Text('今日の問い', style: AppTextStyles.captionLabel),
+          const SizedBox(height: AppSpacing.s),
+          Text(widget.question.text, style: AppTextStyles.headline),
+          const SizedBox(height: AppSpacing.l),
           // マイクは欄の中の右下に重ねる(欄の外に並べるとガタつくため)
           Stack(
             children: [
@@ -191,33 +183,37 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                 maxLines: 10,
                 maxLength: _maxChars,
                 onChanged: widget.onAnswerChanged,
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                    color: AppColors.text,
-                    height: 1.7),
+                style: AppTextStyles.callout,
                 decoration: InputDecoration(
                   hintText: '書く、または右下のマイクで話す\n(書かなくても大丈夫です)',
                   hintMaxLines: 2,
-                  hintStyle: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.textDisabled,
-                      height: 1.6),
+                  hintStyle: AppTextStyles.callout.copyWith(
+                    color: AppColors.textDisabled,
+                  ),
                   filled: true,
                   fillColor: AppColors.bgWarm,
                   counterText: '',
-                  contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 52),
-                  border: _border(Colors.transparent),
+                  // 下はマイクのボタン(押せる範囲 44)の分を空ける
+                  contentPadding: const EdgeInsets.fromLTRB(
+                    AppSpacing.l,
+                    AppSpacing.m,
+                    AppSpacing.l,
+                    AppSpacing.minTap + AppSpacing.s,
+                  ),
+                  // 枠は聞いている間だけ出す(ほかは AppInput と同じく枠なし)
+                  border: _border(_noBorder),
                   enabledBorder: _border(
-                      _listening ? AppColors.accent : Colors.transparent),
+                    _listening ? AppColors.accent : _noBorder,
+                  ),
                   focusedBorder: _border(
-                      _listening ? AppColors.accent : AppColors.borderAccent),
+                    _listening ? AppColors.accent : _noBorder,
+                  ),
                 ),
               ),
               Positioned(
-                right: 10,
-                bottom: 10,
+                // マイクは見た目 36・押せる範囲 44。欄の角から 4 内側に置く
+                right: AppSpacing.xs,
+                bottom: AppSpacing.xs,
                 child: VoiceInputButton(
                   onStart: () => setState(() {
                     _listening = true;
@@ -231,23 +227,28 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
           ),
           // 聞いている間だけ、欄の下に出す(欄の中の文と重ならないように)
           AnimatedSize(
-            duration: const Duration(milliseconds: 180),
+            duration: AppMotion.base,
             child: _listening
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: AppSpacing.s),
                     child: Row(
                       children: [
                         Container(
                           width: 8,
                           height: 8,
                           decoration: const BoxDecoration(
-                              color: AppColors.accent, shape: BoxShape.circle),
+                            color: AppColors.accent,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.s),
                         Expanded(
-                          child: Text('聞いています。話し終えたら ■ を押してください',
-                              style: GoogleFonts.zenKakuGothicNew(
-                                  fontSize: 12, color: AppColors.accent)),
+                          child: Text(
+                            '聞いています。話し終えたら ■ で止められます',
+                            style: AppTextStyles.footnote.copyWith(
+                              color: AppColors.accent,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -256,27 +257,31 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
           ),
           if (widget.lastYearAnswer != null &&
               widget.lastYearAnswer!.trim().isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text('1年前の今日、あなたはこう答えました',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textMuted)),
-            const SizedBox(height: 6),
-            Text(widget.lastYearAnswer!,
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    color: AppColors.textSecondary,
-                    height: 1.6)),
+            const SizedBox(height: AppSpacing.l),
+            Text('1年前の今日、あなたはこう答えました', style: AppTextStyles.captionLabel),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              widget.lastYearAnswer!,
+              style: AppTextStyles.callout.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
           ],
           if (showBucket) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: widget.onAddToBucket,
-                child: Text('やりたいこと(バケットリスト)に入れる',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 13, color: AppColors.accent)),
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
+                ),
+                child: Text(
+                  'やりたいこと(バケットリスト)に入れる',
+                  style: AppTextStyles.footnote.copyWith(
+                    color: AppColors.accent,
+                  ),
+                ),
               ),
             ),
           ],

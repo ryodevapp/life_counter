@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 
@@ -20,13 +20,10 @@ class YourTimeSection extends ConsumerWidget {
 
     if (birthDate == null) {
       return AppCard(
-        padding: const EdgeInsets.all(40),
-        child: Center(
-          child: Text(
-            'オンボーディング完了後に表示されます',
-            style: AppTextStyles.caption
-                .copyWith(color: AppColors.textDisabled),
-          ),
+        child: Text(
+          'オンボーディング完了後に表示されます',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
       );
     }
@@ -48,21 +45,10 @@ class YourTimeSection extends ConsumerWidget {
 
     if (pastAL) {
       return AppCard(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          children: [
-            const Text('\u{1F31F}', style: TextStyle(fontSize: 32)),
-            const SizedBox(height: 16),
-            Text(
-              '平均を超えて生きている、\nすばらしい人生です',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                height: 1.7,
-              ),
-            ),
-          ],
+        child: Text(
+          '平均を超えて生きている、\nすばらしい人生です',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.headline,
         ),
       );
     }
@@ -75,38 +61,35 @@ class YourTimeSection extends ConsumerWidget {
             children: [
               Text(
                 formatter.format(remainingDays),
-                style: AppTextStyles.displayMedium.copyWith(
+                style: AppTextStyles.display.copyWith(
                   color: AppColors.accent,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
-                '日（平均寿命まで）',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textMuted,
-                ),
+                '日(平均までの目安)',
+                style: AppTextStyles.footnote,
               ),
               if (!pastHL) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.l),
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
                         text: 'そのうち、健康でいられるのは約 ',
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: AppTextStyles.callout.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
                       TextSpan(
                         text: formatter.format(healthyRemaining),
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: AppTextStyles.callout.copyWith(
                           color: AppColors.accent,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       TextSpan(
                         text: ' 日',
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: AppTextStyles.callout.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
@@ -114,11 +97,11 @@ class YourTimeSection extends ConsumerWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.l),
 
-              // 平均寿命プログレスバー
+              // 誕生から平均までの棒
               ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(AppRadius.full),
                 child: SizedBox(
                   height: 8,
                   child: LinearProgressIndicator(
@@ -130,24 +113,24 @@ class YourTimeSection extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: AppSpacing.s),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('誕生', style: _barLabel),
-                  Text('平均寿命', style: _barLabel),
+                  Text('平均', style: _barLabel),
                 ],
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: AppSpacing.cardGap),
 
         // 残りの○○グリッド
         GridView.count(
           crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisSpacing: AppSpacing.cardGap,
+          mainAxisSpacing: AppSpacing.cardGap,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           children: [
@@ -165,54 +148,25 @@ class YourTimeSection extends ConsumerWidget {
     );
   }
 
-  static final _barLabel = GoogleFonts.zenKakuGothicNew(
-    fontSize: 12,
-    color: AppColors.textMuted,
-  );
+  static final _barLabel = AppTextStyles.captionLabel;
 
   static Widget _remainingCard(
       String emoji, String label, int value, String unit,
       {String? sub}) {
     final formatter = NumberFormat('#,###', 'ja_JP');
     return AppCard(
-      padding: const EdgeInsets.all(18),
+      // 2列の正方形のマスに数字・単位・補足を収めるため、内側は card(20)より狭い l(16)
+      padding: const EdgeInsets.all(AppSpacing.l),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 12,
-              color: AppColors.textMuted,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            formatter.format(value),
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 26,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-          Text(
-            unit,
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 12,
-              color: AppColors.textMuted,
-            ),
-          ),
-          if (sub != null) ...[
-            const SizedBox(height: 2),
-            Text(
-              sub,
-              style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 11,
-                color: AppColors.textDisabled,
-              ),
-            ),
-          ],
+          Text(emoji, style: AppTextStyles.headline),
+          const SizedBox(height: AppSpacing.xs),
+          Text(label, style: AppTextStyles.captionLabel),
+          const SizedBox(height: AppSpacing.xs),
+          Text(formatter.format(value), style: AppTextStyles.display),
+          Text(unit, style: AppTextStyles.captionLabel),
+          if (sub != null) Text(sub, style: AppTextStyles.captionLabel),
         ],
       ),
     );

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../providers/question_bank_provider.dart';
 import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
+import '../shared/app_text_styles.dart';
 import '../shared/glass_surface.dart';
 import '../today/today_page.dart';
 import '../record/record_calendar_page.dart';
@@ -94,12 +95,12 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   Widget _buildTabBar() {
     return SafeArea(
       top: false,
-      minimum: const EdgeInsets.only(bottom: 12),
+      minimum: const EdgeInsets.only(bottom: AppSpacing.m),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
         child: GlassSurface(
-          borderRadius: 32,
-          padding: const EdgeInsets.all(6),
+          borderRadius: AppRadius.full,
+          padding: const EdgeInsets.all(AppSpacing.xs),
           child: Row(
             children: List.generate(_tabs.length, (i) {
               final tab = _tabs[i];
@@ -118,34 +119,32 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
                       if (i == 1) _recordKey.currentState?.reload();
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 220),
-                      curve: Curves.easeOut,
-                      padding: const EdgeInsets.symmetric(vertical: 9),
+                      duration: AppMotion.base,
+                      curve: Curves.easeOutCubic,
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSpacing.s),
                       decoration: BoxDecoration(
                         // 選んだタブは、ガラスの上に控えめなアクセント色の丸を敷く
-                        color: AppColors.accentSurface2
-                            .withValues(alpha: isActive ? 0.15 : 0),
-                        borderRadius: BorderRadius.circular(26),
+                        // (選んでいないときは同じ色の透明度0。途中で灰色にならないように)
+                        color: isActive
+                            ? AppColors.accentSurface2
+                            : AppColors.accentSurface2.withValues(alpha: 0),
+                        borderRadius: BorderRadius.circular(AppRadius.full),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             tab.icon,
-                            style: TextStyle(
-                              fontSize: 16,
+                            style: AppTextStyles.headline.copyWith(
                               color: isActive
                                   ? AppColors.accent
                                   : AppColors.textMuted,
                             ),
                           ),
-                          const SizedBox(height: 2),
                           Text(
                             tab.label,
-                            style: GoogleFonts.zenKakuGothicNew(
-                              fontSize: 11,
-                              fontWeight:
-                                  isActive ? FontWeight.w600 : FontWeight.w400,
+                            style: AppTextStyles.captionLabel.copyWith(
                               color: isActive
                                   ? AppColors.accent
                                   : AppColors.textMuted,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
 
 /// プロトタイプのBtコンポーネント再現
 class AppButton extends StatelessWidget {
@@ -50,16 +51,18 @@ class AppButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: primary ? AppColors.accent : AppColors.bgWarm,
-          foregroundColor: primary ? Colors.white : AppColors.textSecondary,
+          foregroundColor: primary ? Colors.white : AppColors.text,
+          disabledBackgroundColor: AppColors.bgSub,
+          disabledForegroundColor: AppColors.textDisabled,
           elevation: 0,
-          shadowColor: primary ? const Color(0x33B8784E) : Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          minimumSize: const Size(AppSpacing.minTap, AppSpacing.buttonHeight),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
           textStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
         ),
         child: child,

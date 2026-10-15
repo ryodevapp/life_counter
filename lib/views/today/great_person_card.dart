@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../services/great_person_service.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../shared/pill_label.dart';
@@ -42,21 +42,14 @@ class _GreatPersonCardState extends State<GreatPersonCard> {
           Row(
             children: [
               PillLabel(text: _typeEmoji(ep['type'] as String)),
-              const SizedBox(width: 8),
-              Text(
-                '今日の偉人',
-                style: AppTextStyles.label.copyWith(letterSpacing: 0),
-              ),
+              const SizedBox(width: AppSpacing.s),
+              Text('今日の偉人', style: AppTextStyles.captionLabel),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: AppSpacing.m),
           Text(
             '${ep['achieveAge']}歳の時、${ep['name']}は${ep['text']}',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 14,
-              fontWeight: FontWeight.w300,
-              height: 1.8,
-            ),
+            style: AppTextStyles.callout,
           ),
         ],
       ),
@@ -79,12 +72,12 @@ class _GreatPersonCardState extends State<GreatPersonCard> {
   }
 
   void _showDetail(BuildContext context, Map<String, dynamic> ep) {
-    final achievements =
-        List<Map<String, dynamic>>.from(ep['achievements'] ?? []);
+    final achievements = List<Map<String, dynamic>>.from(
+      ep['achievements'] ?? [],
+    );
     final birth = ep['birth'];
     final death = ep['death'];
-    final lifespan =
-        death != null ? '$birth - $death' : '$birth -';
+    final lifespan = death != null ? '$birth - $death' : '$birth -';
 
     showModalBottomSheet(
       context: context,
@@ -96,54 +89,48 @@ class _GreatPersonCardState extends State<GreatPersonCard> {
         ),
         decoration: const BoxDecoration(
           color: AppColors.card,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadius.sheet),
+          ),
         ),
-        padding: const EdgeInsets.all(28),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
                 child: Container(
-                  width: 40,
+                  width: 36,
                   height: 4,
                   decoration: BoxDecoration(
                     color: AppColors.bgSub,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-              Text(ep['name'] as String, style: AppTextStyles.headlineSmall),
-              const SizedBox(height: 4),
-              Text(lifespan,
-                  style: AppTextStyles.caption
-                      .copyWith(color: AppColors.textMuted)),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.xl),
+              Text(ep['name'] as String, style: AppTextStyles.title),
+              const SizedBox(height: AppSpacing.xs),
+              Text(lifespan, style: AppTextStyles.footnote),
+              const SizedBox(height: AppSpacing.l),
               // 業績リスト
               for (final a in achievements) ...[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom: AppSpacing.m),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${a['age']}歳',
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
+                        style: AppTextStyles.headline.copyWith(
                           color: AppColors.accent,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppSpacing.l),
                       Expanded(
                         child: Text(
                           a['text'] as String,
-                          style: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w300,
-                            height: 1.6,
-                          ),
+                          style: AppTextStyles.callout,
                         ),
                       ),
                     ],
@@ -151,20 +138,16 @@ class _GreatPersonCardState extends State<GreatPersonCard> {
                 ),
               ],
               if (ep['quote'] != null) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.l),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppSpacing.l),
                   decoration: BoxDecoration(
                     color: AppColors.bgWarm,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Text(
                     '「${ep['quote']}」',
-                    style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                      fontStyle: FontStyle.italic,
+                    style: AppTextStyles.callout.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
@@ -42,27 +42,28 @@ class _BirthInputPageState extends State<BirthInputPage> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 36),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.screen, vertical: AppSpacing.l),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
               const PillLabel(text: 'STEP 1'),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.l),
               Text(
-                'あなたのことを教えてください',
-                style: AppTextStyles.headlineMedium,
+                'あなたについて',
+                style: AppTextStyles.title,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.s),
               Text(
-                '人生の日数と平均寿命の計算に使用します',
-                style: AppTextStyles.bodySmall
-                    .copyWith(color: AppColors.textMuted),
+                '人生の日数と、これからの目安の計算に使います',
+                style:
+                    AppTextStyles.callout.copyWith(color: AppColors.textMuted),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: AppSpacing.xxl),
 
               // 性別（任意）
-              Text('性別（任意）', style: AppTextStyles.label),
-              const SizedBox(height: 12),
+              Text('性別（任意）', style: AppTextStyles.captionLabel),
+              const SizedBox(height: AppSpacing.s),
               Row(
                 children: [
                   for (final g in [
@@ -70,16 +71,17 @@ class _BirthInputPageState extends State<BirthInputPage> {
                     (Gender.female, '女性'),
                     (Gender.unspecified, '選択しない'),
                   ]) ...[
-                    if (g.$1 != Gender.male) const SizedBox(width: 10),
+                    if (g.$1 != Gender.male)
+                      const SizedBox(width: AppSpacing.s),
                     Expanded(child: _genderButton(g.$1, g.$2)),
                   ],
                 ],
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: AppSpacing.xl),
 
               // 生年月日
-              Text('生年月日', style: AppTextStyles.label),
-              const SizedBox(height: 12),
+              Text('生年月日', style: AppTextStyles.captionLabel),
+              const SizedBox(height: AppSpacing.s),
               GestureDetector(
                 onTap: () async {
                   final picked = await showDatePicker(
@@ -96,24 +98,22 @@ class _BirthInputPageState extends State<BirthInputPage> {
                     });
                   }
                 },
+                // 見た目は AppInput と同じ(bgWarm・角 md・枠なし・高さ 48 以上)
                 child: Container(
                   width: double.infinity,
+                  constraints: const BoxConstraints(minHeight: 48),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 14),
+                      horizontal: AppSpacing.l, vertical: AppSpacing.m),
                   decoration: BoxDecoration(
                     color: AppColors.bgWarm,
-                    border: Border.all(color: AppColors.border),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         child: Text(
                           '$_year年$_month月$_day日',
-                          style: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 15,
-                            color: AppColors.text,
-                          ),
+                          style: AppTextStyles.callout,
                         ),
                       ),
                       Icon(Icons.calendar_today_rounded,
@@ -122,7 +122,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: AppSpacing.xxxl),
 
               AppButton.primary(onPressed: _handleNext, label: '次へ'),
             ],
@@ -135,24 +135,29 @@ class _BirthInputPageState extends State<BirthInputPage> {
 
   Widget _genderButton(Gender gender, String label) {
     final isSelected = _gender == gender;
-    return GestureDetector(
-      onTap: () => setState(() => _gender = gender),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.accentSurface2 : AppColors.bgWarm,
-          border: Border.all(
-            color: isSelected ? AppColors.borderAccent : AppColors.border,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => setState(() => _gender = gender),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: AppSpacing.minTap),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.accentSurface2 : AppColors.bgWarm,
+            border: Border.all(
+              color: isSelected ? AppColors.borderAccent : AppColors.border,
+            ),
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 13,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              color: isSelected ? AppColors.accent : AppColors.textSecondary,
+          child: Center(
+            child: Text(
+              label,
+              style: AppTextStyles.footnote.copyWith(
+                color:
+                    isSelected ? AppColors.accent : AppColors.textSecondary,
+              ),
             ),
           ),
         ),

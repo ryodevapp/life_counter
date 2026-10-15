@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/important_person.dart';
@@ -12,9 +12,15 @@ import '../../providers/user_settings_provider.dart';
 import '../../services/record_export.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
+import '../shared/page_header.dart';
+import '../shared/sheet_handle.dart';
+
+/// この端末に入っているアプリの版(表示とフィードバックのメールで使う)
+final Future<PackageInfo> _packageInfo = PackageInfo.fromPlatform();
 
 /// マイページタブ（プロトタイプのMyPageTab再現 + Epic 9 設定編集UI）
 class MyPage extends ConsumerWidget {
@@ -35,59 +41,66 @@ class MyPage extends ConsumerWidget {
         : 'OFF';
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 48, 20, 130),
+        padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('MY PAGE', style: AppTextStyles.labelUppercase),
-            const SizedBox(height: 28),
+            const PageHeader('マイページ'),
 
             AppCard(
               child: Column(
                 children: [
-                  _settingsRow(
-                    '\u{1F4C5}', '生年月日', bdText,
+                  _row(
+                    Icons.cake_outlined, '生年月日', value: bdText,
                     onTap: () => _editBirthDate(context, ref, settings),
                   ),
                   _divider(),
-                  _settingsRow(
-                    '\u{1F464}', '性別', genText,
+                  _row(
+                    Icons.person_outline, '性別', value: genText,
                     onTap: () => _editGender(context, ref, settings),
                   ),
                   _divider(),
-                  _settingsRow(
-                    '\u{1F514}', '朝の通知', notifText,
+                  _row(
+                    Icons.notifications_none, '朝の通知', value: notifText,
                     onTap: () => _editNotification(context, ref, settings),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.cardGap),
 
             AppCard(
               child: Column(
                 children: [
-                  _linkRow('記録を書き出す',
+                  _row(Icons.ios_share, '記録を書き出す',
                       onTap: () => _exportRecords(context, ref)),
                   _divider(),
-                  _linkRow('フィードバックを送る',
+                  _row(Icons.mail_outline, 'フィードバックを送る',
                       onTap: () => _sendFeedback(context)),
                   _divider(),
-                  _linkRow('プライバシーポリシー',
+                  _row(Icons.lock_outline, 'プライバシーポリシー',
                       onTap: () => _showLegal(context, 'privacy_policy.html',
                           'プライバシーポリシー')),
                   _divider(),
-                  _linkRow('利用規約',
+                  _row(Icons.description_outlined, '利用規約',
                       onTap: () => _showLegal(
                           context, 'terms_of_service.html', '利用規約')),
                 ],
               ),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: AppSpacing.section),
 
-            Text(
-              'LifeCounter v1.0.2',
-              style: AppTextStyles.caption
-                  .copyWith(fontSize: 11, color: AppColors.textDisabled),
+            Center(
+              child: FutureBuilder<PackageInfo>(
+                future: _packageInfo,
+                builder: (context, snapshot) => Text(
+                  snapshot.hasData
+                      ? 'LifeCounter v${snapshot.data!.version}'
+                      : 'LifeCounter',
+                  style: AppTextStyles.footnote,
+                ),
+              ),
             ),
           ],
         ),
@@ -97,13 +110,19 @@ class MyPage extends ConsumerWidget {
 
   // ─── フィードバック ───
 
-  void _sendFeedback(BuildContext context) {
+  Future<void> _sendFeedback(BuildContext context) async {
+    String version = '';
+    try {
+      version = ' v${(await _packageInfo).version}';
+    } catch (_) {
+      // 版が読めなくても、メールは開く
+    }
     final uri = Uri(
       scheme: 'mailto',
       path: 'ryo.nakano.biz+lifecounter@gmail.com',
-      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter v1.0.2',
+      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter$version',
     );
-    launchUrl(uri);
+    await launchUrl(uri);
   }
 
   // ─── 法的ページ ───
@@ -140,25 +159,27 @@ class MyPage extends ConsumerWidget {
       context: context,
       backgroundColor: AppColors.card,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
       ),
       builder: (ctx) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xl, AppSpacing.m, AppSpacing.xl, AppSpacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('性別を選択',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 16, fontWeight: FontWeight.w500)),
-              const SizedBox(height: 20),
+              const SheetHandle(),
+              const SizedBox(height: AppSpacing.l),
+              Text('性別を選択', style: AppTextStyles.headline),
+              const SizedBox(height: AppSpacing.l),
               for (final g in [
                 (Gender.male, '男性'),
                 (Gender.female, '女性'),
                 (Gender.unspecified, '選択しない'),
               ])
                 ListTile(
-                  title: Text(g.$2),
+                  title: Text(g.$2, style: AppTextStyles.callout),
                   trailing: settings.gender == g.$1
                       ? const Icon(Icons.check, color: AppColors.accent)
                       : null,
@@ -184,21 +205,23 @@ class MyPage extends ConsumerWidget {
       context: context,
       backgroundColor: AppColors.card,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
       ),
       builder: (ctx) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xl, AppSpacing.m, AppSpacing.xl, AppSpacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('朝の通知',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 16, fontWeight: FontWeight.w500)),
-              const SizedBox(height: 20),
+              const SheetHandle(),
+              const SizedBox(height: AppSpacing.l),
+              Text('朝の通知', style: AppTextStyles.headline),
+              const SizedBox(height: AppSpacing.l),
               SwitchListTile(
-                title: const Text('通知を有効にする'),
+                title: Text('通知を有効にする', style: AppTextStyles.callout),
                 value: settings.notificationEnabled,
                 activeTrackColor: AppColors.accent,
                 onChanged: (v) async {
@@ -216,11 +239,11 @@ class MyPage extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: const Text('通知時刻'),
+                title: Text('通知時刻', style: AppTextStyles.callout),
                 trailing: Text(
                   '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      color: AppColors.textMuted),
+                  style: AppTextStyles.callout
+                      .copyWith(color: AppColors.textMuted),
                 ),
                 onTap: () async {
                   Navigator.of(ctx).pop();
@@ -235,7 +258,7 @@ class MyPage extends ConsumerWidget {
                     if (picked.hour < 5 || picked.hour > 11) {
                       if (context.mounted) {
                         AppToast.error(context,
-                            '5:00〜11:00 の範囲で設定してください');
+                            '通知は 5:00〜11:00 の間で選べます');
                       }
                       return;
                     }
@@ -258,25 +281,30 @@ class MyPage extends ConsumerWidget {
 
   // ─── UI ───
 
-  static Widget _settingsRow(String emoji, String label, String value,
-      {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        child: Row(
-          children: [
-            Text(emoji, style: const TextStyle(fontSize: 16)),
-            const SizedBox(width: 12),
-            Text(label,
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 14, color: AppColors.text)),
-            const Spacer(),
-            Text('$value \u203A',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 13, color: AppColors.textMuted)),
-          ],
+  /// マイページの行。どの行も「線のアイコン・項目・(値)・›」の同じ形
+  static Widget _row(IconData icon, String label,
+      {String? value, VoidCallback? onTap}) {
+    return Semantics(
+      button: true,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 52),
+          child: Row(
+            children: [
+              Icon(icon, size: 20, color: AppColors.textMuted),
+              const SizedBox(width: AppSpacing.m),
+              Expanded(child: Text(label, style: AppTextStyles.callout)),
+              if (value != null)
+                Text(value,
+                    style: AppTextStyles.callout
+                        .copyWith(color: AppColors.textMuted)),
+              const SizedBox(width: AppSpacing.xs),
+              const Icon(Icons.chevron_right,
+                  size: 20, color: AppColors.textMuted),
+            ],
+          ),
         ),
       ),
     );
@@ -303,28 +331,8 @@ class MyPage extends ConsumerWidget {
     ));
   }
 
-  static Widget _linkRow(String label, {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        child: Row(
-          children: [
-            Text('$label \u203A',
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w300,
-                  color: AppColors.textSecondary,
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-
   static Widget _divider() =>
-      const Divider(height: 1, color: AppColors.border);
+      const Divider(height: 1, color: AppColors.divider);
 }
 
 /// 法的ページ（HTML表示）
@@ -338,9 +346,7 @@ class _LegalPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bg,
       appBar: AppBar(
-        title: Text(title,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 16, color: AppColors.text)),
+        title: Text(title, style: AppTextStyles.headline),
         backgroundColor: AppColors.bg,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.accent),
@@ -356,7 +362,7 @@ class _LegalPage extends StatelessWidget {
           final html = snapshot.data!;
           final sections = _parseHtml(html);
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.screen),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: sections,
@@ -378,16 +384,12 @@ class _LegalPage extends StatelessWidget {
     for (final line in lines) {
       final h2Match = h2Regex.firstMatch(line);
       if (h2Match != null) {
-        widgets.add(const SizedBox(height: 20));
+        widgets.add(const SizedBox(height: AppSpacing.xl));
         widgets.add(Text(
           _stripTags(h2Match.group(1)!),
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.accent,
-          ),
+          style: AppTextStyles.headline.copyWith(color: AppColors.accent),
         ));
-        widgets.add(const SizedBox(height: 8));
+        widgets.add(const SizedBox(height: AppSpacing.s));
         continue;
       }
       final pMatch = pRegex.firstMatch(line);
@@ -396,34 +398,29 @@ class _LegalPage extends StatelessWidget {
         if (text.isNotEmpty) {
           widgets.add(Text(
             text,
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 14,
-              color: AppColors.textSecondary,
-              height: 1.8,
-            ),
+            style:
+                AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
           ));
-          widgets.add(const SizedBox(height: 4));
+          widgets.add(const SizedBox(height: AppSpacing.xs));
         }
         continue;
       }
       final liMatch = liRegex.firstMatch(line);
       if (liMatch != null) {
         widgets.add(Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 4),
+          padding:
+              const EdgeInsets.only(left: AppSpacing.l, bottom: AppSpacing.xs),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('・ ',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 14, color: AppColors.textSecondary)),
+                  style: AppTextStyles.callout
+                      .copyWith(color: AppColors.textSecondary)),
               Expanded(
                 child: Text(
                   _stripTags(liMatch.group(1)!).trim(),
-                  style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
-                    height: 1.8,
-                  ),
+                  style: AppTextStyles.callout
+                      .copyWith(color: AppColors.textSecondary),
                 ),
               ),
             ],

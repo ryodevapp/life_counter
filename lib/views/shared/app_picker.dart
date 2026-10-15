@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
+import 'app_text_styles.dart';
+import 'sheet_handle.dart';
 
 /// 統一ピッカー（タップでボトムシートを開くセレクトUI）
 class AppPicker<T> extends StatelessWidget {
@@ -23,24 +25,20 @@ class AppPicker<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _showPicker(context),
+      // 見た目は AppInput と同じ(bgWarm・角 md・枠なし・高さ 48 以上)
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        constraints: const BoxConstraints(minHeight: 48),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.l, vertical: AppSpacing.m),
         decoration: BoxDecoration(
           color: AppColors.bgWarm,
-          border: Border.all(color: AppColors.border),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                displayText,
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 15,
-                  color: AppColors.text,
-                ),
-              ),
+              child: Text(displayText, style: AppTextStyles.callout),
             ),
             Icon(
               Icons.keyboard_arrow_down_rounded,
@@ -97,42 +95,29 @@ class _PickerSheet<T> extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: maxHeight),
       decoration: const BoxDecoration(
         color: AppColors.card,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // ハンドル
-          Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 4),
-            child: Container(
-              width: 36,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.bgSub,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+          const Padding(
+            padding: EdgeInsets.only(top: AppSpacing.m, bottom: AppSpacing.xs),
+            child: SheetHandle(),
           ),
           if (title != null)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(
-                title!,
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.text,
-                ),
-              ),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.m),
+              child: Text(title!, style: AppTextStyles.headline),
             ),
-          const Divider(height: 1, color: AppColors.border),
+          const Divider(height: 1, color: AppColors.divider),
           // 選択肢リスト
           Flexible(
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: options.length,
-              padding: const EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
               itemBuilder: (context, index) {
                 final option = options[index];
                 final isSelected = option.value == selectedValue;
@@ -141,20 +126,16 @@ class _PickerSheet<T> extends StatelessWidget {
                   onTap: () => onSelected(option.value),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 16),
+                        horizontal: AppSpacing.xl, vertical: AppSpacing.l),
                     color: isSelected
                         ? AppColors.accentSurface
-                        : Colors.transparent,
+                        : AppColors.accentSurface.withValues(alpha: 0),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             option.label,
-                            style: GoogleFonts.zenKakuGothicNew(
-                              fontSize: 15,
-                              fontWeight: isSelected
-                                  ? FontWeight.w500
-                                  : FontWeight.w400,
+                            style: AppTextStyles.callout.copyWith(
                               color: isSelected
                                   ? AppColors.accent
                                   : AppColors.text,
@@ -174,7 +155,8 @@ class _PickerSheet<T> extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
+          SizedBox(
+              height: MediaQuery.of(context).padding.bottom + AppSpacing.s),
         ],
       ),
     );

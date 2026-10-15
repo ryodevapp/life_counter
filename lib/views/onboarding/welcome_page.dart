@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 
 /// ウェルカム画面（プロトタイプの welcome 再現）
@@ -14,28 +15,30 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: RadialGradient(
-            center: Alignment(0.0, -0.4),
+            center: const Alignment(0.0, -0.4),
             radius: 0.7,
             colors: [
-              Color(0x14D4A574), // rgba(212,165,116,0.08)
-              Colors.transparent,
+              AppColors.accentLight.withValues(alpha: 0.08),
+              AppColors.accentLight.withValues(alpha: 0),
             ],
           ),
         ),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 24),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.screen, vertical: AppSpacing.xl),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
               children: [
+                // ブランドの表示なので英字のまま。字間だけはロゴとして広げる
                 Text(
                   'LIFE COUNTER',
-                  style: AppTextStyles.labelUppercase,
+                  style: AppTextStyles.captionLabel.copyWith(letterSpacing: 3),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppSpacing.xxl),
                 // グラデーション丸
                 Container(
                   width: 32,
@@ -49,62 +52,41 @@ class WelcomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppSpacing.xxl),
                 // タイトル
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
                         text: '人生は\n',
-                        style: AppTextStyles.headlineLarge,
+                        style: AppTextStyles.title,
                       ),
                       TextSpan(
                         text: '有限',
-                        style: AppTextStyles.headlineLarge.copyWith(
+                        style: AppTextStyles.title.copyWith(
                           color: AppColors.accent,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       TextSpan(
                         text: 'だから',
-                        style: AppTextStyles.headlineLarge,
+                        style: AppTextStyles.title,
                       ),
                     ],
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.l),
                 Text(
                   '今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように',
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.callout.copyWith(
                     color: AppColors.textSecondary,
-                    height: 2.0,
                   ),
                 ),
-                const SizedBox(height: 56),
+                const SizedBox(height: AppSpacing.xxxl),
                 // はじめるボタン
-                ElevatedButton(
-                  onPressed: onStart,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accent,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 56, vertical: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    elevation: 0,
-                    shadowColor: const Color(0x40B8784E),
-                    textStyle: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                  child: const Text('はじめる'),
-                ),
-                const SizedBox(height: 56),
+                AppButton.primary(onPressed: onStart, label: 'はじめる'),
+                const SizedBox(height: AppSpacing.xxxl),
                 // 下矢印アニメーション
                 const _BreathingArrow(),
               ],
@@ -151,7 +133,7 @@ class _BreathingArrowState extends State<_BreathingArrow>
       ),
       child: Icon(
         Icons.keyboard_arrow_down,
-        color: AppColors.textDisabled,
+        color: AppColors.textMuted,
         size: 24,
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
 
 /// 内容の上に浮かぶ操作の部品(タブバーなど)だけに使う、ガラスの面
 /// (Apple の Liquid Glass の考え方に合わせ、内容のカードには使わない)
@@ -9,7 +10,7 @@ class GlassSurface extends StatelessWidget {
   const GlassSurface({
     super.key,
     required this.child,
-    this.borderRadius = 28,
+    this.borderRadius = AppRadius.sheet,
     this.padding = EdgeInsets.zero,
   });
 

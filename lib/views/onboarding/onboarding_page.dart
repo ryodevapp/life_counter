@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/important_person.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
 import '../shared/app_input.dart';
@@ -99,13 +99,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
           child: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 60),
+                    padding: const EdgeInsets.only(top: AppSpacing.xxxl),
                     child: _stepContent(lifeDays, remainingDays),
                   ),
                 ),
@@ -115,18 +115,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(4, (i) {
                   return AnimatedContainer(
-                    duration: const Duration(milliseconds: 400),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: i == _step ? 24 : 8,
-                    height: 8,
+                    duration: AppMotion.slow,
+                    curve: Curves.easeOutCubic,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+                    width: i == _step ? AppSpacing.xl : AppSpacing.s,
+                    height: AppSpacing.s,
                     decoration: BoxDecoration(
                       color: i == _step ? AppColors.accent : AppColors.bgSub,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(AppRadius.full),
                     ),
                   );
                 }),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: AppSpacing.xl),
               // ナビゲーションボタン
               Row(
                 children: [
@@ -135,7 +137,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       child:
                           AppButton.secondary(onPressed: _prevStep, label: '戻る'),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.s),
                   ],
                   Expanded(
                     child: AppButton.primary(
@@ -145,7 +147,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: AppSpacing.xxl),
             ],
           ),
         ),
@@ -160,36 +162,25 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ブランドの表示なので英字のまま。字間だけはロゴとして広げる
             Text(
               'YOUR LIFE IN NUMBERS',
-              style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 3.5,
-                color: AppColors.textMuted,
-              ),
+              style: AppTextStyles.captionLabel.copyWith(letterSpacing: 3),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: AppSpacing.xxxl),
             Text(
               'あなたの人生は今日で',
-              style: AppTextStyles.bodyLarge
-                  .copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.l),
             CountUpText(
               target: lifeDays,
-              style: AppTextStyles.displayLarge.copyWith(
-                color: AppColors.accent,
-              ),
+              style: AppTextStyles.counter.copyWith(color: AppColors.accent),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.s),
             Text(
               '日目です',
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                color: AppColors.textSecondary,
-              ),
+              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
           ],
         );
@@ -199,34 +190,24 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'あなたの残りの人生は',
-              style: AppTextStyles.bodyLarge
-                  .copyWith(color: AppColors.textSecondary),
+              'これからの日々は',
+              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.l),
             CountUpText(
               target: remainingDays,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 72,
-                fontWeight: FontWeight.w300,
-                color: AppColors.accent,
-              ),
+              style: AppTextStyles.counter.copyWith(color: AppColors.accent),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.s),
             Text(
-              '日です',
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                color: AppColors.textSecondary,
-              ),
+              '日(平均までの目安)',
+              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             Text(
               'この日々を\nどう過ごしますか？',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textMuted,
-              ),
+              textAlign: TextAlign.center,
+              style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
             ),
           ],
         );
@@ -235,35 +216,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('\u{1F932}', style: TextStyle(fontSize: 32)), // 🤲
-            const SizedBox(height: 40),
+            Text('\u{1F932}', style: AppTextStyles.display), // 🤲
+            const SizedBox(height: AppSpacing.xxl),
             Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
                     text: 'でも\n今日という日は\n人生で',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
+                    style: AppTextStyles.title,
                   ),
                   TextSpan(
                     text: 'たった一度きり',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w500,
-                      height: 1.8,
-                      color: AppColors.accent,
-                    ),
+                    style:
+                        AppTextStyles.title.copyWith(color: AppColors.accent),
                   ),
                   TextSpan(
                     text: 'です',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
+                    style: AppTextStyles.title,
                   ),
                 ],
               ),
@@ -281,53 +250,39 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 children: [
                   TextSpan(
                     text: '後悔のない毎日を\n',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
+                    style: AppTextStyles.title,
                   ),
                   TextSpan(
                     text: '一緒に積み重ねて',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      height: 1.8,
-                      color: AppColors.accent,
-                    ),
+                    style:
+                        AppTextStyles.title.copyWith(color: AppColors.accent),
                   ),
                   TextSpan(
-                    text: 'いきましょう',
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w300,
-                      height: 1.8,
-                    ),
+                    text: 'いけますように',
+                    style: AppTextStyles.title,
                   ),
                 ],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: AppSpacing.xxl),
             Container(
-              width: 40,
+              width: AppSpacing.xxl,
               height: 1,
               color: AppColors.accent.withValues(alpha: 0.3),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: AppSpacing.xxl),
             Text(
               '今日を素晴らしい一日にするために\n何をしますか？',
-              style: AppTextStyles.bodyLarge
-                  .copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             AppInput(
               controller: _goalController,
               placeholder: '小さなことでOK',
               maxLength: 200,
               textAlign: TextAlign.center,
-              showBorder: true,
             ),
           ],
         );

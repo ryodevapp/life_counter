@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../models/daily_record.dart';
@@ -9,10 +8,12 @@ import 'reflection_view.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../shared/app_input.dart';
 import '../shared/app_segmented_control.dart';
+import '../shared/page_header.dart';
 
 /// 記録タブ（プロトタイプの RecordsTab 再現）
 class RecordCalendarPage extends ConsumerStatefulWidget {
@@ -56,27 +57,26 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 48, 20, 130),
+        padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('RECORDS', style: AppTextStyles.labelUppercase),
-            const SizedBox(height: 24),
-            Center(
-              child: AppSegmentedControl<_RecordView>(
-                items: const [
-                  SegmentItem(value: _RecordView.list, label: 'リスト'),
-                  SegmentItem(value: _RecordView.calendar, label: 'カレンダー'),
-                  SegmentItem(value: _RecordView.reflection, label: 'ふりかえり'),
-                ],
-                selectedValue: _view,
-                onChanged: (v) => setState(() => _view = v),
-              ),
+            const PageHeader('記録'),
+            AppSegmentedControl<_RecordView>(
+              items: const [
+                SegmentItem(value: _RecordView.list, label: 'リスト'),
+                SegmentItem(value: _RecordView.calendar, label: 'カレンダー'),
+                SegmentItem(value: _RecordView.reflection, label: 'ふりかえり'),
+              ],
+              selectedValue: _view,
+              onChanged: (v) => setState(() => _view = v),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             if (_view == _RecordView.calendar) ...[
               _buildCalendar(),
               if (_selectedRecord != null) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.cardGap),
                 _buildSelectedRecordCard(),
               ],
             ] else if (_view == _RecordView.reflection)
@@ -117,28 +117,12 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _formatDate(r.date),
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              GestureDetector(
-                onTap: () => setState(() => _editingRecordId = r.id),
-                behavior: HitTestBehavior.opaque,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Icon(
-                    Icons.edit_outlined,
-                    size: 16,
-                    color: AppColors.textDisabled,
-                  ),
-                ),
-              ),
+              Text(_formatDate(r.date), style: AppTextStyles.headline),
+              _EditIconButton(
+                  onTap: () => setState(() => _editingRecordId = r.id)),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.s),
           ..._buildInlineFields(r),
         ],
       ),
@@ -156,10 +140,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
-          titleTextStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          titleTextStyle: AppTextStyles.headline,
         ),
         calendarStyle: CalendarStyle(
           outsideDaysVisible: false,
@@ -167,19 +148,12 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
             color: AppColors.accentSurface2,
             shape: BoxShape.circle,
           ),
-          todayTextStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: AppColors.accent,
-          ),
-          defaultTextStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 13,
-            fontWeight: FontWeight.w300,
-          ),
-          weekendTextStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 13,
-            fontWeight: FontWeight.w300,
-          ),
+          todayTextStyle:
+              AppTextStyles.footnote.copyWith(color: AppColors.accent),
+          defaultTextStyle:
+              AppTextStyles.footnote.copyWith(color: AppColors.text),
+          weekendTextStyle:
+              AppTextStyles.footnote.copyWith(color: AppColors.text),
           markerDecoration: const BoxDecoration(
             color: AppColors.accent,
             shape: BoxShape.circle,
@@ -188,16 +162,8 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
           markersMaxCount: 1,
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textDisabled,
-          ),
-          weekendStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textDisabled,
-          ),
+          weekdayStyle: AppTextStyles.captionLabel,
+          weekendStyle: AppTextStyles.captionLabel,
         ),
         eventLoader: (day) {
           final normalized = DateTime(day.year, day.month, day.day);
@@ -212,7 +178,8 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
             if (stamp == null) return null;
             return Positioned(
               bottom: 0,
-              child: Text(stamp.emoji, style: const TextStyle(fontSize: 11)),
+              // スタンプの絵は文字の段ではなく、日付の下の小さな印として 12 で描く
+              child: Text(stamp.emoji, style: AppTextStyles.captionLabel),
             );
           },
         ),
@@ -248,17 +215,10 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     final filtered = _records.where((r) => _hasContent(r)).toList();
     if (filtered.isEmpty) {
       return AppCard(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          children: [
-            const Text('\u{1F4DD}', style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 12),
-            Text(
-              '記録はまだありません',
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textMuted),
-            ),
-          ],
+        child: Text(
+          '記録はまだありません',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
       );
     }
@@ -266,7 +226,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       children: filtered.map((r) {
         final isEditing = _editingRecordId == r.id;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
           child: isEditing
               ? _InlineEditCard(
                   record: r,
@@ -285,28 +245,14 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            _formatDate(r.date),
-                            style: GoogleFonts.zenKakuGothicNew(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => setState(() => _editingRecordId = r.id),
-                            behavior: HitTestBehavior.opaque,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 12),
-                              child: Icon(
-                                Icons.edit_outlined,
-                                size: 16,
-                                color: AppColors.textDisabled,
-                              ),
-                            ),
-                          ),
+                          Text(_formatDate(r.date),
+                              style: AppTextStyles.headline),
+                          _EditIconButton(
+                              onTap: () =>
+                                  setState(() => _editingRecordId = r.id)),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.s),
                       ..._buildInlineFields(r),
                     ],
                   ),
@@ -343,19 +289,15 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     final moodRow = <Widget>[
       if (mood != null)
         Padding(
-          padding: EdgeInsets.only(bottom: fields.isEmpty ? 0 : 14),
+          padding: EdgeInsets.only(bottom: fields.isEmpty ? 0 : AppSpacing.m),
           child: Row(
             children: [
-              Text(mood.emoji, style: const TextStyle(fontSize: 20)),
-              const SizedBox(width: 8),
-              Text('$moodQuestion  ',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 11, color: AppColors.textMuted)),
+              Text(mood.emoji, style: AppTextStyles.headline),
+              const SizedBox(width: AppSpacing.s),
+              Text('$moodQuestion  ', style: AppTextStyles.captionLabel),
               Text(mood.label,
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondary)),
+                  style: AppTextStyles.footnote
+                      .copyWith(color: AppColors.textSecondary)),
             ],
           ),
         ),
@@ -363,14 +305,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (fields.isEmpty && moodRow.isNotEmpty) return moodRow;
     if (fields.isEmpty) {
       return [
-        Text(
-          '(未入力)',
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 12,
-            color: AppColors.textDisabled,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
+        Text('(未入力)', style: AppTextStyles.footnote),
       ];
     }
 
@@ -379,30 +314,17 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       ...fields.asMap().entries.map((entry) {
       final isLast = entry.key == fields.length - 1;
       return Padding(
-        padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
+        padding: EdgeInsets.only(bottom: isLast ? 0 : AppSpacing.m),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              entry.value.$1,
-              style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textMuted,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 4),
+            Text(entry.value.$1, style: AppTextStyles.captionLabel),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               entry.value.$2,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                color: AppColors.text,
-                height: 1.6,
-              ),
+              style: AppTextStyles.callout,
             ),
           ],
         ),
@@ -490,60 +412,41 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                dateStr,
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text(dateStr, style: AppTextStyles.headline),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  GestureDetector(
-                    onTap: widget.onCancel,
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Text(
-                        'キャンセル',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 11,
-                          color: AppColors.textMuted,
-                        ),
-                      ),
+                  TextButton(
+                    onPressed: widget.onCancel,
+                    style: _textButtonStyle,
+                    child: Text(
+                      'キャンセル',
+                      style: AppTextStyles.footnote,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: _save,
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 2),
-                      child: Text(
-                        '保存',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.accent,
-                        ),
-                      ),
+                  TextButton(
+                    onPressed: _save,
+                    style: _textButtonStyle,
+                    child: Text(
+                      '保存',
+                      style: AppTextStyles.footnote
+                          .copyWith(color: AppColors.accent),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.s),
           _editField('今日の問い', _answerCtrl),
           if (_hasDiaryFields) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             _editField('感謝していること', _gratitudeCtrl),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             _editField('今日やること', _goalCtrl),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             _editField('嬉しかったこと', _goodCtrl),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             _editField('明日の自分へ', _tomorrowMsgCtrl),
           ],
         ],
@@ -551,25 +454,53 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
     );
   }
 
+  static final _textButtonStyle = TextButton.styleFrom(
+    minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
+    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
+  );
+
   Widget _editField(String label, TextEditingController ctrl) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 11,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMuted,
-          ),
-        ),
-        const SizedBox(height: 4),
+        Text(label, style: AppTextStyles.captionLabel),
+        const SizedBox(height: AppSpacing.xs),
         AppInput(
           controller: ctrl,
           maxLength: 200,
           textInputAction: TextInputAction.next,
         ),
       ],
+    );
+  }
+}
+
+/// 記録の編集アイコン(見た目は 16、押せる範囲は 44)
+class _EditIconButton extends StatelessWidget {
+  const _EditIconButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: '編集',
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: const SizedBox.square(
+          dimension: AppSpacing.minTap,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Icon(
+              Icons.edit_outlined,
+              size: 16,
+              color: AppColors.textMuted,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

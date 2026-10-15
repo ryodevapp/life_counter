@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/bucket_item.dart';
 import '../../models/important_person.dart';
 import '../../providers/bucket_provider.dart';
 import '../../providers/important_person_provider.dart';
 import '../../providers/isar_provider.dart';
 import '../shared/app_card.dart';
+import '../shared/action_buttons.dart';
+import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
+import '../shared/app_text_styles.dart';
+import '../shared/app_toast.dart';
 
 /// やりたいこと(バケットリスト)。通知・期限・達成率は持たない
 /// 足すのはリストの上の欄から(小窓を開かない)。消すのは各行の「…」から(横にずらす操作は使わない)
@@ -48,29 +52,16 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
       _input.clear();
       setState(() => _personId = null);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('同じものが、もうリストにあります')));
+      AppToast.success(context, '同じものが、もうリストにあります');
     }
   }
 
   Future<void> _confirmDelete(BucketItem item) async {
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.card,
-        content: Text('「${item.title}」をリストから消しますか？',
-            style: GoogleFonts.zenKakuGothicNew(fontSize: 15, height: 1.6)),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: const Text('やめる')),
-          TextButton(
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: const Text('消す', style: TextStyle(color: Color(0xFFC0392B)))),
-        ],
-      ),
+    final ok = await showDeleteConfirmation(
+      context,
+      title: '「${item.title}」をリストから消しますか？',
     );
-    if (ok == true) {
+    if (ok) {
       await ref.read(bucketItemRepositoryProvider).delete(item.id);
     }
   }
@@ -86,27 +77,15 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('やりたいこと',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.text)),
-            const SizedBox(width: 8),
-            Text('バケットリスト',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textMuted)),
-          ],
-        ),
-        const SizedBox(height: 6),
-        Text('人生でいつかやってみたいことを、思いついたときに1行で残しておく場所です。自分ひとりのことでも、家族や友だちとやりたいことでも。',
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 13, color: AppColors.textSecondary, height: 1.7)),
-        const SizedBox(height: 14),
+        // 題(人生)と切り替え(やりたいこと)があるので、見出しは重ねない
+        Text('バケットリスト。人生でいつかやってみたいことを、思いついたときに1行で残しておく場所です。自分ひとりのことでも、家族や友だちとやりたいことでも。',
+            style: AppTextStyles.callout
+                .copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.l),
         AppCard(
-          padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+          // 下は、行の押せる範囲(44)が余白を兼ねるので s にする
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.card, AppSpacing.card, AppSpacing.card, AppSpacing.s),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -120,56 +99,44 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
                       maxLength: 100,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _add(),
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 15, color: AppColors.text),
+                      style: AppTextStyles.callout,
+                      // 見た目は AppInput と同じ(bgWarm・角 md・枠なし)
                       decoration: InputDecoration(
                         hintText: items.isEmpty
                             ? '例: 家族で温泉に行く'
                             : 'やりたいことを1行で',
-                        hintStyle: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 15, color: AppColors.textDisabled),
+                        hintStyle: AppTextStyles.callout
+                            .copyWith(color: AppColors.textDisabled),
                         counterText: '',
-                        isDense: true,
                         filled: true,
                         fillColor: AppColors.bgWarm,
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 12),
+                            horizontal: AppSpacing.l, vertical: AppSpacing.m),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
                           borderSide: BorderSide.none,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  FilledButton(
+                  const SizedBox(width: AppSpacing.s),
+                  AppButton(
                     onPressed: canAdd ? _add : null,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.accent,
-                      disabledBackgroundColor: AppColors.bgSub,
-                      foregroundColor: Colors.white,
-                      disabledForegroundColor: AppColors.textDisabled,
-                      minimumSize: const Size(64, 44),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                    child: Text('追加',
-                        style: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
+                    primary: true,
+                    expand: false,
+                    child: const Text('追加'),
                   ),
                 ],
               ),
               // 「誰と」は書き始めたときだけ出す(任意)
               if (canAdd && persons.isNotEmpty) ...[
-                const SizedBox(height: 10),
+                const SizedBox(height: AppSpacing.m),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
+                  spacing: AppSpacing.s,
+                  runSpacing: AppSpacing.xs,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Text('誰と(任意)',
-                        style: GoogleFonts.zenKakuGothicNew(
-                            fontSize: 12, color: AppColors.textMuted)),
+                    Text('誰と(任意)', style: AppTextStyles.captionLabel),
                     for (final p in persons)
                       ChoiceChip(
                         label: Text(p.nickname),
@@ -180,21 +147,19 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
                   ],
                 ),
               ],
-              const SizedBox(height: 6),
+              const SizedBox(height: AppSpacing.s),
               if (items.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.s),
                   child: Text(
-                      'たとえば「オーロラを見る」「父に昔の話を聞く」\n今日の問いの答えからも入れられます',
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 13,
-                          color: AppColors.textMuted,
-                          height: 1.8)),
+                      'たとえば「オーロラを見る」\n今日の問いの答えからも入れられます',
+                      style: AppTextStyles.callout
+                          .copyWith(color: AppColors.textMuted)),
                 )
               else
                 for (var i = 0; i < items.length; i++) ...[
                   if (i > 0)
-                    const Divider(height: 1, color: AppColors.border),
+                    const Divider(height: 1, color: AppColors.divider),
                   _BucketRow(
                     item: items[i],
                     withName: names[items[i].personId],
@@ -229,7 +194,7 @@ class _BucketRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final done = item.doneAt != null;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         children: [
           Semantics(
@@ -239,27 +204,25 @@ class _BucketRow extends StatelessWidget {
             excludeSemantics: true,
             child: InkResponse(
               onTap: onToggle,
-              radius: 24,
+              radius: AppSpacing.minTap / 2,
               child: SizedBox(
-                width: 44,
-                height: 44,
+                width: AppSpacing.minTap,
+                height: AppSpacing.minTap,
                 child: Icon(
                   done ? Icons.check_circle : Icons.radio_button_unchecked,
                   size: 24,
-                  color: done ? AppColors.accent : AppColors.textDisabled,
+                  color: done ? AppColors.accent : AppColors.textMuted,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(item.title,
-                    style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 15,
-                      height: 1.5,
+                    style: AppTextStyles.callout.copyWith(
                       color: done ? AppColors.textMuted : AppColors.text,
                       decoration: done ? TextDecoration.lineThrough : null,
                       decorationColor: AppColors.textMuted,
@@ -271,8 +234,7 @@ class _BucketRow extends StatelessWidget {
                         if (done)
                           'できた日 ${item.doneAt!.year}/${item.doneAt!.month}/${item.doneAt!.day}',
                       ].join('・'),
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 12, color: AppColors.textMuted)),
+                      style: AppTextStyles.footnote),
               ],
             ),
           ),
@@ -287,10 +249,13 @@ class _BucketRow extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                   value: 'toggle',
-                  child: Text(done ? 'まだにする' : 'できたにする')),
-              const PopupMenuItem(
+                  child: Text(done ? 'まだにする' : 'できたにする',
+                      style: AppTextStyles.callout)),
+              PopupMenuItem(
                   value: 'delete',
-                  child: Text('消す', style: TextStyle(color: Color(0xFFC0392B)))),
+                  child: Text('消す',
+                      style: AppTextStyles.callout
+                          .copyWith(color: AppColors.danger))),
             ],
           ),
         ],

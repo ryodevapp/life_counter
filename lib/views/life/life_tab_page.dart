@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../shared/app_segmented_control.dart';
-import '../shared/app_text_styles.dart';
+import '../shared/app_spacing.dart';
+import '../shared/page_header.dart';
 import 'your_time_section.dart';
 import 'important_people_section.dart';
 import 'bucket_section.dart';
@@ -20,23 +21,22 @@ class _LifeTabPageState extends State<LifeTabPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 48, 20, 130),
+        padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('YOUR TIME', style: AppTextStyles.labelUppercase),
-            const SizedBox(height: 24),
-            Center(
-              child: AppSegmentedControl<_LifeSegment>(
-                items: const [
-                  SegmentItem(value: _LifeSegment.time, label: 'あなた'),
-                  SegmentItem(value: _LifeSegment.people, label: '大切な人'),
-                  SegmentItem(value: _LifeSegment.bucket, label: 'やりたいこと'),
-                ],
-                selectedValue: _segment,
-                onChanged: (v) => setState(() => _segment = v),
-              ),
+            const PageHeader('人生'),
+            AppSegmentedControl<_LifeSegment>(
+              items: const [
+                SegmentItem(value: _LifeSegment.time, label: 'あなた'),
+                SegmentItem(value: _LifeSegment.people, label: '大切な人'),
+                SegmentItem(value: _LifeSegment.bucket, label: 'やりたいこと'),
+              ],
+              selectedValue: _segment,
+              onChanged: (v) => setState(() => _segment = v),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: AppSpacing.xl),
             switch (_segment) {
               _LifeSegment.time => const YourTimeSection(),
               _LifeSegment.people => const ImportantPeopleSection(),

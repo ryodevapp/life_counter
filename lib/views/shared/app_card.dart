@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
 
 /// プロトタイプのCdコンポーネント再現
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(24),
+    this.padding = const EdgeInsets.all(AppSpacing.card),
     this.color,
     this.showShadow = true,
     this.onTap,
@@ -25,7 +26,7 @@ class AppCard extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: color ?? AppColors.card,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(color: AppColors.border),
         boxShadow: showShadow ? AppColors.cardShadow : null,
       ),

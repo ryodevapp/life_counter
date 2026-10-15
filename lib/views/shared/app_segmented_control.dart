@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
 
-/// 切り替え(iOS の segmented control と同じく、白い面が選んだ項目へすべって移る)
+/// 切り替え(Apple HIG の segmented control に合わせる)
+/// 横幅いっぱい・項目は均等の幅で、白い面が選んだ項目へすべって移る。どの画面でも同じ形
 class AppSegmentedControl<T> extends StatelessWidget {
   const AppSegmentedControl({
     super.key,
@@ -15,84 +17,73 @@ class AppSegmentedControl<T> extends StatelessWidget {
   final T selectedValue;
   final ValueChanged<T> onChanged;
 
-  static const _padding = 3.0;
-  static const _height = 38.0;
-  static const _labelPadding = 22.0;
-
-  TextStyle _style(bool selected) => GoogleFonts.zenKakuGothicNew(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: selected ? AppColors.accent : AppColors.textMuted,
-      );
+  static const _inset = 3.0;
+  static const _height = AppSpacing.minTap;
 
   @override
   Widget build(BuildContext context) {
-    // どの項目も同じ幅にする(いちばん長い言葉に合わせる)
-    final scale = MediaQuery.textScalerOf(context);
-    var maxLabel = 0.0;
-    for (final item in items) {
-      final p = TextPainter(
-        text: TextSpan(text: item.label, style: _style(true)),
-        textDirection: TextDirection.ltr,
-        textScaler: scale,
-      )..layout();
-      if (p.width > maxLabel) maxLabel = p.width;
-    }
-    final segment = maxLabel + _labelPadding * 2;
     final index = items.indexWhere((i) => i.value == selectedValue);
-
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
     return Container(
-      padding: const EdgeInsets.all(_padding),
+      height: _height + _inset * 2,
+      padding: const EdgeInsets.all(_inset),
       decoration: BoxDecoration(
         color: AppColors.bgSub,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppRadius.md + _inset),
       ),
-      child: SizedBox(
-        width: segment * items.length,
-        height: _height,
-        child: Stack(
-          children: [
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeOutCubic,
-              left: segment * (index < 0 ? 0 : index),
-              top: 0,
-              bottom: 0,
-              width: segment,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: AppColors.card,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: AppColors.cardShadow,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final segment = constraints.maxWidth / items.length;
+          return Stack(
+            children: [
+              AnimatedPositioned(
+                duration: reduceMotion ? Duration.zero : AppMotion.base,
+                curve: Curves.easeOutCubic,
+                left: segment * (index < 0 ? 0 : index),
+                top: 0,
+                bottom: 0,
+                width: segment,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.card,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    boxShadow: AppColors.cardShadow,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                for (final item in items)
-                  Semantics(
-                    button: true,
-                    selected: item.value == selectedValue,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => onChanged(item.value),
-                      child: SizedBox(
-                        width: segment,
-                        height: _height,
-                        child: Center(
-                          child: AnimatedDefaultTextStyle(
-                            duration: const Duration(milliseconds: 220),
-                            style: _style(item.value == selectedValue),
-                            child: Text(item.label),
+              Row(
+                children: [
+                  for (final item in items)
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        selected: item.value == selectedValue,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => onChanged(item.value),
+                          child: Center(
+                            child: AnimatedDefaultTextStyle(
+                              duration: AppMotion.base,
+                              style: GoogleFonts.zenKakuGothicNew(
+                                fontSize: 14,
+                                fontWeight: item.value == selectedValue
+                                    ? FontWeight.w600
+                                    : FontWeight.w500,
+                                color: item.value == selectedValue
+                                    ? AppColors.accent
+                                    : AppColors.textMuted,
+                              ),
+                              child: Text(item.label, maxLines: 1),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

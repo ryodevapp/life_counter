@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../models/important_person.dart';
 import '../../providers/user_settings_provider.dart';
@@ -8,6 +7,7 @@ import '../../services/life_calculator.dart';
 import '../../utils/freq_label.dart';
 import '../shared/action_buttons.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 
@@ -57,17 +57,16 @@ class ImportantPersonDetailPage extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 戻るボタン
-        GestureDetector(
-          onTap: onBack,
+        TextButton(
+          onPressed: onBack,
+          style: _textButtonStyle.copyWith(
+              padding: const WidgetStatePropertyAll(EdgeInsets.zero)),
           child: Text(
             '\u2190 戻る',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 13,
-              color: AppColors.accent,
-            ),
+            style: AppTextStyles.footnote.copyWith(color: AppColors.accent),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.s),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -75,43 +74,35 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(person.nickname,
-                      style: AppTextStyles.headlineSmall
-                          .copyWith(fontSize: 28)),
-                  const SizedBox(height: 4),
-                  Text('$pAge歳',
-                      style: AppTextStyles.bodySmall
-                          .copyWith(color: AppColors.textMuted)),
+                  Text(person.nickname, style: AppTextStyles.title),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text('$pAge歳', style: AppTextStyles.footnote),
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: onEdit,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text('編集',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 12, color: AppColors.accent)),
-              ),
+            TextButton(
+              onPressed: onEdit,
+              style: _textButtonStyle,
+              child: Text('編集',
+                  style:
+                      AppTextStyles.footnote.copyWith(color: AppColors.accent)),
             ),
-            GestureDetector(
-              onTap: () async {
+            TextButton(
+              onPressed: () async {
                 final confirmed = await showDeleteConfirmation(
                   context,
                   title: '${person.nickname}を削除しますか？',
                 );
                 if (confirmed) onDelete();
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text('削除',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 12, color: const Color(0xFFC17A56))),
-              ),
+              style: _textButtonStyle,
+              child: Text('削除',
+                  style:
+                      AppTextStyles.footnote.copyWith(color: AppColors.danger)),
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
 
         if (pPastAL)
           AppCard(
@@ -119,64 +110,51 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               child: Text(
                 '${person.nickname}と過ごす毎日が、\nかけがえのない時間です',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
-                  height: 1.8,
-                  color: AppColors.textSecondary,
-                ),
+                style: AppTextStyles.callout
+                    .copyWith(color: AppColors.textSecondary),
               ),
             ),
           )
         else ...[
-          _statCard('平均寿命まで', '$pRemaining', '年'),
+          _statCard('これから', '$pRemaining', '年(目安)'),
           if (pHealthRemaining > 0) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.cardGap),
             _statCard('元気でいられる時間', '$pHealthRemaining', '年'),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.cardGap),
           _statCard('一緒にいられる年数', '$together', '年',
-              sub: '自分と相手の平均寿命の早い方'),
-          const SizedBox(height: 12),
+              sub: '自分と相手の、平均の早いほう'),
+          const SizedBox(height: AppSpacing.cardGap),
           _statCard('会える残り回数', fmt.format(meetCount), '回',
               sub: '${freqToLabel(person.meetingFrequency)}会う場合',
               valueColor: AppColors.accent),
           if (lastMetDays != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.cardGap),
             AppCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('最後に会ってから',
-                      style: AppTextStyles.label.copyWith(letterSpacing: 0)),
-                  const SizedBox(height: 10),
+                  Text('最後に会ってから', style: AppTextStyles.captionLabel),
+                  const SizedBox(height: AppSpacing.s),
                   Text.rich(
                     TextSpan(children: [
                       TextSpan(
                         text: '$lastMetDays',
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w300,
+                        style: AppTextStyles.display.copyWith(
                           color: lastMetDays > 60
-                              ? const Color(0xFFC17A56)
+                              ? AppColors.accent
                               : AppColors.text,
                         ),
                       ),
-                      TextSpan(
-                        text: ' 日',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 14,
-                          color: AppColors.textMuted,
-                        ),
-                      ),
+                      TextSpan(text: ' 日', style: AppTextStyles.footnote),
                     ]),
                   ),
                   if (lastMetDays > 90) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.s),
                     Text(
                       'そろそろ会いたくなりませんか？',
-                      style: AppTextStyles.caption
-                          .copyWith(fontSize: 12, color: AppColors.accent),
+                      style: AppTextStyles.footnote
+                          .copyWith(color: AppColors.accent),
                     ),
                   ],
                 ],
@@ -188,48 +166,34 @@ class ImportantPersonDetailPage extends ConsumerWidget {
     );
   }
 
+  static final _textButtonStyle = TextButton.styleFrom(
+    minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
+    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
+  );
+
   static Widget _statCard(String label, String value, String unit,
       {String? sub, Color? valueColor}) {
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: AppTextStyles.label.copyWith(letterSpacing: 0)),
-          const SizedBox(height: 10),
+          Text(label, style: AppTextStyles.captionLabel),
+          const SizedBox(height: AppSpacing.s),
           Text.rich(
             TextSpan(children: [
-              TextSpan(
-                text: 'あと約 ',
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                  color: AppColors.textMuted,
-                ),
-              ),
+              TextSpan(text: '約 ', style: AppTextStyles.footnote),
               TextSpan(
                 text: value,
-                style: GoogleFonts.cormorantGaramond(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w300,
-                  color: valueColor ?? AppColors.text,
-                ),
+                style: AppTextStyles.display
+                    .copyWith(color: valueColor ?? AppColors.text),
               ),
-              TextSpan(
-                text: ' $unit',
-                style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 14,
-                  color: AppColors.textMuted,
-                ),
-              ),
+              TextSpan(text: ' $unit', style: AppTextStyles.footnote),
             ]),
             textAlign: TextAlign.left,
           ),
           if (sub != null) ...[
-            const SizedBox(height: 6),
-            Text(sub,
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 11, color: AppColors.textDisabled)),
+            const SizedBox(height: AppSpacing.xs),
+            Text(sub, style: AppTextStyles.footnote),
           ],
         ],
       ),

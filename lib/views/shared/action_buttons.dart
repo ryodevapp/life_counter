@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
+import 'app_text_styles.dart';
 
 /// 編集・削除の統一アクションバー
 class ActionButtons extends StatelessWidget {
@@ -26,43 +27,40 @@ class ActionButtons extends StatelessWidget {
             child: GestureDetector(
               onTap: onEdit,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                constraints:
+                    const BoxConstraints(minHeight: AppSpacing.buttonHeight),
                 decoration: BoxDecoration(
                   color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Center(
                   child: Text(
                     editLabel,
-                    style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondary,
-                    ),
+                    style: AppTextStyles.callout
+                        .copyWith(color: AppColors.textSecondary),
                   ),
                 ),
               ),
             ),
           ),
-        if (onEdit != null && onDelete != null) const SizedBox(width: 8),
+        if (onEdit != null && onDelete != null)
+          const SizedBox(width: AppSpacing.s),
         if (onDelete != null)
           Expanded(
             child: GestureDetector(
               onTap: onDelete,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                constraints:
+                    const BoxConstraints(minHeight: AppSpacing.buttonHeight),
                 decoration: BoxDecoration(
                   color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Center(
                   child: Text(
                     deleteLabel,
-                    style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFFC17A56),
-                    ),
+                    style:
+                        AppTextStyles.callout.copyWith(color: AppColors.danger),
                   ),
                 ),
               ),
@@ -82,24 +80,28 @@ Future<bool> showDeleteConfirmation(
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text(title,
-          style: GoogleFonts.zenKakuGothicNew(fontSize: 16)),
+      backgroundColor: AppColors.card,
+      title: Text(title, style: AppTextStyles.headline),
       content: Text(message,
-          style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 14, color: AppColors.textSecondary)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          style:
+              AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sheet)),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(false),
+          style: TextButton.styleFrom(
+              minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap)),
           child: Text('キャンセル',
-              style: GoogleFonts.zenKakuGothicNew(
-                  color: AppColors.textMuted)),
+              style: AppTextStyles.callout
+                  .copyWith(color: AppColors.textSecondary)),
         ),
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(true),
+          style: TextButton.styleFrom(
+              minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap)),
           child: Text('削除',
-              style: GoogleFonts.zenKakuGothicNew(
-                  color: const Color(0xFFC17A56))),
+              style: AppTextStyles.callout.copyWith(color: AppColors.danger)),
         ),
       ],
     ),

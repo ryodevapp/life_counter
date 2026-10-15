@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../models/important_person.dart';
 import '../../providers/important_person_provider.dart';
@@ -10,6 +9,7 @@ import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../shared/app_button.dart';
@@ -69,14 +69,10 @@ class _ImportantPeopleSectionState
     return personsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => AppCard(
-        padding: const EdgeInsets.all(40),
-        child: Column(children: [
-          const Text('\u26A0\uFE0F', style: TextStyle(fontSize: 32)),
-          const SizedBox(height: 12),
-          Text('データの読み込みに失敗しました',
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textSecondary)),
-        ]),
+        child: Text('データの読み込みに失敗しました',
+            textAlign: TextAlign.center,
+            style:
+                AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
       ),
       data: (persons) {
         if (persons.isEmpty) return _emptyState();
@@ -87,21 +83,14 @@ class _ImportantPeopleSectionState
 
   Widget _emptyState() {
     return AppCard(
-      padding: const EdgeInsets.all(40),
       child: Column(
         children: [
-          const Text('\u{1F491}', style: TextStyle(fontSize: 40)),
-          const SizedBox(height: 20),
           Text(
-            '大切な人を登録して\n一緒にいられる時間を\n確認しましょう',
+            '大切な人を登録すると、一緒にいられる時間の目安が見られます',
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.8,
-              fontSize: 15,
-            ),
+            style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.l),
           AppButton.primary(onPressed: _addPerson, label: '追加する'),
         ],
       ),
@@ -122,28 +111,10 @@ class _ImportantPeopleSectionState
       children: [
         for (final p in persons) ...[
           _personCard(p, myAge, myAL, fmt),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.cardGap),
         ],
         // 追加ボタン
-        GestureDetector(
-          onTap: _addPerson,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.border,
-                width: 2,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              '+ 大切な人を追加',
-              style: AppTextStyles.bodySmall
-                  .copyWith(color: AppColors.textSecondary),
-            ),
-          ),
-        ),
+        AppButton.secondary(onPressed: _addPerson, label: '+ 大切な人を追加'),
       ],
     );
   }
@@ -168,35 +139,31 @@ class _ImportantPeopleSectionState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(p.nickname,
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 17, fontWeight: FontWeight.w500)),
+              Text(p.nickname, style: AppTextStyles.headline),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.s, vertical: AppSpacing.xs),
                 decoration: BoxDecoration(
                   color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
-                child: Text('$pAge歳',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 11, color: AppColors.textMuted)),
+                child: Text('$pAge歳', style: AppTextStyles.captionLabel),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.l),
           if (pPastAL)
             Text(
               '${p.nickname}と過ごす毎日が、かけがえのない時間です',
-              style: AppTextStyles.bodySmall
+              style: AppTextStyles.callout
                   .copyWith(color: AppColors.textSecondary),
             )
           else ...[
             Row(
               children: [
                 Expanded(
-                    child: _miniStat('平均寿命まで', '${pR.floor()}', '年')),
-                const SizedBox(width: 12),
+                    child: _miniStat('これから', '${pR.floor()}', '年(目安)')),
+                const SizedBox(width: AppSpacing.m),
                 Expanded(
                     child: pHR > 0
                         ? _miniStat('元気でいられる時間', '$pHR', '年',
@@ -204,27 +171,21 @@ class _ImportantPeopleSectionState
                         : const SizedBox.shrink()),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.m),
             Row(
               children: [
                 Expanded(
                     child:
                         _miniStat('一緒にいられる年数', '$together', '年')),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.m),
                 Expanded(
                     child: _miniStat('会える残り回数', fmt.format(meet), '回',
                         valueColor: AppColors.accent)),
               ],
             ),
           ],
-          const SizedBox(height: 14),
-          Text(
-            '詳しく見る \u2192',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 12,
-              color: AppColors.textDisabled,
-            ),
-          ),
+          const SizedBox(height: AppSpacing.m),
+          Text('詳しく見る \u2192', style: AppTextStyles.footnote),
         ],
       ),
     );
@@ -236,33 +197,16 @@ class _ImportantPeopleSectionState
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(label,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textMuted)),
-        const SizedBox(height: 4),
+        Text(label, style: AppTextStyles.captionLabel),
+        const SizedBox(height: AppSpacing.xs),
         Text.rich(TextSpan(children: [
-          TextSpan(
-            text: '約',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 11,
-              color: AppColors.textMuted,
-            ),
-          ),
+          TextSpan(text: '約', style: AppTextStyles.captionLabel),
           TextSpan(
             text: value,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 22,
-              fontWeight: FontWeight.w300,
-              color: valueColor,
-            ),
+            style: AppTextStyles.display
+                .copyWith(color: valueColor ?? AppColors.text),
           ),
-          TextSpan(
-            text: unit,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 11, color: AppColors.textMuted),
-          ),
+          TextSpan(text: unit, style: AppTextStyles.captionLabel),
         ])),
       ],
     );

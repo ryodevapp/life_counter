@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
+import '../shared/app_text_styles.dart';
 import '../shared/app_picker.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_button.dart';
@@ -18,7 +19,7 @@ class ImportantPersonFormPage extends StatefulWidget {
       {ImportantPerson? person}) {
     return showDialog<ImportantPerson>(
       context: context,
-      barrierColor: const Color(0x662C2520),
+      barrierColor: AppColors.text.withValues(alpha: 0.4),
       builder: (_) => ImportantPersonFormPage(person: person),
     );
   }
@@ -61,7 +62,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   void _submit() {
     final nick = _nickController.text.trim();
     if (nick.isEmpty) {
-      AppToast.error(context, 'ニックネームを入力してください');
+      AppToast.error(context, 'ニックネームを入れると保存できます');
       return;
     }
     final error = DateValidator.validateBirthDate(_year, _month, _day);
@@ -85,15 +86,15 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
     final isEdit = widget.person != null;
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppSpacing.screen),
         child: GestureDetector(
           onTap: () {}, // prevent dismiss on content tap
           child: Container(
             constraints: const BoxConstraints(maxWidth: 360),
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             decoration: BoxDecoration(
               color: AppColors.card,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppRadius.sheet),
             ),
             child: Material(
               color: Colors.transparent,
@@ -103,26 +104,23 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                 children: [
                   Text(
                     isEdit ? '大切な人を編集' : '大切な人を追加',
-                    style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTextStyles.title,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.xl),
 
                   // ニックネーム
                   _label('ニックネーム', required: true),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.s),
                   AppInput(
                     controller: _nickController,
                     placeholder: '例: お母さん',
                     maxLength: 20,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.l),
 
                   // 性別
                   _label('性別'),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.s),
                   Row(
                     children: [
                       for (final g in [
@@ -130,16 +128,17 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         (Gender.female, '女性'),
                         (Gender.unspecified, '選択しない'),
                       ]) ...[
-                        if (g.$1 != Gender.male) const SizedBox(width: 8),
+                        if (g.$1 != Gender.male)
+                          const SizedBox(width: AppSpacing.s),
                         Expanded(child: _genderBtn(g.$1, g.$2)),
                       ],
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.l),
 
                   // 生年月日
                   _label('生年月日', required: true),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.s),
                   GestureDetector(
                     onTap: () async {
                       final picked = await showDatePicker(
@@ -158,22 +157,19 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                     },
                     child: Container(
                       width: double.infinity,
+                      constraints: const BoxConstraints(minHeight: 48),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
+                          horizontal: AppSpacing.l, vertical: AppSpacing.m),
                       decoration: BoxDecoration(
                         color: AppColors.bgWarm,
-                        border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppRadius.md),
                       ),
                       child: Row(
                         children: [
                           Expanded(
                             child: Text(
                               '$_year年$_month月$_day日',
-                              style: GoogleFonts.zenKakuGothicNew(
-                                fontSize: 15,
-                                color: AppColors.text,
-                              ),
+                              style: AppTextStyles.callout,
                             ),
                           ),
                           Icon(Icons.calendar_today_rounded,
@@ -182,11 +178,11 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.l),
 
                   // 会う頻度
                   _label('会う頻度', required: true),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.s),
                   AppPicker<int>(
                     value: _freq,
                     displayText: freqToLabel(_freq),
@@ -197,11 +193,11 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         .toList(),
                     onChanged: (v) => setState(() => _freq = v),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.l),
 
                   // 最後に会った日
                   _label('最後に会った日（任意）'),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.s),
                   GestureDetector(
                     onTap: () async {
                       final picked = await showDatePicker(
@@ -214,17 +210,19 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                     },
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(14),
+                      constraints: const BoxConstraints(minHeight: 48),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.l, vertical: AppSpacing.m),
                       decoration: BoxDecoration(
                         color: AppColors.bgWarm,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(AppRadius.md),
                       ),
                       child: Text(
                         _lastMet != null
                             ? '${_lastMet!.year}/${_lastMet!.month}/${_lastMet!.day}'
-                            : '選択してください',
-                        style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 14,
+                            : '未選択',
+                        // 未選択のときは入力欄の例の文と同じ色
+                        style: AppTextStyles.callout.copyWith(
                           color: _lastMet != null
                               ? AppColors.text
                               : AppColors.textDisabled,
@@ -232,7 +230,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.xl),
 
                   Row(
                     children: [
@@ -242,7 +240,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                           label: 'キャンセル',
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: AppSpacing.s),
                       Expanded(
                         child: AppButton.primary(
                           onPressed: _submit,
@@ -263,21 +261,12 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   Widget _label(String text, {bool required = false}) {
     return Text.rich(
       TextSpan(children: [
-        TextSpan(
-          text: text,
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 11,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMuted,
-          ),
-        ),
+        TextSpan(text: text, style: AppTextStyles.captionLabel),
         if (required)
           TextSpan(
             text: ' *',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 11,
-              color: AppColors.accent,
-            ),
+            style:
+                AppTextStyles.captionLabel.copyWith(color: AppColors.accent),
           ),
       ]),
     );
@@ -285,23 +274,27 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
 
   Widget _genderBtn(Gender gender, String label) {
     final sel = _gender == gender;
-    return GestureDetector(
-      onTap: () => setState(() => _gender = gender),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-        decoration: BoxDecoration(
-          color: sel ? AppColors.accentSurface2 : AppColors.bgWarm,
-          border: Border.all(
-              color: sel ? AppColors.borderAccent : AppColors.border),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: Text(label,
-              style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 12,
-                fontWeight: sel ? FontWeight.w600 : FontWeight.w400,
-                color: sel ? AppColors.accent : AppColors.textSecondary,
-              )),
+    return Semantics(
+      button: true,
+      selected: sel,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => setState(() => _gender = gender),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: AppSpacing.minTap),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+          decoration: BoxDecoration(
+            color: sel ? AppColors.accentSurface2 : AppColors.bgWarm,
+            border: Border.all(
+                color: sel ? AppColors.borderAccent : AppColors.border),
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          child: Center(
+            child: Text(label,
+                style: AppTextStyles.footnote.copyWith(
+                  color: sel ? AppColors.accent : AppColors.textSecondary,
+                )),
+          ),
         ),
       ),
     );

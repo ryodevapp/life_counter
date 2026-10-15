@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/daily_record.dart';
 import '../../models/stamp.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../shared/app_button.dart';
@@ -130,25 +130,26 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: widget.onBack,
+        TextButton(
+          onPressed: widget.onBack,
+          style: TextButton.styleFrom(
+            minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
+            padding: EdgeInsets.zero,
+          ),
           child: Text(
             '\u2190 戻る',
-            style: GoogleFonts.zenKakuGothicNew(
-              fontSize: 13,
-              color: AppColors.accent,
-            ),
+            style: AppTextStyles.footnote.copyWith(color: AppColors.accent),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.s),
         Text(
           '${d.month}月${d.day}日の記録',
-          style: AppTextStyles.headlineSmall,
+          style: AppTextStyles.title,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
         if (_hasContent || _editing) ...[
           if (_editing) ..._buildEditMode() else ..._buildViewMode(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.l),
           if (_editing)
             Row(children: [
               Expanded(
@@ -157,7 +158,7 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
                   label: 'キャンセル',
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.s),
               Expanded(
                 child: AppButton.primary(onPressed: _save, label: '保存'),
               ),
@@ -175,17 +176,10 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
             ),
         ] else
           AppCard(
-            padding: const EdgeInsets.all(40),
-            child: Column(
-              children: [
-                const Text('\u{1F4DD}', style: TextStyle(fontSize: 24)),
-                const SizedBox(height: 12),
-                Text(
-                  'この日の記録はありません',
-                  style: AppTextStyles.bodyMedium
-                      .copyWith(color: AppColors.textMuted),
-                ),
-              ],
+            child: Text(
+              'この日の記録はありません',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
             ),
           ),
       ],
@@ -211,24 +205,15 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (questionText != null) ...[
-              Text(questionText,
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondary,
-                      height: 1.6)),
-              const SizedBox(height: 12),
+              Text(questionText, style: AppTextStyles.headline),
+              const SizedBox(height: AppSpacing.m),
             ],
             if (stamp != null)
-              Text(stamp.emoji, style: const TextStyle(fontSize: 28)),
-            if (stamp != null && answer != null) const SizedBox(height: 10),
-            if (answer != null)
-              Text(answer,
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.text,
-                      height: 1.7)),
+              // スタンプの絵は文字の段ではなく絵として見せる(display の大きさ)
+              Text(stamp.emoji, style: AppTextStyles.display),
+            if (stamp != null && answer != null)
+              const SizedBox(height: AppSpacing.s),
+            if (answer != null) Text(answer, style: AppTextStyles.body),
           ],
         ),
       ));
@@ -240,11 +225,11 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
       morningFields.add(_viewField('感謝していること', widget.record.gratitude!));
     }
     if (widget.record.todayGoal != null) {
-      if (morningFields.isNotEmpty) morningFields.add(const SizedBox(height: 20));
+      if (morningFields.isNotEmpty) morningFields.add(const SizedBox(height: AppSpacing.l));
       morningFields.add(_viewField('今日を素晴らしい一日にするために', widget.record.todayGoal!));
     }
     if (morningFields.isNotEmpty) {
-      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: 14));
+      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: AppSpacing.cardGap));
       widgets.add(AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: morningFields)));
     }
 
@@ -254,11 +239,11 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
       eveningFields.add(_viewField('嬉しかったこと', widget.record.reflectionGood!));
     }
     if (widget.record.tomorrowMessage != null) {
-      if (eveningFields.isNotEmpty) eveningFields.add(const SizedBox(height: 20));
+      if (eveningFields.isNotEmpty) eveningFields.add(const SizedBox(height: AppSpacing.l));
       eveningFields.add(_viewField('明日の自分へ', widget.record.tomorrowMessage!));
     }
     if (eveningFields.isNotEmpty) {
-      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: 14));
+      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: AppSpacing.cardGap));
       widgets.add(AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: eveningFields)));
     }
 
@@ -268,19 +253,19 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
       legacyFields.add(_viewField('\u{1F4AD} なぜ？', widget.record.reflectionWhy!));
     }
     if (widget.record.reflectionTomorrow != null) {
-      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: 20));
+      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: AppSpacing.l));
       legacyFields.add(_viewField('\u2728 明日の楽しみ', widget.record.reflectionTomorrow!));
     }
     if (widget.record.weeklyReflectionHighlight != null) {
-      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: 20));
+      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: AppSpacing.l));
       legacyFields.add(_viewField('\u{1F4C5} 今週のハイライト', widget.record.weeklyReflectionHighlight!));
     }
     if (widget.record.weeklyReflectionChange != null) {
-      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: 20));
+      if (legacyFields.isNotEmpty) legacyFields.add(const SizedBox(height: AppSpacing.l));
       legacyFields.add(_viewField('\u{1F504} 来週変えること', widget.record.weeklyReflectionChange!));
     }
     if (legacyFields.isNotEmpty) {
-      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: 14));
+      if (widgets.isNotEmpty) widgets.add(const SizedBox(height: AppSpacing.cardGap));
       widgets.add(AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: legacyFields)));
     }
 
@@ -302,26 +287,26 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
     if (!_hasDiaryFields) return widgets;
 
     // 朝のカード
-    widgets.add(const SizedBox(height: 14));
+    widgets.add(const SizedBox(height: AppSpacing.cardGap));
     widgets.add(AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _editField('感謝していること', _gratitudeCtrl),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.l),
           _editField('今日を素晴らしい一日にするために', _goalCtrl),
         ],
       ),
     ));
 
     // 夜のカード
-    widgets.add(const SizedBox(height: 14));
+    widgets.add(const SizedBox(height: AppSpacing.cardGap));
     widgets.add(AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _editField('嬉しかったこと', _goodCtrl),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.l),
           _editField('明日の自分へ', _tomorrowMsgCtrl),
         ],
       ),
@@ -333,17 +318,17 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
       legacyEdits.add(_editField('\u{1F4AD} なぜ？', _whyCtrl));
     }
     if (hasLegacyTomorrow) {
-      if (legacyEdits.isNotEmpty) legacyEdits.add(const SizedBox(height: 20));
+      if (legacyEdits.isNotEmpty) legacyEdits.add(const SizedBox(height: AppSpacing.l));
       legacyEdits.add(_editField('\u2728 明日の楽しみ', _tomorrowCtrl));
     }
     if (hasLegacyWeekly) {
-      if (legacyEdits.isNotEmpty) legacyEdits.add(const SizedBox(height: 20));
+      if (legacyEdits.isNotEmpty) legacyEdits.add(const SizedBox(height: AppSpacing.l));
       legacyEdits.add(_editField('\u{1F4C5} 今週のハイライト', _weeklyHighCtrl));
-      legacyEdits.add(const SizedBox(height: 20));
+      legacyEdits.add(const SizedBox(height: AppSpacing.l));
       legacyEdits.add(_editField('\u{1F504} 来週変えること', _weeklyChangeCtrl));
     }
     if (legacyEdits.isNotEmpty) {
-      widgets.add(const SizedBox(height: 14));
+      widgets.add(const SizedBox(height: AppSpacing.cardGap));
       widgets.add(AppCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: legacyEdits)));
     }
 
@@ -354,19 +339,9 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSecondary)),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 14,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
+        Text(label, style: AppTextStyles.captionLabel),
+        const SizedBox(height: AppSpacing.s),
+        Text(value, style: AppTextStyles.callout),
       ],
     );
   }
@@ -375,12 +350,8 @@ class _RecordDetailPageState extends ConsumerState<RecordDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSecondary)),
-        const SizedBox(height: 8),
+        Text(label, style: AppTextStyles.captionLabel),
+        const SizedBox(height: AppSpacing.s),
         AppInput(controller: ctrl, maxLength: 200),
       ],
     );

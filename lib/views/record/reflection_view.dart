@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../models/daily_record.dart';
 import '../../models/stamp.dart';
 import '../../providers/question_bank_provider.dart';
@@ -8,6 +7,8 @@ import '../../services/question_bank.dart';
 import '../../utils/date_only.dart';
 import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
+import '../shared/app_text_styles.dart';
 
 /// 月ごとの気分の数を数える(良い・悪いの点数や平均は出さない)
 Map<String, int> countMoods(Iterable<DailyRecord> records) {
@@ -32,8 +33,7 @@ class ReflectionView extends ConsumerStatefulWidget {
 class _ReflectionViewState extends ConsumerState<ReflectionView> {
   DateTime _month = DateTime(DateTime.now().year, DateTime.now().month);
 
-  TextStyle get _label =>
-      GoogleFonts.zenKakuGothicNew(fontSize: 12, color: AppColors.textMuted);
+  TextStyle get _label => AppTextStyles.captionLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +63,12 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('1年前の今日', style: _label),
-                const SizedBox(height: 10),
+                const SizedBox(height: AppSpacing.s),
                 ..._entry(lastYear, bank),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.section),
         ],
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -80,8 +80,7 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
               icon: const Icon(Icons.chevron_left, color: AppColors.textMuted),
             ),
             Text('${_month.year}年${_month.month}月',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 15, fontWeight: FontWeight.w500)),
+                style: AppTextStyles.headline),
             IconButton(
               tooltip: '次の月',
               onPressed: () =>
@@ -90,34 +89,35 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s),
+        Text('この月の気分', style: _label),
+        const SizedBox(height: AppSpacing.s),
         AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('この月の気分', style: _label),
-              const SizedBox(height: 12),
               if (maxCount == 0)
                 Text('この月は、まだ気分の記録がありません',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 13, color: AppColors.textDisabled))
+                    style: AppTextStyles.callout
+                        .copyWith(color: AppColors.textMuted))
               else
                 for (final s in stamps)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: AppSpacing.s),
                     child: Row(
                       children: [
-                        Text(s.emoji, style: const TextStyle(fontSize: 18)),
-                        const SizedBox(width: 8),
+                        Text(s.emoji, style: AppTextStyles.headline),
+                        const SizedBox(width: AppSpacing.s),
                         SizedBox(
                           width: 64,
                           child: Text(s.label,
-                              style: GoogleFonts.zenKakuGothicNew(
-                                  fontSize: 12, color: AppColors.textSecondary)),
+                              style: AppTextStyles.footnote
+                                  .copyWith(color: AppColors.textSecondary)),
                         ),
                         Expanded(
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.full),
                             child: LinearProgressIndicator(
                               value: counts[s.id]! / maxCount,
                               minHeight: 8,
@@ -126,13 +126,12 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.s),
                         SizedBox(
                           width: 32,
                           child: Text('${counts[s.id]}日',
                               textAlign: TextAlign.right,
-                              style: GoogleFonts.zenKakuGothicNew(
-                                  fontSize: 12, color: AppColors.textMuted)),
+                              style: AppTextStyles.footnote),
                         ),
                       ],
                     ),
@@ -140,19 +139,19 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.section),
         Text('この月の問いと答え', style: _label),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s),
         if (answered.isEmpty)
           AppCard(
             child: Text('この月は、まだ答えた問いがありません',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 13, color: AppColors.textDisabled)),
+                style: AppTextStyles.callout
+                    .copyWith(color: AppColors.textMuted)),
           )
         else
           for (final r in answered)
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
               child: AppCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,29 +171,20 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
       Row(
         children: [
           Text('${r.date.month}月${r.date.day}日',
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 13, fontWeight: FontWeight.w500)),
+              style: AppTextStyles.headline),
           if (mood != null) ...[
-            const SizedBox(width: 10),
+            const SizedBox(width: AppSpacing.s),
             Text('${mood.emoji} ${mood.label}',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textSecondary)),
+                style: AppTextStyles.footnote
+                    .copyWith(color: AppColors.textSecondary)),
           ],
         ],
       ),
       if (r.answer != null) ...[
-        const SizedBox(height: 8),
-        if (q != null)
-          Text(q.text,
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 12, color: AppColors.textMuted, height: 1.5)),
-        const SizedBox(height: 4),
-        Text(r.answer!,
-            style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                color: AppColors.text,
-                height: 1.6)),
+        const SizedBox(height: AppSpacing.s),
+        if (q != null) Text(q.text, style: AppTextStyles.captionLabel),
+        const SizedBox(height: AppSpacing.xs),
+        Text(r.answer!, style: AppTextStyles.callout),
       ],
     ];
   }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import '../../models/daily_record.dart';
@@ -16,6 +15,7 @@ import '../../services/widget_sync.dart';
 import '../../utils/date_only.dart';
 import '../../utils/prefs_keys.dart';
 import '../shared/app_colors.dart';
+import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_toast.dart';
 import 'today_question_card.dart';
@@ -129,7 +129,6 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     }
   }
 
-
   /// 画面の日の問い・スタンプ・答え・1年前の答えを読む
   Future<void> _loadDay() async {
     try {
@@ -157,7 +156,10 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   /// ウィジェットで押したスタンプを取り込み、画面とウィジェットを今の状態にそろえる
   Future<void> _syncWidget() async {
     final bank = ref.read(questionBankProvider);
-    await WidgetSync.importPending(ref.read(dailyRecordRepositoryProvider), bank);
+    await WidgetSync.importPending(
+      ref.read(dailyRecordRepositoryProvider),
+      bank,
+    );
     await _loadDay();
     await WidgetSync.update(
       birthDate: ref.read(userSettingsProvider).birthDate,
@@ -170,8 +172,10 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     _midnightTimer?.cancel();
     final now = DateTime.now();
     final next = DateTime(now.year, now.month, now.day + 1);
-    _midnightTimer = Timer(next.difference(now) + const Duration(seconds: 1),
-        _switchDayIfNeeded);
+    _midnightTimer = Timer(
+      next.difference(now) + const Duration(seconds: 1),
+      _switchDayIfNeeded,
+    );
   }
 
   Future<void> _switchDayIfNeeded() async {
@@ -212,9 +216,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     if (!_dirty) return;
     _dirty = false;
     try {
-      await ref.read(dailyRecordRepositoryProvider).setAnswer(
-          _date, _answerController.text,
-          questionId: _question.id);
+      await ref
+          .read(dailyRecordRepositoryProvider)
+          .setAnswer(_date, _answerController.text, questionId: _question.id);
     } catch (e) {
       _dirty = true; // 次の機会にもう一度保存する
       debugPrint('Auto save error: $e');
@@ -245,7 +249,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         .add(title, sourceQuestionId: _question.id);
     if (!mounted) return;
     AppToast.success(
-        context, added ? 'やりたいこと(バケットリスト)に入れました' : 'もう、やりたいことに入っています');
+      context,
+      added ? 'やりたいこと(バケットリスト)に入れました' : 'もう、やりたいことに入っています',
+    );
   }
 
   @override
@@ -265,7 +271,10 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final settings = ref.watch(userSettingsProvider);
     final birthDate = settings.birthDate;
     if (birthDate == null) {
-      return const Center(child: Text('オンボーディングを完了してください'));
+      return Center(
+          child: Text('オンボーディングのあとに表示されます',
+              style: AppTextStyles.callout
+                  .copyWith(color: AppColors.textMuted)));
     }
 
     final lifeDays = lifeDaysOn(birthDate, _date);
@@ -276,40 +285,38 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 130),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.screen,
+          AppSpacing.l,
+          AppSpacing.screen,
+          130,
+        ),
         child: Column(
           children: [
-            // ヘッダー: 日付 + 人生日数
+            // いちばん上: 人生の日数 + 日付
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.only(bottom: AppSpacing.xl),
               child: Column(
                 children: [
-                  Text('YOUR LIFE', style: AppTextStyles.labelUppercase),
-                  const SizedBox(height: 14),
-                  Text(formatter.format(lifeDays),
-                      style: AppTextStyles.counter),
-                  const SizedBox(height: 8),
-                  Text('日目',
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 1.5,
-                          color: AppColors.textMuted)),
-                  const SizedBox(height: 8),
-                  Text(dateStr,
-                      style: GoogleFonts.zenKakuGothicNew(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 1.5,
-                          color: AppColors.textMuted)),
+                  Text(
+                    formatter.format(lifeDays),
+                    style: AppTextStyles.counter,
+                  ),
+                  const SizedBox(height: AppSpacing.s),
+                  Text(
+                    '日目',
+                    style: AppTextStyles.callout.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(dateStr, style: AppTextStyles.footnote),
                 ],
               ),
             ),
 
-            const SizedBox(height: 8),
-
             MoodCard(selectedId: _stampId, onSelect: _onStamp),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.cardGap),
             TodayQuestionCard(
               question: _question,
               answerController: _answerController,

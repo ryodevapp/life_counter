@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import 'app_spacing.dart';
+import 'app_text_styles.dart';
 
 /// 統一トースト表示
 class AppToast {
@@ -13,7 +14,7 @@ class AppToast {
 
   /// エラートースト（バリデーション、通信エラー等）
   static void error(BuildContext context, String message) {
-    _show(context, message, const Color(0xFFC17A56));
+    _show(context, message, AppColors.danger);
   }
 
   static void _show(BuildContext context, String message, Color color) {
@@ -22,17 +23,16 @@ class AppToast {
       SnackBar(
         content: Text(
           message,
-          style: GoogleFonts.zenKakuGothicNew(
-            fontSize: 14,
-            color: Colors.white,
-          ),
+          style: AppTextStyles.callout.copyWith(color: Colors.white),
         ),
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
-        margin: const EdgeInsets.fromLTRB(20, 0, 20, 100),
+        // 下は浮かぶタブバーの上に出す
+        margin: const EdgeInsets.fromLTRB(
+            AppSpacing.screen, 0, AppSpacing.screen, 100),
         duration: const Duration(seconds: 2),
       ),
     );
