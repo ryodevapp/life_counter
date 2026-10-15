@@ -84,12 +84,16 @@ struct TodayQuestionView: View {
         VStack(alignment: .leading, spacing: 12) {
             if let day = entry.day {
                 Text(day.question)
-                    .font(.system(size: 15, weight: .medium))
-                    .lineLimit(3)
+                    .font(.system(size: 14, weight: .medium))
+                    .lineLimit(2)
                     .minimumScaleFactor(0.8)
                     .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
                     .widgetAccentable()
                 Spacer(minLength: 0)
+                // 気分は問いへの答えではないので、見出しを付けて分ける
+                Text("今日の気分")
+                    .font(.system(size: 10))
+                    .foregroundStyle(Tone.muted)
                 HStack {
                     ForEach(stampDefs, id: \.id) { s in
                         Button(intent: StampIntent(stampId: s.id, date: day.date)) {
@@ -128,7 +132,7 @@ struct TodayQuestionWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DayProvider()) { TodayQuestionView(entry: $0) }
             .configurationDisplayName("今日の問い")
-            .description("今日の問いに、スタンプで答えられます。")
+            .description("今日の問いを見て、今日の気分をひと押しで残せます。")
             .supportedFamilies([.systemMedium])
     }
 }

@@ -245,7 +245,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         .add(title, sourceQuestionId: _question.id);
     if (!mounted) return;
     AppToast.success(
-        context, added ? 'やりたいことリストに入れました' : 'もう、やりたいことリストに入っています');
+        context, added ? 'やりたいこと(バケットリスト)に入れました' : 'もう、やりたいことに入っています');
   }
 
   @override
@@ -276,12 +276,12 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 48, 20, 130),
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 130),
         child: Column(
           children: [
             // ヘッダー: 日付 + 人生日数
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 28),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
                 children: [
                   Text('YOUR LIFE', style: AppTextStyles.labelUppercase),
@@ -308,13 +308,13 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
             const SizedBox(height: 8),
 
+            MoodCard(selectedId: _stampId, onSelect: _onStamp),
+            const SizedBox(height: 16),
             TodayQuestionCard(
               question: _question,
               answerController: _answerController,
               answerFocus: _answerFocus,
-              selectedStampId: _stampId,
               lastYearAnswer: _lastYearAnswer,
-              onStamp: _onStamp,
               onAnswerChanged: _onAnswerChanged,
               onAddToBucket: _addToBucket,
             ),

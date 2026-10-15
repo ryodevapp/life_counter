@@ -4,129 +4,50 @@ import '../../models/question.dart';
 import '../../models/stamp.dart';
 import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
-import '../shared/app_input.dart';
 import 'voice_input_button.dart';
 
-/// 今日の問い: 問い → スタンプ → 話す・書く欄 → 1年前の答え → やりたいことに入れる
-class TodayQuestionCard extends StatelessWidget {
-  const TodayQuestionCard({
-    super.key,
-    required this.question,
-    required this.answerController,
-    required this.onStamp,
-    required this.onAnswerChanged,
-    this.answerFocus,
-    this.selectedStampId,
-    this.lastYearAnswer,
-    this.onAddToBucket,
-  });
+/// 「今日はどんな一日だった？」に、気分を1つ選んで答える
+class MoodCard extends StatelessWidget {
+  const MoodCard({super.key, required this.selectedId, required this.onSelect});
 
-  final Question question;
-  final TextEditingController answerController;
-  final FocusNode? answerFocus;
-  final String? selectedStampId;
-  final String? lastYearAnswer;
+  final String? selectedId;
 
-  /// 同じスタンプをもう一度押したら null(取り消し)
-  final ValueChanged<String?> onStamp;
-  final ValueChanged<String> onAnswerChanged;
-
-  /// bucket の問いに答えがあるときだけ出す
-  final VoidCallback? onAddToBucket;
+  /// 同じものをもう一度押したら null(取り消し)
+  final ValueChanged<String?> onSelect;
 
   @override
   Widget build(BuildContext context) {
-    final showBucket = question.isBucket &&
-        onAddToBucket != null &&
-        answerController.text.trim().isNotEmpty;
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('今日の問い',
+          Text(moodQuestion,
               style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 12,
-                  letterSpacing: 1.5,
-                  color: AppColors.textMuted)),
-          const SizedBox(height: 10),
-          Text(question.text,
-              style: GoogleFonts.zenKakuGothicNew(
-                  fontSize: 17,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.text,
-                  height: 1.6)),
-          const SizedBox(height: 18),
+                  color: AppColors.text)),
+          const SizedBox(height: 14),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (final s in stamps)
-                _StampButton(
-                  stamp: s,
-                  selected: s.id == selectedStampId,
-                  dimmed: selectedStampId != null && s.id != selectedStampId,
-                  onTap: () => onStamp(s.id == selectedStampId ? null : s.id),
+                Expanded(
+                  child: _MoodButton(
+                    stamp: s,
+                    selected: s.id == selectedId,
+                    dimmed: selectedId != null && s.id != selectedId,
+                    onTap: () => onSelect(s.id == selectedId ? null : s.id),
+                  ),
                 ),
             ],
           ),
-          const SizedBox(height: 18),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: AppInput(
-                  controller: answerController,
-                  focusNode: answerFocus,
-                  placeholder: '話す・書く(書かなくても大丈夫です)',
-                  maxLength: 1000,
-                  minLines: 2,
-                  maxLines: 8,
-                  onChanged: onAnswerChanged,
-                ),
-              ),
-              VoiceInputButton(onResult: (text) {
-                final current = answerController.text;
-                var joined = current.isEmpty ? text : '$current $text';
-                if (joined.characters.length > 1000) {
-                  joined = joined.characters.take(1000).toString();
-                }
-                answerController.text = joined;
-                onAnswerChanged(joined);
-              }),
-            ],
-          ),
-          if (lastYearAnswer != null && lastYearAnswer!.trim().isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text('1年前の今日、あなたはこう答えました',
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 12, color: AppColors.textMuted)),
-            const SizedBox(height: 6),
-            Text(lastYearAnswer!,
-                style: GoogleFonts.zenKakuGothicNew(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    color: AppColors.textSecondary,
-                    height: 1.6)),
-          ],
-          if (showBucket) ...[
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: onAddToBucket,
-                child: Text('やりたいことリストに入れる',
-                    style: GoogleFonts.zenKakuGothicNew(
-                        fontSize: 13, color: AppColors.accent)),
-              ),
-            ),
-          ],
         ],
       ),
     );
   }
 }
 
-class _StampButton extends StatelessWidget {
-  const _StampButton({
+class _MoodButton extends StatelessWidget {
+  const _MoodButton({
     required this.stamp,
     required this.selected,
     required this.dimmed,
@@ -144,23 +65,207 @@ class _StampButton extends StatelessWidget {
       button: true,
       selected: selected,
       label: stamp.label,
-      child: InkWell(
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
         child: AnimatedOpacity(
           duration: const Duration(milliseconds: 150),
-          opacity: dimmed ? 0.3 : 1,
-          child: Container(
-            width: 48,
-            height: 48,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: selected ? AppColors.accentSurface2 : Colors.transparent,
-            ),
-            child: Text(stamp.emoji, style: const TextStyle(fontSize: 26)),
+          opacity: dimmed ? 0.55 : 1,
+          child: Column(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: 48,
+                height: 48,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      selected ? AppColors.accentSurface2 : AppColors.bgWarm,
+                  border: Border.all(
+                      color: selected ? AppColors.accent : Colors.transparent,
+                      width: 1.5),
+                ),
+                child: Text(stamp.emoji, style: const TextStyle(fontSize: 24)),
+              ),
+              const SizedBox(height: 6),
+              Text(stamp.label,
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 11,
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      color: selected
+                          ? AppColors.accent
+                          : AppColors.textSecondary)),
+            ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// 今日の問い: 問い → 話す・書く欄(マイクは欄の中の右下)→ 1年前の答え → やりたいことに入れる
+class TodayQuestionCard extends StatefulWidget {
+  const TodayQuestionCard({
+    super.key,
+    required this.question,
+    required this.answerController,
+    required this.onAnswerChanged,
+    this.answerFocus,
+    this.lastYearAnswer,
+    this.onAddToBucket,
+  });
+
+  final Question question;
+  final TextEditingController answerController;
+  final FocusNode? answerFocus;
+  final String? lastYearAnswer;
+  final ValueChanged<String> onAnswerChanged;
+
+  /// bucket の問いに答えがあるときだけ出す
+  final VoidCallback? onAddToBucket;
+
+  @override
+  State<TodayQuestionCard> createState() => _TodayQuestionCardState();
+}
+
+class _TodayQuestionCardState extends State<TodayQuestionCard> {
+  static const _maxChars = 1000;
+  bool _listening = false;
+
+  /// 話し始めたときの欄の文(話した分はこの後ろにつなぐ)
+  String _base = '';
+
+  void _onWords(String words, bool isFinal) {
+    final joined = words.isEmpty
+        ? _base
+        : (_base.isEmpty ? words : '$_base $words');
+    final text = joined.characters.length > _maxChars
+        ? joined.characters.take(_maxChars).toString()
+        : joined;
+    widget.answerController.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+    widget.onAnswerChanged(text);
+    if (isFinal) _base = text;
+  }
+
+  OutlineInputBorder _border(Color color) => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: color),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final showBucket = widget.question.isBucket &&
+        widget.onAddToBucket != null &&
+        widget.answerController.text.trim().isNotEmpty;
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('今日の問い',
+              style: GoogleFonts.zenKakuGothicNew(
+                  fontSize: 12, letterSpacing: 1.5, color: AppColors.textMuted)),
+          const SizedBox(height: 10),
+          Text(widget.question.text,
+              style: GoogleFonts.zenKakuGothicNew(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.text,
+                  height: 1.6)),
+          const SizedBox(height: 16),
+          // マイクは欄の中の右下に重ねる(欄の外に並べるとガタつくため)
+          Stack(
+            children: [
+              TextField(
+                controller: widget.answerController,
+                focusNode: widget.answerFocus,
+                minLines: 4,
+                maxLines: 10,
+                maxLength: _maxChars,
+                onChanged: widget.onAnswerChanged,
+                style: GoogleFonts.zenKakuGothicNew(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
+                    color: AppColors.text,
+                    height: 1.7),
+                decoration: InputDecoration(
+                  hintText: '書く、または右下のマイクで話す\n(書かなくても大丈夫です)',
+                  hintMaxLines: 2,
+                  hintStyle: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.textDisabled,
+                      height: 1.6),
+                  filled: true,
+                  fillColor: AppColors.bgWarm,
+                  counterText: '',
+                  contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 52),
+                  border: _border(Colors.transparent),
+                  enabledBorder: _border(
+                      _listening ? AppColors.accent : Colors.transparent),
+                  focusedBorder: _border(
+                      _listening ? AppColors.accent : AppColors.borderAccent),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                right: 60,
+                bottom: 18,
+                child: IgnorePointer(
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 150),
+                    opacity: _listening ? 1 : 0,
+                    child: Text('聞いています…(もう一度押すと止まります)',
+                        style: GoogleFonts.zenKakuGothicNew(
+                            fontSize: 12, color: AppColors.accent)),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 10,
+                bottom: 10,
+                child: VoiceInputButton(
+                  onStart: () => setState(() {
+                    _listening = true;
+                    _base = widget.answerController.text.trim();
+                  }),
+                  onWords: _onWords,
+                  onStop: () => setState(() => _listening = false),
+                ),
+              ),
+            ],
+          ),
+          if (widget.lastYearAnswer != null &&
+              widget.lastYearAnswer!.trim().isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Text('1年前の今日、あなたはこう答えました',
+                style: GoogleFonts.zenKakuGothicNew(
+                    fontSize: 12, color: AppColors.textMuted)),
+            const SizedBox(height: 6),
+            Text(widget.lastYearAnswer!,
+                style: GoogleFonts.zenKakuGothicNew(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    color: AppColors.textSecondary,
+                    height: 1.6)),
+          ],
+          if (showBucket) ...[
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: widget.onAddToBucket,
+                child: Text('やりたいこと(バケットリスト)に入れる',
+                    style: GoogleFonts.zenKakuGothicNew(
+                        fontSize: 13, color: AppColors.accent)),
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

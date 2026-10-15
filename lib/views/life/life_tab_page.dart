@@ -30,18 +30,18 @@ class _LifeTabPageState extends State<LifeTabPage> {
                 items: const [
                   SegmentItem(value: _LifeSegment.time, label: 'あなた'),
                   SegmentItem(value: _LifeSegment.people, label: '大切な人'),
+                  SegmentItem(value: _LifeSegment.bucket, label: 'やりたいこと'),
                 ],
                 selectedValue: _segment,
                 onChanged: (v) => setState(() => _segment = v),
               ),
             ),
             const SizedBox(height: 28),
-            if (_segment == _LifeSegment.time)
-              const YourTimeSection()
-            else
-              const ImportantPeopleSection(),
-            const SizedBox(height: 32),
-            const BucketSection(),
+            switch (_segment) {
+              _LifeSegment.time => const YourTimeSection(),
+              _LifeSegment.people => const ImportantPeopleSection(),
+              _LifeSegment.bucket => const BucketSection(),
+            },
           ],
         ),
       ),
@@ -49,4 +49,4 @@ class _LifeTabPageState extends State<LifeTabPage> {
   }
 }
 
-enum _LifeSegment { time, people }
+enum _LifeSegment { time, people, bucket }

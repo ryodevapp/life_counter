@@ -31,11 +31,11 @@ struct StampDef {
 }
 
 let stampDefs: [StampDef] = [
-    StampDef(id: "calm", emoji: "😌", label: "おだやか"),
-    StampDef(id: "smile", emoji: "🙂", label: "にっこり"),
     StampDef(id: "happy", emoji: "😊", label: "うれしい"),
-    StampDef(id: "warm", emoji: "🥰", label: "あたたかい"),
-    StampDef(id: "spark", emoji: "✨", label: "わくわく"),
+    StampDef(id: "calm", emoji: "😌", label: "おだやか"),
+    StampDef(id: "neutral", emoji: "😐", label: "ふつう"),
+    StampDef(id: "tired", emoji: "😩", label: "つかれた"),
+    StampDef(id: "sad", emoji: "😢", label: "かなしい"),
 ]
 
 // MARK: - データ
@@ -93,7 +93,7 @@ func nextMidnight(after date: Date) -> Date {
 // MARK: - スタンプを押す(iOS 17 の押せるウィジェット)
 
 struct StampIntent: AppIntent {
-    static var title: LocalizedStringResource = "今日の問いにスタンプで答える"
+    static var title: LocalizedStringResource = "今日の気分を残す"
     static var isDiscoverable: Bool = false
 
     @Parameter(title: "スタンプ") var stampId: String

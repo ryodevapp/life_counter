@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_counter/models/question.dart';
+import 'package:life_counter/models/stamp.dart';
 import 'package:life_counter/views/today/today_question_card.dart';
 
 void main() {
@@ -8,63 +9,75 @@ void main() {
   const bucket =
       Question(id: 'q2', category: 'bucket', text: '一度は行ってみたい場所は？', dayOfYear: 2);
 
-  Future<void> pump(
-    WidgetTester tester, {
-    Question question = self,
-    String answer = '',
-    String? stamp,
-    String? lastYear,
-    ValueChanged<String?>? onStamp,
-    VoidCallback? onBucket,
-  }) async {
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: TodayQuestionCard(
-            question: question,
-            answerController: TextEditingController(text: answer),
-            selectedStampId: stamp,
-            lastYearAnswer: lastYear,
-            onStamp: onStamp ?? (_) {},
-            onAnswerChanged: (_) {},
-            onAddToBucket: onBucket,
-          ),
-        ),
-      ),
-    ));
-  }
+  Future<void> host(WidgetTester tester, Widget child) => tester.pumpWidget(
+      MaterialApp(home: Scaffold(body: SingleChildScrollView(child: child))));
 
-  testWidgets('tapping a stamp selects it, tapping the selected one clears it',
-      (tester) async {
-    final calls = <String?>[];
-    await pump(tester, onStamp: calls.add);
-    await tester.tap(find.text('😊'));
-    await pump(tester, stamp: 'happy', onStamp: calls.add);
-    await tester.tap(find.text('😊'));
-    expect(calls, ['happy', null]);
+  group('MoodCard', () {
+    testWidgets('asks how the day was and shows every mood with its label',
+        (tester) async {
+      await host(tester, MoodCard(selectedId: null, onSelect: (_) {}));
+      expect(find.text(moodQuestion), findsOneWidget);
+      for (final s in stamps) {
+        expect(find.text(s.label), findsOneWidget);
+      }
+      // つらい日にも選べる
+      expect(find.text('かなしい'), findsOneWidget);
+    });
+
+    testWidgets('tapping selects, tapping the selected one clears', (tester) async {
+      final calls = <String?>[];
+      await host(tester, MoodCard(selectedId: null, onSelect: calls.add));
+      await tester.tap(find.text('うれしい'));
+      await host(tester, MoodCard(selectedId: 'happy', onSelect: calls.add));
+      await tester.tap(find.text('うれしい'));
+      expect(calls, ['happy', null]);
+    });
   });
 
-  testWidgets('last year answer shows only when present', (tester) async {
-    await pump(tester);
-    expect(find.textContaining('1年前の今日'), findsNothing);
-    await pump(tester, lastYear: '海を見に行った');
-    expect(find.textContaining('1年前の今日'), findsOneWidget);
-    expect(find.text('海を見に行った'), findsOneWidget);
-  });
+  group('TodayQuestionCard', () {
+    Future<void> pump(WidgetTester tester,
+            {Question question = self,
+            String answer = '',
+            String? lastYear,
+            VoidCallback? onBucket}) =>
+        host(
+            tester,
+            TodayQuestionCard(
+              question: question,
+              answerController: TextEditingController(text: answer),
+              lastYearAnswer: lastYear,
+              onAnswerChanged: (_) {},
+              onAddToBucket: onBucket,
+            ));
 
-  testWidgets('bucket button shows only for bucket questions with an answer',
-      (tester) async {
-    await pump(tester, question: self, answer: '京都', onBucket: () {});
-    expect(find.text('やりたいことリストに入れる'), findsNothing);
-    await pump(tester, question: bucket, answer: '', onBucket: () {});
-    expect(find.text('やりたいことリストに入れる'), findsNothing);
-    await pump(tester, question: bucket, answer: '京都', onBucket: () {});
-    expect(find.text('やりたいことリストに入れる'), findsOneWidget);
-  });
+    testWidgets('shows the question text and the mic inside the field',
+        (tester) async {
+      await pump(tester);
+      expect(find.text('今日の気分は？'), findsOneWidget);
+      expect(find.bySemanticsLabel('声で入力する'), findsOneWidget);
+    });
 
-  testWidgets('no streak or count text is shown', (tester) async {
-    await pump(tester, stamp: 'calm', lastYear: 'x');
-    expect(find.textContaining('連続'), findsNothing);
-    expect(find.textContaining('%'), findsNothing);
+    testWidgets('last year answer shows only when present', (tester) async {
+      await pump(tester);
+      expect(find.textContaining('1年前の今日'), findsNothing);
+      await pump(tester, lastYear: '海を見に行った');
+      expect(find.textContaining('1年前の今日'), findsOneWidget);
+    });
+
+    testWidgets('bucket button only for bucket questions with an answer',
+        (tester) async {
+      await pump(tester, question: self, answer: '京都', onBucket: () {});
+      expect(find.textContaining('バケットリスト'), findsNothing);
+      await pump(tester, question: bucket, answer: '', onBucket: () {});
+      expect(find.textContaining('バケットリスト'), findsNothing);
+      await pump(tester, question: bucket, answer: '京都', onBucket: () {});
+      expect(find.textContaining('バケットリスト'), findsOneWidget);
+    });
+
+    testWidgets('no streak or count text is shown', (tester) async {
+      await pump(tester, lastYear: 'x');
+      expect(find.textContaining('連続'), findsNothing);
+      expect(find.textContaining('%'), findsNothing);
+    });
   });
 }

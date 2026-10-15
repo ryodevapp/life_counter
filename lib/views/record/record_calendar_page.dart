@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../models/daily_record.dart';
 import '../../models/stamp.dart';
+import 'reflection_view.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
@@ -21,7 +22,7 @@ class RecordCalendarPage extends ConsumerStatefulWidget {
   RecordCalendarPageState createState() => RecordCalendarPageState();
 }
 
-enum _RecordView { calendar, list }
+enum _RecordView { calendar, list, reflection }
 
 class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   _RecordView _view = _RecordView.list;
@@ -65,6 +66,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                 items: const [
                   SegmentItem(value: _RecordView.list, label: 'リスト'),
                   SegmentItem(value: _RecordView.calendar, label: 'カレンダー'),
+                  SegmentItem(value: _RecordView.reflection, label: 'ふりかえり'),
                 ],
                 selectedValue: _view,
                 onChanged: (v) => setState(() => _view = v),
@@ -77,7 +79,9 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                 const SizedBox(height: 16),
                 _buildSelectedRecordCard(),
               ],
-            ] else
+            ] else if (_view == _RecordView.reflection)
+              ReflectionView(records: _records)
+            else
               _buildList(),
           ],
         ),
@@ -319,12 +323,12 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 
   List<Widget> _buildInlineFields(DailyRecord r) {
     final fields = <(String, String)>[];
-    final stamp = stampById(r.stamp);
-    if (stamp != null || r.answer != null) {
-      fields.add((
-        '今日の問い',
-        [if (stamp != null) stamp.emoji, if (r.answer != null) r.answer!].join('  '),
-      ));
+    // 今日の問いへの答えは、問いの文を見出しにする(何への答えかが分かるように)
+    if (r.answer != null) {
+      final q = r.morningQuestionId == null
+          ? null
+          : ref.read(questionBankProvider).byId(r.morningQuestionId!);
+      fields.add((q?.text ?? '今日の問い', r.answer!));
     }
     if (r.gratitude != null) fields.add(('感謝していること', r.gratitude!));
     if (r.todayGoal != null) fields.add(('今日やること', r.todayGoal!));
@@ -335,6 +339,28 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (r.weeklyReflectionHighlight != null) fields.add(('今週のハイライト', r.weeklyReflectionHighlight!));
     if (r.weeklyReflectionChange != null) fields.add(('来週変えること', r.weeklyReflectionChange!));
 
+    final mood = stampById(r.stamp);
+    final moodRow = <Widget>[
+      if (mood != null)
+        Padding(
+          padding: EdgeInsets.only(bottom: fields.isEmpty ? 0 : 14),
+          child: Row(
+            children: [
+              Text(mood.emoji, style: const TextStyle(fontSize: 20)),
+              const SizedBox(width: 8),
+              Text('$moodQuestion  ',
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 11, color: AppColors.textMuted)),
+              Text(mood.label,
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textSecondary)),
+            ],
+          ),
+        ),
+    ];
+    if (fields.isEmpty && moodRow.isNotEmpty) return moodRow;
     if (fields.isEmpty) {
       return [
         Text(
@@ -348,36 +374,41 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       ];
     }
 
-    return fields.asMap().entries.map((entry) {
+    return [
+      ...moodRow,
+      ...fields.asMap().entries.map((entry) {
       final isLast = entry.key == fields.length - 1;
       return Padding(
-        padding: EdgeInsets.only(bottom: isLast ? 0 : 8),
+        padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               entry.value.$1,
               style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textMuted,
+                height: 1.5,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               entry.value.$2,
-              maxLines: 2,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.zenKakuGothicNew(
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w300,
                 color: AppColors.text,
+                height: 1.6,
               ),
             ),
           ],
         ),
       );
-    }).toList();
+    }),
+    ];
   }
 }
 

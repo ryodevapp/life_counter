@@ -33,27 +33,54 @@ class BucketSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: Text('やりたいこと',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.text)),
-            ),
-            IconButton(
+            Text('やりたいこと',
+                style: GoogleFonts.zenKakuGothicNew(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.text)),
+            const SizedBox(width: 8),
+            Text('バケットリスト',
+                style: GoogleFonts.zenKakuGothicNew(
+                    fontSize: 12, color: AppColors.textMuted)),
+            const Spacer(),
+            TextButton.icon(
               onPressed: add,
-              tooltip: 'やりたいことを足す',
-              icon: const Icon(Icons.add, color: AppColors.accent),
+              icon: const Icon(Icons.add, size: 18, color: AppColors.accent),
+              label: Text('足す',
+                  style: GoogleFonts.zenKakuGothicNew(
+                      fontSize: 13, color: AppColors.accent)),
             ),
           ],
         ),
+        const SizedBox(height: 6),
+        Text('人生でいつかやってみたいことを、思いついたときに1行だけ残しておく場所です。自分ひとりのことでも、家族や友だちとやりたいことでも。',
+            style: GoogleFonts.zenKakuGothicNew(
+                fontSize: 13, color: AppColors.textSecondary, height: 1.7)),
         const SizedBox(height: 8),
         AppCard(
           child: items.isEmpty
-              ? Text('思いついたら、ここに残せます',
-                  style: GoogleFonts.zenKakuGothicNew(
-                      fontSize: 13, color: AppColors.textMuted))
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('たとえば',
+                        style: GoogleFonts.zenKakuGothicNew(
+                            fontSize: 12, color: AppColors.textMuted)),
+                    const SizedBox(height: 6),
+                    for (final ex in const ['家族で温泉に行く', 'オーロラを見る', '父に昔の仕事の話を聞く'])
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text('・$ex',
+                            style: GoogleFonts.zenKakuGothicNew(
+                                fontSize: 14, color: AppColors.textDisabled)),
+                      ),
+                    const SizedBox(height: 6),
+                    Text('「今日の問い」の答えからも入れられます。',
+                        style: GoogleFonts.zenKakuGothicNew(
+                            fontSize: 12, color: AppColors.textMuted)),
+                  ],
+                )
               : Column(
                   children: [
                     for (final item in items)

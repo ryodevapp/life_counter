@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_counter/models/bucket_item.dart';
 import 'package:life_counter/models/stamp.dart';
+import 'package:life_counter/models/daily_record.dart';
 import 'package:life_counter/repositories/bucket_item_repository.dart';
+import 'package:life_counter/views/record/reflection_view.dart';
 
 void main() {
   test('there are 5 stamps with unique ids', () {
@@ -10,7 +12,8 @@ void main() {
   });
 
   test('stampById finds a stamp and returns null for unknown ids', () {
-    expect(stampById('happy')?.emoji, '😊');
+    expect(stampById('happy')?.label, 'うれしい');
+    expect(stampById('sad')?.label, 'かなしい');
     expect(stampById('nope'), isNull);
     expect(stampById(null), isNull);
   });
@@ -26,5 +29,16 @@ void main() {
       item('new', DateTime(2026, 3, 1)),
     ]);
     expect(sorted.map((b) => b.title), ['new', 'old', 'done']);
+  });
+
+  test('countMoods counts each mood and ignores unknown ids', () {
+    DailyRecord r(String? stamp) => DailyRecord()
+      ..date = DateTime(2026, 10, 1)
+      ..stamp = stamp;
+    final c = countMoods([r('happy'), r('happy'), r('sad'), r('old'), r(null)]);
+    expect(c['happy'], 2);
+    expect(c['sad'], 1);
+    expect(c['calm'], 0);
+    expect(c.length, 5);
   });
 }
