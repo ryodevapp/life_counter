@@ -9,7 +9,7 @@ const _legacyIds = [
   'p1', 'p2', 'p3', 'p4', 'p5',
   'e1', 'e2', 'e3', 'e4', 'e5',
   'r1', 'r2', 'r3', 'r4', 'r5',
-  'm1', 'm2', 'm3', 'm4', 'm5',
+  'm1', 'm2', 'm3', 'm4',
   'a1', 'a2', 'a3', 'a4', 'a5',
 ];
 
@@ -83,7 +83,7 @@ void main() {
       }
     });
 
-    test('いまの25問の id をすべて含む', () {
+    test('いまの25問のうち、外した m5 以外の id をすべて含む', () {
       final ids = questions.map((q) => q.id).toSet();
       for (final id in _legacyIds) {
         expect(ids.contains(id), isTrue, reason: id);
