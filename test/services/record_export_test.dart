@@ -38,7 +38,7 @@ void main() {
     expect(text.contains('2026-05-01'), isFalse);
     expect(text, contains('感謝していること: 家族'));
     expect(text, contains('問い: 問い288'));
-    expect(text, contains('スタンプ: 😊'));
+    expect(text, contains('気分: うれしい'));
     expect(text, contains('答え: 散歩した'));
     expect(text.indexOf('バケットリスト'), greaterThan(text.indexOf('2026-10-15')));
     expect(text, contains('- 温泉に行く(母と)'));

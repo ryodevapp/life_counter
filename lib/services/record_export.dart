@@ -21,7 +21,7 @@ String exportRecordsAsText(
     final question =
         r.morningQuestionId == null ? null : bank.byId(r.morningQuestionId!);
     if (r.stamp != null || r.answer != null) add('問い', question?.text);
-    add('スタンプ', stampById(r.stamp)?.emoji);
+    add('気分', stampById(r.stamp)?.label);
     add('答え', r.answer);
     add('感謝していること', r.gratitude);
     add('今日を素晴らしい一日にするために', r.todayGoal);

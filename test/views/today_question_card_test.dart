@@ -50,11 +50,11 @@ void main() {
               onAddToBucket: onBucket,
             ));
 
-    testWidgets('shows the question text and the mic inside the field',
+    testWidgets('shows the question text, and no app-own mic (keyboard dictation is used)',
         (tester) async {
       await pump(tester);
       expect(find.text('今日の気分は？'), findsOneWidget);
-      expect(find.bySemanticsLabel('声で入力する'), findsOneWidget);
+      expect(find.bySemanticsLabel('声で入力する'), findsNothing);
     });
 
     testWidgets('last year answer shows only when present', (tester) async {
@@ -74,58 +74,29 @@ void main() {
       expect(find.textContaining('バケットリスト'), findsOneWidget);
     });
 
-    testWidgets('while listening, the hint sits below the field, never on the text',
-        (tester) async {
-      await host(
-          tester,
-          TodayQuestionCard(
-            question: self,
-            answerController: TextEditingController(
-                text: 'ああいいと思います ああこれ入力されてるかどうかわかんなくない ああ文字反映されてますか あいうえおかきくけこさしすせそ'),
-            onAnswerChanged: (_) {},
-            initiallyListening: true,
-          ));
-      await tester.pump(const Duration(milliseconds: 300));
-      final hint = find.textContaining('聞いています');
-      expect(hint, findsOneWidget);
-      final field = tester.getRect(find.byType(TextField));
-      expect(tester.getRect(hint).top, greaterThanOrEqualTo(field.bottom));
-    });
-
-    testWidgets('follow-up appears only after writing pauses, and tapping continues the answer',
+    testWidgets('the follow-up asking the reason is shown from the start, under the question',
         (tester) async {
       const q = Question(
           id: 'q3',
           category: 'self',
           text: '人生を変えた本は？',
           dayOfYear: 3,
-          followUp: 'その本の、どんなところが今も残っている？');
-      final controller = TextEditingController();
-      final changes = <String>[];
+          followUp: 'そう思うのは、どうして？');
       await host(
           tester,
           TodayQuestionCard(
             question: q,
-            answerController: controller,
-            onAnswerChanged: changes.add,
+            answerController: TextEditingController(),
+            onAnswerChanged: (_) {},
           ));
-      // 答える前は出さない
-      expect(find.text(q.followUp!), findsNothing);
-      await tester.enterText(find.byType(TextField), '祖父の星の図鑑');
-      await tester.pump(const Duration(milliseconds: 500));
-      // 書いている途中は出さない
-      expect(find.text(q.followUp!), findsNothing);
-      await tester.pump(const Duration(milliseconds: 1200));
-      await tester.pumpAndSettle();
-      expect(find.text(q.followUp!), findsOneWidget);
-      // 押すと、答えの続きに改行が入る(答えは消えない)
-      await tester.tap(find.text(q.followUp!));
-      expect(controller.text, '祖父の星の図鑑\n');
-      expect(changes.last, '祖父の星の図鑑\n');
-      // 答えを空にすると引っこむ
-      await tester.enterText(find.byType(TextField), '');
-      await tester.pumpAndSettle();
-      expect(find.text(q.followUp!), findsNothing);
+      // 答える前から出ている
+      final follow = find.text(q.followUp!);
+      expect(follow, findsOneWidget);
+      // 問いの下、書く欄の上
+      expect(tester.getRect(follow).top,
+          greaterThan(tester.getRect(find.text(q.text)).bottom - 1));
+      expect(tester.getRect(follow).bottom,
+          lessThan(tester.getRect(find.byType(TextField)).top + 1));
     });
 
     testWidgets('no streak or count text is shown', (tester) async {

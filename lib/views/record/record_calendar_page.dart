@@ -11,6 +11,8 @@ import '../../providers/question_bank_provider.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
+import '../shared/mood_face.dart';
+import '../shared/mood_shape.dart';
 import '../shared/app_card.dart';
 import '../shared/app_input.dart';
 import '../shared/app_segmented_control.dart';
@@ -176,8 +178,16 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
             if (stamp == null) return null;
             return Positioned(
               bottom: 0,
-              // スタンプの絵は文字の段ではなく、日付の下の小さな印として 12 で描く
-              child: Text(stamp.emoji, style: AppTextStyles.captionLabel),
+              // 気分は、日付の下の小さな色の点で(この大きさでは顔は読めないので)
+              child: Container(
+                width: 7,
+                height: 7,
+                margin: const EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: moodLooks[stamp.id]?.deep,
+                ),
+              ),
             );
           },
         ),
@@ -274,7 +284,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                           // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
                           if (stampById(r.stamp) case final mood?) ...[
                             const SizedBox(width: AppSpacing.s),
-                            _MoodTag(emoji: mood.emoji, label: mood.label),
+                            _MoodTag(moodId: mood.id, label: mood.label),
                           ],
                           const Spacer(),
                           _EditIconButton(
@@ -516,9 +526,9 @@ class _EditIconButton extends StatelessWidget {
 
 /// 一覧の日付の横に出す、その日の気分の札
 class _MoodTag extends StatelessWidget {
-  const _MoodTag({required this.emoji, required this.label});
+  const _MoodTag({required this.moodId, required this.label});
 
-  final String emoji;
+  final String moodId;
   final String label;
 
   @override
@@ -530,9 +540,16 @@ class _MoodTag extends StatelessWidget {
         color: AppColors.bgWarm,
         shape: StadiumBorder(),
       ),
-      child: Text('$emoji $label',
-          style: AppTextStyles.footnote
-              .copyWith(color: AppColors.textSecondary)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MoodBadge(moodId: moodId, size: 18),
+          const SizedBox(width: AppSpacing.xs + 2),
+          Text(label,
+              style: AppTextStyles.footnote
+                  .copyWith(color: moodLooks[moodId]?.ink)),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/question.dart';
@@ -8,7 +6,8 @@ import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
-import 'voice_input_button.dart';
+import '../shared/mood_face.dart';
+import '../shared/mood_shape.dart';
 
 /// 「今日はどんな一日だった？」に、気分を1つ選んで答える
 class MoodCard extends StatelessWidget {
@@ -71,31 +70,35 @@ class _MoodButton extends StatelessWidget {
         onTap: onTap,
         child: AnimatedOpacity(
           duration: AppMotion.fast,
-          opacity: dimmed ? 0.55 : 1,
+          opacity: dimmed ? 0.85 : 1,
           child: Column(
             children: [
-              AnimatedContainer(
-                duration: AppMotion.fast,
-                width: 48,
-                height: 48,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  // 選んでいないときは丸を敷かない(同じ色の透明度0。途中で灰色にならないように)
-                  color: AppColors.accentSurface2
-                      .withValues(alpha: selected ? 0.15 : 0),
-                  border: Border.all(
-                    color: AppColors.accent.withValues(alpha: selected ? 1 : 0),
-                    width: 1.5,
+              // 選ぶと、ばねで少し大きくなり、茶色の輪が付く
+              AnimatedScale(
+                scale: selected ? 1.08 : 1,
+                duration: AppMotion.slow,
+                curve: Curves.easeOutBack,
+                child: AnimatedContainer(
+                  duration: AppMotion.base,
+                  padding: const EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color:
+                          AppColors.accent.withValues(alpha: selected ? 1 : 0),
+                      width: 1.5,
+                    ),
                   ),
+                  child: MoodBadge(moodId: stamp.id, size: 46),
                 ),
-                child: Text(stamp.emoji, style: AppTextStyles.title),
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
                 stamp.label,
                 style: AppTextStyles.captionLabel.copyWith(
-                  color: selected ? AppColors.accent : AppColors.textSecondary,
+                  color: selected
+                      ? moodLooks[stamp.id]!.ink
+                      : AppColors.textSecondary,
                 ),
               ),
             ],
@@ -106,8 +109,9 @@ class _MoodButton extends StatelessWidget {
   }
 }
 
-/// 今日の問い: 問い → 話す・書く欄(マイクは欄の中の右下)→ 1年前の答え → やりたいことに入れる
-class TodayQuestionCard extends StatefulWidget {
+/// 今日の問い: 問い → その理由を聞くもう一歩(最初から出す)→ 書く欄 → 1年前の答え → バケットリストに追加
+/// 声で入れたいときは、キーボードのマイク(iOS の音声入力)を使う。アプリ独自のマイクは持たない
+class TodayQuestionCard extends StatelessWidget {
   const TodayQuestionCard({
     super.key,
     required this.question,
@@ -116,11 +120,9 @@ class TodayQuestionCard extends StatefulWidget {
     this.answerFocus,
     this.lastYearAnswer,
     this.onAddToBucket,
-    @visibleForTesting this.initiallyListening = false,
   });
 
-  /// テストで「聞いている間」の見た目を確かめるためだけに使う
-  final bool initiallyListening;
+  static const _maxChars = 1000;
 
   final Question question;
   final TextEditingController answerController;
@@ -132,207 +134,66 @@ class TodayQuestionCard extends StatefulWidget {
   final VoidCallback? onAddToBucket;
 
   @override
-  State<TodayQuestionCard> createState() => _TodayQuestionCardState();
-}
-
-class _TodayQuestionCardState extends State<TodayQuestionCard> {
-  static const _maxChars = 1000;
-  late bool _listening = widget.initiallyListening;
-
-  /// 話し始めたときの欄の文(話した分はこの後ろにつなぐ)
-  String _base = '';
-
-  /// もう一歩の問いを出しているか。書き終えて少し手が止まったら出し、そのあとは書き足していても出したまま
-  /// (答えを空にしたら引っこめる)
-  bool _showFollowUp = false;
-  Timer? _idle;
-
-  /// 書く手が止まってから、もう一歩の問いを出すまでの間
-  static const _followUpDelay = Duration(milliseconds: 1500);
-
-  @override
-  void initState() {
-    super.initState();
-    _showFollowUp = widget.answerController.text.trim().isNotEmpty;
-    widget.answerController.addListener(_onAnswerEdited);
-  }
-
-  @override
-  void didUpdateWidget(TodayQuestionCard old) {
-    super.didUpdateWidget(old);
-    if (old.answerController != widget.answerController) {
-      old.answerController.removeListener(_onAnswerEdited);
-      widget.answerController.addListener(_onAnswerEdited);
-    }
-    // 日付が変わって別の問いになったら、出し直す
-    if (old.question.id != widget.question.id) {
-      _showFollowUp = widget.answerController.text.trim().isNotEmpty;
-    }
-  }
-
-  @override
-  void dispose() {
-    _idle?.cancel();
-    widget.answerController.removeListener(_onAnswerEdited);
-    super.dispose();
-  }
-
-  void _onAnswerEdited() {
-    final hasText = widget.answerController.text.trim().isNotEmpty;
-    _idle?.cancel();
-    if (!hasText) {
-      if (_showFollowUp) setState(() => _showFollowUp = false);
-      return;
-    }
-    if (_showFollowUp) return;
-    _idle = Timer(_followUpDelay, () {
-      if (mounted && widget.answerController.text.trim().isNotEmpty) {
-        setState(() => _showFollowUp = true);
-      }
-    });
-  }
-
-  /// もう一歩の問いを押したら、答えの続きに改行を入れて、そのまま書けるようにする
-  void _continueWriting() {
-    final c = widget.answerController;
-    final text = c.text.endsWith('\n') ? c.text : '${c.text}\n';
-    if (text.characters.length > _maxChars) return;
-    c.value = TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
-    );
-    widget.onAnswerChanged(text);
-    widget.answerFocus?.requestFocus();
-  }
-
-  void _onWords(String words, bool isFinal) {
-    final joined = words.isEmpty
-        ? _base
-        : (_base.isEmpty ? words : '$_base $words');
-    final text = joined.characters.length > _maxChars
-        ? joined.characters.take(_maxChars).toString()
-        : joined;
-    widget.answerController.value = TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
-    );
-    widget.onAnswerChanged(text);
-    if (isFinal) _base = text;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final showBucket =
-        widget.question.isBucket &&
-        widget.onAddToBucket != null &&
-        widget.answerController.text.trim().isNotEmpty;
+    final showBucket = question.isBucket &&
+        onAddToBucket != null &&
+        answerController.text.trim().isNotEmpty;
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('今日の問い', style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
-          Text(widget.question.text, style: AppTextStyles.headline),
+          Text(question.text, style: AppTextStyles.headline),
+          // 名詞ひとつで答えられる問いでも、理由や背景まで書けるように、もう一歩を最初から並べる
+          if (question.followUp != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Icon(CupertinoIcons.arrow_turn_down_right,
+                      size: 15, color: AppColors.accent),
+                ),
+                const SizedBox(width: AppSpacing.s - 2),
+                Expanded(
+                  child: Text(question.followUp!,
+                      style: AppTextStyles.callout
+                          .copyWith(color: AppColors.textSecondary)),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.l),
-          // マイクは欄の中の右下に重ねる(欄の外に並べるとガタつくため)
-          Stack(
-            children: [
-              TextField(
-                controller: widget.answerController,
-                focusNode: widget.answerFocus,
-                minLines: 3,
-                maxLines: 10,
-                maxLength: _maxChars,
-                onChanged: widget.onAnswerChanged,
-                style: AppTextStyles.body,
-                cursorColor: AppColors.accent,
-                // カードの中に直接書く(塗りの欄を入れ子にしない)。聞いている間は下の案内とマイクの動きで示す
-                decoration: InputDecoration(
-                  hintText: 'ひとことでも大丈夫です。\nマイクで話して入力することもできます',
-                  hintMaxLines: 2,
-                  hintStyle: AppTextStyles.body.copyWith(
-                    color: AppColors.textDisabled,
-                  ),
-                  counterText: '',
-                  isCollapsed: true,
-                  border: InputBorder.none,
-                  // 下はマイクのボタン(押せる範囲 44)の分を空ける
-                  contentPadding: const EdgeInsets.only(
-                      bottom: AppSpacing.minTap + AppSpacing.s),
-                ),
-              ),
-              Positioned(
-                // マイクは見た目 36・押せる範囲 44。カードの文字の右端に揃える
-                right: 0,
-                bottom: 0,
-                child: VoiceInputButton(
-                  onStart: () => setState(() {
-                    _listening = true;
-                    _base = widget.answerController.text.trim();
-                  }),
-                  onWords: _onWords,
-                  onStop: () => setState(() => _listening = false),
-                ),
-              ),
-            ],
-          ),
-          // 聞いている間だけ、欄の下に出す(欄の中の文と重ならないように)
-          AnimatedSize(
-            duration: AppMotion.base,
-            child: _listening
-                ? Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.s),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: const BoxDecoration(
-                            color: AppColors.accent,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.s),
-                        Expanded(
-                          child: Text(
-                            '聞いています。■ で止まります',
-                            style: AppTextStyles.footnote.copyWith(
-                              color: AppColors.accent,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-          // もう一歩の問い(答えを書いたあとにだけ。答えなくても何も起きない)
-          AnimatedSize(
-            duration: AppMotion.slow,
-            curve: Curves.easeOutCubic,
-            child: AnimatedOpacity(
-              duration: AppMotion.slow,
-              opacity: _showFollowUp && !_listening ? 1 : 0,
-              child: _showFollowUp &&
-                      !_listening &&
-                      widget.question.followUp != null
-                  ? _FollowUp(
-                      text: widget.question.followUp!,
-                      onTap: _continueWriting,
-                    )
-                  : const SizedBox(width: double.infinity),
+          // カードの中に直接書く(塗りの欄を入れ子にしない)
+          TextField(
+            controller: answerController,
+            focusNode: answerFocus,
+            minLines: 3,
+            maxLines: 12,
+            maxLength: _maxChars,
+            onChanged: onAnswerChanged,
+            style: AppTextStyles.body,
+            cursorColor: AppColors.accent,
+            decoration: InputDecoration(
+              hintText: 'ひとことでも大丈夫です。\nキーボードのマイクで、話して入力することもできます',
+              hintMaxLines: 3,
+              hintStyle:
+                  AppTextStyles.body.copyWith(color: AppColors.textDisabled),
+              counterText: '',
+              isCollapsed: true,
+              border: InputBorder.none,
             ),
           ),
-          if (widget.lastYearAnswer != null &&
-              widget.lastYearAnswer!.trim().isNotEmpty) ...[
+          if (lastYearAnswer != null && lastYearAnswer!.trim().isNotEmpty) ...[
             const SizedBox(height: AppSpacing.l),
             Text('1年前の今日、あなたはこう答えました', style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              widget.lastYearAnswer!,
-              style: AppTextStyles.callout.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              lastYearAnswer!,
+              style:
+                  AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
             ),
           ],
           if (showBucket) ...[
@@ -340,77 +201,19 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: widget.onAddToBucket,
+                onPressed: onAddToBucket,
                 style: TextButton.styleFrom(
                   minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
                 ),
                 child: Text(
                   'バケットリストに追加',
-                  style: AppTextStyles.footnote.copyWith(
-                    color: AppColors.accent,
-                  ),
+                  style:
+                      AppTextStyles.footnote.copyWith(color: AppColors.accent),
                 ),
               ),
             ),
           ],
         ],
-      ),
-    );
-  }
-}
-
-/// もう一歩の問い。押すと答えの続きを書ける
-class _FollowUp extends StatelessWidget {
-  const _FollowUp({required this.text, required this.onTap});
-
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: 'もう一歩。$text',
-      hint: '答えの続きを書く',
-      excludeSemantics: true,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(top: AppSpacing.m),
-          padding: const EdgeInsets.fromLTRB(
-              AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.m),
-          decoration: BoxDecoration(
-            color: AppColors.accentSurface,
-            borderRadius: BorderRadius.circular(AppRadius.field),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 3),
-                child: Icon(CupertinoIcons.arrow_turn_down_right,
-                    size: 16, color: AppColors.accent),
-              ),
-              const SizedBox(width: AppSpacing.s),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('もう一歩',
-                        style: AppTextStyles.captionLabel
-                            .copyWith(color: AppColors.accent)),
-                    const SizedBox(height: 2),
-                    Text(text,
-                        style: AppTextStyles.callout
-                            .copyWith(color: AppColors.text)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

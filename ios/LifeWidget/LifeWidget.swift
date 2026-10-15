@@ -97,8 +97,8 @@ struct TodayQuestionView: View {
                 HStack {
                     ForEach(stampDefs, id: \.id) { s in
                         Button(intent: StampIntent(stampId: s.id, date: day.date)) {
-                            Text(s.emoji)
-                                .font(.system(size: 24))
+                            MoodFaceView(moodId: s.id)
+                                .frame(width: 30, height: 30)
                                 .frame(maxWidth: .infinity)
                                 .opacity(entry.stamp == nil || entry.stamp == s.id ? 1 : 0.3)
                         }

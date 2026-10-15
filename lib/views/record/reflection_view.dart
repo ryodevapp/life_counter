@@ -8,6 +8,8 @@ import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
+import '../shared/mood_face.dart';
+import '../shared/mood_shape.dart';
 
 /// 月ごとの気分の数を数える(良い・悪いの点数や平均は出さない)
 Map<String, int> countMoods(Iterable<DailyRecord> records) {
@@ -32,7 +34,7 @@ class MonthHeader extends StatelessWidget {
     final counts = countMoods(records);
     final moods = [
       for (final s in stamps)
-        if (counts[s.id]! > 0) '${s.emoji} ${counts[s.id]}日',
+        if (counts[s.id]! > 0) (s, counts[s.id]!),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -44,8 +46,19 @@ class MonthHeader extends StatelessWidget {
           const Spacer(),
           if (moods.isNotEmpty)
             Semantics(
-              label: 'この月の気分',
-              child: Text(moods.join('  '), style: AppTextStyles.footnote),
+              label:
+                  'この月の気分 ${moods.map((m) => '${m.$1.label}${m.$2}日').join('、')}',
+              excludeSemantics: true,
+              child: Row(
+                children: [
+                  for (final (s, n) in moods) ...[
+                    const SizedBox(width: AppSpacing.m),
+                    MoodBadge(moodId: s.id, size: 18),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text('$n日', style: AppTextStyles.footnote),
+                  ],
+                ],
+              ),
             ),
         ],
       ),
@@ -87,9 +100,19 @@ class LastYearCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-                '1年前の今日${mood == null ? '' : '　${mood.emoji} ${mood.label}'}',
-                style: AppTextStyles.captionLabel),
+            Row(
+              children: [
+                Text('1年前の今日', style: AppTextStyles.captionLabel),
+                if (mood != null) ...[
+                  const SizedBox(width: AppSpacing.m),
+                  MoodBadge(moodId: mood.id, size: 18),
+                  const SizedBox(width: AppSpacing.xs),
+                  Text(mood.label,
+                      style: AppTextStyles.footnote
+                          .copyWith(color: moodLooks[mood.id]?.ink)),
+                ],
+              ],
+            ),
             if (r.answer != null) ...[
               const SizedBox(height: AppSpacing.s),
               if (q != null)

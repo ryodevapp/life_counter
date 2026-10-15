@@ -127,7 +127,7 @@ void main() {
     });
   });
 
-  test('すべての問いに、もう一歩の問いがある(短く、命令せず、「なぜ」で問わない)', () {
+  test('すべての問いに、もう一歩の問いがある(短く、命令しない)', () {
     for (final q in _loadFromFile()) {
       final f = q.followUp;
       expect(f, isNotNull, reason: q.id);
@@ -135,7 +135,7 @@ void main() {
       expect(f.characters.length, lessThanOrEqualTo(30), reason: '${q.id}: $f');
       for (final w in [
         ..._forbiddenWords,
-        'なぜ', 'どうして', 'してください', 'しましょう', '最期', '後悔'
+        'してください', 'しましょう', '最期', '後悔'
       ]) {
         expect(f.contains(w), isFalse, reason: '${q.id}: $f');
       }

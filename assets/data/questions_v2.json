@@ -6,2555 +6,2555 @@
       "category": "self",
       "text": "今日という日に、名前をつけるとしたら？",
       "dayOfYear": 1,
-      "followUp": "その名前に、どんな気持ちをこめた？"
+      "followUp": "その名前にしたのは、どうして？"
     },
     {
       "id": "q002",
       "category": "people",
       "text": "大切な人に、照れくさくて言えない言葉は？",
       "dayOfYear": 2,
-      "followUp": "その言葉が届いたら、相手はどんな顔をしそう？"
+      "followUp": "言えずにいるのは、どうしてだろう？"
     },
     {
       "id": "q003",
       "category": "life",
       "text": "いまの暮らしの中で、感謝したいものは？",
       "dayOfYear": 3,
-      "followUp": "それがあることで、毎日の何が助かっている？"
+      "followUp": "それに感謝したくなるのは、なぜ？"
     },
     {
       "id": "q004",
       "category": "self",
       "text": "最近、ほっとできた時間はいつでしたか？",
       "dayOfYear": 4,
-      "followUp": "その時間の、どんなところに心がゆるんだ？"
+      "followUp": "その時間にほっとできたのは、なぜだろう？"
     },
     {
       "id": "q005",
       "category": "people",
       "text": "家族と一緒に乗りこえた出来事はありますか？",
       "dayOfYear": 5,
-      "followUp": "そのとき、家族のどんな一面が見えた？"
+      "followUp": "一緒に乗りこえられたのは、何があったから？"
     },
     {
       "id": "q006",
       "category": "bucket",
       "text": "いつか見てみたい自然の風景は？",
       "dayOfYear": 6,
-      "followUp": "その風景の前で、どんな気持ちになりたい？"
+      "followUp": "その風景に心が向くのは、なぜだろう？"
     },
     {
       "id": "q007",
       "category": "self",
       "text": "今日、心が晴れそうなことを1つ挙げると？",
       "dayOfYear": 7,
-      "followUp": "それが叶ったら、今日はどんな一日になりそう？"
+      "followUp": "それで心が晴れそうなのは、どうして？"
     },
     {
       "id": "q008",
       "category": "life",
       "text": "これから身につけたい力は何ですか？",
       "dayOfYear": 8,
-      "followUp": "その力があったら、何が変わりそう？"
+      "followUp": "その力がほしいと思ったきっかけは？"
     },
     {
       "id": "q009",
       "category": "people",
       "text": "最近、誰かを思い出して心が温かくなりましたか？",
       "dayOfYear": 9,
-      "followUp": "その人の、どんな姿が浮かんだ？"
+      "followUp": "その人が浮かんだのは、どうしてだろう？"
     },
     {
       "id": "e2",
       "category": "self",
       "text": "好きなことに使える30分があったら、何をする？",
       "dayOfYear": 10,
-      "followUp": "その30分の、どんなところが楽しみ？"
+      "followUp": "それを選ぶのは、どうして？"
     },
     {
       "id": "q010",
       "category": "self",
       "text": "最近、季節のものを味わいましたか？",
       "dayOfYear": 11,
-      "followUp": "そのものの、どんな味わいが心に残っている？"
+      "followUp": "それを味わいたくなったのは、なぜ？"
     },
     {
       "id": "q011",
       "category": "people",
       "text": "家族から受け継いだもので、大事にしているものは？",
       "dayOfYear": 12,
-      "followUp": "それを手にすると、誰のことを思い出す？"
+      "followUp": "それを大事にしているのは、なぜだろう？"
     },
     {
       "id": "q012",
       "category": "life",
       "text": "あなたがつい応援したくなる人は？",
       "dayOfYear": 13,
-      "followUp": "その人の、どんなところに惹かれる？"
+      "followUp": "その人を応援したくなるのは、どうして？"
     },
     {
       "id": "q013",
       "category": "self",
       "text": "今日、誰かの話でおもしろかったことは？",
       "dayOfYear": 14,
-      "followUp": "その話の、どこがいちばんおかしかった？"
+      "followUp": "それがおもしろかったのは、なぜだろう？"
     },
     {
       "id": "q014",
       "category": "people",
       "text": "大切な人と、ゆっくり話すならどこで？",
       "dayOfYear": 15,
-      "followUp": "その場所なら、どんな話ができそう？"
+      "followUp": "そこを選ぶのは、どうして？"
     },
     {
       "id": "q015",
       "category": "bucket",
       "text": "いつか挑戦してみたいスポーツは？",
       "dayOfYear": 16,
-      "followUp": "そのスポーツの、どこに惹かれている？"
+      "followUp": "そのスポーツに惹かれるのは、なぜ？"
     },
     {
       "id": "q016",
       "category": "self",
       "text": "最近、ちょっと背伸びして挑戦したことは？",
       "dayOfYear": 17,
-      "followUp": "やってみて、自分の中で何が変わった？"
+      "followUp": "挑戦してみようと思えたのは、なぜ？"
     },
     {
       "id": "q017",
       "category": "life",
       "text": "「ありがとう」と言われてうれしかった仕事は？",
       "dayOfYear": 18,
-      "followUp": "その言葉を聞いたとき、どんな気持ちだった？"
+      "followUp": "それが特にうれしかったのは、どうして？"
     },
     {
       "id": "q018",
       "category": "people",
       "text": "今日、誰かに声をかけるとしたら誰に？",
       "dayOfYear": 19,
-      "followUp": "その人に、どんなひとことをかけたい？"
+      "followUp": "その人が浮かんだのは、なぜだろう？"
     },
     {
       "id": "q019",
       "category": "self",
       "text": "最近、自分の声に耳をすませたことは？",
       "dayOfYear": 20,
-      "followUp": "そのとき、自分の声は何と言っていた？"
+      "followUp": "耳をすませたくなったのは、何があったから？"
     },
     {
       "id": "q020",
       "category": "self",
       "text": "今日、窓の外に何が見えますか？",
       "dayOfYear": 21,
-      "followUp": "その景色を見て、どんなことが浮かんだ？"
+      "followUp": "それに目がとまったのは、なぜだろう？"
     },
     {
       "id": "q021",
       "category": "people",
       "text": "大切な人が、あなたに教えてくれたことは？",
       "dayOfYear": 22,
-      "followUp": "それを教わったのは、どんな場面だった？"
+      "followUp": "それが心に残っているのは、なぜ？"
     },
     {
       "id": "q022",
       "category": "life",
       "text": "これから出会いたい人は、どんな人ですか？",
       "dayOfYear": 23,
-      "followUp": "その人と出会えたら、何を話してみたい？"
+      "followUp": "そういう人に会いたいのは、どうして？"
     },
     {
       "id": "q023",
       "category": "self",
       "text": "いま、ほしいのは休息と刺激のどちらですか？",
       "dayOfYear": 24,
-      "followUp": "それがあったら、心はどんなふうに変わりそう？"
+      "followUp": "そちらを求めているのは、なぜだろう？"
     },
     {
       "id": "q024",
       "category": "people",
       "text": "家族とのやりとりで、くすっと笑えた話は？",
       "dayOfYear": 25,
-      "followUp": "その話を思い出すと、どんな気分になる？"
+      "followUp": "その話がおかしかったのは、どうして？"
     },
     {
       "id": "q025",
       "category": "bucket",
       "text": "見に行ってみたいお祭りやイベントは？",
       "dayOfYear": 26,
-      "followUp": "そこで、どんな景色を見てみたい？"
+      "followUp": "それが気になっているのは、なぜ？"
     },
     {
       "id": "q026",
       "category": "self",
       "text": "今日の自分に、ひとことかけるとしたら？",
       "dayOfYear": 27,
-      "followUp": "その言葉を、いちばん届けたいのはどんな自分？"
+      "followUp": "その言葉が浮かんだのは、どうして？"
     },
     {
       "id": "m4",
       "category": "life",
       "text": "あなたが大切にしている価値観を、今日どう体現する？",
       "dayOfYear": 28,
-      "followUp": "それをしたら、今日の自分は少しどう変わる？"
+      "followUp": "その価値観を大切にするのは、なぜ？"
     },
     {
       "id": "q027",
       "category": "people",
       "text": "家族の得意なことで、尊敬しているものは？",
       "dayOfYear": 29,
-      "followUp": "その得意なことに、助けられた思い出は？"
+      "followUp": "そこを尊敬するのは、どうしてだろう？"
     },
     {
       "id": "a5",
       "category": "self",
       "text": "今日、1つだけ習慣を変えるとしたら何を変える？",
       "dayOfYear": 30,
-      "followUp": "それを変えたら、毎日の何が軽くなりそう？"
+      "followUp": "それを変えたいと思うのは、なぜ？"
     },
     {
       "id": "q028",
       "category": "self",
       "text": "今日、肩の力を抜いてもいいことはどれですか？",
       "dayOfYear": 31,
-      "followUp": "力を抜いたら、空いた心で何をしたい？"
+      "followUp": "そう思えるのは、どうしてだろう？"
     },
     {
       "id": "q029",
       "category": "people",
       "text": "大切な人に会いに行くなら、何を持っていく？",
       "dayOfYear": 32,
-      "followUp": "それを選ぶとき、相手のどんな顔が浮かぶ？"
+      "followUp": "それを持っていきたいのは、なぜ？"
     },
     {
       "id": "q030",
       "category": "life",
       "text": "あなたが大切にしたい価値観を、3つ挙げると？",
       "dayOfYear": 33,
-      "followUp": "その中で、いちばん手放したくないのはどれ？"
+      "followUp": "その3つを選んだのは、なぜだろう？"
     },
     {
       "id": "q031",
       "category": "self",
       "text": "最近、昔の自分より成長したと感じる点は？",
       "dayOfYear": 34,
-      "followUp": "その変化に気づいたのは、どんなときだった？"
+      "followUp": "そう感じるのは、何があったから？"
     },
     {
       "id": "q032",
       "category": "people",
       "text": "子どもの頃、家族と過ごした季節の行事は？",
       "dayOfYear": 35,
-      "followUp": "その行事で、いちばん覚えている景色は？"
+      "followUp": "それが記憶に残っているのは、なぜ？"
     },
     {
       "id": "q033",
       "category": "bucket",
       "text": "行ってみたい国はどこですか？",
       "dayOfYear": 36,
-      "followUp": "その国で、どんな一日を過ごしてみたい？"
+      "followUp": "その国に惹かれるのは、どうして？"
     },
     {
       "id": "q034",
       "category": "self",
       "text": "今日、「ありがたいな」と感じた場面は？",
       "dayOfYear": 37,
-      "followUp": "その場面で、心のどこがあたたかくなった？"
+      "followUp": "そう感じたのは、なぜだろう？"
     },
     {
       "id": "q035",
       "category": "life",
       "text": "あなたが安心できる居場所はどこですか？",
       "dayOfYear": 38,
-      "followUp": "そこにいると、どんな自分でいられる？"
+      "followUp": "そこで安心できるのは、どうして？"
     },
     {
       "id": "q036",
       "category": "people",
       "text": "友だちにもらった言葉で、支えになったものは？",
       "dayOfYear": 39,
-      "followUp": "その言葉は、どんなときに思い出す？"
+      "followUp": "その言葉が支えになったのは、なぜ？"
     },
     {
       "id": "q037",
       "category": "self",
       "text": "最近、思い出し笑いをしたことはありますか？",
       "dayOfYear": 40,
-      "followUp": "何を思い出して、笑っていた？"
+      "followUp": "思い出したきっかけは、何だった？"
     },
     {
       "id": "q038",
       "category": "self",
       "text": "今日、10分早く起きられたら何をしますか？",
       "dayOfYear": 41,
-      "followUp": "その時間があったら、どんな朝になりそう？"
+      "followUp": "それをしたいのは、どうして？"
     },
     {
       "id": "q039",
       "category": "people",
       "text": "最近、誰かの話をじっくり聞けましたか？",
       "dayOfYear": 42,
-      "followUp": "その話を聞いて、心に残ったことは何？"
+      "followUp": "そうなったのは、なぜだろう？"
     },
     {
       "id": "q040",
       "category": "life",
       "text": "あなたが尊敬する生き方は、どんなもの？",
       "dayOfYear": 43,
-      "followUp": "その生き方の、どんなところに心が動く？"
+      "followUp": "その生き方に惹かれるのは、なぜ？"
     },
     {
       "id": "q041",
       "category": "self",
       "text": "いま、自分が満たされていると感じることは？",
       "dayOfYear": 44,
-      "followUp": "それがあると、毎日のどんな場面が変わってくる？"
+      "followUp": "そう感じられるのは、どうしてだろう？"
     },
     {
       "id": "q042",
       "category": "people",
       "text": "大切な人と一緒に見た景色で、心に残るものは？",
       "dayOfYear": 45,
-      "followUp": "その景色を見ていたとき、何を話していた？"
+      "followUp": "その景色が心に残っているのは、なぜ？"
     },
     {
       "id": "q043",
       "category": "bucket",
       "text": "子どもの頃にやりたかったことで、いまできることは？",
       "dayOfYear": 46,
-      "followUp": "それができたら、どんな気持ちになりそう？"
+      "followUp": "それをやりたかったのは、どうして？"
     },
     {
       "id": "q044",
       "category": "self",
       "text": "いま、ちょっと試してみたい新しいことは？",
       "dayOfYear": 47,
-      "followUp": "それを試したら、何が見えてきそう？"
+      "followUp": "それが気になったきっかけは？"
     },
     {
       "id": "q045",
       "category": "life",
       "text": "あなたが人に贈りたい「よいもの」は何ですか？",
       "dayOfYear": 48,
-      "followUp": "それを受け取った人に、どうなってほしい？"
+      "followUp": "それを贈りたいと思うのは、なぜ？"
     },
     {
       "id": "q046",
       "category": "people",
       "text": "家族に似ていると言われるところは？",
       "dayOfYear": 49,
-      "followUp": "そう言われると、どんな気持ちになる？"
+      "followUp": "そう言われるのは、どうしてだと思う？"
     },
     {
       "id": "a1",
       "category": "self",
       "text": "今日、小さくても達成したいことは何？",
       "dayOfYear": 50,
-      "followUp": "それができたら、夜の自分は何と言いそう？"
+      "followUp": "それを達成したいのは、なぜだろう？"
     },
     {
       "id": "q047",
       "category": "self",
       "text": "今日、何も予定のない時間があったら？",
       "dayOfYear": 51,
-      "followUp": "その時間、心はどんなふうに過ごしたい？"
+      "followUp": "そう過ごしたいのは、どうして？"
     },
     {
       "id": "q048",
       "category": "people",
       "text": "最近、誰かに「おつかれさま」と言いましたか？",
       "dayOfYear": 52,
-      "followUp": "その言葉を言ったとき、相手はどんな顔だった？"
+      "followUp": "その言葉が出たのは、どうしてだろう？"
     },
     {
       "id": "q049",
       "category": "life",
       "text": "子どもの頃の夢は、いまのあなたとつながっている？",
       "dayOfYear": 53,
-      "followUp": "その夢の、どんなかけらがいまも手元にある？"
+      "followUp": "そう思うのは、どうして？"
     },
     {
       "id": "q050",
       "category": "self",
       "text": "いまの気分を天気にたとえると？",
       "dayOfYear": 54,
-      "followUp": "その天気は、これからどう移り変わりそう？"
+      "followUp": "その天気になったのは、なぜだろう？"
     },
     {
       "id": "q051",
       "category": "people",
       "text": "昔の先生や先輩で、感謝したい人はいますか？",
       "dayOfYear": 55,
-      "followUp": "その人の、どんなひとことを覚えている？"
+      "followUp": "その人に感謝したいのは、どうして？"
     },
     {
       "id": "q052",
       "category": "bucket",
       "text": "もう一度行きたい思い出の場所は？",
       "dayOfYear": 56,
-      "followUp": "その場所の、いちばん好きな景色は？"
+      "followUp": "そこへまた行きたいのは、なぜ？"
     },
     {
       "id": "q053",
       "category": "self",
       "text": "今日、香りで楽しみたいものは？",
       "dayOfYear": 57,
-      "followUp": "その香りは、どんな気分を連れてきてくれる？"
+      "followUp": "その香りに惹かれるのは、どうして？"
     },
     {
       "id": "q054",
       "category": "life",
       "text": "あなたにとって「家族」とは何でしょう？",
       "dayOfYear": 58,
-      "followUp": "そう思うようになったのは、どんな出来事から？"
+      "followUp": "そう思うようになったきっかけは？"
     },
     {
       "id": "q055",
       "category": "people",
       "text": "家族の誕生日に、どんな思い出がありますか？",
       "dayOfYear": 59,
-      "followUp": "その日の、どんな場面がいちばん浮かぶ？"
+      "followUp": "それが心に残っているのは、どうして？"
     },
     {
       "id": "q056",
       "category": "self",
       "text": "いま、身のまわりで気に入っている道具は？",
       "dayOfYear": 60,
-      "followUp": "その道具の、どこがいちばん気に入っている？"
+      "followUp": "それを気に入っているのは、なぜ？"
     },
     {
       "id": "q057",
       "category": "self",
       "text": "最近、「おいしい」と心から思ったものは？",
       "dayOfYear": 61,
-      "followUp": "そのおいしさを、誰に分けたくなった？"
+      "followUp": "心からおいしく感じたのは、なぜだろう？"
     },
     {
       "id": "q058",
       "category": "people",
       "text": "最近、懐かしい人から連絡はありましたか？",
       "dayOfYear": 62,
-      "followUp": "その人と話して、どんな気持ちになった？"
+      "followUp": "その人を懐かしく思うのは、なぜだろう？"
     },
     {
       "id": "q059",
       "category": "life",
       "text": "あなたが自然体でいられる相手は誰ですか？",
       "dayOfYear": 63,
-      "followUp": "その人といるとき、どんな自分が出てくる？"
+      "followUp": "その人の前で自然体になれるのは、なぜ？"
     },
     {
       "id": "q060",
       "category": "self",
       "text": "最近、自分で決めてよかったと思うことは？",
       "dayOfYear": 64,
-      "followUp": "そう決めたとき、心の中では何が起きていた？"
+      "followUp": "そう思えるのは、どうしてだろう？"
     },
     {
       "id": "q061",
       "category": "people",
       "text": "大切な人の写真を、最近見返しましたか？",
       "dayOfYear": 65,
-      "followUp": "その写真の中で、目がとまったのはどこ？"
+      "followUp": "写真を見返したくなるのは、なぜだろう？"
     },
     {
       "id": "q062",
       "category": "bucket",
       "text": "いつか作ってみたい料理は？",
       "dayOfYear": 66,
-      "followUp": "その料理を、誰に食べてもらいたい？"
+      "followUp": "その料理を作りたいのは、どうして？"
     },
     {
       "id": "q063",
       "category": "self",
       "text": "今日、好きな飲みものを飲むならどれにする？",
       "dayOfYear": 67,
-      "followUp": "その一杯は、どんなひとときに似合いそう？"
+      "followUp": "それを選ぶ理由は、何だろう？"
     },
     {
       "id": "q064",
       "category": "life",
       "text": "誰かの役に立てたと感じたのはどんなとき？",
       "dayOfYear": 68,
-      "followUp": "そのとき、自分の中にどんな気持ちがわいた？"
+      "followUp": "そう感じられたのは、なぜだろう？"
     },
     {
       "id": "q065",
       "category": "people",
       "text": "大切な人と一緒に笑い転げた思い出は？",
       "dayOfYear": 69,
-      "followUp": "何がそんなに、おかしかったんだっけ？"
+      "followUp": "そんなに笑えたのは、どうしてだろう？"
     },
     {
       "id": "q066",
       "category": "self",
       "text": "最近、思わず声を出して笑ったのはどんなとき？",
       "dayOfYear": 70,
-      "followUp": "そのとき、隣には誰がいた？"
+      "followUp": "声が出るほど笑えたのは、なぜ？"
     },
     {
       "id": "q067",
       "category": "self",
       "text": "最近、いい匂いだなと感じたものは？",
       "dayOfYear": 71,
-      "followUp": "その匂いは、何かを思い出させてくれた？"
+      "followUp": "その匂いに惹かれたのは、どうして？"
     },
     {
       "id": "q068",
       "category": "people",
       "text": "誰かに教えてあげて、喜ばれたことは？",
       "dayOfYear": 72,
-      "followUp": "喜ぶ顔を見て、どんな気持ちになった？"
+      "followUp": "それを教えようと思ったのは、なぜ？"
     },
     {
       "id": "q069",
       "category": "life",
       "text": "あなたにとって、人とのつながりとは？",
       "dayOfYear": 73,
-      "followUp": "それを強く感じたのは、どんな場面だった？"
+      "followUp": "そう考えるようになったのは、なぜ？"
     },
     {
       "id": "q070",
       "category": "self",
       "text": "いま、少し気がかりなことはありますか？",
       "dayOfYear": 74,
-      "followUp": "それが少し軽くなるとしたら、何がありそう？"
+      "followUp": "それが気になるのは、どうしてだろう？"
     },
     {
       "id": "q071",
       "category": "people",
       "text": "子どもの頃の誕生日で、覚えている日は？",
       "dayOfYear": 75,
-      "followUp": "その日の、どんな場面が浮かんでくる？"
+      "followUp": "その日を覚えているのは、なぜだろう？"
     },
     {
       "id": "q072",
       "category": "bucket",
       "text": "大切な人と一緒に見たいものは？",
       "dayOfYear": 76,
-      "followUp": "それを一緒に見たら、どんな話をしたい？"
+      "followUp": "それを一緒に見たいのは、どうして？"
     },
     {
       "id": "q073",
       "category": "self",
       "text": "今日、1つ片づけるとしたら何を？",
       "dayOfYear": 77,
-      "followUp": "片づいたあと、どんな気分になれそう？"
+      "followUp": "それを選んだのは、なぜ？"
     },
     {
       "id": "q074",
       "category": "life",
       "text": "あなたにとって、忘れたくない景色は？",
       "dayOfYear": 78,
-      "followUp": "その景色の中に、誰かいた？"
+      "followUp": "その景色が忘れられないのは、なぜ？"
     },
     {
       "id": "q075",
       "category": "people",
       "text": "大切な人に教わったことで、いまも役立つことは？",
       "dayOfYear": 79,
-      "followUp": "それが役立ったのは、どんな場面だった？"
+      "followUp": "それをずっと大事にしてきたのは、なぜ？"
     },
     {
       "id": "q076",
       "category": "self",
       "text": "今日、夕方の自分にどんな時間を残したい？",
       "dayOfYear": 80,
-      "followUp": "その時間を、どんな気持ちで迎えたい？"
+      "followUp": "その時間がほしいのは、どうして？"
     },
     {
       "id": "q077",
       "category": "people",
       "text": "大切な人との思い出の食べものは何ですか？",
       "dayOfYear": 81,
-      "followUp": "その味を思い出すと、どんな場面が浮かぶ？"
+      "followUp": "それが思い出の味になったのは、なぜ？"
     },
     {
       "id": "q078",
       "category": "self",
       "text": "いま聴きたい音楽は、どんな曲ですか？",
       "dayOfYear": 82,
-      "followUp": "その曲は、いまの気分のどこに合っている？"
+      "followUp": "その曲が聴きたいのは、どうしてだろう？"
     },
     {
       "id": "q079",
       "category": "life",
       "text": "仕事や役割の中で、やりがいを感じるときは？",
       "dayOfYear": 83,
-      "followUp": "そのとき、心の中で何が満たされている？"
+      "followUp": "そこにやりがいを感じるのは、なぜ？"
     },
     {
       "id": "q080",
       "category": "self",
       "text": "今日、目にとまった色は何色でしたか？",
       "dayOfYear": 84,
-      "followUp": "その色を見て、どんな気分になった？"
+      "followUp": "その色が目にとまったのは、なぜだろう？"
     },
     {
       "id": "q081",
       "category": "people",
       "text": "子どもの頃、家族に言われてうれしかった言葉は？",
       "dayOfYear": 85,
-      "followUp": "その言葉は、いまのあなたをどう支えている？"
+      "followUp": "その言葉がうれしかったのは、どうして？"
     },
     {
       "id": "q082",
       "category": "bucket",
       "text": "友だちと一緒にやってみたいことは？",
       "dayOfYear": 86,
-      "followUp": "それを一緒にしたら、どんな顔で笑いそう？"
+      "followUp": "それを友だちとしたいのは、なぜ？"
     },
     {
       "id": "q083",
       "category": "self",
       "text": "いま、いちばん落ち着く時間帯はいつですか？",
       "dayOfYear": 87,
-      "followUp": "その時間帯の、どんなところが好き？"
+      "followUp": "その時間が落ち着くのは、どうして？"
     },
     {
       "id": "q084",
       "category": "life",
       "text": "人生で、勇気を出してよかった場面は？",
       "dayOfYear": 88,
-      "followUp": "勇気を出したあと、何が変わった？"
+      "followUp": "そこで勇気を出せたのは、なぜだろう？"
     },
     {
       "id": "q085",
       "category": "people",
       "text": "大切な人と出会ったきっかけを覚えていますか？",
       "dayOfYear": 89,
-      "followUp": "そのとき、相手の第一印象はどうだった？"
+      "followUp": "その出会いが続いてきたのは、なぜだろう？"
     },
     {
       "id": "q086",
       "category": "self",
       "text": "いま、もう少し大事にしたい時間は？",
       "dayOfYear": 90,
-      "followUp": "その時間が増えたら、何が変わりそう？"
+      "followUp": "そう思うようになったのは、なぜ？"
     },
     {
       "id": "q087",
       "category": "people",
       "text": "家族の思い出で、次の世代に伝えたい話は？",
       "dayOfYear": 91,
-      "followUp": "その話を聞いた人に、何を感じてほしい？"
+      "followUp": "その話を伝えたいのは、どうして？"
     },
     {
       "id": "q088",
       "category": "self",
       "text": "いま、続けたいと思っている小さな習慣は？",
       "dayOfYear": 92,
-      "followUp": "それを続けると、毎日のどこがよくなる？"
+      "followUp": "それを続けたいのは、なぜだろう？"
     },
     {
       "id": "q089",
       "category": "life",
       "text": "これまでの選択で、よかったと思うことは？",
       "dayOfYear": 93,
-      "followUp": "その選択が、いまの何につながっている？"
+      "followUp": "そう思えるのは、何があったから？"
     },
     {
       "id": "q090",
       "category": "self",
       "text": "今日、5分だけ自由に使えるなら何をする？",
       "dayOfYear": 94,
-      "followUp": "その5分のあと、どんな気分でいたい？"
+      "followUp": "それを選ぶのは、どうしてだろう？"
     },
     {
       "id": "r2",
       "category": "people",
       "text": "大切な人に、今日伝えたい一言は？",
       "dayOfYear": 95,
-      "followUp": "その一言で、相手に何が伝わるといい？"
+      "followUp": "その言葉を選んだのは、なぜ？"
     },
     {
       "id": "q091",
       "category": "bucket",
       "text": "一度は乗ってみたい乗りものは？",
       "dayOfYear": 96,
-      "followUp": "それに乗って、どこへ行ってみたい？"
+      "followUp": "それに乗ってみたいのは、どうして？"
     },
     {
       "id": "q092",
       "category": "self",
       "text": "最近、「よくやったな」と思えたことは？",
       "dayOfYear": 97,
-      "followUp": "そう思えた瞬間、どんな気分だった？"
+      "followUp": "そう思えたのは、なぜだろう？"
     },
     {
       "id": "q093",
       "category": "life",
       "text": "あなたにとって、大切な人とはどんな人？",
       "dayOfYear": 98,
-      "followUp": "その人の、どんな姿を思い浮かべた？"
+      "followUp": "そう思うようになったきっかけは？"
     },
     {
       "id": "q094",
       "category": "people",
       "text": "昔、誰かに励まされて救われたことは？",
       "dayOfYear": 99,
-      "followUp": "その励ましの、どんなところが心にしみた？"
+      "followUp": "その励ましが響いたのは、なぜだろう？"
     },
     {
       "id": "q095",
       "category": "self",
       "text": "最近、小さな勇気を出せたことはありますか？",
       "dayOfYear": 100,
-      "followUp": "その勇気のあと、どんな景色が見えた？"
+      "followUp": "勇気を出せたのは、何があったから？"
     },
     {
       "id": "q096",
       "category": "people",
       "text": "大切な人と一緒に作ったものはありますか？",
       "dayOfYear": 101,
-      "followUp": "それを作っているとき、どんな時間だった？"
+      "followUp": "それが思い出に残っているのは、なぜ？"
     },
     {
       "id": "q097",
       "category": "self",
       "text": "最近、自分の意外な一面に気づきましたか？",
       "dayOfYear": 102,
-      "followUp": "その一面に気づいて、どんな気持ちになった？"
+      "followUp": "そう気づいたのは、何があったから？"
     },
     {
       "id": "q098",
       "category": "life",
       "text": "人生で、誇りに思っている選択は何ですか？",
       "dayOfYear": 103,
-      "followUp": "その選択が、あなたに教えてくれたことは？"
+      "followUp": "その選択を誇りに思うのは、なぜ？"
     },
     {
       "id": "q099",
       "category": "self",
       "text": "最近、思いきってよかったことは何ですか？",
       "dayOfYear": 104,
-      "followUp": "思いきったあと、心はどう変わった？"
+      "followUp": "思いきれたのは、どうしてだろう？"
     },
     {
       "id": "q100",
       "category": "people",
       "text": "家族と囲んだ食卓で、よく話していたことは？",
       "dayOfYear": 105,
-      "followUp": "その食卓の、どんな音や匂いを覚えている？"
+      "followUp": "その話になりがちだったのは、なぜだろう？"
     },
     {
       "id": "q101",
       "category": "bucket",
       "text": "一度は泊まりがけで行きたい場所は？",
       "dayOfYear": 106,
-      "followUp": "そこで、夜はどんなふうに過ごしたい？"
+      "followUp": "そこに惹かれるのは、どうして？"
     },
     {
       "id": "q102",
       "category": "self",
       "text": "最近、思わず写真に撮りたくなったものは？",
       "dayOfYear": 107,
-      "followUp": "そこに、どんな美しさを感じた？"
+      "followUp": "撮りたくなったのは、なぜだろう？"
     },
     {
       "id": "q103",
       "category": "life",
       "text": "人生の楽しみを、3つ挙げるとしたら？",
       "dayOfYear": 108,
-      "followUp": "その中で、いまいちばん味わいたいのは？"
+      "followUp": "それが楽しみなのは、どうして？"
     },
     {
       "id": "q104",
       "category": "people",
       "text": "子どもの頃、家族とした遊びで覚えているものは？",
       "dayOfYear": 109,
-      "followUp": "その遊びの中で、どんな自分だった？"
+      "followUp": "その遊びを覚えているのは、なぜ？"
     },
     {
       "id": "q105",
       "category": "self",
       "text": "最近、心に残った言葉はありますか？",
       "dayOfYear": 110,
-      "followUp": "その言葉の、どこが心にとまった？"
+      "followUp": "その言葉が心に残ったのは、なぜ？"
     },
     {
       "id": "q106",
       "category": "people",
       "text": "家族の手料理で、作り方を聞いておきたいものは？",
       "dayOfYear": 111,
-      "followUp": "その料理には、どんな思い出がつまっている？"
+      "followUp": "その料理を選ぶのは、どうしてだろう？"
     },
     {
       "id": "q107",
       "category": "self",
       "text": "今日、自分の機嫌をとる方法は何ですか？",
       "dayOfYear": 112,
-      "followUp": "それをすると、心のどこがほどけていく？"
+      "followUp": "それで機嫌がよくなるのは、なぜ？"
     },
     {
       "id": "q108",
       "category": "life",
       "text": "人から言われて、自信になった言葉は？",
       "dayOfYear": 113,
-      "followUp": "その言葉は、どんなときに背中を押してくれる？"
+      "followUp": "その言葉が自信になったのは、どうして？"
     },
     {
       "id": "q109",
       "category": "self",
       "text": "最近、ふと懐かしくなったものは何ですか？",
       "dayOfYear": 114,
-      "followUp": "それにまつわる、どんな景色が浮かぶ？"
+      "followUp": "懐かしくなったきっかけは、何だった？"
     },
     {
       "id": "r1",
       "category": "people",
       "text": "今日、誰かに「ありがとう」を伝えるとしたら？",
       "dayOfYear": 115,
-      "followUp": "その人のおかげで、何が助かった？"
+      "followUp": "その人が浮かんだのは、どうして？"
     },
     {
       "id": "q110",
       "category": "bucket",
       "text": "来年までにやってみたいことは？",
       "dayOfYear": 116,
-      "followUp": "それができたら、どんな自分に会えそう？"
+      "followUp": "それをやってみたいのは、なぜ？"
     },
     {
       "id": "q111",
       "category": "self",
       "text": "最近、自分のために使ってよかったお金は？",
       "dayOfYear": 117,
-      "followUp": "それを手にして、毎日の何が変わった？"
+      "followUp": "それに使おうと思ったのは、どうして？"
     },
     {
       "id": "q112",
       "category": "life",
       "text": "あなたの強みを、ひと言で言うと？",
       "dayOfYear": 118,
-      "followUp": "その強みが出るのは、どんなとき？"
+      "followUp": "そう思うのは、どうして？"
     },
     {
       "id": "m2",
       "category": "people",
       "text": "あなたの行動が誰かの助けになるとしたら、今日何をする？",
       "dayOfYear": 119,
-      "followUp": "それが届いたら、相手のどんな顔が見たい？"
+      "followUp": "それを選ぶのは、なぜだろう？"
     },
     {
       "id": "a3",
       "category": "self",
       "text": "今週中にやり遂げたいことは？今日はそのために何ができる？",
       "dayOfYear": 120,
-      "followUp": "それをやり遂げたら、どんな景色が見えそう？"
+      "followUp": "それをやり遂げたいのは、どうして？"
     },
     {
       "id": "q113",
       "category": "people",
       "text": "離れて暮らす家族に、いま伝えたいことは？",
       "dayOfYear": 121,
-      "followUp": "それを聞いたら、家族はどんな顔をしそう？"
+      "followUp": "それを伝えたいのは、なぜだろう？"
     },
     {
       "id": "q114",
       "category": "self",
       "text": "今日の空を見て、何を感じましたか？",
       "dayOfYear": 122,
-      "followUp": "その気持ちは、いまの自分の何に重なる？"
+      "followUp": "そう感じたのは、どうしてだろう？"
     },
     {
       "id": "q115",
       "category": "life",
       "text": "これから先も、ずっと続けたいことは？",
       "dayOfYear": 123,
-      "followUp": "それを続けることで、守りたいものは何？"
+      "followUp": "それを続けたいと思うのは、なぜ？"
     },
     {
       "id": "q116",
       "category": "self",
       "text": "最近、肩の荷がおりたことはありますか？",
       "dayOfYear": 124,
-      "followUp": "荷がおりて、何がいちばん楽になった？"
+      "followUp": "肩の荷がおりたのは、何があったから？"
     },
     {
       "id": "q117",
       "category": "people",
       "text": "子どもの頃、家で楽しみにしていた行事は？",
       "dayOfYear": 125,
-      "followUp": "その日が近づくと、家はどんな雰囲気だった？"
+      "followUp": "それが楽しみだったのは、どうして？"
     },
     {
       "id": "q118",
       "category": "bucket",
       "text": "いつか歩いてみたい道は？",
       "dayOfYear": 126,
-      "followUp": "その道を、どんな気持ちで歩いていたい？"
+      "followUp": "その道に惹かれるのは、なぜだろう？"
     },
     {
       "id": "q119",
       "category": "self",
       "text": "最近、心がざわついたとき、何で落ち着きましたか？",
       "dayOfYear": 127,
-      "followUp": "それに気づけたのは、どんなきっかけだった？"
+      "followUp": "それで落ち着けたのは、なぜだろう？"
     },
     {
       "id": "q120",
       "category": "life",
       "text": "「こんな人になりたい」と思う人はいますか？",
       "dayOfYear": 128,
-      "followUp": "その人の、どんなところを見習いたい？"
+      "followUp": "その人に憧れるのは、どうして？"
     },
     {
       "id": "q121",
       "category": "people",
       "text": "子どもの頃の家の、好きだった場所は？",
       "dayOfYear": 129,
-      "followUp": "そこで、どんなふうに過ごしていた？"
+      "followUp": "そこが好きだったのは、なぜ？"
     },
     {
       "id": "q122",
       "category": "self",
       "text": "いま、手放してもいいと思えるものは？",
       "dayOfYear": 130,
-      "followUp": "手放したら、どんな余白が生まれそう？"
+      "followUp": "そう思えるようになったのは、なぜ？"
     },
     {
       "id": "q123",
       "category": "people",
       "text": "誰かと一緒なら、やってみたいことは？",
       "dayOfYear": 131,
-      "followUp": "その人となら、どんな時間になりそう？"
+      "followUp": "誰かと一緒がいいのは、どうして？"
     },
     {
       "id": "q124",
       "category": "self",
       "text": "いま、学んでみたいことは何ですか？",
       "dayOfYear": 132,
-      "followUp": "それを学んだら、どんな景色が広がりそう？"
+      "followUp": "それを学びたくなったきっかけは？"
     },
     {
       "id": "q125",
       "category": "life",
       "text": "あなたにとって、心が満たされる仕事とは？",
       "dayOfYear": 133,
-      "followUp": "それを感じるのは、どんな瞬間？"
+      "followUp": "そう感じるようになったのは、なぜ？"
     },
     {
       "id": "q126",
       "category": "self",
       "text": "最近、気持ちよく体を動かせたのはいつ？",
       "dayOfYear": 134,
-      "followUp": "動いたあと、体と心はどんな感じだった？"
+      "followUp": "気持ちよく動けたのは、どうしてだろう？"
     },
     {
       "id": "q127",
       "category": "people",
       "text": "家族との思い出を、1枚の絵にするなら？",
       "dayOfYear": 135,
-      "followUp": "その絵の真ん中には、何を描きたい？"
+      "followUp": "その場面を選ぶのは、なぜだろう？"
     },
     {
       "id": "q128",
       "category": "bucket",
       "text": "いつか食べに行きたいお店は？",
       "dayOfYear": 136,
-      "followUp": "そのお店で、何を味わってみたい？"
+      "followUp": "そのお店が気になっているのは、なぜ？"
     },
     {
       "id": "q129",
       "category": "self",
       "text": "いま、自分にとっての「ごほうび」は何ですか？",
       "dayOfYear": 137,
-      "followUp": "それを手にすると、どんな気持ちになれる？"
+      "followUp": "それがごほうびになるのは、どうして？"
     },
     {
       "id": "q130",
       "category": "life",
       "text": "これまでに、乗りこえてきた壁は何ですか？",
       "dayOfYear": 138,
-      "followUp": "その壁を越えたとき、何が支えになった？"
+      "followUp": "乗りこえられたのは、何があったから？"
     },
     {
       "id": "q131",
       "category": "people",
       "text": "近所や職場で、ありがたいと思う人は？",
       "dayOfYear": 139,
-      "followUp": "その人の、どんなところに助けられている？"
+      "followUp": "その人をありがたく思うのは、なぜ？"
     },
     {
       "id": "q132",
       "category": "self",
       "text": "いま、気になっている季節のものは？",
       "dayOfYear": 140,
-      "followUp": "それを味わうなら、どんな場面がいい？"
+      "followUp": "それが気になるのは、どうしてだろう？"
     },
     {
       "id": "q133",
       "category": "people",
       "text": "最近、家族のことでうれしかったことは？",
       "dayOfYear": 141,
-      "followUp": "そのとき、家族はどんな顔をしていた？"
+      "followUp": "それがうれしかったのは、なぜだろう？"
     },
     {
       "id": "q134",
       "category": "self",
       "text": "今日、大切にしたいひと言は何ですか？",
       "dayOfYear": 142,
-      "followUp": "その言葉を、どんな場面で思い出したい？"
+      "followUp": "その言葉を大切にしたいのは、なぜ？"
     },
     {
       "id": "q135",
       "category": "life",
       "text": "あなたの人生を本にするなら、題名は？",
       "dayOfYear": 143,
-      "followUp": "その題名に、どんな思いをこめた？"
+      "followUp": "その題名にしたのは、どうして？"
     },
     {
       "id": "q136",
       "category": "self",
       "text": "最近、新しく知っておもしろかったことは？",
       "dayOfYear": 144,
-      "followUp": "それを知って、見え方が変わったものはある？"
+      "followUp": "それをおもしろく感じたのは、なぜ？"
     },
     {
       "id": "q137",
       "category": "people",
       "text": "大切な人に、いつか聞いてみたい質問は？",
       "dayOfYear": 145,
-      "followUp": "その質問の答えを聞いたら、どう感じそう？"
+      "followUp": "それを聞いてみたいのは、どうして？"
     },
     {
       "id": "q138",
       "category": "bucket",
       "text": "身につけてみたい特技は？",
       "dayOfYear": 146,
-      "followUp": "それができたら、誰に見せたい？"
+      "followUp": "その特技に惹かれるのは、なぜだろう？"
     },
     {
       "id": "q139",
       "category": "self",
       "text": "今日の朝ごはんで、おいしかったものは？",
       "dayOfYear": 147,
-      "followUp": "その味は、どんな気分にさせてくれた？"
+      "followUp": "それがおいしかったのは、どうして？"
     },
     {
       "id": "q140",
       "category": "people",
       "text": "家族と過ごす年末年始の、好きな過ごし方は？",
       "dayOfYear": 148,
-      "followUp": "その過ごし方の、どんなところが好き？"
+      "followUp": "その過ごし方が好きなのは、なぜ？"
     },
     {
       "id": "q141",
       "category": "life",
       "text": "1年後の今日、どんな自分でいたいですか？",
       "dayOfYear": 149,
-      "followUp": "そんな自分は、いまとどこが違っていそう？"
+      "followUp": "そうありたいのは、どうしてだろう？"
     },
     {
       "id": "q142",
       "category": "self",
       "text": "いま、自分を元気にしてくれるものは？",
       "dayOfYear": 150,
-      "followUp": "それにふれると、心のどこが動き出す？"
+      "followUp": "それで元気になれるのは、なぜ？"
     },
     {
       "id": "q143",
       "category": "people",
       "text": "家族の写真で、好きな1枚はどれですか？",
       "dayOfYear": 151,
-      "followUp": "その1枚の、どこがいちばん好き？"
+      "followUp": "その1枚が好きなのは、どうして？"
     },
     {
       "id": "q144",
       "category": "self",
       "text": "いまの自分が得意だと思えることは？",
       "dayOfYear": 152,
-      "followUp": "それが得意になるまでに、何があった？"
+      "followUp": "それが得意になったのは、なぜだろう？"
     },
     {
       "id": "q145",
       "category": "life",
       "text": "人生の中で、いちばん成長できた時期は？",
       "dayOfYear": 153,
-      "followUp": "その時期に、何があなたを支えていた？"
+      "followUp": "その時期に成長できたのは、なぜ？"
     },
     {
       "id": "q146",
       "category": "self",
       "text": "いま、心地よいと感じる服はどれですか？",
       "dayOfYear": 154,
-      "followUp": "それを着ると、どんな気分で過ごせる？"
+      "followUp": "その服が心地よいのは、どうして？"
     },
     {
       "id": "q147",
       "category": "people",
       "text": "最近、誰かとゆっくり話せましたか？",
       "dayOfYear": 155,
-      "followUp": "その時間に、どんな話が心に残った？"
+      "followUp": "そうなったのは、なぜだろう？"
     },
     {
       "id": "q148",
       "category": "self",
       "text": "今日、ひとりの時間に何をしたいですか？",
       "dayOfYear": 156,
-      "followUp": "その時間を過ごしたら、どんな気分になれそう？"
+      "followUp": "それをしたいのは、どうしてだろう？"
     },
     {
       "id": "q149",
       "category": "bucket",
       "text": "習ってみたい楽器は何ですか？",
       "dayOfYear": 157,
-      "followUp": "その楽器で、どんな曲を弾いてみたい？"
+      "followUp": "その楽器に惹かれるのは、なぜ？"
     },
     {
       "id": "q150",
       "category": "people",
       "text": "最近、誰かの成長を感じたことはありますか？",
       "dayOfYear": 158,
-      "followUp": "それを感じたとき、どんな気持ちがわいた？"
+      "followUp": "そう感じたのは、何があったから？"
     },
     {
       "id": "q151",
       "category": "life",
       "text": "これからの1年で、大切にしたいテーマは？",
       "dayOfYear": 159,
-      "followUp": "そのテーマを選んだのは、いまのどんな気持ちから？"
+      "followUp": "そのテーマを選んだのは、なぜ？"
     },
     {
       "id": "q152",
       "category": "self",
       "text": "いま、自分の中で大切に育てている気持ちは？",
       "dayOfYear": 160,
-      "followUp": "その気持ちが育ったら、どうなっていきそう？"
+      "followUp": "その気持ちを育てたいのは、どうして？"
     },
     {
       "id": "q153",
       "category": "people",
       "text": "最近、誰かのやさしさに触れた場面は？",
       "dayOfYear": 161,
-      "followUp": "そのやさしさに、どんな気持ちになった？"
+      "followUp": "その場面が心に残ったのは、なぜだろう？"
     },
     {
       "id": "q154",
       "category": "self",
       "text": "今日、自分にやさしくするとしたら何をしますか？",
       "dayOfYear": 162,
-      "followUp": "それをしたら、心はどんなふうにほどけそう？"
+      "followUp": "それを選ぶのは、どうしてだろう？"
     },
     {
       "id": "q155",
       "category": "life",
       "text": "時間の使い方で、見直したいことはありますか？",
       "dayOfYear": 163,
-      "followUp": "それが変わったら、何に時間を使いたい？"
+      "followUp": "そう感じるのは、どうしてだろう？"
     },
     {
       "id": "q156",
       "category": "self",
       "text": "いま、気に入っている言葉や口ぐせは？",
       "dayOfYear": 164,
-      "followUp": "その言葉は、どこで出会ったもの？"
+      "followUp": "その言葉が好きなのは、なぜ？"
     },
     {
       "id": "q157",
       "category": "people",
       "text": "最近、誰かと手紙やメッセージを交わしましたか？",
       "dayOfYear": 165,
-      "followUp": "そのやりとりで、心に残ったひとことは？"
+      "followUp": "そのやりとりが浮かんだのは、なぜだろう？"
     },
     {
       "id": "q158",
       "category": "self",
       "text": "今日、ひとつ「ていねい」にできることは？",
       "dayOfYear": 166,
-      "followUp": "ていねいにしたら、どんな気分になれそう？"
+      "followUp": "それをていねいにしたいのは、なぜ？"
     },
     {
       "id": "q159",
       "category": "bucket",
       "text": "いつか育ててみたい植物は？",
       "dayOfYear": 167,
-      "followUp": "それが育っていくのを、どこで眺めたい？"
+      "followUp": "その植物に惹かれるのは、どうして？"
     },
     {
       "id": "q160",
       "category": "people",
       "text": "友だちとの思い出の場所はどこですか？",
       "dayOfYear": 168,
-      "followUp": "そこで過ごした、いちばんの思い出は？"
+      "followUp": "そこが思い出の場所なのは、なぜ？"
     },
     {
       "id": "q161",
       "category": "life",
       "text": "人生の中で、ゆずれないものは何ですか？",
       "dayOfYear": 169,
-      "followUp": "それを大事にしてきて、よかったと思う瞬間は？"
+      "followUp": "それがゆずれないのは、どうしてだろう？"
     },
     {
       "id": "q162",
       "category": "self",
       "text": "最近、気持ちが軽くなったきっかけは？",
       "dayOfYear": 170,
-      "followUp": "軽くなったあと、何をしたくなった？"
+      "followUp": "それで軽くなれたのは、なぜだろう？"
     },
     {
       "id": "q163",
       "category": "people",
       "text": "家族から教わった料理や家事はありますか？",
       "dayOfYear": 171,
-      "followUp": "それをするとき、誰の姿が浮かぶ？"
+      "followUp": "それを今も覚えているのは、どうして？"
     },
     {
       "id": "q164",
       "category": "self",
       "text": "今日のお昼に、何を食べたい気分ですか？",
       "dayOfYear": 172,
-      "followUp": "それを食べたら、午後はどんな気分になれそう？"
+      "followUp": "それが食べたいのは、どうしてだろう？"
     },
     {
       "id": "q165",
       "category": "life",
       "text": "これからも学び続けたいことは何ですか？",
       "dayOfYear": 173,
-      "followUp": "それを学ぶと、どんな自分に近づけそう？"
+      "followUp": "学び続けたいと思うのは、なぜ？"
     },
     {
       "id": "q166",
       "category": "self",
       "text": "最近、思いがけずうれしかったことは？",
       "dayOfYear": 174,
-      "followUp": "そのうれしさを、最初に誰に話したくなった？"
+      "followUp": "それがうれしかったのは、どうして？"
     },
     {
       "id": "q167",
       "category": "people",
       "text": "家族の中で、あなただけが知っている話は？",
       "dayOfYear": 175,
-      "followUp": "その話を、誰かに聞いてもらいたい？"
+      "followUp": "その話が心に残っているのは、なぜだろう？"
     },
     {
       "id": "q168",
       "category": "self",
       "text": "今日の自分の調子を、10点満点でつけると？",
       "dayOfYear": 176,
-      "followUp": "その点数に、あと少し何が加わるとうれしい？"
+      "followUp": "その点数にしたのは、どうして？"
     },
     {
       "id": "q169",
       "category": "bucket",
       "text": "行ってみたい美術館や博物館は？",
       "dayOfYear": 177,
-      "followUp": "そこで、どんなものに出会ってみたい？"
+      "followUp": "そこに惹かれるのは、なぜだろう？"
     },
     {
       "id": "q170",
       "category": "people",
       "text": "家族と一緒に過ごす時間で、増やしたいものは？",
       "dayOfYear": 178,
-      "followUp": "それが増えたら、家族の何が変わりそう？"
+      "followUp": "それを増やしたいのは、どうして？"
     },
     {
       "id": "q171",
       "category": "life",
       "text": "今年の自分は、去年の自分とどこが違う？",
       "dayOfYear": 179,
-      "followUp": "その違いに、どんなときに気づいた？"
+      "followUp": "そう変わったのは、何があったから？"
     },
     {
       "id": "q172",
       "category": "self",
       "text": "最近、季節の変わり目を感じたのはどんなとき？",
       "dayOfYear": 180,
-      "followUp": "そのとき、何が季節を教えてくれた？"
+      "followUp": "そこで季節を感じたのは、なぜだろう？"
     },
     {
       "id": "q173",
       "category": "people",
       "text": "友だちの好きなところを、1つ挙げると？",
       "dayOfYear": 181,
-      "followUp": "そのよさに気づいたのは、どんなとき？"
+      "followUp": "そこが好きなのは、どうして？"
     },
     {
       "id": "q174",
       "category": "self",
       "text": "最近、心が動いた本や映画のひと場面は？",
       "dayOfYear": 182,
-      "followUp": "その場面の、何が心を揺らした？"
+      "followUp": "その場面に心が動いたのは、なぜ？"
     },
     {
       "id": "q175",
       "category": "life",
       "text": "人生で、手放してよかったものは何ですか？",
       "dayOfYear": 183,
-      "followUp": "手放してから、何が軽くなった？"
+      "followUp": "手放そうと思えたのは、どうして？"
     },
     {
       "id": "q176",
       "category": "self",
       "text": "いまの暮らしで、気に入っているところは？",
       "dayOfYear": 184,
-      "followUp": "そこが気に入っているのは、どんなとき？"
+      "followUp": "そこを気に入っているのは、なぜ？"
     },
     {
       "id": "q177",
       "category": "people",
       "text": "家族の好きな季節を知っていますか？",
       "dayOfYear": 185,
-      "followUp": "その季節に、家族はどんな顔をしている？"
+      "followUp": "その季節が好きなのは、なぜだと思う？"
     },
     {
       "id": "q178",
       "category": "self",
       "text": "今日の終わりに、どんな気分でいたいですか？",
       "dayOfYear": 186,
-      "followUp": "その気分に近づくのは、どんなひとときがある？"
+      "followUp": "その気分でいたいのは、どうして？"
     },
     {
       "id": "q179",
       "category": "bucket",
       "text": "いつか撮ってみたい写真は？",
       "dayOfYear": 187,
-      "followUp": "その写真を、誰に見てもらいたい？"
+      "followUp": "それを撮りたいのは、なぜだろう？"
     },
     {
       "id": "q180",
       "category": "people",
       "text": "家族の中での、あなたの役割は何ですか？",
       "dayOfYear": 188,
-      "followUp": "その役割の、どんなところが自分らしい？"
+      "followUp": "その役割になったのは、どうしてだろう？"
     },
     {
       "id": "q181",
       "category": "life",
       "text": "将来の自分に、手紙を書くなら何を伝える？",
       "dayOfYear": 189,
-      "followUp": "その言葉を読んだ未来の自分は、どう感じそう？"
+      "followUp": "それを伝えたいのは、なぜ？"
     },
     {
       "id": "q182",
       "category": "self",
       "text": "今日、耳に入ってきた音で心地よいものは？",
       "dayOfYear": 190,
-      "followUp": "その音は、何を思い出させてくれた？"
+      "followUp": "その音が心地よいのは、どうしてだろう？"
     },
     {
       "id": "q183",
       "category": "people",
       "text": "大切な人と、また行きたい場所はどこ？",
       "dayOfYear": 191,
-      "followUp": "そこで、もう一度したいことは何？"
+      "followUp": "そこにまた行きたいのは、どうして？"
     },
     {
       "id": "q184",
       "category": "self",
       "text": "最近、感動した景色や場面はありますか？",
       "dayOfYear": 192,
-      "followUp": "その景色の前で、心はどう動いた？"
+      "followUp": "それに心を動かされたのは、なぜ？"
     },
     {
       "id": "q185",
       "category": "life",
       "text": "あなたにとって、幸せを感じる瞬間は？",
       "dayOfYear": 193,
-      "followUp": "その瞬間には、いつも何がそばにある？"
+      "followUp": "そこに幸せを感じるのは、なぜだろう？"
     },
     {
       "id": "q186",
       "category": "self",
       "text": "最近、わくわくした瞬間はいつでしたか？",
       "dayOfYear": 194,
-      "followUp": "そのわくわくは、どこから来ていた？"
+      "followUp": "わくわくしたのは、何があったから？"
     },
     {
       "id": "q187",
       "category": "people",
       "text": "家族の口ぐせで、思い出すものはありますか？",
       "dayOfYear": 195,
-      "followUp": "その口ぐせが聞こえると、どんな気持ちになる？"
+      "followUp": "その口ぐせが残っているのは、なぜだろう？"
     },
     {
       "id": "q188",
       "category": "self",
       "text": "最近、手を使って作ったものはありますか？",
       "dayOfYear": 196,
-      "followUp": "作っている間、どんな時間が流れていた？"
+      "followUp": "それを作ろうと思ったのは、どうして？"
     },
     {
       "id": "q189",
       "category": "bucket",
       "text": "いつか登ってみたい山は？",
       "dayOfYear": 197,
-      "followUp": "その山の上で、どんな景色を見たい？"
+      "followUp": "その山に惹かれるのは、なぜ？"
     },
     {
       "id": "r4",
       "category": "people",
       "text": "今日、誰かのためにできる小さなことは？",
       "dayOfYear": 198,
-      "followUp": "それをしたら、自分はどんな気持ちになりそう？"
+      "followUp": "それをしたいと思うのは、どうして？"
     },
     {
       "id": "q190",
       "category": "life",
       "text": "今日の過ごし方は、大切なものとつながっている？",
       "dayOfYear": 199,
-      "followUp": "そのつながりを、どんな場面で感じた？"
+      "followUp": "そう感じるのは、なぜだろう？"
     },
     {
       "id": "a4",
       "category": "self",
       "text": "今日の終わりに「やってよかった」と思えることは何？",
       "dayOfYear": 200,
-      "followUp": "それをやり終えたら、どんな顔をしていそう？"
+      "followUp": "そう思えそうなのは、どうしてだろう？"
     },
     {
       "id": "q191",
       "category": "people",
       "text": "大切な人の「らしさ」が出る瞬間は？",
       "dayOfYear": 201,
-      "followUp": "その瞬間を見ると、どんな気持ちになる？"
+      "followUp": "そこにらしさを感じるのは、なぜ？"
     },
     {
       "id": "q192",
       "category": "self",
       "text": "今日、立ち止まって眺めたいものは？",
       "dayOfYear": 202,
-      "followUp": "それを眺めていたら、何が見えてきそう？"
+      "followUp": "それを眺めたいのは、どうして？"
     },
     {
       "id": "m3",
       "category": "life",
       "text": "10年後の自分が今日の自分を見たら、何と言うだろう？",
       "dayOfYear": 203,
-      "followUp": "その言葉を聞いて、いまの自分はどう感じる？"
+      "followUp": "そう言いそうなのは、なぜだろう？"
     },
     {
       "id": "q193",
       "category": "self",
       "text": "今日、楽しみにしていることは何ですか？",
       "dayOfYear": 204,
-      "followUp": "それの、どこがいちばん待ち遠しい？"
+      "followUp": "それが楽しみなのは、なぜだろう？"
     },
     {
       "id": "q194",
       "category": "people",
       "text": "最近、誰かのために時間を使いましたか？",
       "dayOfYear": 205,
-      "followUp": "その時間で、相手からどんなものを受け取った？"
+      "followUp": "その人のためにと思えたのは、なぜ？"
     },
     {
       "id": "q195",
       "category": "self",
       "text": "今日、少し早く寝られたら何をしたい？",
       "dayOfYear": 206,
-      "followUp": "その時間で、心はどう整っていきそう？"
+      "followUp": "それをしたいのは、なぜだろう？"
     },
     {
       "id": "q196",
       "category": "bucket",
       "text": "始めてみたい趣味は何ですか？",
       "dayOfYear": 207,
-      "followUp": "その趣味の、どこに心が惹かれている？"
+      "followUp": "その趣味が気になったきっかけは？"
     },
     {
       "id": "q197",
       "category": "people",
       "text": "最近、誰かにもらってうれしかったものは？",
       "dayOfYear": 208,
-      "followUp": "それを受け取ったとき、何が伝わってきた？"
+      "followUp": "それが心に響いたのは、どうして？"
     },
     {
       "id": "q198",
       "category": "life",
       "text": "5年後、どんな毎日を過ごしていたいですか？",
       "dayOfYear": 209,
-      "followUp": "その毎日の中で、いちばん好きな時間は？"
+      "followUp": "そう過ごしたいと思うのは、なぜ？"
     },
     {
       "id": "q199",
       "category": "self",
       "text": "今日、誰にも急かされずにしたいことは？",
       "dayOfYear": 210,
-      "followUp": "それをしている自分は、どんな表情をしていそう？"
+      "followUp": "それをゆっくりしたいのは、どうして？"
     },
     {
       "id": "q200",
       "category": "people",
       "text": "家族と行った旅行で、思い出す景色は？",
       "dayOfYear": 211,
-      "followUp": "その景色の中で、家族は何をしていた？"
+      "followUp": "その景色が浮かぶのは、なぜだろう？"
     },
     {
       "id": "q201",
       "category": "self",
       "text": "今日、うまくいったことを1つ挙げると？",
       "dayOfYear": 212,
-      "followUp": "それがうまくいったのは、何のおかげ？"
+      "followUp": "うまくいったのは、何があったから？"
     },
     {
       "id": "q202",
       "category": "life",
       "text": "いまの自分を、昔の自分はどう思うでしょう？",
       "dayOfYear": 213,
-      "followUp": "昔の自分のその声に、いまは何と返したい？"
+      "followUp": "そう思うのは、どうしてだろう？"
     },
     {
       "id": "q203",
       "category": "self",
       "text": "最近、ぐっすり眠れた日は何をしていましたか？",
       "dayOfYear": 214,
-      "followUp": "その日の過ごし方の、何がよかったと思う？"
+      "followUp": "よく眠れたのは、なぜだと思う？"
     },
     {
       "id": "q204",
       "category": "people",
       "text": "大切な人に、今年中に会えるとしたらいつ？",
       "dayOfYear": 215,
-      "followUp": "会えたら、まず何を話したい？"
+      "followUp": "そのころがいいのは、どうして？"
     },
     {
       "id": "q205",
       "category": "self",
       "text": "最近、自分をほめてあげたいことは？",
       "dayOfYear": 216,
-      "followUp": "それができた自分に、どんな言葉をかけたい？"
+      "followUp": "それをほめたいのは、なぜ？"
     },
     {
       "id": "q206",
       "category": "bucket",
       "text": "いつか訪ねてみたい街は？",
       "dayOfYear": 217,
-      "followUp": "その街で、どんな時間を過ごしてみたい？"
+      "followUp": "その街に心が向くのは、なぜだろう？"
     },
     {
       "id": "q207",
       "category": "people",
       "text": "大切な人と、次の休みに何をしたいですか？",
       "dayOfYear": 218,
-      "followUp": "それをしているとき、どんな会話をしていそう？"
+      "followUp": "それを一緒にしたいのは、どうして？"
     },
     {
       "id": "q208",
       "category": "life",
       "text": "人生で、誰かに受け取ってほしいものは？",
       "dayOfYear": 219,
-      "followUp": "それを受け取った人に、何が伝わるといい？"
+      "followUp": "それを受け取ってほしいのは、なぜ？"
     },
     {
       "id": "q209",
       "category": "self",
       "text": "今日、いつもより少しゆっくり歩くなら、どこを？",
       "dayOfYear": 220,
-      "followUp": "そこを歩いたら、何に気づけそう？"
+      "followUp": "そこを選ぶのは、どうしてだろう？"
     },
     {
       "id": "q210",
       "category": "people",
       "text": "近くにいる人に、今日できる小さな手助けは？",
       "dayOfYear": 221,
-      "followUp": "それが届いたら、相手はどう感じそう？"
+      "followUp": "それが浮かんだのは、なぜだろう？"
     },
     {
       "id": "q211",
       "category": "self",
       "text": "いま、気持ちをひと言で言うと？",
       "dayOfYear": 222,
-      "followUp": "その気持ちは、どこから来ている？"
+      "followUp": "そんな気持ちなのは、どうして？"
     },
     {
       "id": "q341",
       "category": "life",
       "text": "10年後の自分に、今日の自分から伝えたいことは？",
       "dayOfYear": 223,
-      "followUp": "その言葉を、10年後の自分はどう受け取りそう？"
+      "followUp": "それを伝えたいのは、どうしてだろう？"
     },
     {
       "id": "q212",
       "category": "self",
       "text": "今日、寝る前にしたいことは何ですか？",
       "dayOfYear": 224,
-      "followUp": "それをすると、眠りはどう変わる？"
+      "followUp": "それをしたいのは、なぜ？"
     },
     {
       "id": "q213",
       "category": "people",
       "text": "大切な人の笑顔を思い浮かべると、誰が浮かぶ？",
       "dayOfYear": 225,
-      "followUp": "その笑顔は、どんな場面のもの？"
+      "followUp": "その人が浮かんだのは、なぜだろう？"
     },
     {
       "id": "q214",
       "category": "self",
       "text": "今日、外に出て見つけたいものは何ですか？",
       "dayOfYear": 226,
-      "followUp": "それを見つけたら、どんな気分になれそう？"
+      "followUp": "それを見つけたいのは、どうして？"
     },
     {
       "id": "q215",
       "category": "people",
       "text": "大切な人にとって、あなたはどんな存在ですか？",
       "dayOfYear": 227,
-      "followUp": "そう思うのは、どんなやりとりからだった？"
+      "followUp": "そう思うのは、どうしてだろう？"
     },
     {
       "id": "q216",
       "category": "life",
       "text": "これからも大事にしたい友人との関係は？",
       "dayOfYear": 228,
-      "followUp": "その関係の、どんなところが心地いい？"
+      "followUp": "その関係を大事にしたいのは、なぜ？"
     },
     {
       "id": "q217",
       "category": "self",
       "text": "今日、ゆっくり味わいたい時間はどれですか？",
       "dayOfYear": 229,
-      "followUp": "その時間を、どんなふうに味わいたい？"
+      "followUp": "その時間を味わいたいのは、どうして？"
     },
     {
       "id": "q218",
       "category": "bucket",
       "text": "一度は食べてみたい料理は？",
       "dayOfYear": 230,
-      "followUp": "その料理を、誰と一緒に食べたい？"
+      "followUp": "その料理が気になるのは、なぜ？"
     },
     {
       "id": "q219",
       "category": "people",
       "text": "離れて暮らす大切な人と、話したいことは？",
       "dayOfYear": 231,
-      "followUp": "その話をしたら、どんな空気が流れそう？"
+      "followUp": "その話をしたいのは、どうしてだろう？"
     },
     {
       "id": "q220",
       "category": "self",
       "text": "最近、上手になったと感じることは？",
       "dayOfYear": 232,
-      "followUp": "上達したと気づいたのは、どんな瞬間だった？"
+      "followUp": "上手になれたのは、何があったから？"
     },
     {
       "id": "q221",
       "category": "life",
       "text": "あなたが「自分らしい」と思える選択は？",
       "dayOfYear": 233,
-      "followUp": "その選択をしたとき、どんな気持ちだった？"
+      "followUp": "それが自分らしいと思うのは、なぜ？"
     },
     {
       "id": "q222",
       "category": "self",
       "text": "最近、心がふっとゆるんだ瞬間は？",
       "dayOfYear": 234,
-      "followUp": "そのとき、何がそばにあった？"
+      "followUp": "心がゆるんだのは、どうしてだろう？"
     },
     {
       "id": "q223",
       "category": "people",
       "text": "友だちとの何気ない会話で、楽しかったことは？",
       "dayOfYear": 235,
-      "followUp": "その会話の、どんなところが心地よかった？"
+      "followUp": "それが楽しかったのは、なぜ？"
     },
     {
       "id": "p5",
       "category": "self",
       "text": "最近見た美しい景色や、心に残った瞬間は？",
       "dayOfYear": 236,
-      "followUp": "その瞬間、心の中で何が動いた？"
+      "followUp": "それが心に残ったのは、どうして？"
     },
     {
       "id": "q224",
       "category": "people",
       "text": "最近、誰かと一緒に笑ったのはいつですか？",
       "dayOfYear": 237,
-      "followUp": "そのとき、何がおかしくて笑ったんだっけ？"
+      "followUp": "一緒に笑えたのは、何があったから？"
     },
     {
       "id": "q225",
       "category": "life",
       "text": "人生で、ずっと持っていたい気持ちは？",
       "dayOfYear": 238,
-      "followUp": "その気持ちは、どんなときに支えになる？"
+      "followUp": "その気持ちを持っていたいのは、なぜ？"
     },
     {
       "id": "q226",
       "category": "self",
       "text": "いま、頭の中をいちばん占めていることは？",
       "dayOfYear": 239,
-      "followUp": "それを考えていると、どんな気持ちになる？"
+      "followUp": "それが気になっているのは、どうしてだろう？"
     },
     {
       "id": "q227",
       "category": "bucket",
       "text": "いつか話せるようになりたい言葉は？",
       "dayOfYear": 240,
-      "followUp": "その言葉で、誰とどんな話をしてみたい？"
+      "followUp": "その言葉を話したいのは、どうして？"
     },
     {
       "id": "q228",
       "category": "people",
       "text": "家族と一緒に聴いた曲で、覚えているものは？",
       "dayOfYear": 241,
-      "followUp": "その曲を聴くと、どんな場面がよみがえる？"
+      "followUp": "その曲を覚えているのは、なぜだろう？"
     },
     {
       "id": "q229",
       "category": "self",
       "text": "今週、うれしかった小さな出来事は？",
       "dayOfYear": 242,
-      "followUp": "その出来事の、どんなところがうれしかった？"
+      "followUp": "それがうれしかったのは、どうしてだろう？"
     },
     {
       "id": "e3",
       "category": "life",
       "text": "子どもの頃に夢中になっていたことは何？今もできる？",
       "dayOfYear": 243,
-      "followUp": "それに夢中だったとき、どんな気持ちだった？"
+      "followUp": "それに夢中になれたのは、なぜだろう？"
     },
     {
       "id": "q230",
       "category": "self",
       "text": "今日の天気に合う過ごし方は何でしょう？",
       "dayOfYear": 244,
-      "followUp": "そう過ごしたら、心はどんな感じになりそう？"
+      "followUp": "そう過ごしたくなるのは、どうして？"
     },
     {
       "id": "q231",
       "category": "people",
       "text": "大切な人と過ごす時間で、好きなひとときは？",
       "dayOfYear": 245,
-      "followUp": "そのひとときの、どこがいちばん好き？"
+      "followUp": "そのひとときが好きなのは、なぜ？"
     },
     {
       "id": "q232",
       "category": "self",
       "text": "最近、迷ったけれど選んでよかったことは？",
       "dayOfYear": 246,
-      "followUp": "選んだあと、何がよかったと感じた？"
+      "followUp": "それを選べたのは、何があったから？"
     },
     {
       "id": "r3",
       "category": "people",
       "text": "最近、誰かにしてもらって嬉しかったことは？",
       "dayOfYear": 247,
-      "followUp": "そのうれしさは、どんなふうに心に残った？"
+      "followUp": "そんなに嬉しかったのは、どうして？"
     },
     {
       "id": "q233",
       "category": "life",
       "text": "これからの暮らしで、減らしたいものは？",
       "dayOfYear": 248,
-      "followUp": "それが減ったら、何が入ってきそう？"
+      "followUp": "それを減らしたいのは、なぜ？"
     },
     {
       "id": "q234",
       "category": "self",
       "text": "今日、新しく覚えたいことはありますか？",
       "dayOfYear": 249,
-      "followUp": "それを覚えたら、何に使ってみたい？"
+      "followUp": "それを覚えたいのは、どうして？"
     },
     {
       "id": "q235",
       "category": "bucket",
       "text": "季節ごとにやってみたいことは？",
       "dayOfYear": 250,
-      "followUp": "その中で、いちばん心が躍る季節はどれ？"
+      "followUp": "それをやりたいのは、なぜだろう？"
     },
     {
       "id": "q236",
       "category": "people",
       "text": "大切な人が喜ぶことを、1つ挙げると？",
       "dayOfYear": 251,
-      "followUp": "それをしているとき、相手はどんな顔をする？"
+      "followUp": "それで喜ぶのは、どうしてだと思う？"
     },
     {
       "id": "q237",
       "category": "self",
       "text": "最近、自分の手で育てているものはありますか？",
       "dayOfYear": 252,
-      "followUp": "それが育つのを見て、どんな気持ちになる？"
+      "followUp": "それを育てようと思ったのは、なぜ？"
     },
     {
       "id": "q238",
       "category": "life",
       "text": "年を重ねたら、どんな人でいたいですか？",
       "dayOfYear": 253,
-      "followUp": "そんな人の、どんな姿が目に浮かぶ？"
+      "followUp": "そうありたいと思うのは、なぜ？"
     },
     {
       "id": "q239",
       "category": "self",
       "text": "今日、口ずさみたくなる歌はありますか？",
       "dayOfYear": 254,
-      "followUp": "その歌を口ずさむと、どんな気分になる？"
+      "followUp": "その歌が浮かんだのは、どうしてだろう？"
     },
     {
       "id": "q240",
       "category": "people",
       "text": "家族から聞いた、自分の小さい頃の話は？",
       "dayOfYear": 255,
-      "followUp": "その話を聞いて、どんな気持ちになった？"
+      "followUp": "その話が心に残っているのは、なぜ？"
     },
     {
       "id": "q241",
       "category": "self",
       "text": "最近、つい夢中になって時間を忘れたことは？",
       "dayOfYear": 256,
-      "followUp": "夢中になっていたとき、どんな気分だった？"
+      "followUp": "そこまで夢中になれたのは、なぜだろう？"
     },
     {
       "id": "q242",
       "category": "people",
       "text": "昔の友だちで、元気か気になる人はいますか？",
       "dayOfYear": 257,
-      "followUp": "その人との、どんな思い出がよみがえる？"
+      "followUp": "その人が気になるのは、どうして？"
     },
     {
       "id": "q243",
       "category": "life",
       "text": "あなたにとって、豊かな暮らしとは？",
       "dayOfYear": 258,
-      "followUp": "その暮らしに、いちばん欠かせないものは？"
+      "followUp": "そう思うようになったのは、何があったから？"
     },
     {
       "id": "q244",
       "category": "self",
       "text": "最近、ちょっとした発見がありましたか？",
       "dayOfYear": 259,
-      "followUp": "その発見で、何が少し変わった？"
+      "followUp": "それに気づけたのは、なぜだろう？"
     },
     {
       "id": "q245",
       "category": "bucket",
       "text": "一度は見てみたい舞台やライブは？",
       "dayOfYear": 260,
-      "followUp": "その舞台で、どんな気持ちを味わってみたい？"
+      "followUp": "それを観てみたいのは、どうして？"
     },
     {
       "id": "q246",
       "category": "people",
       "text": "大切な人に、手紙を書くとしたら最初の一文は？",
       "dayOfYear": 261,
-      "followUp": "その一文の先に、どんな思いが続きそう？"
+      "followUp": "その一文にしたのは、なぜ？"
     },
     {
       "id": "q247",
       "category": "self",
       "text": "今日の小さな目標を1つ決めるなら？",
       "dayOfYear": 262,
-      "followUp": "それができたら、どんな気持ちで眠れそう？"
+      "followUp": "それを目標にするのは、どうして？"
     },
     {
       "id": "q248",
       "category": "life",
       "text": "理想の休日を、思い描いてみると？",
       "dayOfYear": 263,
-      "followUp": "その休日の、いちばん好きな瞬間は？"
+      "followUp": "それが理想なのは、なぜだろう？"
     },
     {
       "id": "q249",
       "category": "self",
       "text": "最近、「これでいい」と思えたことは何ですか？",
       "dayOfYear": 264,
-      "followUp": "そう思えたとき、肩の力はどう変わった？"
+      "followUp": "そう思えたのは、何があったから？"
     },
     {
       "id": "q250",
       "category": "people",
       "text": "大切な人に、最近「元気？」と聞きましたか？",
       "dayOfYear": 265,
-      "followUp": "そのやりとりで、どんな気持ちが返ってきた？"
+      "followUp": "その人のことが浮かぶのは、なぜだろう？"
     },
     {
       "id": "p2",
       "category": "self",
       "text": "最近、心が温かくなった瞬間は？",
       "dayOfYear": 266,
-      "followUp": "そのぬくもりは、誰から届いたもの？"
+      "followUp": "心が温かくなったのは、どうして？"
     },
     {
       "id": "q251",
       "category": "people",
       "text": "家族とけんかして、仲直りした思い出は？",
       "dayOfYear": 267,
-      "followUp": "仲直りのとき、どんなひとことがあった？"
+      "followUp": "仲直りできたのは、何があったから？"
     },
     {
       "id": "q252",
       "category": "life",
       "text": "あなたが季節の中でいちばん好きな時期は？",
       "dayOfYear": 268,
-      "followUp": "その時期の、どんなところが好き？"
+      "followUp": "その時期が好きなのは、なぜ？"
     },
     {
       "id": "q253",
       "category": "self",
       "text": "いま、いちばん食べたいものは？",
       "dayOfYear": 269,
-      "followUp": "それを食べたら、どんな気分になれそう？"
+      "followUp": "それが食べたい気分なのは、なぜだろう？"
     },
     {
       "id": "q254",
       "category": "bucket",
       "text": "家族と一緒にやってみたいことは？",
       "dayOfYear": 270,
-      "followUp": "それをしているとき、家族はどんな顔をしていそう？"
+      "followUp": "それを家族としたいのは、どうして？"
     },
     {
       "id": "q255",
       "category": "people",
       "text": "家族が大切にしていた言葉はありますか？",
       "dayOfYear": 271,
-      "followUp": "その言葉は、いまのあなたの中でどう生きている？"
+      "followUp": "その言葉を大切にしていたのは、なぜだろう？"
     },
     {
       "id": "q256",
       "category": "self",
       "text": "最近、つい手に取ってしまうものは？",
       "dayOfYear": 272,
-      "followUp": "それを手に取ると、どんな気分になる？"
+      "followUp": "それに手が伸びるのは、どうしてだろう？"
     },
     {
       "id": "q257",
       "category": "life",
       "text": "あなたの毎日を支えている小さな習慣は？",
       "dayOfYear": 273,
-      "followUp": "その習慣が、どんな一日をつくっている？"
+      "followUp": "それが支えになっているのは、なぜ？"
     },
     {
       "id": "q258",
       "category": "self",
       "text": "今日、何をしているときがいちばん落ち着く？",
       "dayOfYear": 274,
-      "followUp": "そのとき、心はどんな状態にある？"
+      "followUp": "それで落ち着けるのは、どうして？"
     },
     {
       "id": "q259",
       "category": "people",
       "text": "最近、誰かに助けてもらったことは？",
       "dayOfYear": 275,
-      "followUp": "助けてもらって、どんな気持ちになった？"
+      "followUp": "その助けが心に残ったのは、なぜ？"
     },
     {
       "id": "q260",
       "category": "self",
       "text": "今日、ちょっとした楽しみを1つ足すなら？",
       "dayOfYear": 276,
-      "followUp": "それが加わると、今日はどう変わりそう？"
+      "followUp": "それを足したいのは、どうしてだろう？"
     },
     {
       "id": "q261",
       "category": "people",
       "text": "大切な人が大事にしているものは何でしょう？",
       "dayOfYear": 277,
-      "followUp": "それを大事にする姿から、何が伝わってくる？"
+      "followUp": "それを大事にするのは、なぜだと思う？"
     },
     {
       "id": "q262",
       "category": "life",
       "text": "あなたが自然と力を注いでしまうことは？",
       "dayOfYear": 278,
-      "followUp": "それに力を注いでいると、どんな気分になる？"
+      "followUp": "つい力を注いでしまうのは、なぜだろう？"
     },
     {
       "id": "p1",
       "category": "self",
       "text": "今日、あなたを笑顔にしてくれそうなことは？",
       "dayOfYear": 279,
-      "followUp": "それを思い浮かべると、どんな顔になる？"
+      "followUp": "それで笑顔になれそうなのは、どうして？"
     },
     {
       "id": "q263",
       "category": "bucket",
       "text": "やってみたい手づくりのものは？",
       "dayOfYear": 280,
-      "followUp": "それを作ったら、どこに飾りたい？"
+      "followUp": "それを作ってみたいのは、なぜ？"
     },
     {
       "id": "q264",
       "category": "people",
       "text": "子どもの頃、家族とよく出かけた場所は？",
       "dayOfYear": 281,
-      "followUp": "そこで、どんなことをして過ごしていた？"
+      "followUp": "そこによく行っていたのは、どうしてだろう？"
     },
     {
       "id": "q265",
       "category": "self",
       "text": "最近、だれかの親切に気づいたことは？",
       "dayOfYear": 282,
-      "followUp": "その親切に気づいて、心はどう動いた？"
+      "followUp": "その親切が心に残ったのは、なぜ？"
     },
     {
       "id": "q266",
       "category": "life",
       "text": "人生で、思い出すだけで力がわく日は？",
       "dayOfYear": 283,
-      "followUp": "その日を思うと、いまも何が湧いてくる？"
+      "followUp": "その日が力をくれるのは、どうして？"
     },
     {
       "id": "q267",
       "category": "self",
       "text": "最近、自分の好きなところを1つ挙げると？",
       "dayOfYear": 284,
-      "followUp": "そこが好きだと思えるのは、どんなとき？"
+      "followUp": "そこが好きだと思えるのは、なぜ？"
     },
     {
       "id": "q268",
       "category": "people",
       "text": "大切な人と、次に一緒にしたいことは？",
       "dayOfYear": 285,
-      "followUp": "それを一緒にしたら、どんな会話が生まれそう？"
+      "followUp": "それを一緒にしたいのは、なぜだろう？"
     },
     {
       "id": "q269",
       "category": "self",
       "text": "今日、自分にかけてあげたい言葉は？",
       "dayOfYear": 286,
-      "followUp": "その言葉を聞いたら、自分はどう感じる？"
+      "followUp": "その言葉が浮かんだのは、なぜだろう？"
     },
     {
       "id": "q270",
       "category": "people",
       "text": "友だちと交わした約束で、覚えているものは？",
       "dayOfYear": 287,
-      "followUp": "その約束は、いまのあなたにとってどんなもの？"
+      "followUp": "その約束を覚えているのは、どうして？"
     },
     {
       "id": "q271",
       "category": "life",
       "text": "人生で出会えてよかったと思う本や作品は？",
       "dayOfYear": 288,
-      "followUp": "その作品から、何を受け取った？"
+      "followUp": "そう思うのは、どうして？"
     },
     {
       "id": "e1",
       "category": "self",
       "text": "今日、時間を忘れるほど没頭したいことは？",
       "dayOfYear": 289,
-      "followUp": "それに没頭しているとき、どんな自分になれる？"
+      "followUp": "それに惹かれるのは、なぜ？"
     },
     {
       "id": "q272",
       "category": "bucket",
       "text": "一度は行ってみたい場所は？",
       "dayOfYear": 290,
-      "followUp": "そこで、どんな景色に出会いたい？"
+      "followUp": "そこに心が向くのは、どうしてだろう？"
     },
     {
       "id": "q273",
       "category": "people",
       "text": "大切な人の声を、最近聞きましたか？",
       "dayOfYear": 291,
-      "followUp": "その声を思い浮かべると、どんな気持ちになる？"
+      "followUp": "その人の声が浮かぶのは、どうしてだろう？"
     },
     {
       "id": "p4",
       "category": "self",
       "text": "今日、自分にご褒美をあげるとしたら何をする？",
       "dayOfYear": 292,
-      "followUp": "それを受け取った自分は、どんな顔をしそう？"
+      "followUp": "それがご褒美になるのは、なぜ？"
     },
     {
       "id": "q274",
       "category": "life",
       "text": "どんな言葉を、自分の座右の銘にしたい？",
       "dayOfYear": 293,
-      "followUp": "その言葉に、どんな場面で支えられた？"
+      "followUp": "その言葉を選んだのは、どうして？"
     },
     {
       "id": "q275",
       "category": "people",
       "text": "家族の若い頃の話で、知っていることは？",
       "dayOfYear": 294,
-      "followUp": "その話から、どんな姿が浮かんでくる？"
+      "followUp": "その話が残っているのは、なぜだろう？"
     },
     {
       "id": "q276",
       "category": "self",
       "text": "今日、そっとやめてみたいことは？",
       "dayOfYear": 295,
-      "followUp": "それをやめたら、どんな余白が生まれそう？"
+      "followUp": "それをやめたいのは、どうして？"
     },
     {
       "id": "q277",
       "category": "self",
       "text": "今日、少しだけ丁寧にしたいことは何ですか？",
       "dayOfYear": 296,
-      "followUp": "ていねいにすると、何が変わりそう？"
+      "followUp": "それを丁寧にしたいのは、なぜだろう？"
     },
     {
       "id": "q278",
       "category": "people",
       "text": "最近、誰かのいいところを見つけましたか？",
       "dayOfYear": 297,
-      "followUp": "そのよさを見つけたとき、どんな気持ちだった？"
+      "followUp": "そこに目がいったのは、なぜだろう？"
     },
     {
       "id": "q279",
       "category": "life",
       "text": "これまでの人生で、転機になった出来事は？",
       "dayOfYear": 298,
-      "followUp": "その出来事の前と後で、何が変わった？"
+      "followUp": "それが転機になったのは、どうして？"
     },
     {
       "id": "q280",
       "category": "self",
       "text": "最近、自分の好きなものが増えましたか？",
       "dayOfYear": 299,
-      "followUp": "それに出会ったきっかけは何だった？"
+      "followUp": "そう感じるのは、何があったから？"
     },
     {
       "id": "q281",
       "category": "bucket",
       "text": "いつか会いに行きたい人は？",
       "dayOfYear": 300,
-      "followUp": "その人に会えたら、何を伝えたい？"
+      "followUp": "その人に会いたいのは、なぜ？"
     },
     {
       "id": "q282",
       "category": "people",
       "text": "家族と一緒に撮りたい写真はありますか？",
       "dayOfYear": 301,
-      "followUp": "その写真には、どんな景色を入れたい？"
+      "followUp": "その写真を撮りたいのは、どうして？"
     },
     {
       "id": "q283",
       "category": "self",
       "text": "最近、思わずにっこりした出来事は？",
       "dayOfYear": 302,
-      "followUp": "その出来事の、どんなところが心をなごませた？"
+      "followUp": "にっこりしたのは、なぜだろう？"
     },
     {
       "id": "q284",
       "category": "life",
       "text": "人生で、思いがけずよかった寄り道は？",
       "dayOfYear": 303,
-      "followUp": "その寄り道で、何に出会えた？"
+      "followUp": "その寄り道をしたのは、どうして？"
     },
     {
       "id": "r5",
       "category": "people",
       "text": "しばらく会っていない人で、連絡したい人はいる？",
       "dayOfYear": 304,
-      "followUp": "その人との、どんな時間がよみがえる？"
+      "followUp": "その人が浮かんだのは、どうして？"
     },
     {
       "id": "q285",
       "category": "self",
       "text": "今日、身のまわりで1つ整えるなら何を？",
       "dayOfYear": 305,
-      "followUp": "整えたあと、どんな気持ちで過ごせそう？"
+      "followUp": "それを整えたいのは、なぜ？"
     },
     {
       "id": "q286",
       "category": "self",
       "text": "最近、自分らしいと感じた瞬間は？",
       "dayOfYear": 306,
-      "followUp": "そのとき、どんなところが自分らしかった？"
+      "followUp": "そう感じたのは、どうしてだろう？"
     },
     {
       "id": "q287",
       "category": "people",
       "text": "誰かと一緒にいて落ち着くのは、どんなとき？",
       "dayOfYear": 307,
-      "followUp": "その落ち着きは、相手のどんなところから来ている？"
+      "followUp": "そのとき落ち着けるのは、なぜだろう？"
     },
     {
       "id": "q288",
       "category": "life",
       "text": "人生で、大切なことを教えてくれた出来事は？",
       "dayOfYear": 308,
-      "followUp": "その出来事から、いまも大事にしていることは？"
+      "followUp": "それが心に残ったのは、なぜだろう？"
     },
     {
       "id": "q289",
       "category": "self",
       "text": "最近、ささやかな贅沢をしましたか？",
       "dayOfYear": 309,
-      "followUp": "その贅沢は、どんな味わいだった？"
+      "followUp": "それを選んだのは、どうして？"
     },
     {
       "id": "q290",
       "category": "bucket",
       "text": "大切な人に贈ってみたい体験は？",
       "dayOfYear": 310,
-      "followUp": "それを受け取ったら、相手はどんな顔をしそう？"
+      "followUp": "その体験を贈りたいのは、なぜ？"
     },
     {
       "id": "q291",
       "category": "people",
       "text": "家族の好きな歌や映画を知っていますか？",
       "dayOfYear": 311,
-      "followUp": "それを一緒に楽しむとしたら、どんな時間になる？"
+      "followUp": "それが好きなのは、なぜだと思う？"
     },
     {
       "id": "q292",
       "category": "self",
       "text": "今日、後回しにしてもいいことは何ですか？",
       "dayOfYear": 312,
-      "followUp": "後回しにしたら、心はどのくらい軽くなる？"
+      "followUp": "そう思えるのは、なぜだろう？"
     },
     {
       "id": "q293",
       "category": "life",
       "text": "あなたにとって「いい1日」の条件は？",
       "dayOfYear": 313,
-      "followUp": "その条件がそろった日は、どんな気分？"
+      "followUp": "それが大事なのは、どうしてだろう？"
     },
     {
       "id": "q294",
       "category": "people",
       "text": "大切な人の好きな食べものを知っていますか？",
       "dayOfYear": 314,
-      "followUp": "それを一緒に食べるなら、どこで味わいたい？"
+      "followUp": "それが好きなのは、どうしてだと思う？"
     },
     {
       "id": "q295",
       "category": "self",
       "text": "最近、思っていたよりうまくいったことは？",
       "dayOfYear": 315,
-      "followUp": "うまくいったとき、どんな気分だった？"
+      "followUp": "うまくいったのは、なぜだと思う？"
     },
     {
       "id": "e5",
       "category": "self",
       "text": "今日、いつもと違うルートや方法を試してみるとしたら？",
       "dayOfYear": 316,
-      "followUp": "いつもと違う道で、何に出会えそう？"
+      "followUp": "それを試したいのは、どうして？"
     },
     {
       "id": "q296",
       "category": "people",
       "text": "家族と食べた料理で、忘れられない味は？",
       "dayOfYear": 317,
-      "followUp": "その味と一緒に、どんな場面がよみがえる？"
+      "followUp": "その味が忘れられないのは、なぜ？"
     },
     {
       "id": "q297",
       "category": "life",
       "text": "人生で、あなたを笑顔にしてきたものは？",
       "dayOfYear": 318,
-      "followUp": "それは、どんなときにそばにあった？"
+      "followUp": "それで笑顔になれるのは、なぜだろう？"
     },
     {
       "id": "q298",
       "category": "self",
       "text": "最近、すっきりしたことは何ですか？",
       "dayOfYear": 319,
-      "followUp": "すっきりしたあと、何をしたくなった？"
+      "followUp": "すっきりできたのは、どうして？"
     },
     {
       "id": "q299",
       "category": "bucket",
       "text": "いつか泊まってみたい宿は？",
       "dayOfYear": 320,
-      "followUp": "その宿で、どんなふうにくつろぎたい？"
+      "followUp": "その宿に惹かれるのは、なぜ？"
     },
     {
       "id": "q300",
       "category": "people",
       "text": "最近、誰かを笑顔にできたことはありますか？",
       "dayOfYear": 321,
-      "followUp": "その笑顔を見て、どんな気持ちになった？"
+      "followUp": "笑顔にできたのは、何があったから？"
     },
     {
       "id": "q301",
       "category": "self",
       "text": "今朝、目が覚めて最初に思ったことは？",
       "dayOfYear": 322,
-      "followUp": "その思いは、今日一日にどうつながった？"
+      "followUp": "それが浮かんだのは、どうしてだろう？"
     },
     {
       "id": "q302",
       "category": "life",
       "text": "時間が限られているとしたら、何を優先したい？",
       "dayOfYear": 323,
-      "followUp": "それを大事にすると、何が満たされそう？"
+      "followUp": "それを選ぶのは、なぜだろう？"
     },
     {
       "id": "q303",
       "category": "people",
       "text": "家族と過ごした休みで、思い出に残る1日は？",
       "dayOfYear": 324,
-      "followUp": "その日の、どんな瞬間が浮かんでくる？"
+      "followUp": "その日が心に残っているのは、どうして？"
     },
     {
       "id": "q304",
       "category": "self",
       "text": "今日、ひと息つきたいのはどんな場所ですか？",
       "dayOfYear": 325,
-      "followUp": "そこで、どんなふうに過ごしたい？"
+      "followUp": "そこでひと息つきたいのは、なぜ？"
     },
     {
       "id": "q305",
       "category": "self",
       "text": "今日、自分にご苦労さまと言えることは？",
       "dayOfYear": 326,
-      "followUp": "それをやれた自分の、どこを認めたい？"
+      "followUp": "そう言いたくなるのは、どうしてだろう？"
     },
     {
       "id": "q306",
       "category": "people",
       "text": "大切な人の、尊敬しているところは？",
       "dayOfYear": 327,
-      "followUp": "そのよさを感じたのは、どんな場面？"
+      "followUp": "そこを尊敬するのは、なぜ？"
     },
     {
       "id": "q307",
       "category": "life",
       "text": "これからの人生で、増やしたい時間は？",
       "dayOfYear": 328,
-      "followUp": "その時間が増えたら、どんな自分になれそう？"
+      "followUp": "その時間を増やしたいのは、どうして？"
     },
     {
       "id": "m1",
       "category": "self",
       "text": "今日という日を、どんな意味のある1日にしたい？",
       "dayOfYear": 329,
-      "followUp": "その1日を終えたとき、どう感じていたい？"
+      "followUp": "そう思うのは、なぜだろう？"
     },
     {
       "id": "q308",
       "category": "bucket",
       "text": "一度は体験してみたい仕事や作業は？",
       "dayOfYear": 330,
-      "followUp": "その仕事の、どんな手ざわりを味わってみたい？"
+      "followUp": "それに惹かれるのは、どうしてだろう？"
     },
     {
       "id": "q309",
       "category": "people",
       "text": "大切な人の話を聞いていて、新しく知ったことは？",
       "dayOfYear": 331,
-      "followUp": "それを知って、相手のどんな一面が見えた？"
+      "followUp": "それが心に残ったのは、どうして？"
     },
     {
       "id": "q310",
       "category": "self",
       "text": "最近、ふだんと違う道を通りましたか？",
       "dayOfYear": 332,
-      "followUp": "その道で、目にとまったものは？"
+      "followUp": "その道を選んだのは、なぜだろう？"
     },
     {
       "id": "q311",
       "category": "life",
       "text": "毎日の中で、守りたいリズムは何ですか？",
       "dayOfYear": 333,
-      "followUp": "そのリズムが整うと、心はどうなる？"
+      "followUp": "そのリズムを守りたいのは、なぜ？"
     },
     {
       "id": "q312",
       "category": "people",
       "text": "誰かと分け合って食べたもので、うれしかったものは？",
       "dayOfYear": 334,
-      "followUp": "分け合ったとき、どんな空気が流れていた？"
+      "followUp": "分け合えてうれしかったのは、なぜ？"
     },
     {
       "id": "q313",
       "category": "self",
       "text": "最近、うまく力を抜けたのはどんなとき？",
       "dayOfYear": 335,
-      "followUp": "力が抜けたとき、何が助けになった？"
+      "followUp": "そのとき力を抜けたのは、なぜだろう？"
     },
     {
       "id": "q314",
       "category": "self",
       "text": "いまの自分に、ちょうどいいペースは？",
       "dayOfYear": 336,
-      "followUp": "そのペースだと、毎日はどんなふうに見える？"
+      "followUp": "そう感じるのは、どうして？"
     },
     {
       "id": "q315",
       "category": "people",
       "text": "最近、家族と交わした会話で心に残ったことは？",
       "dayOfYear": 337,
-      "followUp": "その会話の、どこが心にとまった？"
+      "followUp": "それが心に残ったのは、なぜ？"
     },
     {
       "id": "q316",
       "category": "life",
       "text": "自分を支えてくれた経験を1つ挙げると？",
       "dayOfYear": 338,
-      "followUp": "その経験は、いまどんな場面で生きている？"
+      "followUp": "それが支えになったのは、どうしてだろう？"
     },
     {
       "id": "q317",
       "category": "self",
       "text": "今日の予定で、いちばん楽しみなのはどれ？",
       "dayOfYear": 339,
-      "followUp": "それの、どんなところが楽しみ？"
+      "followUp": "それを楽しみにしているのは、なぜ？"
     },
     {
       "id": "q318",
       "category": "bucket",
       "text": "いつか読んでみたい本は？",
       "dayOfYear": 340,
-      "followUp": "その本を、どんな場所で読みたい？"
+      "followUp": "その本が気になったきっかけは？"
     },
     {
       "id": "q319",
       "category": "people",
       "text": "昔、誰かと一緒にがんばったことは？",
       "dayOfYear": 341,
-      "followUp": "一緒にがんばって、どんな気持ちが生まれた？"
+      "followUp": "一緒にがんばれたのは、何があったから？"
     },
     {
       "id": "q320",
       "category": "self",
       "text": "今日、静かに過ごしたい時間はありますか？",
       "dayOfYear": 342,
-      "followUp": "その時間に、どんな音が聞こえていてほしい？"
+      "followUp": "そう思うのは、どうしてだろう？"
     },
     {
       "id": "q321",
       "category": "life",
       "text": "あなたが心から「好き」と言えることは？",
       "dayOfYear": 343,
-      "followUp": "それをしているとき、どんな自分でいる？"
+      "followUp": "それを好きになったきっかけは？"
     },
     {
       "id": "q322",
       "category": "people",
       "text": "友だちと夢中で遊んだ思い出は何ですか？",
       "dayOfYear": 344,
-      "followUp": "その遊びの、どんなところに夢中だった？"
+      "followUp": "そんなに夢中になれたのは、なぜ？"
     },
     {
       "id": "q323",
       "category": "self",
       "text": "最近、何かを待つのが楽しかったことは？",
       "dayOfYear": 345,
-      "followUp": "待っている間、どんな気持ちだった？"
+      "followUp": "待つのが楽しかったのは、どうして？"
     },
     {
       "id": "q324",
       "category": "self",
       "text": "最近、読んで（見て）よかったものは？",
       "dayOfYear": 346,
-      "followUp": "その中で、いちばん心に響いた場面は？"
+      "followUp": "よかったと思うのは、なぜだろう？"
     },
     {
       "id": "q325",
       "category": "people",
       "text": "誰かに「ありがとう」を言いそびれたことは？",
       "dayOfYear": 347,
-      "followUp": "いまなら、その人にどんな言葉で伝えたい？"
+      "followUp": "言いそびれたのは、どうしてだろう？"
     },
     {
       "id": "q326",
       "category": "life",
       "text": "10年前の自分に、伝えたいことは何ですか？",
       "dayOfYear": 348,
-      "followUp": "その言葉を聞いた昔の自分は、どんな顔をしそう？"
+      "followUp": "それを伝えたいのは、なぜだろう？"
     },
     {
       "id": "e4",
       "category": "self",
       "text": "今日、新しいことに挑戦するとしたら？",
       "dayOfYear": 349,
-      "followUp": "それに挑戦したら、どんな自分に会えそう？"
+      "followUp": "それを選ぶのは、どうして？"
     },
     {
       "id": "q327",
       "category": "bucket",
       "text": "いつか見てみたい景色は？",
       "dayOfYear": 350,
-      "followUp": "その景色を、誰と一緒に見たい？"
+      "followUp": "その景色を見たいのは、なぜ？"
     },
     {
       "id": "q328",
       "category": "people",
       "text": "家族の匂いや音で、思い出すものは？",
       "dayOfYear": 351,
-      "followUp": "それを思い出すと、どんな場面が浮かぶ？"
+      "followUp": "それが記憶に残っているのは、どうして？"
     },
     {
       "id": "a2",
       "category": "self",
       "text": "昨日の自分より、少しだけ成長できることは？",
       "dayOfYear": 352,
-      "followUp": "それができたら、どんな気分で今日を終えられそう？"
+      "followUp": "それを伸ばしたいのは、なぜだろう？"
     },
     {
       "id": "q329",
       "category": "life",
       "text": "お金や時間に関係なく、続けたいことは？",
       "dayOfYear": 353,
-      "followUp": "それを続けていると、どんな自分でいられる？"
+      "followUp": "それを続けたいのは、どうしてだろう？"
     },
     {
       "id": "q330",
       "category": "people",
       "text": "大切な人の話で、もっと聞いてみたいことは？",
       "dayOfYear": 354,
-      "followUp": "その話を聞いたら、相手のどんな顔が見えそう？"
+      "followUp": "それを聞きたいのは、なぜ？"
     },
     {
       "id": "p3",
       "category": "self",
       "text": "今日、感謝できることを3つ挙げるとしたら？",
       "dayOfYear": 355,
-      "followUp": "その中で、いちばん心にしみるのはどれ？"
+      "followUp": "それに感謝したいのは、どうして？"
     },
     {
       "id": "q331",
       "category": "self",
       "text": "今日、何に「いいね」と言いたいですか？",
       "dayOfYear": 356,
-      "followUp": "それに「いいね」と思えたのは、どんなところ？"
+      "followUp": "それに「いいね」と思うのは、なぜ？"
     },
     {
       "id": "q332",
       "category": "people",
       "text": "大切な人と、季節の行事を楽しむなら何を？",
       "dayOfYear": 357,
-      "followUp": "その行事の、どんな時間がいちばん好き？"
+      "followUp": "それを選ぶのは、なぜだろう？"
     },
     {
       "id": "q333",
       "category": "life",
       "text": "あなたにとっての「ふるさと」はどこですか？",
       "dayOfYear": 358,
-      "followUp": "そこを思うと、どんな景色が浮かぶ？"
+      "followUp": "そこをふるさとと感じるのは、なぜ？"
     },
     {
       "id": "q334",
       "category": "self",
       "text": "最近、「楽しかった」と言えた日はいつ？",
       "dayOfYear": 359,
-      "followUp": "その日の、何がいちばん楽しかった？"
+      "followUp": "そう言えたのは、何があったから？"
     },
     {
       "id": "q335",
       "category": "bucket",
       "text": "大切な人と一緒に行きたい旅先は？",
       "dayOfYear": 360,
-      "followUp": "その旅先で、一緒にどんな時間を過ごしたい？"
+      "followUp": "そこを一緒に旅したいのは、どうして？"
     },
     {
       "id": "q336",
       "category": "people",
       "text": "子どもの頃、家族と見たテレビ番組は？",
       "dayOfYear": 361,
-      "followUp": "その番組を見ていたとき、部屋はどんな様子だった？"
+      "followUp": "それを覚えているのは、なぜだろう？"
     },
     {
       "id": "q337",
       "category": "self",
       "text": "いま、続けていてよかったと思う習慣は？",
       "dayOfYear": 362,
-      "followUp": "続けてきて、自分の何が変わった？"
+      "followUp": "続けてこられたのは、なぜだろう？"
     },
     {
       "id": "q338",
       "category": "life",
       "text": "人生で、もっと時間をかけたいことは？",
       "dayOfYear": 363,
-      "followUp": "時間をかけたら、それはどう育っていきそう？"
+      "followUp": "そう思うのは、何があったから？"
     },
     {
       "id": "q339",
       "category": "people",
       "text": "大切な人に贈り物をするなら、何を選ぶ？",
       "dayOfYear": 364,
-      "followUp": "それを選ぶとき、相手のどんな姿を思い浮かべる？"
+      "followUp": "それを選ぶのは、どうしてだろう？"
     },
     {
       "id": "q340",
       "category": "self",
       "text": "いま、部屋の中で好きな場所はどこですか？",
       "dayOfYear": 365,
-      "followUp": "そこにいると、どんな気持ちになれる？"
+      "followUp": "そこが好きなのは、なぜ？"
     }
   ]
 }
