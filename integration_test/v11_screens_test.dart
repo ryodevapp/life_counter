@@ -38,41 +38,37 @@ void main() {
     await wait(tester);
     await shot(binding, tester, '02_today_answered');
 
-    // 記録: リスト → カレンダー → ふりかえり(切り替えの途中も撮る)
+    // 記録: リスト → カレンダー(切り替えの途中も撮る)
     await tapText(tester, '記録');
     await shot(binding, tester, '03_records_list');
     await tester.tap(find.text('カレンダー').last);
     await midShot(tester, '03m_switch_to_calendar');
     await wait(tester);
     await shot(binding, tester, '04_records_calendar');
-    await tester.tap(find.text('ふりかえり').last);
-    await midShot(tester, '04m_switch_to_reflection');
-    await wait(tester);
-    await shot(binding, tester, '05_records_reflection');
     await tester.tap(find.text('リスト').last);
     await midShot(tester, '05m_switch_to_list');
     await wait(tester);
 
     // 人生: やりたいこと(バケットリスト)を、書く → 追加 → できた → メニュー まで
     await tapText(tester, '人生');
-    await tapText(tester, 'やりたいこと');
+    await tapText(tester, 'バケットリスト');
     await shot(binding, tester, '06_bucket_empty');
     await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
     await wait(tester);
     await shot(binding, tester, '07_bucket_typing');
-    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await tester.tap(find.bySemanticsLabel('追加'));
     await wait(tester);
     await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
-    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await tester.tap(find.bySemanticsLabel('追加'));
     await wait(tester);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
     await shot(binding, tester, '08_bucket_two_items');
-    await tester.tap(find.bySemanticsLabel('押すと、できたにする').last);
+    await tester.tap(find.bySemanticsLabel('まだかなえていない').last);
     await wait(tester);
     await shot(binding, tester, '09_bucket_done');
-    await tester.tap(find.byTooltip('そのほかの操作').first);
+    await tester.tap(find.text('オーロラを見る').last);
     await wait(tester);
-    await shot(binding, tester, '10_bucket_menu');
+    await shot(binding, tester, '10_bucket_edit');
   });
 }

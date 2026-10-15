@@ -22,7 +22,7 @@ void main() {
 
     await tester.tap(find.text('おだやか'));
     await wait(tester);
-    await tester.enterText(find.byType(TextField).first, '近所を散歩して、金木犀の香りがした');
+    await tester.enterText(find.byType(TextField).first, '祖父の本棚にあった、星の図鑑');
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
@@ -34,8 +34,6 @@ void main() {
     await shot(binding, tester, '${prefix}02_records_list');
     await tapText(tester, 'カレンダー');
     await shot(binding, tester, '${prefix}03_records_calendar');
-    await tapText(tester, 'ふりかえり');
-    await shot(binding, tester, '${prefix}04_records_reflection');
 
     await tapText(tester, '人生');
     await tapText(tester, 'あなた');
@@ -45,24 +43,30 @@ void main() {
     await shot(binding, tester, '${prefix}05_life_you');
     await tapText(tester, '大切な人');
     await shot(binding, tester, '${prefix}06_life_people');
-    await tapText(tester, 'やりたいこと');
+    await tapText(tester, 'バケットリスト');
     await shot(binding, tester, '${prefix}07_life_bucket');
     await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
     await wait(tester);
     await shot(binding, tester, '${prefix}07b_bucket_typing');
-    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await tester.tap(find.bySemanticsLabel('追加'));
     await wait(tester);
     await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
     await wait(tester, 300);
-    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await tester.tap(find.bySemanticsLabel('追加'));
     await wait(tester, 300);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
-    await tester.tap(find.bySemanticsLabel('押すと、できたにする').last);
+    await tester.tap(find.bySemanticsLabel('まだかなえていない').last);
+    await wait(tester);
     await shot(binding, tester, '${prefix}07c_bucket_items');
+    // 行を押すと編集のシート
+    await tester.tap(find.text('オーロラを見る').last);
+    await wait(tester);
+    await shot(binding, tester, '${prefix}07d_bucket_edit');
+    await tapText(tester, 'キャンセル');
 
     // 下のタブの印が動いている途中(伸びているか)と、止まったところ
-    await tester.tap(find.text('マイページ').last);
+    await tester.tap(find.text('設定').last);
     await tester.pump(const Duration(milliseconds: 90));
     await binding.takeScreenshot('${prefix}08m_tab_moving');
     await shot(binding, tester, '${prefix}08_my_page');

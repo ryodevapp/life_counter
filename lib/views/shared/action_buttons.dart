@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -71,37 +71,26 @@ class ActionButtons extends StatelessWidget {
   }
 }
 
-/// 統一された削除確認ダイアログ
+/// 削除の確認(iOS の確認の小窓と同じ形。「削除」は赤、既定の選択にしない)
 Future<bool> showDeleteConfirmation(
   BuildContext context, {
   required String title,
-  String message = 'この操作は取り消しできません',
+  String message = 'この操作は取り消せません。',
 }) async {
-  final result = await showDialog<bool>(
+  final result = await showCupertinoDialog<bool>(
     context: context,
-    builder: (ctx) => AlertDialog(
-      backgroundColor: AppColors.card,
-      title: Text(title, style: AppTextStyles.headline),
-      content: Text(message,
-          style:
-              AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.sheet)),
+    builder: (ctx) => CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(message),
       actions: [
-        TextButton(
+        CupertinoDialogAction(
           onPressed: () => Navigator.of(ctx).pop(false),
-          style: TextButton.styleFrom(
-              minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap)),
-          child: Text('キャンセル',
-              style: AppTextStyles.callout
-                  .copyWith(color: AppColors.textSecondary)),
+          child: const Text('キャンセル'),
         ),
-        TextButton(
+        CupertinoDialogAction(
+          isDestructiveAction: true,
           onPressed: () => Navigator.of(ctx).pop(true),
-          style: TextButton.styleFrom(
-              minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap)),
-          child: Text('削除',
-              style: AppTextStyles.callout.copyWith(color: AppColors.danger)),
+          child: const Text('削除'),
         ),
       ],
     ),

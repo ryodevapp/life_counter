@@ -31,7 +31,7 @@ class _LifeTabPageState extends State<LifeTabPage> {
               items: const [
                 SegmentItem(value: _LifeSegment.time, label: 'あなた'),
                 SegmentItem(value: _LifeSegment.people, label: '大切な人'),
-                SegmentItem(value: _LifeSegment.bucket, label: 'やりたいこと'),
+                SegmentItem(value: _LifeSegment.bucket, label: 'バケットリスト'),
               ],
               selectedValue: _segment,
               onChanged: (v) => setState(() => _segment = v),

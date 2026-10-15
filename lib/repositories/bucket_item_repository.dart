@@ -36,6 +36,20 @@ class BucketItemRepository {
     return true;
   }
 
+  /// 文と「誰と」を書き換える。空の文には書き換えない
+  Future<void> update(int id, {required String title, int? personId}) async {
+    final trimmed = title.trim();
+    if (trimmed.isEmpty) return;
+    await _isar.writeTxn(() async {
+      final item = await _isar.bucketItems.get(id);
+      if (item == null) return;
+      item
+        ..title = trimmed
+        ..personId = personId;
+      await _isar.bucketItems.put(item);
+    });
+  }
+
   Future<void> toggleDone(int id) async {
     await _isar.writeTxn(() async {
       final item = await _isar.bucketItems.get(id);

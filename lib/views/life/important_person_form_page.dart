@@ -127,7 +127,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       for (final g in [
                         (Gender.male, '男性'),
                         (Gender.female, '女性'),
-                        (Gender.unspecified, '選択しない'),
+                        (Gender.unspecified, '答えない'),
                       ]) ...[
                         if (g.$1 != Gender.male)
                           const SizedBox(width: AppSpacing.s),
@@ -220,8 +220,8 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       ),
                       child: Text(
                         _lastMet != null
-                            ? '${_lastMet!.year}/${_lastMet!.month}/${_lastMet!.day}'
-                            : '未選択',
+                            ? '${_lastMet!.year}年${_lastMet!.month}月${_lastMet!.day}日'
+                            : 'なし',
                         // 未選択のときは入力欄の例の文と同じ色
                         style: AppTextStyles.callout.copyWith(
                           color: _lastMet != null

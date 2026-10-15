@@ -38,9 +38,11 @@ class AppRadius {
   static const double sm = 8;
   static const double md = 12;
 
-  /// 入力欄(数行の欄)。カード(24)の内側で 20 の余白をとったとき、外の角と揃って見える丸み
+  /// 入力欄(数行の欄)
   static const double field = 16;
-  static const double lg = 24;
+
+  /// カード(内側の余白 20 と同じ)
+  static const double lg = 20;
   static const double sheet = 28;
   static const double full = 999;
 }

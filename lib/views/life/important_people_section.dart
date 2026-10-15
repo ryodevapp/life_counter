@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -69,7 +70,7 @@ class _ImportantPeopleSectionState
     return personsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => AppCard(
-        child: Text('データの読み込みに失敗しました',
+        child: Text('読み込めませんでした。アプリを開き直してください。',
             textAlign: TextAlign.center,
             style:
                 AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
@@ -81,21 +82,32 @@ class _ImportantPeopleSectionState
     );
   }
 
+  // 空のときはカードにせず、説明1文と追加のボタンだけ(画面でいちばん重い物にしない)
   Widget _emptyState() {
-    return AppCard(
-      child: Column(
-        children: [
-          Text(
-            '大切な人を登録すると、一緒にいられる時間の目安が見られます',
-            textAlign: TextAlign.center,
-            style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
-          ),
-          const SizedBox(height: AppSpacing.l),
-          AppButton.primary(onPressed: _addPerson, label: '追加する'),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '親や家族、友だちを追加すると、一緒に過ごせる時間の目安が分かります。',
+          style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
+        ),
+        const SizedBox(height: AppSpacing.l),
+        _addButton(),
+      ],
     );
   }
+
+  Widget _addButton() => AppButton(
+        onPressed: _addPerson,
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
+            SizedBox(width: AppSpacing.s),
+            Text('大切な人を追加'),
+          ],
+        ),
+      );
 
   Widget _personList(List<ImportantPerson> persons, DateTime? myBirthDate,
       UserSettings settings) {
@@ -113,8 +125,7 @@ class _ImportantPeopleSectionState
           _personCard(p, myAge, myAL, fmt),
           const SizedBox(height: AppSpacing.cardGap),
         ],
-        // 追加ボタン
-        AppButton.secondary(onPressed: _addPerson, label: '+ 大切な人を追加'),
+        _addButton(),
       ],
     );
   }
@@ -139,34 +150,26 @@ class _ImportantPeopleSectionState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(p.nickname, style: AppTextStyles.headline),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.s, vertical: AppSpacing.xs),
-                decoration: BoxDecoration(
-                  color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                ),
-                child: Text('$pAge歳', style: AppTextStyles.captionLabel),
+              Expanded(
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(text: p.nickname, style: AppTextStyles.headline),
+                  TextSpan(text: '  $pAge歳', style: AppTextStyles.footnote),
+                ])),
               ),
+              const Icon(CupertinoIcons.chevron_right,
+                  size: 15, color: AppColors.textDisabled),
             ],
           ),
-          const SizedBox(height: AppSpacing.l),
-          if (pPastAL)
-            Text(
-              '${p.nickname}と過ごす毎日が、かけがえのない時間です',
-              style: AppTextStyles.callout
-                  .copyWith(color: AppColors.textSecondary),
-            )
-          else ...[
+          if (!pPastAL) ...[
+            const SizedBox(height: AppSpacing.l),
             Row(
               children: [
                 Expanded(
-                    child: _miniStat('これから', '${pR.floor()}', '年(目安)')),
+                    child: _miniStat('これから', '${pR.floor()}', '年')),
                 const SizedBox(width: AppSpacing.m),
                 Expanded(
                     child: pHR > 0
-                        ? _miniStat('元気でいられる時間', '$pHR', '年',
+                        ? _miniStat('元気に過ごせる目安', '$pHR', '年',
                             valueColor: AppColors.accent)
                         : const SizedBox.shrink()),
               ],
@@ -179,13 +182,11 @@ class _ImportantPeopleSectionState
                         _miniStat('一緒にいられる年数', '$together', '年')),
                 const SizedBox(width: AppSpacing.m),
                 Expanded(
-                    child: _miniStat('会える残り回数', fmt.format(meet), '回',
+                    child: _miniStat('これから会える回数', fmt.format(meet), '回',
                         valueColor: AppColors.accent)),
               ],
             ),
           ],
-          const SizedBox(height: AppSpacing.m),
-          Text('詳しく見る \u2192', style: AppTextStyles.footnote),
         ],
       ),
     );

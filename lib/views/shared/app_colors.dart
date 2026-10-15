@@ -54,16 +54,12 @@ class AppColors {
   ];
 
   // Shadow
+  /// カードの影は1段だけ(線は引かない)
   static const List<BoxShadow> cardShadow = [
     BoxShadow(
-      color: Color(0x0A2C2520),
+      color: Color(0x0F2C2520),
       offset: Offset(0, 1),
       blurRadius: 3,
-    ),
-    BoxShadow(
-      color: Color(0x082C2520),
-      offset: Offset(0, 4),
-      blurRadius: 12,
     ),
   ];
 }

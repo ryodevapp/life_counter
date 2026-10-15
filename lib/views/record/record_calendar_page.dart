@@ -24,7 +24,7 @@ class RecordCalendarPage extends ConsumerStatefulWidget {
   RecordCalendarPageState createState() => RecordCalendarPageState();
 }
 
-enum _RecordView { calendar, list, reflection }
+enum _RecordView { calendar, list }
 
 class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   _RecordView _view = _RecordView.list;
@@ -68,7 +68,6 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
               items: const [
                 SegmentItem(value: _RecordView.list, label: 'リスト'),
                 SegmentItem(value: _RecordView.calendar, label: 'カレンダー'),
-                SegmentItem(value: _RecordView.reflection, label: 'ふりかえり'),
               ],
               selectedValue: _view,
               onChanged: (v) => setState(() => _view = v),
@@ -80,9 +79,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                 const SizedBox(height: AppSpacing.cardGap),
                 _buildSelectedRecordCard(),
               ],
-            ] else if (_view == _RecordView.reflection)
-              ReflectionView(records: _records)
-            else
+            ] else
               _buildList(),
           ],
         ),
@@ -223,8 +220,32 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         ),
       );
     }
+    // 新しい順。月が変わるところに月の見出し(気分の内訳つき)を入れる。いちばん上に1年前の今日
+    final children = <Widget>[LastYearCard(records: _records)];
+    DateTime? month;
+    for (final r in filtered) {
+      final m = DateTime(r.date.year, r.date.month);
+      if (m != month) {
+        if (month != null) {
+          children.add(const SizedBox(height: AppSpacing.l));
+        }
+        month = m;
+        children.add(MonthHeader(
+          month: m,
+          records: filtered
+              .where((x) => x.date.year == m.year && x.date.month == m.month)
+              .toList(),
+        ));
+      }
+      children.add(_listItem(r));
+    }
     return Column(
-      children: filtered.map((r) {
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
+    );
+  }
+
+  Widget _listItem(DailyRecord r) {
         final isEditing = _editingRecordId == r.id;
         return Padding(
           padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
@@ -240,6 +261,9 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                   onCancel: () => setState(() => _editingRecordId = null),
                 )
               : AppCard(
+                  // 右上の編集ボタンは押せる範囲 44 の分だけ上と右が膨らむので、そこだけ余白を詰めて上下を揃える
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.card,
+                      AppSpacing.s, AppSpacing.s, AppSpacing.card),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -264,13 +288,11 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                   ),
                 ),
         );
-      }).toList(),
-    );
   }
 
   String _formatDate(DateTime date) {
     final weekday = DateFormat.E('ja_JP').format(date);
-    return '${date.month}/${date.day} ($weekday)';
+    return '${date.month}月${date.day}日（$weekday）';
   }
 
   List<Widget> _buildInlineFields(DailyRecord r) {
@@ -286,14 +308,14 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (r.todayGoal != null) fields.add(('今日やること', r.todayGoal!));
     if (r.reflectionGood != null) fields.add(('嬉しかったこと', r.reflectionGood!));
     if (r.tomorrowMessage != null) fields.add(('明日の自分へ', r.tomorrowMessage!));
-    if (r.reflectionWhy != null) fields.add(('なぜ？', r.reflectionWhy!));
+    if (r.reflectionWhy != null) fields.add(('その理由', r.reflectionWhy!));
     if (r.reflectionTomorrow != null) fields.add(('明日の楽しみ', r.reflectionTomorrow!));
     if (r.weeklyReflectionHighlight != null) fields.add(('今週のハイライト', r.weeklyReflectionHighlight!));
     if (r.weeklyReflectionChange != null) fields.add(('来週変えること', r.weeklyReflectionChange!));
 
     if (fields.isEmpty) {
       return [
-        if (r.stamp == null) Text('(未入力)', style: AppTextStyles.footnote),
+        if (r.stamp == null) Text('記録なし', style: AppTextStyles.footnote),
       ];
     }
 
@@ -390,7 +412,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
   Widget build(BuildContext context) {
     final d = widget.record.date;
     final weekday = DateFormat.E('ja_JP').format(d);
-    final dateStr = '${d.month}/${d.day} ($weekday)';
+    final dateStr = '${d.month}月${d.day}日（$weekday）';
 
     return AppCard(
       child: Column(

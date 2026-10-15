@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -61,9 +62,14 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           onPressed: onBack,
           style: _textButtonStyle.copyWith(
               padding: const WidgetStatePropertyAll(EdgeInsets.zero)),
-          child: Text(
-            '\u2190 戻る',
-            style: AppTextStyles.footnote.copyWith(color: AppColors.accent),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(CupertinoIcons.chevron_left,
+                  size: 18, color: AppColors.accent),
+              Text('大切な人',
+                  style: AppTextStyles.body.copyWith(color: AppColors.accent)),
+            ],
           ),
         ),
         const SizedBox(height: AppSpacing.s),
@@ -84,8 +90,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               onPressed: onEdit,
               style: _textButtonStyle,
               child: Text('編集',
-                  style:
-                      AppTextStyles.footnote.copyWith(color: AppColors.accent)),
+                  style: AppTextStyles.body.copyWith(color: AppColors.accent)),
             ),
             TextButton(
               onPressed: () async {
@@ -97,8 +102,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               },
               style: _textButtonStyle,
               child: Text('削除',
-                  style:
-                      AppTextStyles.footnote.copyWith(color: AppColors.danger)),
+                  style: AppTextStyles.body.copyWith(color: AppColors.danger)),
             ),
           ],
         ),
@@ -108,7 +112,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           AppCard(
             child: Center(
               child: Text(
-                '${person.nickname}と過ごす毎日が、\nかけがえのない時間です',
+                '平均の年齢を超えて、日々を重ねています',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.callout
                     .copyWith(color: AppColors.textSecondary),
@@ -116,17 +120,17 @@ class ImportantPersonDetailPage extends ConsumerWidget {
             ),
           )
         else ...[
-          _statCard('これから', '$pRemaining', '年(目安)'),
+          _statCard('これから', '$pRemaining', '年'),
           if (pHealthRemaining > 0) ...[
             const SizedBox(height: AppSpacing.cardGap),
-            _statCard('元気でいられる時間', '$pHealthRemaining', '年'),
+            _statCard('元気に過ごせる目安', '$pHealthRemaining', '年'),
           ],
           const SizedBox(height: AppSpacing.cardGap),
           _statCard('一緒にいられる年数', '$together', '年',
-              sub: '自分と相手の、平均の早いほう'),
+              sub: 'ふたりの平均のうち、短いほうで計算'),
           const SizedBox(height: AppSpacing.cardGap),
-          _statCard('会える残り回数', fmt.format(meetCount), '回',
-              sub: '${freqToLabel(person.meetingFrequency)}会う場合',
+          _statCard('これから会える回数', fmt.format(meetCount), '回',
+              sub: '${freqToLabel(person.meetingFrequency)}会うとして',
               valueColor: AppColors.accent),
           if (lastMetDays != null) ...[
             const SizedBox(height: AppSpacing.cardGap),
@@ -141,22 +145,12 @@ class ImportantPersonDetailPage extends ConsumerWidget {
                       TextSpan(
                         text: '$lastMetDays',
                         style: AppTextStyles.display.copyWith(
-                          color: lastMetDays > 60
-                              ? AppColors.accent
-                              : AppColors.text,
+                          color: AppColors.text,
                         ),
                       ),
                       TextSpan(text: ' 日', style: AppTextStyles.footnote),
                     ]),
                   ),
-                  if (lastMetDays > 90) ...[
-                    const SizedBox(height: AppSpacing.s),
-                    Text(
-                      'そろそろ会いたくなりませんか？',
-                      style: AppTextStyles.footnote
-                          .copyWith(color: AppColors.accent),
-                    ),
-                  ],
                 ],
               ),
             ),

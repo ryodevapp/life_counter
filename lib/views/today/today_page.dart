@@ -250,7 +250,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     if (!mounted) return;
     AppToast.success(
       context,
-      added ? 'やりたいこと(バケットリスト)に入れました' : 'もう、やりたいことに入っています',
+      added ? 'バケットリストに追加しました' : 'もうバケットリストにあります',
     );
   }
 
@@ -264,6 +264,9 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     super.dispose();
   }
 
+  static final _counterWord =
+      AppTextStyles.body.copyWith(color: AppColors.textMuted);
+
   @override
   Widget build(BuildContext context) {
     // 今日タブに戻ったら、ほかの画面で直した答えを読み直す(入力中は上書きしない)
@@ -272,7 +275,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final birthDate = settings.birthDate;
     if (birthDate == null) {
       return Center(
-          child: Text('オンボーディングのあとに表示されます',
+          child: Text('生年月日を入れると表示されます',
               style: AppTextStyles.callout
                   .copyWith(color: AppColors.textMuted)));
     }
@@ -281,7 +284,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final formatter = NumberFormat('#,###', 'ja_JP');
     final now = _date;
     final dateStr =
-        '${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
+        '${now.year}年${now.month}月${now.day}日（${DateFormat.E('ja_JP').format(now)}）';
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -298,19 +301,18 @@ class _TodayPageState extends ConsumerState<TodayPage> {
               padding: const EdgeInsets.only(bottom: AppSpacing.xl),
               child: Column(
                 children: [
-                  Text(
-                    formatter.format(lifeDays),
-                    style: AppTextStyles.counter,
-                  ),
-                  const SizedBox(height: AppSpacing.s),
-                  Text(
-                    '日目',
-                    style: AppTextStyles.callout.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
+                  // 日付 → 「人生 12,616 日目」(数字の下の線に、前後の言葉を揃える)
                   Text(dateStr, style: AppTextStyles.footnote),
+                  const SizedBox(height: AppSpacing.s),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(text: '人生 ', style: _counterWord),
+                      TextSpan(
+                          text: formatter.format(lifeDays),
+                          style: AppTextStyles.counter),
+                      TextSpan(text: ' 日目', style: _counterWord),
+                    ]),
+                  ),
                 ],
               ),
             ),

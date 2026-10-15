@@ -18,13 +18,13 @@ class AppSegmentedControl<T> extends StatelessWidget {
   final T selectedValue;
   final ValueChanged<T> onChanged;
 
-  static const _height = 40.0;
+  static const _height = 36.0;
   static const _inset = 3.0;
 
   @override
   Widget build(BuildContext context) {
     final index = items.indexWhere((i) => i.value == selectedValue);
-    // 押せる範囲は 44 を保つ(見た目の土台は 40)
+    // 押せる範囲は 44 を保つ(見た目の土台は 36)
     return SizedBox(
       height: AppSpacing.minTap,
       child: Center(

@@ -37,8 +37,8 @@ class AppTextStyles {
         color: AppColors.text,
       );
 
-  /// 画面のいちばん上の大きな題(iOS の Large Title と同じ 34pt)
-  static TextStyle get largeTitle => _sans(34, FontWeight.w700, 1.2);
+  /// 画面のいちばん上の題。ヒラギノは SF より黒く見えるので、34pt・太字にせず 28pt・600 にとどめる
+  static TextStyle get largeTitle => _sans(28, FontWeight.w600, 1.25);
 
   /// 詳しい画面の題・まとまりの題
   static TextStyle get title => _sans(22, FontWeight.w700, 1.35);
@@ -47,7 +47,7 @@ class AppTextStyles {
   static TextStyle get headline => _sans(17, FontWeight.w600, 1.5);
 
   /// 本文・答え(日本語は行の間を広めに)
-  static TextStyle get body => _sans(17, FontWeight.w400, 1.7);
+  static TextStyle get body => _sans(17, FontWeight.w400, 1.6);
 
   /// 一覧の本文・説明
   static TextStyle get callout => _sans(15, FontWeight.w400, 1.6);
@@ -58,7 +58,7 @@ class AppTextStyles {
 
   /// 小さい見出し(「今日の問い」など)・ラベル
   static TextStyle get captionLabel =>
-      _sans(12, FontWeight.w600, 1.4, AppColors.textMuted);
+      _sans(13, FontWeight.w600, 1.4, AppColors.textMuted);
 
   /// 下のタブの文字(iOS のタブバーと同じ 10〜11pt)
   static TextStyle get tab => _sans(11, FontWeight.w600, 1.2);

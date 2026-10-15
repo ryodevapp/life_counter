@@ -200,7 +200,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: AppSpacing.s),
             Text(
-              '日(平均までの目安)',
+              '日（平均からの目安）',
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xxl),

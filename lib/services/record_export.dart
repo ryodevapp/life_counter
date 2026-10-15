@@ -41,9 +41,9 @@ String exportRecordsAsText(
   if (buckets.isNotEmpty) {
     out
       ..writeln()
-      ..writeln('やりたいこと');
+      ..writeln('バケットリスト');
     for (final b in buckets) {
-      final mark = b.doneAt != null ? '[できた] ' : '';
+      final mark = b.doneAt != null ? '[かなえた] ' : '';
       final who = personNames[b.personId];
       out.writeln('- $mark${b.title}${who != null ? '($whoと)' : ''}');
     }

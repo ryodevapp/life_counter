@@ -31,8 +31,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     _TabItem(CupertinoIcons.sun_max, CupertinoIcons.sun_max_fill, '今日'),
     _TabItem(CupertinoIcons.book, CupertinoIcons.book_fill, '記録'),
     _TabItem(CupertinoIcons.heart, CupertinoIcons.heart_fill, '人生'),
-    _TabItem(CupertinoIcons.person_crop_circle,
-        CupertinoIcons.person_crop_circle_fill, 'マイページ'),
+    _TabItem(CupertinoIcons.gear_alt, CupertinoIcons.gear_alt_fill, '設定'),
   ];
 
   late final _pages = [

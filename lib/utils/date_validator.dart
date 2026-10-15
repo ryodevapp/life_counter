@@ -17,14 +17,14 @@ class DateValidator {
   /// 生年月日として有効かチェック（未来日でない、1920年以降）
   static String? validateBirthDate(int year, int month, int day) {
     if (!isValidDate(year, month, day)) {
-      return '有効な日付を入力してください';
+      return 'この日付は選べません';
     }
     final date = DateTime(year, month, day);
     if (date.isAfter(DateTime.now())) {
-      return '生年月日は今日以前を入力してください';
+      return '今日までの日付を選べます';
     }
     if (year < 1920) {
-      return '1920年以降を入力してください';
+      return '1920年以降の日付を選べます';
     }
     return null; // OK
   }

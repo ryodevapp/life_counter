@@ -78,7 +78,9 @@ class _MoodButton extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: selected ? AppColors.accentSurface2 : AppColors.bgWarm,
+                  // 選んでいないときは丸を敷かない(同じ色の透明度0。途中で灰色にならないように)
+                  color: AppColors.accentSurface2
+                      .withValues(alpha: selected ? 0.15 : 0),
                   border: Border.all(
                     color: AppColors.accent.withValues(alpha: selected ? 1 : 0),
                     width: 1.5,
@@ -152,13 +154,6 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
     if (isFinal) _base = text;
   }
 
-  static final _noBorder = AppColors.accent.withValues(alpha: 0);
-
-  OutlineInputBorder _border(Color color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(AppRadius.field),
-    borderSide: BorderSide(color: color),
-  );
-
   @override
   Widget build(BuildContext context) {
     final showBucket =
@@ -183,37 +178,27 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                 maxLines: 10,
                 maxLength: _maxChars,
                 onChanged: widget.onAnswerChanged,
-                style: AppTextStyles.callout,
+                style: AppTextStyles.body,
+                cursorColor: AppColors.accent,
+                // カードの中に直接書く(塗りの欄を入れ子にしない)。聞いている間は下の案内とマイクの動きで示す
                 decoration: InputDecoration(
-                  hintText: '書く、または右下のマイクで話す\n(書かなくても大丈夫です)',
+                  hintText: 'ひとことでも大丈夫です。\nマイクで話して入力することもできます',
                   hintMaxLines: 2,
-                  hintStyle: AppTextStyles.callout.copyWith(
+                  hintStyle: AppTextStyles.body.copyWith(
                     color: AppColors.textDisabled,
                   ),
-                  filled: true,
-                  fillColor: AppColors.bgWarm,
                   counterText: '',
+                  isCollapsed: true,
+                  border: InputBorder.none,
                   // 下はマイクのボタン(押せる範囲 44)の分を空ける
-                  contentPadding: const EdgeInsets.fromLTRB(
-                    AppSpacing.l,
-                    AppSpacing.m,
-                    AppSpacing.l,
-                    AppSpacing.minTap + AppSpacing.s,
-                  ),
-                  // 枠は聞いている間だけ出す(ほかは AppInput と同じく枠なし)
-                  border: _border(_noBorder),
-                  enabledBorder: _border(
-                    _listening ? AppColors.accent : _noBorder,
-                  ),
-                  focusedBorder: _border(
-                    _listening ? AppColors.accent : _noBorder,
-                  ),
+                  contentPadding: const EdgeInsets.only(
+                      bottom: AppSpacing.minTap + AppSpacing.s),
                 ),
               ),
               Positioned(
-                // マイクは見た目 36・押せる範囲 44。欄の角から 4 内側に置く
-                right: AppSpacing.xs,
-                bottom: AppSpacing.xs,
+                // マイクは見た目 36・押せる範囲 44。カードの文字の右端に揃える
+                right: 0,
+                bottom: 0,
                 child: VoiceInputButton(
                   onStart: () => setState(() {
                     _listening = true;
@@ -244,7 +229,7 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                         const SizedBox(width: AppSpacing.s),
                         Expanded(
                           child: Text(
-                            '聞いています。話し終えたら ■ で止められます',
+                            '聞いています。■ で止まります',
                             style: AppTextStyles.footnote.copyWith(
                               color: AppColors.accent,
                             ),
@@ -277,7 +262,7 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
                   minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
                 ),
                 child: Text(
-                  'やりたいこと(バケットリスト)に入れる',
+                  'バケットリストに追加',
                   style: AppTextStyles.footnote.copyWith(
                     color: AppColors.accent,
                   ),

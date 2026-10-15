@@ -70,7 +70,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                   for (final g in [
                     (Gender.male, '男性'),
                     (Gender.female, '女性'),
-                    (Gender.unspecified, '選択しない'),
+                    (Gender.unspecified, '答えない'),
                   ]) ...[
                     if (g.$1 != Gender.male)
                       const SizedBox(width: AppSpacing.s),

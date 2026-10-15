@@ -40,8 +40,8 @@ void main() {
     expect(text, contains('問い: 問い288'));
     expect(text, contains('スタンプ: 😊'));
     expect(text, contains('答え: 散歩した'));
-    expect(text.indexOf('やりたいこと'), greaterThan(text.indexOf('2026-10-15')));
+    expect(text.indexOf('バケットリスト'), greaterThan(text.indexOf('2026-10-15')));
     expect(text, contains('- 温泉に行く(母と)'));
-    expect(text, contains('- [できた] 富士山'));
+    expect(text, contains('- [かなえた] 富士山'));
   });
 }

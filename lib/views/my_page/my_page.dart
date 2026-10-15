@@ -31,15 +31,15 @@ class MyPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(userSettingsProvider);
     final bd = settings.birthDate;
-    final bdText = bd != null ? '${bd.year}/${bd.month}/${bd.day}' : '---';
+    final bdText = bd != null ? '${bd.year}年${bd.month}月${bd.day}日' : '未設定';
     final genText = switch (settings.gender) {
       Gender.male => '男性',
       Gender.female => '女性',
-      Gender.unspecified => '選択しない',
+      Gender.unspecified => '答えない',
     };
     final notifText = settings.notificationEnabled
-        ? 'ON \u30FB ${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}'
-        : 'OFF';
+        ? '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}'
+        : 'オフ';
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -47,7 +47,7 @@ class MyPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const PageHeader('マイページ'),
+            const PageHeader('設定'),
 
             AppCard(
               padding: _groupPadding,
@@ -99,7 +99,7 @@ class MyPage extends ConsumerWidget {
                 future: _packageInfo,
                 builder: (context, snapshot) => Text(
                   snapshot.hasData
-                      ? 'LifeCounter v${snapshot.data!.version}'
+                      ? 'バージョン ${snapshot.data!.version}'
                       : 'LifeCounter',
                   style: AppTextStyles.footnote,
                 ),
@@ -174,12 +174,12 @@ class MyPage extends ConsumerWidget {
             children: [
               const SheetHandle(),
               const SizedBox(height: AppSpacing.l),
-              Text('性別を選択', style: AppTextStyles.headline),
+              Text('性別', style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
               for (final g in [
                 (Gender.male, '男性'),
                 (Gender.female, '女性'),
-                (Gender.unspecified, '選択しない'),
+                (Gender.unspecified, '答えない'),
               ])
                 ListTile(
                   title: Text(g.$2, style: AppTextStyles.callout),
@@ -224,7 +224,7 @@ class MyPage extends ConsumerWidget {
               Text('朝の通知', style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
               SwitchListTile(
-                title: Text('通知を有効にする', style: AppTextStyles.callout),
+                title: Text('朝の通知', style: AppTextStyles.callout),
                 value: settings.notificationEnabled,
                 activeTrackColor: AppColors.accent,
                 onChanged: (v) async {
@@ -242,7 +242,7 @@ class MyPage extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text('通知時刻', style: AppTextStyles.callout),
+                title: Text('時刻', style: AppTextStyles.callout),
                 trailing: Text(
                   '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}',
                   style: AppTextStyles.callout
