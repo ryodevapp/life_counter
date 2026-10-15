@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -22,7 +23,7 @@ void main() {
 
     await tester.tap(find.text('おだやか'));
     await wait(tester);
-    await tester.enterText(find.byType(TextField).first, '祖父の本棚にあった、星の図鑑');
+    await tester.enterText(find.byType(TextField).first, '祖父の本棚にあった、星の図鑑。夏休みに祖父の家へ行くたびに、縁側で一緒にページをめくった。夜になると庭に出て、図鑑で覚えた星座を探した。あのとき見上げた空の広さが、いまも何かに夢中になるときの気持ちの原点になっている気がする。');
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
@@ -32,6 +33,11 @@ void main() {
 
     await tapText(tester, '記録');
     await shot(binding, tester, '${prefix}02_records_list');
+    await tester.tap(find.byIcon(CupertinoIcons.pencil).first);
+    await wait(tester);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await shot(binding, tester, '${prefix}02e_record_edit');
+    await tapText(tester, 'キャンセル');
     await tapText(tester, 'カレンダー');
     await shot(binding, tester, '${prefix}03_records_calendar');
 

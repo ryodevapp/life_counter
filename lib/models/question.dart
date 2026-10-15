@@ -36,3 +36,7 @@ class Question {
   /// やりたいことリストにつながる問いかどうか。
   bool get isBucket => category == 'bucket';
 }
+
+/// 問いと、理由を聞くもう一歩を1つの文にする(「没頭したいことは？ それに惹かれるのは、なぜ？」)
+String questionWithFollowUp(Question q) =>
+    q.followUp == null ? q.text : '${q.text} ${q.followUp}';

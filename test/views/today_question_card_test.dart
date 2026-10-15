@@ -74,7 +74,7 @@ void main() {
       expect(find.textContaining('バケットリスト'), findsOneWidget);
     });
 
-    testWidgets('the follow-up asking the reason is shown from the start, under the question',
+    testWidgets('the question and the follow-up asking the reason read as one sentence, from the start',
         (tester) async {
       const q = Question(
           id: 'q3',
@@ -89,14 +89,8 @@ void main() {
             answerController: TextEditingController(),
             onAnswerChanged: (_) {},
           ));
-      // 答える前から出ている
-      final follow = find.text(q.followUp!);
-      expect(follow, findsOneWidget);
-      // 問いの下、書く欄の上
-      expect(tester.getRect(follow).top,
-          greaterThan(tester.getRect(find.text(q.text)).bottom - 1));
-      expect(tester.getRect(follow).bottom,
-          lessThan(tester.getRect(find.byType(TextField)).top + 1));
+      // 答える前から、1つの文として出ている
+      expect(find.text('人生を変えた本は？ そう思うのは、どうして？'), findsOneWidget);
     });
 
     testWidgets('no streak or count text is shown', (tester) async {

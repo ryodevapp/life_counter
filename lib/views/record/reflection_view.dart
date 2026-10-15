@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/daily_record.dart';
+import '../../models/question.dart';
 import '../../models/stamp.dart';
 import '../../providers/question_bank_provider.dart';
 import '../../utils/date_only.dart';
@@ -116,7 +117,7 @@ class LastYearCard extends ConsumerWidget {
             if (r.answer != null) ...[
               const SizedBox(height: AppSpacing.s),
               if (q != null)
-                Text(q.text,
+                Text(questionWithFollowUp(q),
                     style: AppTextStyles.footnote
                         .copyWith(color: AppColors.textSecondary)),
               const SizedBox(height: AppSpacing.xs),

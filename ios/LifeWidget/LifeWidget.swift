@@ -3,7 +3,7 @@ import WidgetKit
 
 // 1つのウィジェットに役目は1つ。それ以外の情報は載せない
 //   小(LifeDaysWidget)     : 人生◯日目だけ
-//   中(TodayQuestionWidget): 今日の問いと、スタンプ5つだけ
+//   中(TodayQuestionWidget): 今日の問い・気分の顔5つ・「書く」(押すとアプリの答えの欄が開く)
 
 struct DayEntry: TimelineEntry {
     let date: Date
@@ -80,31 +80,51 @@ struct TodayQuestionView: View {
     @Environment(\.colorScheme) var scheme
     let entry: DayEntry
 
+    /// 押すと、アプリの答えの欄にキーボードが出た状態で開く(ウィジェットでは文字を入力できないため)
+    static let answerURL = URL(string: "lifecounter://answer?homeWidget")!
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             if let day = entry.day {
+                // 問い(理由を聞くもう一歩もつなげた1文)
                 Text(day.question)
                     .font(.system(size: 14, weight: .medium))
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.8)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.85)
                     .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
                     .widgetAccentable()
                 Spacer(minLength: 0)
-                // 気分は問いへの答えではないので、見出しを付けて分ける
-                Text("今日の気分")
-                    .font(.system(size: 10))
-                    .foregroundStyle(Tone.muted)
-                HStack {
+                HStack(spacing: 6) {
+                    // 気分はその場で押して残せる
                     ForEach(stampDefs, id: \.id) { s in
                         Button(intent: StampIntent(stampId: s.id, date: day.date)) {
                             MoodFaceView(moodId: s.id)
                                 .frame(width: 30, height: 30)
-                                .frame(maxWidth: .infinity)
-                                .opacity(entry.stamp == nil || entry.stamp == s.id ? 1 : 0.3)
+                                .overlay(
+                                    Circle().stroke(Tone.accent, lineWidth: 1.5)
+                                        .padding(-2)
+                                        .opacity(entry.stamp == s.id ? 1 : 0)
+                                )
+                                .opacity(entry.stamp == nil || entry.stamp == s.id ? 1 : 0.4)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(s.label)
                     }
+                    Spacer(minLength: 4)
+                    // 答えはアプリで書く
+                    Link(destination: Self.answerURL) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "square.and.pencil")
+                                .font(.system(size: 12, weight: .semibold))
+                            Text("書く")
+                                .font(.system(size: 13, weight: .semibold))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .foregroundStyle(.white)
+                        .background(Capsule().fill(Tone.accent))
+                    }
+                    .accessibilityLabel("答えを書く")
                 }
             } else {
                 Text("アプリを開くと、今日の問いが表示されます")
@@ -113,6 +133,7 @@ struct TodayQuestionView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .widgetURL(Self.answerURL)
         .containerBackground(for: .widget) { scheme == .dark ? Tone.bgDark : Tone.bg }
     }
 }
@@ -131,8 +152,8 @@ struct TodayQuestionWidget: Widget {
     let kind = "TodayQuestionWidget"
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DayProvider()) { TodayQuestionView(entry: $0) }
-            .configurationDisplayName("今日の問い")
-            .description("今日の問いを見て、今日の気分をひと押しで残せます。")
+            .configurationDisplayName("今日の記録")
+            .description("今日の問いを見て、気分をひと押しで残せます。「書く」から答えも書けます。")
             .supportedFamilies([.systemMedium])
     }
 }

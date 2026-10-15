@@ -24,7 +24,7 @@ void main() {
       }
     });
     test('question is the day\'s question, and nothing personal is included', () {
-      expect(days.first['q'], bank.forDate(now).text);
+      expect(days.first['q'], questionWithFollowUp(bank.forDate(now)));
       expect(days.first.keys.toSet(), {'d', 'n', 'q'});
     });
   });

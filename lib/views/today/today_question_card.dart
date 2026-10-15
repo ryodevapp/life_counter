@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
@@ -144,46 +143,37 @@ class TodayQuestionCard extends StatelessWidget {
         children: [
           Text('今日の問い', style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
-          Text(question.text, style: AppTextStyles.headline),
-          // 名詞ひとつで答えられる問いでも、理由や背景まで書けるように、もう一歩を最初から並べる
-          if (question.followUp != null) ...[
-            const SizedBox(height: AppSpacing.xs),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Icon(CupertinoIcons.arrow_turn_down_right,
-                      size: 15, color: AppColors.accent),
-                ),
-                const SizedBox(width: AppSpacing.s - 2),
-                Expanded(
-                  child: Text(question.followUp!,
-                      style: AppTextStyles.callout
-                          .copyWith(color: AppColors.textSecondary)),
-                ),
-              ],
-            ),
-          ],
+          // 問いと、理由を聞くもう一歩を1つの文で(「没頭したいことは？ それに惹かれるのは、なぜ？」)
+          Text(questionWithFollowUp(question), style: AppTextStyles.headline),
           const SizedBox(height: AppSpacing.l),
-          // カードの中に直接書く(塗りの欄を入れ子にしない)
+          // 書く場所だと分かるように、うすい枠の欄にする
           TextField(
             controller: answerController,
             focusNode: answerFocus,
-            minLines: 3,
-            maxLines: 12,
+            minLines: 4,
+            maxLines: null,
             maxLength: _maxChars,
             onChanged: onAnswerChanged,
             style: AppTextStyles.body,
             cursorColor: AppColors.accent,
+            keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
               hintText: 'ひとことでも大丈夫です。\nキーボードのマイクで、話して入力することもできます',
               hintMaxLines: 3,
               hintStyle:
                   AppTextStyles.body.copyWith(color: AppColors.textDisabled),
               counterText: '',
-              isCollapsed: true,
-              border: InputBorder.none,
+              filled: true,
+              fillColor: AppColors.bg,
+              contentPadding: const EdgeInsets.all(AppSpacing.l),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: const BorderSide(color: AppColors.divider),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: const BorderSide(color: AppColors.borderAccent, width: 1.5),
+              ),
             ),
           ),
           if (lastYearAnswer != null && lastYearAnswer!.trim().isNotEmpty) ...[

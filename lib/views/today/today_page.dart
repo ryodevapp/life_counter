@@ -271,6 +271,12 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   Widget build(BuildContext context) {
     // 今日タブに戻ったら、ほかの画面で直した答えを読み直す(入力中は上書きしない)
     ref.listen(todayReloadProvider, (_, _) => _loadDay());
+    // ウィジェットの「書く」から開いたら、答えの欄にキーボードを出す
+    ref.listen(answerFocusRequestProvider, (_, _) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _answerFocus.requestFocus();
+      });
+    });
     final settings = ref.watch(userSettingsProvider);
     final birthDate = settings.birthDate;
     if (birthDate == null) {
@@ -288,6 +294,8 @@ class _TodayPageState extends ConsumerState<TodayPage> {
 
     return SafeArea(
       child: SingleChildScrollView(
+        // 下へなぞるとキーボードが閉じる
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
           AppSpacing.screen,
           AppSpacing.l,

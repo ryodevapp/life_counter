@@ -21,6 +21,7 @@ class _LifeTabPageState extends State<LifeTabPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
             AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
         child: Column(

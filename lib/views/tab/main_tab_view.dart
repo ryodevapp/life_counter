@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_widget/home_widget.dart';
 import '../../providers/question_bank_provider.dart';
 import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
@@ -49,10 +52,22 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     // 起動のたびと、アプリに戻ったときに、朝の通知を先の60日分入れ直す
     _refreshNotifications();
     _lifecycle = AppLifecycleListener(onResume: _refreshNotifications);
+    // ウィジェットから開いたとき(lifecounter://answer?homeWidget)
+    HomeWidget.initiallyLaunchedFromHomeWidget().then(_onWidgetLink);
+    _widgetLinks = HomeWidget.widgetClicked.listen(_onWidgetLink);
+  }
+
+  StreamSubscription<Uri?>? _widgetLinks;
+
+  void _onWidgetLink(Uri? uri) {
+    if (!mounted || uri == null || uri.host != 'answer') return;
+    setState(() => _currentIndex = 0);
+    ref.read(answerFocusRequestProvider.notifier).state++;
   }
 
   @override
   void dispose() {
+    _widgetLinks?.cancel();
     _lifecycle.dispose();
     super.dispose();
   }
@@ -75,12 +90,21 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
       body: Stack(
         children: [
           Positioned.fill(
-            bottom: bottomInset,
+            // キーボードが出ている間は、その上の「完了」の帯の分も空ける
+            bottom: bottomInset > 0 ? bottomInset + _doneBarHeight : 0,
             child: IndexedStack(
               index: _currentIndex,
               children: _pages,
             ),
           ),
+          // キーボードを閉じる「完了」(iOS の入力欄の上に出る帯と同じ形)。複数行の欄は改行キーで閉じられないため
+          if (bottomInset > 0)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: bottomInset,
+              child: const _KeyboardDoneBar(height: _doneBarHeight),
+            ),
           if (bottomInset == 0)
             Positioned(
               left: _barSide,
@@ -96,6 +120,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     );
   }
 
+  static const _doneBarHeight = 44.0;
   static const _barSide = 21.0;
   static const _barBottom = 21.0;
   static const _barHeight = 62.0;
@@ -161,4 +186,38 @@ class _TabItem {
   final IconData icon;
   final IconData activeIcon;
   final String label;
+}
+
+class _KeyboardDoneBar extends StatelessWidget {
+  const _KeyboardDoneBar({required this.height});
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      decoration: const BoxDecoration(
+        color: AppColors.bgSub,
+        border: Border(top: BorderSide(color: AppColors.divider)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
+      alignment: Alignment.centerRight,
+      child: Semantics(
+        button: true,
+        label: 'キーボードを閉じる',
+        excludeSemantics: true,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.m, vertical: AppSpacing.s),
+            child: Text('完了',
+                style: AppTextStyles.headline.copyWith(color: AppColors.accent)),
+          ),
+        ),
+      ),
+    );
+  }
 }

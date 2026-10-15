@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../models/daily_record.dart';
+import '../../models/question.dart';
 import '../../models/stamp.dart';
 import 'reflection_view.dart';
 import '../../providers/isar_provider.dart';
@@ -15,6 +16,7 @@ import '../shared/mood_face.dart';
 import '../shared/mood_shape.dart';
 import '../shared/app_card.dart';
 import '../shared/app_input.dart';
+import '../shared/expandable_text.dart';
 import '../shared/app_segmented_control.dart';
 import '../shared/page_header.dart';
 
@@ -60,6 +62,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
             AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
         child: Column(
@@ -312,7 +315,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       final q = r.morningQuestionId == null
           ? null
           : ref.read(questionBankProvider).byId(r.morningQuestionId!);
-      fields.add((q?.text ?? '今日の問い', r.answer!));
+      fields.add((q == null ? '今日の問い' : questionWithFollowUp(q), r.answer!));
     }
     if (r.gratitude != null) fields.add(('感謝していること', r.gratitude!));
     if (r.todayGoal != null) fields.add(('今日やること', r.todayGoal!));
@@ -339,12 +342,8 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
           children: [
             Text(entry.value.$1, style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
-            Text(
-              entry.value.$2,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.callout,
-            ),
+            // 長い答えは5行まで。続きはその場で全文に広げて読める(省略したまま読めない作りにしない)
+            ExpandableText(entry.value.$2, style: AppTextStyles.callout),
           ],
         ),
       );
@@ -457,7 +456,8 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
             ],
           ),
           const SizedBox(height: AppSpacing.s),
-          _editField('今日の問い', _answerCtrl),
+          // 何への答えかが分かるように、その日の問いの文そのものを見出しにする
+          _editField(_questionText(), _answerCtrl),
           if (_hasDiaryFields) ...[
             const SizedBox(height: AppSpacing.m),
             _editField('感謝していること', _gratitudeCtrl),
@@ -478,16 +478,30 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
   );
 
+  /// その日の問い(もう一歩の問いもつなげる)
+  String _questionText() {
+    final bank = ref.read(questionBankProvider);
+    final id = widget.record.morningQuestionId;
+    final q = (id == null ? null : bank.byId(id)) ??
+        bank.forDate(widget.record.date);
+    return questionWithFollowUp(q);
+  }
+
+  /// 見出し + 書いた量に合わせて縦に広がる欄
   Widget _editField(String label, TextEditingController ctrl) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.captionLabel),
-        const SizedBox(height: AppSpacing.xs),
+        Text(label,
+            style:
+                AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.s),
         AppInput(
           controller: ctrl,
-          maxLength: 200,
-          textInputAction: TextInputAction.next,
+          maxLength: 1000,
+          minLines: 2,
+          maxLines: null,
+          textInputAction: TextInputAction.newline,
         ),
       ],
     );

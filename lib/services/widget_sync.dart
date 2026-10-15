@@ -5,6 +5,7 @@ import '../models/stamp.dart';
 import '../repositories/daily_record_repository.dart';
 import '../utils/date_only.dart';
 import 'morning_schedule.dart';
+import '../models/question.dart';
 import 'question_bank.dart';
 
 /// ウィジェットで押したスタンプ1件
@@ -36,7 +37,7 @@ List<Map<String, Object?>> buildWidgetPayload({
         return <String, Object?>{
           'd': ymd(d),
           'n': lifeDaysOn(birthDate, d),
-          'q': bank.forDate(d).text,
+          'q': questionWithFollowUp(bank.forDate(d)),
         };
       }(),
   ];
