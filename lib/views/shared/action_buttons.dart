@@ -31,7 +31,7 @@ class ActionButtons extends StatelessWidget {
                     const BoxConstraints(minHeight: AppSpacing.buttonHeight),
                 decoration: BoxDecoration(
                   color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Center(
                   child: Text(
@@ -54,7 +54,7 @@ class ActionButtons extends StatelessWidget {
                     const BoxConstraints(minHeight: AppSpacing.buttonHeight),
                 decoration: BoxDecoration(
                   color: AppColors.bgWarm,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Center(
                   child: Text(

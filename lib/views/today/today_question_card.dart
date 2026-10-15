@@ -155,7 +155,7 @@ class _TodayQuestionCardState extends State<TodayQuestionCard> {
   static final _noBorder = AppColors.accent.withValues(alpha: 0);
 
   OutlineInputBorder _border(Color color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(AppRadius.md),
+    borderRadius: BorderRadius.circular(AppRadius.field),
     borderSide: BorderSide(color: color),
   );
 

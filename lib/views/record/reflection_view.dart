@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/daily_record.dart';
@@ -77,7 +78,7 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
               tooltip: '前の月',
               onPressed: () =>
                   setState(() => _month = DateTime(_month.year, _month.month - 1)),
-              icon: const Icon(Icons.chevron_left, color: AppColors.textMuted),
+              icon: const Icon(CupertinoIcons.chevron_left, color: AppColors.textMuted),
             ),
             Text('${_month.year}年${_month.month}月',
                 style: AppTextStyles.headline),
@@ -85,7 +86,7 @@ class _ReflectionViewState extends ConsumerState<ReflectionView> {
               tooltip: '次の月',
               onPressed: () =>
                   setState(() => _month = DateTime(_month.year, _month.month + 1)),
-              icon: const Icon(Icons.chevron_right, color: AppColors.textMuted),
+              icon: const Icon(CupertinoIcons.chevron_right, color: AppColors.textMuted),
             ),
           ],
         ),

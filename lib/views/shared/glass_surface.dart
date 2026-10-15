@@ -18,6 +18,14 @@ class GlassSurface extends StatelessWidget {
   final double borderRadius;
   final EdgeInsetsGeometry padding;
 
+  // 彩度 1.4 倍の色の行列
+  static const List<double> _saturate = [
+    1.315, -0.286, -0.029, 0, 0, //
+    -0.085, 1.114, -0.029, 0, 0, //
+    -0.085, -0.286, 1.371, 0, 0, //
+    0, 0, 0, 1, 0, //
+  ];
+
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(borderRadius);
@@ -29,7 +37,7 @@ class GlassSurface extends StatelessWidget {
         borderRadius: radius,
         color: opaque ? AppColors.card : AppColors.glassFill,
         border: Border.all(
-            color: opaque ? AppColors.border : AppColors.glassEdge, width: 0.8),
+            color: opaque ? AppColors.border : AppColors.glassEdge, width: 0.5),
         gradient: opaque
             ? null
             : const LinearGradient(
@@ -50,7 +58,11 @@ class GlassSurface extends StatelessWidget {
         child: opaque
             ? surface
             : BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                // ぼかしに加えて色を少し濃くする(下の色がにじんで見え、ガラスらしくなる)
+                filter: ImageFilter.compose(
+                  outer: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                  inner: const ColorFilter.matrix(_saturate),
+                ),
                 child: surface,
               ),
       ),

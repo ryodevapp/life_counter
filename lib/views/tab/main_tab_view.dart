@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/question_bank_provider.dart';
@@ -8,6 +9,7 @@ import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/glass_surface.dart';
+import '../shared/sliding_pill_track.dart';
 import '../today/today_page.dart';
 import '../record/record_calendar_page.dart';
 import '../life/life_tab_page.dart';
@@ -26,10 +28,11 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   final _recordKey = GlobalKey<RecordCalendarPageState>();
 
   static const _tabs = [
-    _TabItem(icon: '\u25C9', label: '今日'),    // ◉
-    _TabItem(icon: '\u25A6', label: '記録'),    // ▦
-    _TabItem(icon: '\u221E', label: '人生'),    // ∞
-    _TabItem(icon: '\u25C7', label: 'マイページ'), // ◇
+    _TabItem(CupertinoIcons.sun_max, CupertinoIcons.sun_max_fill, '今日'),
+    _TabItem(CupertinoIcons.book, CupertinoIcons.book_fill, '記録'),
+    _TabItem(CupertinoIcons.heart, CupertinoIcons.heart_fill, '人生'),
+    _TabItem(CupertinoIcons.person_crop_circle,
+        CupertinoIcons.person_crop_circle_fill, 'マイページ'),
   ];
 
   late final _pages = [
@@ -81,9 +84,12 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
           ),
           if (bottomInset == 0)
             Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
+              left: _barSide,
+              right: _barSide,
+              // ホームの印と重ならない高さに浮かべる(iOS 26 のタブバーと同じく下端から 21pt 前後)
+              bottom: MediaQuery.viewPaddingOf(context).bottom > 0
+                  ? _barBottom
+                  : AppSpacing.m,
               child: _buildTabBar(),
             ),
         ],
@@ -91,73 +97,60 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     );
   }
 
-  /// 内容の上に浮かぶ、ガラスのカプセル型のタブバー(下の内容が透けて見える)
+  static const _barSide = 21.0;
+  static const _barBottom = 21.0;
+  static const _barHeight = 62.0;
+
+  void _onTabSelected(int i) {
+    if (i != _currentIndex) setState(() => _currentIndex = i);
+    if (i == 0) ref.read(todayReloadProvider.notifier).state++;
+    if (i == 1) _recordKey.currentState?.reload();
+  }
+
+  /// 内容の上に浮かぶ、ガラスのカプセル型のタブバー
+  /// 選んだタブの下の明るいカプセルは、ばねで移り、動く間は伸びる。指でなぞっても選べる
   Widget _buildTabBar() {
-    return SafeArea(
-      top: false,
-      minimum: const EdgeInsets.only(bottom: AppSpacing.m),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
-        child: GlassSurface(
-          borderRadius: AppRadius.full,
-          padding: const EdgeInsets.all(AppSpacing.xs),
-          child: Row(
-            children: List.generate(_tabs.length, (i) {
-              final tab = _tabs[i];
-              final isActive = i == _currentIndex;
-              return Expanded(
-                child: Semantics(
-                  button: true,
-                  selected: isActive,
-                  label: tab.label,
-                  excludeSemantics: true,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      setState(() => _currentIndex = i);
-                      if (i == 0) ref.read(todayReloadProvider.notifier).state++;
-                      if (i == 1) _recordKey.currentState?.reload();
-                    },
-                    child: AnimatedContainer(
-                      duration: AppMotion.base,
-                      curve: Curves.easeOutCubic,
-                      padding:
-                          const EdgeInsets.symmetric(vertical: AppSpacing.s),
-                      decoration: BoxDecoration(
-                        // 選んだタブは、ガラスの上に控えめなアクセント色の丸を敷く
-                        // (選んでいないときは同じ色の透明度0。途中で灰色にならないように)
-                        color: isActive
-                            ? AppColors.accentSurface2
-                            : AppColors.accentSurface2.withValues(alpha: 0),
-                        borderRadius: BorderRadius.circular(AppRadius.full),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            tab.icon,
-                            style: AppTextStyles.headline.copyWith(
-                              color: isActive
-                                  ? AppColors.accent
-                                  : AppColors.textMuted,
-                            ),
-                          ),
-                          Text(
-                            tab.label,
-                            style: AppTextStyles.captionLabel.copyWith(
-                              color: isActive
-                                  ? AppColors.accent
-                                  : AppColors.textMuted,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
+    return SizedBox(
+      height: _barHeight,
+      child: GlassSurface(
+        borderRadius: AppRadius.full,
+        child: SlidingPillTrack(
+          count: _tabs.length,
+          index: _currentIndex,
+          onSelect: _onTabSelected,
+          pillDecoration: const ShapeDecoration(
+            color: AppColors.glassPill,
+            shape: StadiumBorder(
+              side: BorderSide(color: AppColors.glassEdge, width: 0.5),
+            ),
+            shadows: [
+              BoxShadow(
+                color: Color(0x0F2C2520),
+                offset: Offset(0, 1),
+                blurRadius: 4,
+              ),
+            ],
           ),
+          itemBuilder: (context, i, t) {
+            final tab = _tabs[i];
+            final color = Color.lerp(AppColors.textMuted, AppColors.accent, t);
+            return Semantics(
+              button: true,
+              selected: i == _currentIndex,
+              label: tab.label,
+              excludeSemantics: true,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(t > 0.5 ? tab.activeIcon : tab.icon,
+                      size: 24, color: color),
+                  const SizedBox(height: 2),
+                  Text(tab.label,
+                      maxLines: 1, style: AppTextStyles.tab.copyWith(color: color)),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -165,7 +158,8 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
 }
 
 class _TabItem {
-  const _TabItem({required this.icon, required this.label});
-  final String icon;
+  const _TabItem(this.icon, this.activeIcon, this.label);
+  final IconData icon;
+  final IconData activeIcon;
   final String label;
 }

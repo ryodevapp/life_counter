@@ -39,13 +39,32 @@ void main() {
 
     await tapText(tester, '人生');
     await tapText(tester, 'あなた');
+    // 押した切り替えが見える位置まで送られているので、題が見える位置に戻す
+    await tester.ensureVisible(find.text('人生').first);
+    await wait(tester);
     await shot(binding, tester, '${prefix}05_life_you');
     await tapText(tester, '大切な人');
     await shot(binding, tester, '${prefix}06_life_people');
     await tapText(tester, 'やりたいこと');
     await shot(binding, tester, '${prefix}07_life_bucket');
+    await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
+    await wait(tester);
+    await shot(binding, tester, '${prefix}07b_bucket_typing');
+    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await wait(tester);
+    await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
+    await wait(tester, 300);
+    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await wait(tester, 300);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await wait(tester);
+    await tester.tap(find.bySemanticsLabel('押すと、できたにする').last);
+    await shot(binding, tester, '${prefix}07c_bucket_items');
 
-    await tapText(tester, 'マイページ');
+    // 下のタブの印が動いている途中(伸びているか)と、止まったところ
+    await tester.tap(find.text('マイページ').last);
+    await tester.pump(const Duration(milliseconds: 90));
+    await binding.takeScreenshot('${prefix}08m_tab_moving');
     await shot(binding, tester, '${prefix}08_my_page');
   });
 }

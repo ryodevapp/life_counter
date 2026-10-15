@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
@@ -98,7 +99,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                     });
                   }
                 },
-                // 見た目は AppInput と同じ(bgWarm・角 md・枠なし・高さ 48 以上)
+                // 見た目は AppInput と同じ(bgWarm・角 field・枠なし・高さ 48 以上)
                 child: Container(
                   width: double.infinity,
                   constraints: const BoxConstraints(minHeight: 48),
@@ -106,7 +107,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                       horizontal: AppSpacing.l, vertical: AppSpacing.m),
                   decoration: BoxDecoration(
                     color: AppColors.bgWarm,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    borderRadius: BorderRadius.circular(AppRadius.field),
                   ),
                   child: Row(
                     children: [
@@ -116,7 +117,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                           style: AppTextStyles.callout,
                         ),
                       ),
-                      Icon(Icons.calendar_today_rounded,
+                      Icon(CupertinoIcons.calendar,
                           color: AppColors.textMuted, size: 18),
                     ],
                   ),
@@ -149,7 +150,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
             border: Border.all(
               color: isSelected ? AppColors.borderAccent : AppColors.border,
             ),
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            borderRadius: BorderRadius.circular(AppRadius.full),
           ),
           child: Center(
             child: Text(

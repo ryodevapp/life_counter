@@ -129,6 +129,8 @@ class YourTimeSection extends ConsumerWidget {
         // 残りの○○グリッド
         GridView.count(
           crossAxisCount: 2,
+          // 正方形だと余白ばかりになるので、横長のマスにして詰める
+          childAspectRatio: 1.5,
           crossAxisSpacing: AppSpacing.cardGap,
           mainAxisSpacing: AppSpacing.cardGap,
           shrinkWrap: true,
@@ -150,23 +152,41 @@ class YourTimeSection extends ConsumerWidget {
 
   static final _barLabel = AppTextStyles.captionLabel;
 
+  /// 絵文字は色つきの書体で出す(☀ などが黒い記号にならないように)
+  static const _emoji =
+      TextStyle(fontSize: 17, height: 1.2, fontFamily: 'Apple Color Emoji');
+
   static Widget _remainingCard(
       String emoji, String label, int value, String unit,
       {String? sub}) {
     final formatter = NumberFormat('#,###', 'ja_JP');
     return AppCard(
-      // 2列の正方形のマスに数字・単位・補足を収めるため、内側は card(20)より狭い l(16)
       padding: const EdgeInsets.all(AppSpacing.l),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(emoji, style: AppTextStyles.headline),
-          const SizedBox(height: AppSpacing.xs),
-          Text(label, style: AppTextStyles.captionLabel),
-          const SizedBox(height: AppSpacing.xs),
-          Text(formatter.format(value), style: AppTextStyles.display),
-          Text(unit, style: AppTextStyles.captionLabel),
-          if (sub != null) Text(sub, style: AppTextStyles.captionLabel),
+          Row(
+            children: [
+              Text(emoji, style: _emoji),
+              const SizedBox(width: AppSpacing.s - 2),
+              Expanded(
+                child: Text(label,
+                    maxLines: 1,
+                    style: AppTextStyles.footnote
+                        .copyWith(color: AppColors.textSecondary)),
+              ),
+            ],
+          ),
+          const Spacer(),
+          Text.rich(
+            TextSpan(children: [
+              TextSpan(
+                  text: formatter.format(value), style: AppTextStyles.display),
+              TextSpan(text: ' $unit', style: AppTextStyles.footnote),
+            ]),
+            maxLines: 1,
+          ),
+          if (sub != null) Text(sub, style: AppTextStyles.footnote),
         ],
       ),
     );

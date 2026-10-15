@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
+import 'app_text_styles.dart';
+import 'sliding_pill_track.dart';
 
-/// 切り替え(Apple HIG の segmented control に合わせる)
-/// 横幅いっぱい・項目は均等の幅で、白い面が選んだ項目へすべって移る。どの画面でも同じ形
+/// 切り替え(iOS 26 の segmented control に合わせる)
+/// カプセルの土台に、白いカプセルの印。横幅いっぱい・項目は均等の幅。印はばねで移り、指でなぞっても選べる
 class AppSegmentedControl<T> extends StatelessWidget {
   const AppSegmentedControl({
     super.key,
@@ -17,73 +18,60 @@ class AppSegmentedControl<T> extends StatelessWidget {
   final T selectedValue;
   final ValueChanged<T> onChanged;
 
+  static const _height = 40.0;
   static const _inset = 3.0;
-  static const _height = AppSpacing.minTap;
 
   @override
   Widget build(BuildContext context) {
     final index = items.indexWhere((i) => i.value == selectedValue);
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    return Container(
-      height: _height + _inset * 2,
-      padding: const EdgeInsets.all(_inset),
-      decoration: BoxDecoration(
-        color: AppColors.bgSub,
-        borderRadius: BorderRadius.circular(AppRadius.md + _inset),
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final segment = constraints.maxWidth / items.length;
-          return Stack(
-            children: [
-              AnimatedPositioned(
-                duration: reduceMotion ? Duration.zero : AppMotion.base,
-                curve: Curves.easeOutCubic,
-                left: segment * (index < 0 ? 0 : index),
-                top: 0,
-                bottom: 0,
-                width: segment,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: AppColors.card,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    boxShadow: AppColors.cardShadow,
+    // 押せる範囲は 44 を保つ(見た目の土台は 40)
+    return SizedBox(
+      height: AppSpacing.minTap,
+      child: Center(
+        child: Container(
+          height: _height,
+          decoration: const ShapeDecoration(
+            color: AppColors.bgSub,
+            shape: StadiumBorder(),
+          ),
+          child: SlidingPillTrack(
+            count: items.length,
+            index: index < 0 ? 0 : index,
+            pillInset: _inset,
+            onSelect: (i) => onChanged(items[i].value),
+            pillDecoration: const ShapeDecoration(
+              color: AppColors.card,
+              shape: StadiumBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x142C2520),
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                ),
+                BoxShadow(
+                  color: Color(0x0A2C2520),
+                  offset: Offset(0, 0),
+                  blurRadius: 1,
+                ),
+              ],
+            ),
+            itemBuilder: (context, i, t) => Semantics(
+              button: true,
+              selected: i == index,
+              child: Center(
+                child: Text(
+                  items[i].label,
+                  maxLines: 1,
+                  style: AppTextStyles.callout.copyWith(
+                    fontSize: 14,
+                    fontWeight: t > 0.5 ? FontWeight.w600 : FontWeight.w400,
+                    color: Color.lerp(AppColors.textMuted, AppColors.text, t),
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  for (final item in items)
-                    Expanded(
-                      child: Semantics(
-                        button: true,
-                        selected: item.value == selectedValue,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => onChanged(item.value),
-                          child: Center(
-                            child: AnimatedDefaultTextStyle(
-                              duration: AppMotion.base,
-                              style: GoogleFonts.zenKakuGothicNew(
-                                fontSize: 14,
-                                fontWeight: item.value == selectedValue
-                                    ? FontWeight.w600
-                                    : FontWeight.w500,
-                                color: item.value == selectedValue
-                                    ? AppColors.accent
-                                    : AppColors.textMuted,
-                              ),
-                              child: Text(item.label, maxLines: 1),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          );
-        },
+            ),
+          ),
+        ),
       ),
     );
   }

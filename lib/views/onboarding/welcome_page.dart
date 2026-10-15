@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
@@ -132,7 +133,7 @@ class _BreathingArrowState extends State<_BreathingArrow>
         CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
       ),
       child: Icon(
-        Icons.keyboard_arrow_down,
+        CupertinoIcons.chevron_down,
         color: AppColors.textMuted,
         size: 24,
       ),

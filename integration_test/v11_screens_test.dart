@@ -60,9 +60,11 @@ void main() {
     await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
     await wait(tester);
     await shot(binding, tester, '07_bucket_typing');
-    await tapText(tester, '追加');
+    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await wait(tester);
     await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
-    await tapText(tester, '追加');
+    await tester.tap(find.bySemanticsLabel('リストに足す'));
+    await wait(tester);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
     await shot(binding, tester, '08_bucket_two_items');

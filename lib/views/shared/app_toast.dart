@@ -28,7 +28,7 @@ class AppToast {
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderRadius: BorderRadius.circular(AppRadius.full),
         ),
         // 下は浮かぶタブバーの上に出す
         margin: const EdgeInsets.fromLTRB(

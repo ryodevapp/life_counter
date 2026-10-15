@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -49,41 +50,43 @@ class MyPage extends ConsumerWidget {
             const PageHeader('マイページ'),
 
             AppCard(
+              padding: _groupPadding,
               child: Column(
                 children: [
                   _row(
-                    Icons.cake_outlined, '生年月日', value: bdText,
+                    CupertinoIcons.gift, '生年月日', value: bdText,
                     onTap: () => _editBirthDate(context, ref, settings),
                   ),
                   _divider(),
                   _row(
-                    Icons.person_outline, '性別', value: genText,
+                    CupertinoIcons.person, '性別', value: genText,
                     onTap: () => _editGender(context, ref, settings),
                   ),
                   _divider(),
                   _row(
-                    Icons.notifications_none, '朝の通知', value: notifText,
+                    CupertinoIcons.bell, '朝の通知', value: notifText,
                     onTap: () => _editNotification(context, ref, settings),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.cardGap),
+            const SizedBox(height: AppSpacing.xl),
 
             AppCard(
+              padding: _groupPadding,
               child: Column(
                 children: [
-                  _row(Icons.ios_share, '記録を書き出す',
+                  _row(CupertinoIcons.square_arrow_up, '記録を書き出す',
                       onTap: () => _exportRecords(context, ref)),
                   _divider(),
-                  _row(Icons.mail_outline, 'フィードバックを送る',
+                  _row(CupertinoIcons.envelope, 'フィードバックを送る',
                       onTap: () => _sendFeedback(context)),
                   _divider(),
-                  _row(Icons.lock_outline, 'プライバシーポリシー',
+                  _row(CupertinoIcons.lock, 'プライバシーポリシー',
                       onTap: () => _showLegal(context, 'privacy_policy.html',
                           'プライバシーポリシー')),
                   _divider(),
-                  _row(Icons.description_outlined, '利用規約',
+                  _row(CupertinoIcons.doc_text, '利用規約',
                       onTap: () => _showLegal(
                           context, 'terms_of_service.html', '利用規約')),
                 ],
@@ -181,7 +184,7 @@ class MyPage extends ConsumerWidget {
                 ListTile(
                   title: Text(g.$2, style: AppTextStyles.callout),
                   trailing: settings.gender == g.$1
-                      ? const Icon(Icons.check, color: AppColors.accent)
+                      ? const Icon(CupertinoIcons.checkmark, color: AppColors.accent)
                       : null,
                   onTap: () async {
                     Navigator.of(ctx).pop();
@@ -293,16 +296,19 @@ class MyPage extends ConsumerWidget {
           constraints: const BoxConstraints(minHeight: 52),
           child: Row(
             children: [
-              Icon(icon, size: 20, color: AppColors.textMuted),
+              // iOS の設定の行と同じ並び: アイコン・項目名・今の値・小さな矢印
+              Icon(icon, size: 22, color: AppColors.accent),
               const SizedBox(width: AppSpacing.m),
-              Expanded(child: Text(label, style: AppTextStyles.callout)),
+              Expanded(
+                  child: Text(label,
+                      style: AppTextStyles.body.copyWith(height: 1.3))),
               if (value != null)
                 Text(value,
-                    style: AppTextStyles.callout
-                        .copyWith(color: AppColors.textMuted)),
-              const SizedBox(width: AppSpacing.xs),
-              const Icon(Icons.chevron_right,
-                  size: 20, color: AppColors.textMuted),
+                    style: AppTextStyles.body
+                        .copyWith(height: 1.3, color: AppColors.textMuted)),
+              const SizedBox(width: AppSpacing.s),
+              const Icon(CupertinoIcons.chevron_right,
+                  size: 15, color: AppColors.textDisabled),
             ],
           ),
         ),
@@ -331,8 +337,12 @@ class MyPage extends ConsumerWidget {
     ));
   }
 
-  static Widget _divider() =>
-      const Divider(height: 1, color: AppColors.divider);
+  // iOS の設定の一覧と同じく、行の上下は詰め、区切り線は文字の頭から
+  static const _groupPadding = EdgeInsets.symmetric(
+      horizontal: AppSpacing.l, vertical: AppSpacing.xs);
+
+  static Widget _divider() => const Divider(
+      height: 1, indent: 22 + AppSpacing.m, color: AppColors.divider);
 }
 
 /// 法的ページ（HTML表示）

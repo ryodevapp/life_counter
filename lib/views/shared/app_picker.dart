@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
@@ -25,7 +26,7 @@ class AppPicker<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _showPicker(context),
-      // 見た目は AppInput と同じ(bgWarm・角 md・枠なし・高さ 48 以上)
+      // 見た目は AppInput と同じ(bgWarm・角 field・枠なし・高さ 48 以上)
       child: Container(
         width: double.infinity,
         constraints: const BoxConstraints(minHeight: 48),
@@ -33,7 +34,7 @@ class AppPicker<T> extends StatelessWidget {
             horizontal: AppSpacing.l, vertical: AppSpacing.m),
         decoration: BoxDecoration(
           color: AppColors.bgWarm,
-          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderRadius: BorderRadius.circular(AppRadius.field),
         ),
         child: Row(
           children: [
@@ -41,7 +42,7 @@ class AppPicker<T> extends StatelessWidget {
               child: Text(displayText, style: AppTextStyles.callout),
             ),
             Icon(
-              Icons.keyboard_arrow_down_rounded,
+              CupertinoIcons.chevron_down,
               color: AppColors.textMuted,
               size: 20,
             ),
@@ -144,7 +145,7 @@ class _PickerSheet<T> extends StatelessWidget {
                         ),
                         if (isSelected)
                           const Icon(
-                            Icons.check_rounded,
+                            CupertinoIcons.checkmark,
                             color: AppColors.accent,
                             size: 20,
                           ),

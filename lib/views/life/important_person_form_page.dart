@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
@@ -162,7 +163,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                           horizontal: AppSpacing.l, vertical: AppSpacing.m),
                       decoration: BoxDecoration(
                         color: AppColors.bgWarm,
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        borderRadius: BorderRadius.circular(AppRadius.field),
                       ),
                       child: Row(
                         children: [
@@ -172,7 +173,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                               style: AppTextStyles.callout,
                             ),
                           ),
-                          Icon(Icons.calendar_today_rounded,
+                          Icon(CupertinoIcons.calendar,
                               color: AppColors.textMuted, size: 18),
                         ],
                       ),
@@ -215,7 +216,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                           horizontal: AppSpacing.l, vertical: AppSpacing.m),
                       decoration: BoxDecoration(
                         color: AppColors.bgWarm,
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        borderRadius: BorderRadius.circular(AppRadius.field),
                       ),
                       child: Text(
                         _lastMet != null
@@ -287,7 +288,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
             color: sel ? AppColors.accentSurface2 : AppColors.bgWarm,
             border: Border.all(
                 color: sel ? AppColors.borderAccent : AppColors.border),
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            borderRadius: BorderRadius.circular(AppRadius.full),
           ),
           child: Center(
             child: Text(label,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../shared/app_colors.dart';
@@ -149,7 +150,7 @@ class _VoiceInputButtonState extends State<VoiceInputButton>
                   ],
                 ),
                 child: Icon(
-                  _listening ? Icons.stop_rounded : Icons.mic_none_rounded,
+                  _listening ? CupertinoIcons.stop_fill : CupertinoIcons.mic,
                   size: 20,
                   color: _listening ? Colors.white : AppColors.textSecondary,
                 ),

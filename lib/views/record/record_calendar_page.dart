@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -243,10 +244,15 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(_formatDate(r.date),
                               style: AppTextStyles.headline),
+                          // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
+                          if (stampById(r.stamp) case final mood?) ...[
+                            const SizedBox(width: AppSpacing.s),
+                            _MoodTag(emoji: mood.emoji, label: mood.label),
+                          ],
+                          const Spacer(),
                           _EditIconButton(
                               onTap: () =>
                                   setState(() => _editingRecordId = r.id)),
@@ -285,32 +291,13 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (r.weeklyReflectionHighlight != null) fields.add(('今週のハイライト', r.weeklyReflectionHighlight!));
     if (r.weeklyReflectionChange != null) fields.add(('来週変えること', r.weeklyReflectionChange!));
 
-    final mood = stampById(r.stamp);
-    final moodRow = <Widget>[
-      if (mood != null)
-        Padding(
-          padding: EdgeInsets.only(bottom: fields.isEmpty ? 0 : AppSpacing.m),
-          child: Row(
-            children: [
-              Text(mood.emoji, style: AppTextStyles.headline),
-              const SizedBox(width: AppSpacing.s),
-              Text('$moodQuestion  ', style: AppTextStyles.captionLabel),
-              Text(mood.label,
-                  style: AppTextStyles.footnote
-                      .copyWith(color: AppColors.textSecondary)),
-            ],
-          ),
-        ),
-    ];
-    if (fields.isEmpty && moodRow.isNotEmpty) return moodRow;
     if (fields.isEmpty) {
       return [
-        Text('(未入力)', style: AppTextStyles.footnote),
+        if (r.stamp == null) Text('(未入力)', style: AppTextStyles.footnote),
       ];
     }
 
     return [
-      ...moodRow,
       ...fields.asMap().entries.map((entry) {
       final isLast = entry.key == fields.length - 1;
       return Padding(
@@ -494,13 +481,36 @@ class _EditIconButton extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: Icon(
-              Icons.edit_outlined,
+              CupertinoIcons.pencil,
               size: 16,
               color: AppColors.textMuted,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// 一覧の日付の横に出す、その日の気分の札
+class _MoodTag extends StatelessWidget {
+  const _MoodTag({required this.emoji, required this.label});
+
+  final String emoji;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.s, AppSpacing.xs / 2, AppSpacing.m, AppSpacing.xs / 2),
+      decoration: const ShapeDecoration(
+        color: AppColors.bgWarm,
+        shape: StadiumBorder(),
+      ),
+      child: Text('$emoji $label',
+          style: AppTextStyles.footnote
+              .copyWith(color: AppColors.textSecondary)),
     );
   }
 }

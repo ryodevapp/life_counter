@@ -38,14 +38,18 @@ class AppColors {
   static const Color divider = Color(0xFFECE6DC);
 
   // Glass(内容の上に浮かぶタブバーなどだけに使う)
-  static const Color glassFill = Color(0xA6FFFFFF); // 白 65%
-  static const Color glassHighlight = Color(0xD9FFFFFF); // 上の縁の明るさ 85%
-  static const Color glassEdge = Color(0x80FFFFFF); // 細い明るい縁 50%
+  static const Color glassFill = Color(0xB3FFFFFF); // 白 70%
+  static const Color glassHighlight = Color(0xE6FFFFFF); // 上の縁の明るさ 90%
+  static const Color glassEdge = Color(0xCCFFFFFF); // 細い明るい縁(光の当たる縁)
+  /// ガラスの上で、選んだタブの下に敷くカプセル(少し沈んだ色 + 明るい縁)
+  static const Color glassPill = Color(0x1F9A5F38);
   static const List<BoxShadow> glassShadow = [
+    // 輪郭の細い線(明るい背景の上でも形が分かるように)
+    BoxShadow(color: Color(0x122C2520), spreadRadius: 0.5),
     BoxShadow(
-      color: Color(0x142C2520),
-      offset: Offset(0, 8),
-      blurRadius: 24,
+      color: Color(0x1A2C2520),
+      offset: Offset(0, 10),
+      blurRadius: 30,
     ),
   ];
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
+import 'app_text_styles.dart';
 
-/// プロトタイプのBtコンポーネント再現
+/// ボタン(iOS 26 と同じカプセル形)。主 = accent の塗り、副 = 薄い面
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
@@ -56,14 +56,10 @@ class AppButton extends StatelessWidget {
           disabledForegroundColor: AppColors.textDisabled,
           elevation: 0,
           minimumSize: const Size(AppSpacing.minTap, AppSpacing.buttonHeight),
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-          ),
-          textStyle: GoogleFonts.zenKakuGothicNew(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+          shape: const StadiumBorder(),
+          splashFactory: NoSplash.splashFactory,
+          textStyle: AppTextStyles.headline,
         ),
         child: child,
       ),
