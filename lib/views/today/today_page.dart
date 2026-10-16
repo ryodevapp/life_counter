@@ -11,6 +11,7 @@ import '../../providers/question_bank_provider.dart';
 import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/morning_schedule.dart';
+import '../../services/review_prompt.dart';
 import '../../services/widget_sync.dart';
 import '../../utils/date_only.dart';
 import '../../utils/prefs_keys.dart';
@@ -30,6 +31,8 @@ class TodayPage extends ConsumerStatefulWidget {
 class _TodayPageState extends ConsumerState<TodayPage> {
   final _answerController = TextEditingController();
   final _answerFocus = FocusNode();
+  bool _saved = false;
+  Timer? _savedTimer;
 
   /// 画面に出している日。保存はいつもこの日に付ける(真夜中をまたいでも前日の問いに付く)
   DateTime _date = dateOnly(DateTime.now());
@@ -219,6 +222,18 @@ class _TodayPageState extends ConsumerState<TodayPage> {
       await ref
           .read(dailyRecordRepositoryProvider)
           .setAnswer(_date, _answerController.text, questionId: _question.id);
+      // 答えた日が7日になったら、1回だけ App Store のレビューをお願いする(iOS の標準の小窓)
+      final repo = ref.read(dailyRecordRepositoryProvider);
+      await ReviewPrompt.maybeAsk(
+          await repo.getAll(), ref.read(sharedPreferencesProvider));
+      // 保存できたことを少しのあいだ知らせる
+      if (mounted) {
+        setState(() => _saved = true);
+        _savedTimer?.cancel();
+        _savedTimer = Timer(const Duration(milliseconds: 2500), () {
+          if (mounted) setState(() => _saved = false);
+        });
+      }
     } catch (e) {
       _dirty = true; // 次の機会にもう一度保存する
       debugPrint('Auto save error: $e');
@@ -260,6 +275,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     _midnightTimer?.cancel();
     _lifecycleListener.dispose();
     _answerFocus.dispose();
+    _savedTimer?.cancel();
     _answerController.dispose();
     super.dispose();
   }
@@ -333,6 +349,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
               lastYearAnswer: _lastYearAnswer,
               onAnswerChanged: _onAnswerChanged,
               onAddToBucket: _addToBucket,
+              saved: _saved,
             ),
           ],
         ),

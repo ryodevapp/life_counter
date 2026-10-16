@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 import 'mood_shape.dart';
 
 /// 気分の顔(細い線で描く。表情はおもに目で出す)
@@ -127,7 +128,8 @@ class MoodBadge extends StatelessWidget {
       moodId: moodId,
       size: size,
       ink: look.ink,
-      tint: look.light.withValues(alpha: 0.6),
+      // 暗い地では薄い色がにごるので、色をそのまま使う
+      tint: AppColors.dark ? look.light : look.light.withValues(alpha: 0.6),
     );
   }
 }

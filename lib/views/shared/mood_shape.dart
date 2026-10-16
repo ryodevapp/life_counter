@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 
 /// 気分ごとの色(design/design-system.md の「気分」)。顔は mood_face.dart の MoodFace で描く
 /// - 快い気分は暖色・セージ、つかれた・かなしいは藤色・くすんだ青(不快な気持ちも、責めずにきれいな色で受け止める)
@@ -23,3 +24,10 @@ const moodLooks = <String, MoodLook>{
   'tired': MoodLook(light: Color(0xFFC2B8D2), deep: Color(0xFF9C90B0), ink: Color(0xFF625776)),
   'sad': MoodLook(light: Color(0xFFAFC3D3), deep: Color(0xFF86A1B7), ink: Color(0xFF44607A)),
 };
+
+/// 気分の名前の文字の色(明るい表示は濃い線の色、暗い表示は明るい色にして読めるように)
+Color? moodTextColor(String id) {
+  final look = moodLooks[id];
+  if (look == null) return null;
+  return AppColors.dark ? look.light : look.ink;
+}

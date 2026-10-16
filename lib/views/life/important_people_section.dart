@@ -103,7 +103,7 @@ class _ImportantPeopleSectionState
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
+            Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
             const SizedBox(width: AppSpacing.s),
             Text(context.l10n.addPerson),
           ],
@@ -136,9 +136,7 @@ class _ImportantPeopleSectionState
     final pPastAL = LifeCalculator.isPastAverage(p.birthDate, p.gender);
     final together = (myAhead < pAhead ? myAhead : pAhead).floor();
     final meet = calcMeetCount(together, p.meetingFrequency);
-    final shared = sharedDays(myBirthDate, p.birthDate);
     final l = context.l10n;
-    final years = pAhead.floor();
 
     return AppCard(
       onTap: () => setState(() => _selectedPerson = p),
@@ -156,7 +154,7 @@ class _ImportantPeopleSectionState
                       style: AppTextStyles.footnote),
                 ])),
               ),
-              const Icon(CupertinoIcons.chevron_right,
+              Icon(CupertinoIcons.chevron_right,
                   size: 15, color: AppColors.textDisabled),
             ],
           ),
@@ -165,62 +163,26 @@ class _ImportantPeopleSectionState
             const SizedBox(height: AppSpacing.s),
             Text(l.pastAveragePerson, style: AppTextStyles.footnote),
           ],
-          ...[
-            const SizedBox(height: AppSpacing.l),
-            Row(
-              children: [
-                Expanded(
-                    child: _miniStat(l, l.statYearsAhead, '$years',
-                        l.unitYearsTight(years))),
-                const SizedBox(width: AppSpacing.m),
-                // 健康の年数の代わりに、ふえていく数字(一緒に過ごしてきた日々)
-                Expanded(
-                    child: shared == null
-                        ? const SizedBox.shrink()
-                        : _miniStat(l, l.statDaysShared, fmt.format(shared),
-                            l.unitDaysTight(shared),
-                            approx: false)),
-              ],
+          // 主役は「これから会える回数」。重なりやすい「これから」と「一緒に過ごしてきた日々」は詳しい画面だけに
+          const SizedBox(height: AppSpacing.l),
+          Text(l.statMeetCount, style: AppTextStyles.captionLabel),
+          const SizedBox(height: AppSpacing.xs),
+          Text.rich(TextSpan(children: [
+            TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
+            TextSpan(
+              text: fmt.format(meet),
+              style: AppTextStyles.display
+                  .copyWith(fontSize: 40, color: AppColors.accent),
             ),
-            const SizedBox(height: AppSpacing.m),
-            Row(
-              children: [
-                Expanded(
-                    child: _miniStat(l, l.statYearsTogether, '$together',
-                        l.unitYearsTight(together))),
-                const SizedBox(width: AppSpacing.m),
-                Expanded(
-                    child: _miniStat(l, l.statMeetCount, fmt.format(meet),
-                        l.unitTimesTight(meet),
-                        valueColor: AppColors.accent)),
-              ],
-            ),
-          ],
+            TextSpan(text: l.unitTimesTight(meet), style: AppTextStyles.captionLabel),
+          ])),
+          const SizedBox(height: AppSpacing.s),
+          Text(
+            '${l.statYearsTogether}  ${l.approxTight}$together${l.unitYearsTight(together)}',
+            style: AppTextStyles.footnote,
+          ),
         ],
       ),
-    );
-  }
-
-  static Widget _miniStat(
-      AppLocalizations l, String label, String value, String unit,
-      {Color? valueColor, bool approx = true}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(label, style: AppTextStyles.captionLabel),
-        const SizedBox(height: AppSpacing.xs),
-        Text.rich(TextSpan(children: [
-          if (approx)
-            TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
-          TextSpan(
-            text: value,
-            style: AppTextStyles.display
-                .copyWith(color: valueColor ?? AppColors.text),
-          ),
-          TextSpan(text: unit, style: AppTextStyles.captionLabel),
-        ])),
-      ],
     );
   }
 }

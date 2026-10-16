@@ -30,7 +30,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
       child: Center(
         child: Container(
           height: _height,
-          decoration: const ShapeDecoration(
+          decoration: ShapeDecoration(
             color: AppColors.bgSub,
             shape: StadiumBorder(),
           ),
@@ -39,17 +39,17 @@ class AppSegmentedControl<T> extends StatelessWidget {
             index: index < 0 ? 0 : index,
             pillInset: _inset,
             onSelect: (i) => onChanged(items[i].value),
-            pillDecoration: const ShapeDecoration(
-              color: AppColors.card,
+            pillDecoration: ShapeDecoration(
+              color: AppColors.segmentPill,
               shape: StadiumBorder(),
               shadows: [
                 BoxShadow(
-                  color: Color(0x142C2520),
+                  color: AppColors.softShadow,
                   offset: Offset(0, 2),
                   blurRadius: 6,
                 ),
                 BoxShadow(
-                  color: Color(0x0A2C2520),
+                  color: AppColors.faintShadow,
                   offset: Offset(0, 0),
                   blurRadius: 1,
                 ),

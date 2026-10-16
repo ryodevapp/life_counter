@@ -12,12 +12,12 @@ class AppTextStyles {
   static const jpFallback = ['Hiragino Sans', 'Hiragino Kaku Gothic ProN'];
 
   static TextStyle _sans(double size, FontWeight weight, double height,
-          [Color color = AppColors.text]) =>
+          [Color? color]) =>
       TextStyle(
         fontSize: size,
         fontWeight: weight,
         height: height,
-        color: color,
+        color: color ?? AppColors.text,
         fontFamilyFallback: jpFallback,
       );
 

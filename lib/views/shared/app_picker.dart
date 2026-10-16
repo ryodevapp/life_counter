@@ -94,7 +94,7 @@ class _PickerSheet<T> extends StatelessWidget {
     final maxHeight = MediaQuery.of(context).size.height * 0.5;
     return Container(
       constraints: BoxConstraints(maxHeight: maxHeight),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
@@ -112,7 +112,7 @@ class _PickerSheet<T> extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.m),
               child: Text(title!, style: AppTextStyles.headline),
             ),
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: AppColors.divider),
           // 選択肢リスト
           Flexible(
             child: ListView.builder(
@@ -144,7 +144,7 @@ class _PickerSheet<T> extends StatelessWidget {
                           ),
                         ),
                         if (isSelected)
-                          const Icon(
+                          Icon(
                             CupertinoIcons.checkmark,
                             color: AppColors.accent,
                             size: 20,

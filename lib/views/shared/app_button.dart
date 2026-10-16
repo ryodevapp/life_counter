@@ -51,7 +51,7 @@ class AppButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: primary ? AppColors.accent : AppColors.bgWarm,
-          foregroundColor: primary ? Colors.white : AppColors.text,
+          foregroundColor: primary ? AppColors.onAccent : AppColors.text,
           disabledBackgroundColor: AppColors.bgSub,
           disabledForegroundColor: AppColors.textDisabled,
           elevation: 0,

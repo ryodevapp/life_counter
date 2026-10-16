@@ -329,6 +329,8 @@
   "onboardingLifeDaysBefore": "今日は、あなたの人生",
   "onboardingLifeDaysAfter": "日目です",
   "onboardingLifeDaysNote": "この数字は、毎日ひとつずつ増えていきます。",
+  "onboardingDaysAheadTitle": "これからの日々",
+  "onboardingDaysAheadQuestion": "この日々を、\nどう過ごしていきますか。",
   "onboardingQuestionTitle": "毎日ひとつ、問いが届きます",
   "onboardingQuestionBody": "気分は顔をひと押し。\n答えはひとことでも大丈夫です。",
   "onboardingNotifyBody": "毎朝{time}に、その日の問いをお知らせします。\n時刻は設定で変えられます。",
@@ -360,5 +362,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "daysAheadRow": "これからの日々",
+  "answerSaved": "保存しました"
 }

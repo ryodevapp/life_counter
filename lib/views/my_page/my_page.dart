@@ -191,7 +191,7 @@ class MyPage extends ConsumerWidget {
                   title: Text(_genderLabel(ctx.l10n, g),
                       style: AppTextStyles.callout),
                   trailing: settings.gender == g
-                      ? const Icon(CupertinoIcons.checkmark, color: AppColors.accent)
+                      ? Icon(CupertinoIcons.checkmark, color: AppColors.accent)
                       : null,
                   onTap: () async {
                     Navigator.of(ctx).pop();
@@ -316,7 +316,7 @@ class MyPage extends ConsumerWidget {
                     style: AppTextStyles.body
                         .copyWith(height: 1.3, color: AppColors.textMuted)),
               const SizedBox(width: AppSpacing.s),
-              const Icon(CupertinoIcons.chevron_right,
+              Icon(CupertinoIcons.chevron_right,
                   size: 15, color: AppColors.textDisabled),
             ],
           ),
@@ -352,7 +352,7 @@ class MyPage extends ConsumerWidget {
   static const _groupPadding = EdgeInsets.symmetric(
       horizontal: AppSpacing.l, vertical: AppSpacing.xs);
 
-  static Widget _divider() => const Divider(
+  static Widget _divider() => Divider(
       height: 1, indent: 22 + AppSpacing.m, color: AppColors.divider);
 }
 
@@ -370,7 +370,7 @@ class _LegalPage extends StatelessWidget {
         title: Text(title, style: AppTextStyles.headline),
         backgroundColor: AppColors.bg,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.accent),
+        iconTheme: IconThemeData(color: AppColors.accent),
       ),
       body: FutureBuilder<String>(
         future: DefaultAssetBundle.of(context)

@@ -54,19 +54,19 @@ class AppInput extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
           borderSide: showBorder
-              ? const BorderSide(color: AppColors.border)
+              ? BorderSide(color: AppColors.border)
               : BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
           borderSide: showBorder
-              ? const BorderSide(color: AppColors.border)
+              ? BorderSide(color: AppColors.border)
               : BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
           borderSide: showBorder
-              ? const BorderSide(color: AppColors.borderAccent)
+              ? BorderSide(color: AppColors.borderAccent)
               : BorderSide.none,
         ),
       ),

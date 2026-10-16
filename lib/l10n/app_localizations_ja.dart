@@ -576,6 +576,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingLifeDaysNote => 'この数字は、毎日ひとつずつ増えていきます。';
 
   @override
+  String get onboardingDaysAheadTitle => 'これからの日々';
+
+  @override
+  String get onboardingDaysAheadQuestion => 'この日々を、\nどう過ごしていきますか。';
+
+  @override
   String get onboardingQuestionTitle => '毎日ひとつ、問いが届きます';
 
   @override
@@ -618,4 +624,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String deleteDayTitle(String date) {
     return '$dateの記録を削除しますか？';
   }
+
+  @override
+  String get daysAheadRow => 'これからの日々';
+
+  @override
+  String get answerSaved => '保存しました';
 }

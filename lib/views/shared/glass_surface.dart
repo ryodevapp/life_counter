@@ -40,7 +40,7 @@ class GlassSurface extends StatelessWidget {
             color: opaque ? AppColors.border : AppColors.glassEdge, width: 0.5),
         gradient: opaque
             ? null
-            : const LinearGradient(
+            : LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [AppColors.glassHighlight, AppColors.glassFill],

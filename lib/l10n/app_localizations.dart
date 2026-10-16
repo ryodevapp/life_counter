@@ -1028,6 +1028,18 @@ abstract class AppLocalizations {
   /// **'この数字は、毎日ひとつずつ増えていきます。'**
   String get onboardingLifeDaysNote;
 
+  /// No description provided for @onboardingDaysAheadTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'これからの日々'**
+  String get onboardingDaysAheadTitle;
+
+  /// No description provided for @onboardingDaysAheadQuestion.
+  ///
+  /// In ja, this message translates to:
+  /// **'この日々を、\nどう過ごしていきますか。'**
+  String get onboardingDaysAheadQuestion;
+
   /// No description provided for @onboardingQuestionTitle.
   ///
   /// In ja, this message translates to:
@@ -1093,6 +1105,18 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'{date}の記録を削除しますか？'**
   String deleteDayTitle(String date);
+
+  /// No description provided for @daysAheadRow.
+  ///
+  /// In ja, this message translates to:
+  /// **'これからの日々'**
+  String get daysAheadRow;
+
+  /// No description provided for @answerSaved.
+  ///
+  /// In ja, this message translates to:
+  /// **'保存しました'**
+  String get answerSaved;
 }
 
 class _AppLocalizationsDelegate

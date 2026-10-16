@@ -23,7 +23,7 @@ class AppToast {
       SnackBar(
         content: Text(
           message,
-          style: AppTextStyles.callout.copyWith(color: Colors.white),
+          style: AppTextStyles.callout.copyWith(color: AppColors.onAccent),
         ),
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,

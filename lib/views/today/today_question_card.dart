@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../l10n/l10n.dart';
 import '../../models/question.dart';
@@ -88,7 +89,7 @@ class _MoodButton extends StatelessWidget {
         child: AnimatedOpacity(
           duration: AppMotion.base,
           curve: Curves.easeOut,
-          opacity: dimmed ? 0.4 : 1,
+          opacity: dimmed ? (AppColors.dark ? 0.55 : 0.4) : 1,
           child: Column(
             children: [
               // 選ぶと、ばねで少し大きくなり、茶色の輪が付く
@@ -115,7 +116,7 @@ class _MoodButton extends StatelessWidget {
                 label,
                 style: AppTextStyles.captionLabel.copyWith(
                   color: selected
-                      ? moodLooks[stamp.id]!.ink
+                      ? moodTextColor(stamp.id)
                       : AppColors.textSecondary,
                 ),
               ),
@@ -138,9 +139,13 @@ class TodayQuestionCard extends StatelessWidget {
     this.answerFocus,
     this.lastYearAnswer,
     this.onAddToBucket,
+    this.saved = false,
   });
 
   static const _maxChars = 1000;
+
+  /// 自動で保存できた直後だけ true(欄の下に「保存しました」を少しのあいだ出す)
+  final bool saved;
 
   final Question question;
   final TextEditingController answerController;
@@ -188,11 +193,31 @@ class TodayQuestionCard extends StatelessWidget {
               contentPadding: const EdgeInsets.all(AppSpacing.l),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.field),
-                borderSide: const BorderSide(color: AppColors.divider),
+                borderSide: BorderSide(color: AppColors.divider),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.field),
-                borderSide: const BorderSide(color: AppColors.borderAccent, width: 1.5),
+                borderSide: BorderSide(color: AppColors.borderAccent, width: 1.5),
+              ),
+            ),
+          ),
+          // 自動で保存されたことを、欄の下に小さく知らせる(場所は空けておき、出し入れで揺れないように)
+          SizedBox(
+            height: 24,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: AnimatedOpacity(
+                opacity: saved ? 1 : 0,
+                duration: AppMotion.base,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(CupertinoIcons.checkmark_alt,
+                        size: 14, color: AppColors.textMuted),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(l.answerSaved, style: AppTextStyles.footnote),
+                  ],
+                ),
               ),
             ),
           ),

@@ -29,6 +29,9 @@ void main() {
     await wait(tester, 2500);
     await shot(binding, tester, 'o_${lang}_3_life_days');
     await tapText(tester, en ? 'Next' : '次へ');
+    await wait(tester, 2500);
+    await shot(binding, tester, 'o_${lang}_3b_days_ahead');
+    await tapText(tester, en ? 'Next' : '次へ');
     await shot(binding, tester, 'o_${lang}_4_question');
     await tapText(tester, en ? 'Not Now' : '今はしない');
     await wait(tester, 2500);

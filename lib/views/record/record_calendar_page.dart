@@ -191,7 +191,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
               AppTextStyles.footnote.copyWith(color: AppColors.text),
           weekendTextStyle:
               AppTextStyles.footnote.copyWith(color: AppColors.text),
-          markerDecoration: const BoxDecoration(
+          markerDecoration: BoxDecoration(
             color: AppColors.accent,
             shape: BoxShape.circle,
           ),
@@ -551,7 +551,7 @@ class _EditIconButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
-        child: const SizedBox.square(
+        child: SizedBox.square(
           dimension: AppSpacing.minTap,
           child: Align(
             alignment: Alignment.centerRight,
@@ -579,7 +579,7 @@ class _MoodTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(
           AppSpacing.s, AppSpacing.xs / 2, AppSpacing.m, AppSpacing.xs / 2),
-      decoration: const ShapeDecoration(
+      decoration: ShapeDecoration(
         color: AppColors.bgWarm,
         shape: StadiumBorder(),
       ),
@@ -590,7 +590,7 @@ class _MoodTag extends StatelessWidget {
           const SizedBox(width: AppSpacing.xs + 2),
           Text(label,
               style: AppTextStyles.footnote
-                  .copyWith(color: moodLooks[moodId]?.ink)),
+                  .copyWith(color: moodTextColor(moodId))),
         ],
       ),
     );

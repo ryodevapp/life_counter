@@ -100,7 +100,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
             children: [
               for (var i = 0; i < group.length; i++) ...[
                 if (i > 0)
-                  const Divider(
+                  Divider(
                       height: 1,
                       indent: AppSpacing.minTap + AppSpacing.xs,
                       color: AppColors.divider),
@@ -256,7 +256,7 @@ class _BucketRow extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(CupertinoIcons.chevron_right,
+              Icon(CupertinoIcons.chevron_right,
                   size: 15, color: AppColors.textDisabled),
               const SizedBox(width: AppSpacing.xs),
             ],
@@ -369,7 +369,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                               EdgeInsets.symmetric(vertical: AppSpacing.m),
                         ),
                       ),
-                      const Divider(height: 1, color: AppColors.divider),
+                      Divider(height: 1, color: AppColors.divider),
                       ConstrainedBox(
                         constraints: const BoxConstraints(minHeight: 52),
                         child: Row(
@@ -557,7 +557,7 @@ class _AddField extends StatelessWidget {
                     ),
                     child: Icon(CupertinoIcons.arrow_up,
                         size: 17,
-                        color: canAdd ? Colors.white : AppColors.textDisabled),
+                        color: canAdd ? AppColors.onAccent : AppColors.textDisabled),
                   ),
                 ),
               ),
@@ -585,7 +585,7 @@ class _Chip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? Colors.white : AppColors.textSecondary;
+    final color = selected ? AppColors.onAccent : AppColors.textSecondary;
     return Semantics(
       button: true,
       selected: selected,

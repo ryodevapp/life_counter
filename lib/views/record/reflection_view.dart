@@ -115,7 +115,7 @@ class LastYearCard extends ConsumerWidget {
                   const SizedBox(width: AppSpacing.xs),
                   Text(moodLabel(context, mood.id),
                       style: AppTextStyles.footnote
-                          .copyWith(color: moodLooks[mood.id]?.ink)),
+                          .copyWith(color: moodTextColor(mood.id))),
                 ],
               ],
             ),

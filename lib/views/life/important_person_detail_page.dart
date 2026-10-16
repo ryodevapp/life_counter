@@ -64,7 +64,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(CupertinoIcons.chevron_left,
+              Icon(CupertinoIcons.chevron_left,
                   size: 18, color: AppColors.accent),
               Text(l.peopleWhoMatter,
                   style: AppTextStyles.body.copyWith(color: AppColors.accent)),

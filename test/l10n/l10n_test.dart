@@ -84,13 +84,15 @@ void main() {
     }
   });
 
-  test('はじめての案内は、有限さや後悔で動かす言葉を使わない', () {
-    final words = ['有限', '後悔', '残りの日', '寿命', '余命', '一度きり'];
+  test('はじめての案内は、恐怖や後悔で動かす言葉を使わない', () {
+    final words = ['後悔', '寿命', '余命', '死', '終わり', 'あと何日'];
     final texts = [
       ja.welcomeTitle,
       ja.welcomeBody,
       ja.birthBody,
       ja.onboardingLifeDaysNote,
+      ja.onboardingDaysAheadTitle,
+      ja.onboardingDaysAheadQuestion,
       ja.onboardingQuestionTitle,
       ja.onboardingQuestionBody,
       ja.onboardingNotifyBody('7:00'),

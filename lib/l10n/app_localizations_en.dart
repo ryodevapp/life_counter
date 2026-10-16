@@ -603,6 +603,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingLifeDaysNote => 'This number grows by one every day.';
 
   @override
+  String get onboardingDaysAheadTitle => 'The days ahead';
+
+  @override
+  String get onboardingDaysAheadQuestion =>
+      'How would you like\nto spend them?';
+
+  @override
   String get onboardingQuestionTitle => 'One question, every day';
 
   @override
@@ -648,4 +655,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String deleteDayTitle(String date) {
     return 'Delete the entry for $date?';
   }
+
+  @override
+  String get daysAheadRow => 'Days ahead';
+
+  @override
+  String get answerSaved => 'Saved';
 }

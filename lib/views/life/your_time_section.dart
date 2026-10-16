@@ -48,6 +48,9 @@ class YourTimeSection extends ConsumerWidget {
         AppCard(
           child: Column(
             children: [
+              // 何の日数かを先に言う(数字だけだと分からないため)
+              Text(l.daysAheadRow, style: AppTextStyles.captionLabel),
+              const SizedBox(height: AppSpacing.s),
               Text(
                 formatter.format(remainingDays),
                 style: AppTextStyles.display.copyWith(
@@ -111,7 +114,7 @@ class YourTimeSection extends ConsumerWidget {
     );
   }
 
-  static const _divider =
+  static Widget get _divider =>
       Divider(height: 1, indent: 22 + AppSpacing.m, color: AppColors.divider);
 
   static Widget _row(IconData icon, String label, String value) {

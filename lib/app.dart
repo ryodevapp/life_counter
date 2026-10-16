@@ -12,6 +12,9 @@ class LifeCounterApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    // 端末の明るい表示・暗い表示に合わせる。切り替わったら画面全体を作り直して、色を入れ替える
+    final dark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    AppColors.dark = dark;
 
     return MaterialApp.router(
       title: 'LifeCounter',
@@ -26,14 +29,17 @@ class LifeCounterApp extends ConsumerWidget {
       supportedLocales: const [Locale('ja'), Locale('en')],
       localeResolutionCallback: (locale, _) => resolveAppLocale(locale),
       theme: ThemeData(
-        brightness: Brightness.light,
+        brightness: dark ? Brightness.dark : Brightness.light,
         scaffoldBackgroundColor: AppColors.bg,
         fontFamilyFallback: AppTextStyles.jpFallback,
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.accent,
+          brightness: dark ? Brightness.dark : Brightness.light,
           surface: AppColors.bg,
         ),
       ),
+      builder: (context, child) =>
+          KeyedSubtree(key: ValueKey(dark), child: child ?? const SizedBox()),
       routerConfig: router,
     );
   }

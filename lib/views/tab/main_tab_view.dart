@@ -159,14 +159,14 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
           count: tabs.length,
           index: _currentIndex,
           onSelect: _onTabSelected,
-          pillDecoration: const ShapeDecoration(
+          pillDecoration: ShapeDecoration(
             color: AppColors.glassPill,
             shape: StadiumBorder(
               side: BorderSide(color: AppColors.glassEdge, width: 0.5),
             ),
             shadows: [
               BoxShadow(
-                color: Color(0x0F2C2520),
+                color: AppColors.faintShadow,
                 offset: Offset(0, 1),
                 blurRadius: 4,
               ),
@@ -214,7 +214,7 @@ class _KeyboardDoneBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.bgSub,
         border: Border(top: BorderSide(color: AppColors.divider)),
       ),

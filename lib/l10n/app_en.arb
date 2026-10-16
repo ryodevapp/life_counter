@@ -155,6 +155,8 @@
   "onboardingLifeDaysBefore": "Today is day",
   "onboardingLifeDaysAfter": "of your life",
   "onboardingLifeDaysNote": "This number grows by one every day.",
+  "onboardingDaysAheadTitle": "The days ahead",
+  "onboardingDaysAheadQuestion": "How would you like\nto spend them?",
   "onboardingQuestionTitle": "One question, every day",
   "onboardingQuestionBody": "Log your mood with one tap.\nA few words are enough for an answer.",
   "onboardingNotifyBody": "Each morning at {time}, we’ll let you know the day’s question.\nYou can change the time in Settings.",
@@ -165,5 +167,7 @@
   "estimateNote": "These are averages, not predictions. No one's life is decided by a number.",
   "editMood": "Mood",
   "deleteDay": "Delete This Entry",
-  "deleteDayTitle": "Delete the entry for {date}?"
+  "deleteDayTitle": "Delete the entry for {date}?",
+  "daysAheadRow": "Days ahead",
+  "answerSaved": "Saved"
 }

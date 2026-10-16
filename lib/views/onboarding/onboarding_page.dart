@@ -17,7 +17,8 @@ import '../shared/count_up_text.dart';
 import 'welcome_page.dart';
 import 'birth_input_page.dart';
 
-/// はじめての人の案内: はじめに → 生年月日 → 人生の日数 → 毎日の問い(通知)
+/// はじめての人の案内: はじめに → 生年月日 → 人生の日数 → これからの日々 → 毎日の問い(通知)
+/// 時間に限りがあることは、恐怖ではなく「この日々をどう過ごすか」の問いとして静かに伝える
 /// 終わったら今日の画面に入り、最初の問いにそのまま答えられる
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -26,16 +27,18 @@ class OnboardingPage extends ConsumerStatefulWidget {
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-enum _Screen { welcome, birth, lifeDays, question }
+enum _Screen { welcome, birth, lifeDays, daysAhead, question }
 
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   _Screen _screen = _Screen.welcome;
   DateTime? _birthDate;
+  Gender _gender = Gender.unspecified;
   bool _finishing = false;
 
   void _goToLifeDays(DateTime birthDate, Gender gender) {
     setState(() {
       _birthDate = birthDate;
+      _gender = gender;
       _screen = _Screen.lifeDays;
     });
     ref
@@ -72,6 +75,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       case _Screen.lifeDays:
         return _frame(
           content: _lifeDays(),
+          buttons: [
+            AppButton.primary(
+              onPressed: () => setState(() => _screen = _Screen.daysAhead),
+              label: context.l10n.next,
+            ),
+          ],
+        );
+      case _Screen.daysAhead:
+        return _frame(
+          content: _daysAhead(),
           buttons: [
             AppButton.primary(
               onPressed: () => setState(() => _screen = _Screen.question),
@@ -149,6 +162,38 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           l.onboardingLifeDaysNote,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
+        ),
+      ],
+    );
+  }
+
+  /// これからの日々(いまの年齢からの平均の目安)と、それをどう過ごすかの問い
+  Widget _daysAhead() {
+    final l = context.l10n;
+    final days = LifeCalculator.remainingDays(_birthDate!, _gender);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          l.onboardingDaysAheadTitle,
+          style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.l),
+        CountUpText(
+          target: days,
+          style: AppTextStyles.counter.copyWith(color: AppColors.accent),
+        ),
+        const SizedBox(height: AppSpacing.s),
+        Text(
+          l.daysEstimateUnit(days),
+          textAlign: TextAlign.center,
+          style: AppTextStyles.footnote,
+        ),
+        const SizedBox(height: AppSpacing.xxl),
+        Text(
+          l.onboardingDaysAheadQuestion,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.title,
         ),
       ],
     );
