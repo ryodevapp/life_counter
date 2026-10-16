@@ -137,6 +137,10 @@ class MyPage extends ConsumerWidget {
   // ─── 法的ページ ───
 
   void _showLegal(BuildContext context, String fileName, String title) {
+    // 英語の画面では英語版(privacy_policy_en.html など)を出す
+    if (context.l10n.localeName != 'ja') {
+      fileName = fileName.replaceFirst('.html', '_en.html');
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => _LegalPage(fileName: fileName, title: title),

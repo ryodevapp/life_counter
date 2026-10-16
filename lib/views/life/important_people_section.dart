@@ -116,9 +116,8 @@ class _ImportantPeopleSectionState
     final myAge = myBirthDate != null
         ? LifeCalculator.currentAge(myBirthDate)
         : 0;
-    final myAL = myBirthDate != null
-        ? LifeCalculator.averageLifespan(settings.gender)
-        : 84.07;
+    final myAL = LifeCalculator.averageLifespan(
+        myBirthDate != null ? settings.gender : Gender.unspecified);
 
     return Column(
       children: [

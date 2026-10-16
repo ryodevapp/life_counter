@@ -6,15 +6,15 @@ import 'package:life_counter/services/life_calculator.dart';
 void main() {
   group('LifeCalculator', () {
     test('平均寿命の値が正しい', () {
-      expect(LifeCalculator.averageLifespan(Gender.male), 81.05);
-      expect(LifeCalculator.averageLifespan(Gender.female), 87.09);
-      expect(LifeCalculator.averageLifespan(Gender.unspecified), 84.07);
+      expect(LifeCalculator.averageLifespan(Gender.male), 81.35);
+      expect(LifeCalculator.averageLifespan(Gender.female), 87.33);
+      expect(LifeCalculator.averageLifespan(Gender.unspecified), 84.34);
     });
 
     test('健康寿命の値が正しい', () {
-      expect(LifeCalculator.healthyLifespan(Gender.male), 72.68);
-      expect(LifeCalculator.healthyLifespan(Gender.female), 75.38);
-      expect(LifeCalculator.healthyLifespan(Gender.unspecified), 74.03);
+      expect(LifeCalculator.healthyLifespan(Gender.male), 72.57);
+      expect(LifeCalculator.healthyLifespan(Gender.female), 75.45);
+      expect(LifeCalculator.healthyLifespan(Gender.unspecified), 74.01);
     });
 
     test('lifeDays: 生まれた日が1日目', () {
@@ -65,9 +65,9 @@ void main() {
 
     test('日本か未設定なら、これまでの日本の値', () {
       LifeCalculator.regionCode = 'JP';
-      expect(LifeCalculator.averageLifespan(Gender.male), 81.05);
+      expect(LifeCalculator.averageLifespan(Gender.male), 81.35);
       LifeCalculator.regionCode = null;
-      expect(LifeCalculator.healthyLifespan(Gender.female), 75.38);
+      expect(LifeCalculator.healthyLifespan(Gender.female), 75.45);
     });
 
     test('米国なら米国の WHO の値', () {

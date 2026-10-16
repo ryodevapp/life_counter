@@ -26,12 +26,13 @@ class LifeCalculator {
       };
     }
     switch (gender) {
+      // 厚生労働省「令和7年簡易生命表」(2025年)
       case Gender.male:
-        return 81.05;
+        return 81.35;
       case Gender.female:
-        return 87.09;
+        return 87.33;
       case Gender.unspecified:
-        return 84.07;
+        return 84.34;
     }
   }
 
@@ -46,12 +47,13 @@ class LifeCalculator {
       };
     }
     switch (gender) {
+      // 厚生労働科学研究「健康寿命の算定」(2022年)
       case Gender.male:
-        return 72.68;
+        return 72.57;
       case Gender.female:
-        return 75.38;
+        return 75.45;
       case Gender.unspecified:
-        return 74.03;
+        return 74.01;
     }
   }
 
