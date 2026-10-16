@@ -69,70 +69,93 @@ let moodLooks: [String: MoodLook] = [
     "sad": MoodLook(light: rgb(0xAFC3D3), ink: rgb(0x44607A)),
 ]
 
+/// 顔の線(ウィジェットでは Canvas が使えないので、Shape で描く。lib/views/shared/mood_face.dart と同じ形)
+struct MoodFaceLines: Shape {
+    let moodId: String
+
+    func path(in rect: CGRect) -> Path {
+        let s = min(rect.width, rect.height)
+        let c = CGPoint(x: rect.minX + s / 2, y: rect.minY + s / 2)
+        let ex = s * 0.17, ey = rect.minY + s * 0.42, ew = s * 0.11
+        let le = CGPoint(x: c.x - ex, y: ey), re = CGPoint(x: c.x + ex, y: ey)
+        let mouthY = rect.minY + s * 0.64
+        var p = Path()
+        func line(_ a: CGPoint, _ b: CGPoint) { p.move(to: a); p.addLine(to: b) }
+        func arc(_ center: CGPoint, _ w: Double, _ h: Double, up: Bool) {
+            p.move(to: CGPoint(x: center.x - w / 2, y: center.y))
+            p.addQuadCurve(to: CGPoint(x: center.x + w / 2, y: center.y),
+                           control: CGPoint(x: center.x, y: center.y + (up ? -h : h)))
+        }
+        switch moodId {
+        case "happy":
+            arc(le, ew * 1.3, s * 0.08, up: true)
+            arc(re, ew * 1.3, s * 0.08, up: true)
+            arc(CGPoint(x: c.x, y: mouthY), s * 0.3, s * 0.12, up: false)
+        case "calm":
+            arc(le, ew * 1.3, s * 0.06, up: false)
+            arc(re, ew * 1.3, s * 0.06, up: false)
+            arc(CGPoint(x: c.x, y: mouthY + s * 0.01), s * 0.18, s * 0.05, up: false)
+        case "neutral":
+            line(CGPoint(x: c.x - s * 0.1, y: mouthY), CGPoint(x: c.x + s * 0.1, y: mouthY))
+        case "tired":
+            line(CGPoint(x: le.x - ew * 0.7, y: le.y + s * 0.025), CGPoint(x: le.x + ew * 0.6, y: le.y - s * 0.005))
+            line(CGPoint(x: re.x + ew * 0.7, y: re.y + s * 0.025), CGPoint(x: re.x - ew * 0.6, y: re.y - s * 0.005))
+            let w = s * 0.2, y = mouthY + s * 0.02
+            p.move(to: CGPoint(x: c.x - w / 2, y: y))
+            p.addQuadCurve(to: CGPoint(x: c.x, y: y), control: CGPoint(x: c.x - w / 4, y: y - s * 0.035))
+            p.addQuadCurve(to: CGPoint(x: c.x + w / 2, y: y), control: CGPoint(x: c.x + w / 4, y: y + s * 0.035))
+        case "sad":
+            line(CGPoint(x: le.x - ew * 0.6, y: le.y - s * 0.1), CGPoint(x: le.x + ew * 0.5, y: le.y - s * 0.13))
+            line(CGPoint(x: re.x + ew * 0.6, y: re.y - s * 0.1), CGPoint(x: re.x - ew * 0.5, y: re.y - s * 0.13))
+            arc(CGPoint(x: c.x, y: mouthY + s * 0.04), s * 0.22, s * 0.07, up: true)
+        default:
+            break
+        }
+        return p
+    }
+}
+
+/// 顔の点の目(ふつう・かなしい)
+struct MoodFaceDots: Shape {
+    let moodId: String
+
+    func path(in rect: CGRect) -> Path {
+        let s = min(rect.width, rect.height)
+        let stroke = min(max(s / 27.5, 1.0), 2.2)
+        let c = CGPoint(x: rect.minX + s / 2, y: rect.minY + s / 2)
+        let ex = s * 0.17, ey = rect.minY + s * 0.42
+        var p = Path()
+        func dot(_ x: Double, _ y: Double, _ r: Double) {
+            p.addEllipse(in: CGRect(x: x - r, y: y - r, width: r * 2, height: r * 2))
+        }
+        switch moodId {
+        case "neutral":
+            dot(c.x - ex, ey, stroke * 1.15); dot(c.x + ex, ey, stroke * 1.15)
+        case "sad":
+            dot(c.x - ex, ey + s * 0.02, stroke * 1.1); dot(c.x + ex, ey + s * 0.02, stroke * 1.1)
+        default:
+            break
+        }
+        return p
+    }
+}
+
 /// うすい色の丸 + 細い線の顔(表情はおもに目で出す)
 struct MoodFaceView: View {
     let moodId: String
 
     var body: some View {
-        Canvas { ctx, size in
-            guard let look = moodLooks[moodId] else { return }
-            let s = min(size.width, size.height)
-            let stroke = min(max(s / 27.5, 1.0), 2.2)
-            let c = CGPoint(x: s / 2, y: s / 2)
-            let r = s / 2 - stroke
-            ctx.fill(Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2)),
-                     with: .color(look.light.opacity(0.6)))
-            let style = StrokeStyle(lineWidth: stroke, lineCap: .round)
-            let ex = s * 0.17, ey = s * 0.42, ew = s * 0.11
-            let le = CGPoint(x: c.x - ex, y: ey), re = CGPoint(x: c.x + ex, y: ey)
-            let mouthY = s * 0.64
-
-            func line(_ a: CGPoint, _ b: CGPoint) {
-                var p = Path(); p.move(to: a); p.addLine(to: b)
-                ctx.stroke(p, with: .color(look.ink), style: style)
-            }
-            func arc(_ center: CGPoint, _ w: Double, _ h: Double, up: Bool) {
-                var p = Path()
-                p.move(to: CGPoint(x: center.x - w / 2, y: center.y))
-                p.addQuadCurve(to: CGPoint(x: center.x + w / 2, y: center.y),
-                               control: CGPoint(x: center.x, y: center.y + (up ? -h : h)))
-                ctx.stroke(p, with: .color(look.ink), style: style)
-            }
-            func dot(_ p: CGPoint, _ rad: Double) {
-                ctx.fill(Path(ellipseIn: CGRect(x: p.x - rad, y: p.y - rad, width: rad * 2, height: rad * 2)),
-                         with: .color(look.ink))
-            }
-
-            switch moodId {
-            case "happy":
-                arc(le, ew * 1.3, s * 0.08, up: true)
-                arc(re, ew * 1.3, s * 0.08, up: true)
-                arc(CGPoint(x: c.x, y: mouthY), s * 0.3, s * 0.12, up: false)
-            case "calm":
-                arc(le, ew * 1.3, s * 0.06, up: false)
-                arc(re, ew * 1.3, s * 0.06, up: false)
-                arc(CGPoint(x: c.x, y: mouthY + s * 0.01), s * 0.18, s * 0.05, up: false)
-            case "neutral":
-                dot(le, stroke * 1.15)
-                dot(re, stroke * 1.15)
-                line(CGPoint(x: c.x - s * 0.1, y: mouthY), CGPoint(x: c.x + s * 0.1, y: mouthY))
-            case "tired":
-                line(CGPoint(x: le.x - ew * 0.7, y: le.y + s * 0.025), CGPoint(x: le.x + ew * 0.6, y: le.y - s * 0.005))
-                line(CGPoint(x: re.x + ew * 0.7, y: re.y + s * 0.025), CGPoint(x: re.x - ew * 0.6, y: re.y - s * 0.005))
-                let w = s * 0.2, y = mouthY + s * 0.02
-                var m = Path()
-                m.move(to: CGPoint(x: c.x - w / 2, y: y))
-                m.addQuadCurve(to: CGPoint(x: c.x, y: y), control: CGPoint(x: c.x - w / 4, y: y - s * 0.035))
-                m.addQuadCurve(to: CGPoint(x: c.x + w / 2, y: y), control: CGPoint(x: c.x + w / 4, y: y + s * 0.035))
-                ctx.stroke(m, with: .color(look.ink), style: style)
-            case "sad":
-                dot(CGPoint(x: le.x, y: le.y + s * 0.02), stroke * 1.1)
-                dot(CGPoint(x: re.x, y: re.y + s * 0.02), stroke * 1.1)
-                line(CGPoint(x: le.x - ew * 0.6, y: le.y - s * 0.1), CGPoint(x: le.x + ew * 0.5, y: le.y - s * 0.13))
-                line(CGPoint(x: re.x + ew * 0.6, y: re.y - s * 0.1), CGPoint(x: re.x - ew * 0.5, y: re.y - s * 0.13))
-                arc(CGPoint(x: c.x, y: mouthY + s * 0.04), s * 0.22, s * 0.07, up: true)
-            default:
-                break
+        GeometryReader { geo in
+            let s = min(geo.size.width, geo.size.height)
+            let lw = min(max(s / 27.5, 1.0), 2.2)
+            if let look = moodLooks[moodId] {
+                ZStack {
+                    Circle().fill(look.light.opacity(0.6)).padding(lw)
+                    MoodFaceLines(moodId: moodId)
+                        .stroke(look.ink, style: StrokeStyle(lineWidth: lw, lineCap: .round))
+                    MoodFaceDots(moodId: moodId).fill(look.ink)
+                }
+                .frame(width: s, height: s)
             }
         }
     }
