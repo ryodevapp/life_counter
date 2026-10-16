@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../l10n/l10n.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -9,17 +10,23 @@ class ActionButtons extends StatelessWidget {
     super.key,
     this.onEdit,
     this.onDelete,
-    this.editLabel = '編集',
-    this.deleteLabel = '削除',
+    this.editLabel,
+    this.deleteLabel,
   });
 
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
-  final String editLabel;
-  final String deleteLabel;
+
+  /// 省略すると「編集」「Edit」
+  final String? editLabel;
+
+  /// 省略すると「削除」「Delete」
+  final String? deleteLabel;
 
   @override
   Widget build(BuildContext context) {
+    final editLabel = this.editLabel ?? context.l10n.edit;
+    final deleteLabel = this.deleteLabel ?? context.l10n.delete;
     return Row(
       children: [
         if (onEdit != null)
@@ -75,22 +82,23 @@ class ActionButtons extends StatelessWidget {
 Future<bool> showDeleteConfirmation(
   BuildContext context, {
   required String title,
-  String message = 'この操作は取り消せません。',
+  String? message,
 }) async {
+  final l = context.l10n;
   final result = await showCupertinoDialog<bool>(
     context: context,
     builder: (ctx) => CupertinoAlertDialog(
       title: Text(title),
-      content: Text(message),
+      content: Text(message ?? l.deleteConfirmMessage),
       actions: [
         CupertinoDialogAction(
           onPressed: () => Navigator.of(ctx).pop(false),
-          child: const Text('キャンセル'),
+          child: Text(l.cancel),
         ),
         CupertinoDialogAction(
           isDestructiveAction: true,
           onPressed: () => Navigator.of(ctx).pop(true),
-          child: const Text('削除'),
+          child: Text(l.delete),
         ),
       ],
     ),

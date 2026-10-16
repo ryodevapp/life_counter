@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+import '../l10n/l10n.dart';
 import '../utils/date_only.dart';
 import 'question_bank.dart';
 
@@ -35,6 +35,7 @@ int lifeDaysOn(DateTime birthDate, DateTime date) {
 }
 
 /// これから [days] 日分の朝の通知。今日の時刻を過ぎていれば明日から
+/// 題は [languageCode] の言語で(既定は日本語「人生 12,617日目」)
 List<MorningItem> buildMorningSchedule({
   required DateTime now,
   required DateTime birthDate,
@@ -42,8 +43,9 @@ List<MorningItem> buildMorningSchedule({
   required int minute,
   required QuestionBank bank,
   int days = morningDays,
+  String languageCode = 'ja',
 }) {
-  final fmt = NumberFormat('#,###', 'ja_JP');
+  final l = appLocalizationsFor(languageCode);
   var first = DateTime(now.year, now.month, now.day, hour, minute);
   if (!first.isAfter(now)) {
     first = DateTime(now.year, now.month, now.day + 1, hour, minute);
@@ -56,7 +58,7 @@ List<MorningItem> buildMorningSchedule({
         return MorningItem(
           id: morningIdBase + i,
           when: when,
-          title: '人生 ${fmt.format(lifeDaysOn(birthDate, when))}日目',
+          title: l.notificationTitle(lifeDaysOn(birthDate, when)),
           body: bank.forDate(when).text,
         );
       }(),

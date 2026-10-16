@@ -142,4 +142,24 @@ void main() {
       expect(f, isNot(q.text), reason: q.id);
     }
   });
+
+  test('英語の問いは、日本語と同じ id・番号で365問そろい、どれにももう一歩がある', () {
+    final ja = _loadFromFile();
+    final en = QuestionBank.parse(
+        File('assets/data/questions_v2_en.json').readAsStringSync());
+    expect(en.length, ja.length);
+    for (var i = 0; i < ja.length; i++) {
+      expect(en[i].id, ja[i].id);
+      expect(en[i].dayOfYear, ja[i].dayOfYear);
+      expect(en[i].followUp, isNotNull, reason: en[i].id);
+      // 単語として探す("tidied" の中の die は対象外)
+      for (final w in ['die', 'dies', 'died', 'death', 'regret']) {
+        expect(
+            RegExp('\\b$w\\b')
+                .hasMatch('${en[i].text} ${en[i].followUp}'.toLowerCase()),
+            isFalse,
+            reason: en[i].id);
+      }
+    }
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -56,7 +57,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                   padding: const EdgeInsets.only(
                       top: AppSpacing.xs, bottom: AppSpacing.xs),
                   child: Text(
-                    _expanded ? '閉じる' : '続きを読む',
+                    _expanded ? context.l10n.showLess : context.l10n.readMore,
                     style: AppTextStyles.footnote
                         .copyWith(color: AppColors.accent),
                   ),

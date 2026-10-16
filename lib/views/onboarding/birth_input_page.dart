@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
 import '../shared/app_colors.dart';
@@ -26,7 +27,8 @@ class _BirthInputPageState extends State<BirthInputPage> {
   Gender _gender = Gender.unspecified;
 
   void _handleNext() {
-    final error = DateValidator.validateBirthDate(_year, _month, _day);
+    final error = DateValidator.validateBirthDate(_year, _month, _day,
+        l10n: context.l10n);
     if (error != null) {
       AppToast.error(context, error);
       return;
@@ -37,6 +39,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.bg,
       resizeToAvoidBottomInset: true,
@@ -51,26 +54,26 @@ class _BirthInputPageState extends State<BirthInputPage> {
               const PillLabel(text: 'STEP 1'),
               const SizedBox(height: AppSpacing.l),
               Text(
-                'あなたについて',
+                l.aboutYou,
                 style: AppTextStyles.title,
               ),
               const SizedBox(height: AppSpacing.s),
               Text(
-                '人生の日数と、これからの目安の計算に使います',
+                l.aboutYouBody,
                 style:
                     AppTextStyles.callout.copyWith(color: AppColors.textMuted),
               ),
               const SizedBox(height: AppSpacing.xxl),
 
               // 性別（任意）
-              Text('性別（任意）', style: AppTextStyles.captionLabel),
+              Text(l.genderOptional, style: AppTextStyles.captionLabel),
               const SizedBox(height: AppSpacing.s),
               Row(
                 children: [
                   for (final g in [
-                    (Gender.male, '男性'),
-                    (Gender.female, '女性'),
-                    (Gender.unspecified, '答えない'),
+                    (Gender.male, l.genderMale),
+                    (Gender.female, l.genderFemale),
+                    (Gender.unspecified, l.genderUnspecified),
                   ]) ...[
                     if (g.$1 != Gender.male)
                       const SizedBox(width: AppSpacing.s),
@@ -81,7 +84,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
               const SizedBox(height: AppSpacing.xl),
 
               // 生年月日
-              Text('生年月日', style: AppTextStyles.captionLabel),
+              Text(l.birthDate, style: AppTextStyles.captionLabel),
               const SizedBox(height: AppSpacing.s),
               GestureDetector(
                 onTap: () async {
@@ -113,7 +116,8 @@ class _BirthInputPageState extends State<BirthInputPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          '$_year年$_month月$_day日',
+                          formatDate(
+                              DateTime(_year, _month, _day), l.localeName),
                           style: AppTextStyles.callout,
                         ),
                       ),
@@ -125,7 +129,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
               ),
               const SizedBox(height: AppSpacing.xxxl),
 
-              AppButton.primary(onPressed: _handleNext, label: '次へ'),
+              AppButton.primary(onPressed: _handleNext, label: l.next),
             ],
           ),
           ),

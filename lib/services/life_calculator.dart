@@ -1,11 +1,30 @@
 import '../models/important_person.dart';
+import 'country_lifespans.dart';
 
 /// 寿命・人生日数の計算ロジック
 class LifeCalculator {
   LifeCalculator._();
 
+  /// 端末の地域(ISO 3166-1 の2文字)。起動時に入れる。日本(JP)か未設定なら日本の値、
+  /// それ以外はその国の WHO の値、表にない国は世界平均で計算する
+  static String? regionCode;
+
+  static CountryLifespan? get _country {
+    final r = regionCode?.toUpperCase();
+    if (r == null || r == 'JP') return null;
+    return countryLifespans[r] ?? worldLifespan;
+  }
+
   /// 平均寿命（年）
   static double averageLifespan(Gender gender) {
+    final c = _country;
+    if (c != null) {
+      return switch (gender) {
+        Gender.male => c.male,
+        Gender.female => c.female,
+        Gender.unspecified => c.both,
+      };
+    }
     switch (gender) {
       case Gender.male:
         return 81.05;
@@ -18,6 +37,14 @@ class LifeCalculator {
 
   /// 健康寿命（年）
   static double healthyLifespan(Gender gender) {
+    final c = _country;
+    if (c != null) {
+      return switch (gender) {
+        Gender.male => c.healthyMale,
+        Gender.female => c.healthyFemale,
+        Gender.unspecified => c.healthyBoth,
+      };
+    }
     switch (gender) {
       case Gender.male:
         return 72.68;

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import '../../l10n/l10n.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../shared/app_colors.dart';
@@ -15,14 +15,15 @@ class YourTimeSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
     final settings = ref.watch(userSettingsProvider);
     final birthDate = settings.birthDate;
-    final formatter = NumberFormat('#,###', 'ja_JP');
+    final formatter = numberFormatOf(l.localeName);
 
     if (birthDate == null) {
       return AppCard(
         child: Text(
-          '生年月日を入れると表示されます',
+          l.birthDateNeeded,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
@@ -44,7 +45,7 @@ class YourTimeSection extends ConsumerWidget {
     if (pastAL) {
       return AppCard(
         child: Text(
-          '平均を超えて、日々を重ねています',
+          l.pastAverageSelf,
           textAlign: TextAlign.center,
           style: AppTextStyles.headline,
         ),
@@ -66,14 +67,15 @@ class YourTimeSection extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xs),
-              Text('日（平均からの目安）', style: AppTextStyles.footnote),
+              Text(l.daysEstimateUnit(remainingDays),
+                  textAlign: TextAlign.center, style: AppTextStyles.footnote),
               if (!pastHL) ...[
                 const SizedBox(height: AppSpacing.l),
                 // 長い1文にすると「日」だけが次の行に落ちるので、言葉と数を2行に分ける
-                Text('そのうち、元気に過ごせる目安',
-                    style: AppTextStyles.footnote),
+                Text(l.healthyDaysLabel,
+                    textAlign: TextAlign.center, style: AppTextStyles.footnote),
                 const SizedBox(height: AppSpacing.xs),
-                Text('約 ${formatter.format(healthyRemaining)} 日',
+                Text(l.aboutDays(healthyRemaining),
                     style: AppTextStyles.headline),
               ],
             ],
@@ -83,24 +85,24 @@ class YourTimeSection extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(
               left: AppSpacing.xs, bottom: AppSpacing.s),
-          child: Text('これから迎える', style: AppTextStyles.captionLabel),
+          child: Text(l.aheadOfYou, style: AppTextStyles.captionLabel),
         ),
         // 同じ数(夏・桜・正月)を3回並べないよう、1行にまとめた一覧にする
         AppCard(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
           child: Column(
             children: [
-              _row(CupertinoIcons.sun_max, '週末',
-                  '約${formatter.format(remainingYears * 52)}回'),
+              _row(CupertinoIcons.sun_max, l.weekends,
+                  l.aboutTimes(remainingYears * 52)),
               _divider,
-              _row(CupertinoIcons.tree, '夏・桜・正月',
-                  'それぞれ約${formatter.format(remainingYears)}回'),
+              _row(CupertinoIcons.tree, l.seasons,
+                  l.aboutTimesEach(remainingYears)),
               _divider,
-              _row(CupertinoIcons.book, '本（年50冊なら）',
-                  '約${formatter.format(remainingYears * 50)}冊'),
+              _row(CupertinoIcons.book, l.books,
+                  l.aboutBooks(remainingYears * 50)),
               _divider,
-              _row(CupertinoIcons.film, '映画（年20本なら）',
-                  '約${formatter.format(remainingYears * 20)}本'),
+              _row(CupertinoIcons.film, l.movies,
+                  l.aboutMovies(remainingYears * 20)),
             ],
           ),
         ),

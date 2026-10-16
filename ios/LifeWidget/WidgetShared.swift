@@ -27,15 +27,25 @@ enum Tone {
 struct StampDef {
     let id: String
     let emoji: String
-    let label: String
+    let ja: String
+    let en: String
+    var label: String { L10n.isJapanese ? ja : en }
+}
+
+/// ウィジェットの言葉(端末の言語が日本語なら日本語、それ以外は英語。アプリの切り替えと同じ決まり)
+enum L10n {
+    static var isJapanese: Bool {
+        (Locale.preferredLanguages.first ?? "ja").hasPrefix("ja")
+    }
+    static func t(_ ja: String, _ en: String) -> String { isJapanese ? ja : en }
 }
 
 let stampDefs: [StampDef] = [
-    StampDef(id: "happy", emoji: "😊", label: "うれしい"),
-    StampDef(id: "calm", emoji: "😌", label: "おだやか"),
-    StampDef(id: "neutral", emoji: "😐", label: "ふつう"),
-    StampDef(id: "tired", emoji: "😩", label: "つかれた"),
-    StampDef(id: "sad", emoji: "😢", label: "かなしい"),
+    StampDef(id: "happy", emoji: "😊", ja: "うれしい", en: "Happy"),
+    StampDef(id: "calm", emoji: "😌", ja: "おだやか", en: "Calm"),
+    StampDef(id: "neutral", emoji: "😐", ja: "ふつう", en: "Okay"),
+    StampDef(id: "tired", emoji: "😩", ja: "つかれた", en: "Tired"),
+    StampDef(id: "sad", emoji: "😢", ja: "かなしい", en: "Sad"),
 ]
 
 // MARK: - 気分の顔(lib/views/shared/mood_face.dart の MoodBadge と同じ描き方・同じ色。直すときは両方そろえる)

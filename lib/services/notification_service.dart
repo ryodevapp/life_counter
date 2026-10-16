@@ -76,16 +76,18 @@ class NotificationService {
   /// 朝の通知を、日付ごとに先の60日分入れ直す
   /// (1件を毎日くり返す形だと、日数と問いが予約した日のまま止まるため)
   /// 呼ばれた順に1本ずつ走らせ、後から呼ばれたら古いほうは途中でやめる
-  static Future<void> refresh(UserSettings settings, QuestionBank bank) {
+  /// 題は [languageCode] の言語で(既定は日本語)
+  static Future<void> refresh(UserSettings settings, QuestionBank bank,
+      {String languageCode = 'ja'}) {
     final generation = ++_generation;
     _queue = _queue
-        .then((_) => _refresh(settings, bank, generation))
+        .then((_) => _refresh(settings, bank, generation, languageCode))
         .catchError((Object e) => debugPrint('Notification refresh error: $e'));
     return _queue;
   }
 
-  static Future<void> _refresh(
-      UserSettings settings, QuestionBank bank, int generation) async {
+  static Future<void> _refresh(UserSettings settings, QuestionBank bank,
+      int generation, String languageCode) async {
     bool stale() => generation != _generation;
     final birthDate = settings.birthDate;
     final enabled = settings.notificationEnabled &&
@@ -98,6 +100,7 @@ class NotificationService {
             hour: settings.notificationHour,
             minute: settings.notificationMinute,
             bank: bank,
+            languageCode: languageCode,
           )
         : const <MorningItem>[];
     final signature =

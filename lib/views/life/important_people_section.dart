@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../providers/important_person_provider.dart';
 import '../../providers/isar_provider.dart';
@@ -70,7 +71,7 @@ class _ImportantPeopleSectionState
     return personsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => AppCard(
-        child: Text('読み込めませんでした。アプリを開き直してください。',
+        child: Text(context.l10n.loadError,
             textAlign: TextAlign.center,
             style:
                 AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
@@ -88,7 +89,7 @@ class _ImportantPeopleSectionState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '親や家族、友だちを追加すると、一緒に過ごせる時間の目安が分かります。',
+          context.l10n.peopleEmpty,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
         const SizedBox(height: AppSpacing.l),
@@ -99,19 +100,19 @@ class _ImportantPeopleSectionState
 
   Widget _addButton() => AppButton(
         onPressed: _addPerson,
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
-            SizedBox(width: AppSpacing.s),
-            Text('大切な人を追加'),
+            const Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
+            const SizedBox(width: AppSpacing.s),
+            Text(context.l10n.addPerson),
           ],
         ),
       );
 
   Widget _personList(List<ImportantPerson> persons, DateTime? myBirthDate,
       UserSettings settings) {
-    final fmt = NumberFormat('#,###', 'ja_JP');
+    final fmt = numberFormatOf(context.l10n.localeName);
     final myAge = myBirthDate != null
         ? LifeCalculator.currentAge(myBirthDate)
         : 0;
@@ -141,6 +142,8 @@ class _ImportantPeopleSectionState
     final together = myR < pR ? myR.floor() : pR.floor();
     final meet = calcMeetCount(together, p.meetingFrequency);
     final pHR = (pHL - pAge).clamp(0, 999).floor();
+    final l = context.l10n;
+    final years = pR.floor();
 
     return AppCard(
       onTap: () => setState(() => _selectedPerson = p),
@@ -153,7 +156,9 @@ class _ImportantPeopleSectionState
               Expanded(
                 child: Text.rich(TextSpan(children: [
                   TextSpan(text: p.nickname, style: AppTextStyles.headline),
-                  TextSpan(text: '  $pAge歳', style: AppTextStyles.footnote),
+                  TextSpan(
+                      text: '  ${l.ageYears(pAge)}',
+                      style: AppTextStyles.footnote),
                 ])),
               ),
               const Icon(CupertinoIcons.chevron_right,
@@ -165,11 +170,13 @@ class _ImportantPeopleSectionState
             Row(
               children: [
                 Expanded(
-                    child: _miniStat('これから', '${pR.floor()}', '年')),
+                    child: _miniStat(l, l.statYearsAhead, '$years',
+                        l.unitYearsTight(years))),
                 const SizedBox(width: AppSpacing.m),
                 Expanded(
                     child: pHR > 0
-                        ? _miniStat('元気に過ごせる目安', '$pHR', '年',
+                        ? _miniStat(l, l.statHealthyYears, '$pHR',
+                            l.unitYearsTight(pHR),
                             valueColor: AppColors.accent)
                         : const SizedBox.shrink()),
               ],
@@ -178,11 +185,12 @@ class _ImportantPeopleSectionState
             Row(
               children: [
                 Expanded(
-                    child:
-                        _miniStat('一緒にいられる年数', '$together', '年')),
+                    child: _miniStat(l, l.statYearsTogether, '$together',
+                        l.unitYearsTight(together))),
                 const SizedBox(width: AppSpacing.m),
                 Expanded(
-                    child: _miniStat('これから会える回数', fmt.format(meet), '回',
+                    child: _miniStat(l, l.statMeetCount, fmt.format(meet),
+                        l.unitTimesTight(meet),
                         valueColor: AppColors.accent)),
               ],
             ),
@@ -192,7 +200,8 @@ class _ImportantPeopleSectionState
     );
   }
 
-  static Widget _miniStat(String label, String value, String unit,
+  static Widget _miniStat(
+      AppLocalizations l, String label, String value, String unit,
       {Color? valueColor}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +210,7 @@ class _ImportantPeopleSectionState
         Text(label, style: AppTextStyles.captionLabel),
         const SizedBox(height: AppSpacing.xs),
         Text.rich(TextSpan(children: [
-          TextSpan(text: '約', style: AppTextStyles.captionLabel),
+          TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
           TextSpan(
             text: value,
             style: AppTextStyles.display

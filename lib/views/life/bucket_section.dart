@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../l10n/l10n.dart';
 import '../../models/bucket_item.dart';
 import '../../models/important_person.dart';
 import '../../providers/bucket_provider.dart';
@@ -26,7 +27,12 @@ class BucketSection extends ConsumerStatefulWidget {
 }
 
 /// 何もないときに出す例(押すとそのまま追加される)
-const _examples = ['オーロラを見る', '家族で温泉に行く', '親と旅行に行く', '富士山に登る'];
+List<String> _examples(AppLocalizations l) => [
+      l.bucketExample1,
+      l.bucketExample2,
+      l.bucketExample3,
+      l.bucketExample4,
+    ];
 
 class _BucketSectionState extends ConsumerState<BucketSection> {
   final _input = TextEditingController();
@@ -60,7 +66,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
         setState(() => _personId = null);
       }
     } else {
-      AppToast.success(context, 'もうリストにあります');
+      AppToast.success(context, context.l10n.bucketAlreadyOnList);
     }
   }
 
@@ -78,6 +84,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final items = ref.watch(bucketItemsProvider).valueOrNull ?? const [];
     final persons = ref.watch(importantPersonsProvider).valueOrNull ??
         const <ImportantPerson>[];
@@ -113,7 +120,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('人生のうちに、いつかかなえたいことのリスト。\nひとりでも、家族や友だちとでも。',
+        Text(l.bucketIntro,
             style: AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
         const SizedBox(height: AppSpacing.l),
         _AddField(
@@ -133,28 +140,28 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
         ],
         if (items.isEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
-          Text('たとえば', style: AppTextStyles.captionLabel),
+          Text(l.forExample, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
           Wrap(
             spacing: AppSpacing.s,
             runSpacing: AppSpacing.s,
             children: [
-              for (final e in _examples)
+              for (final e in _examples(l))
                 _Chip(label: e, icon: CupertinoIcons.add, onTap: () => _add(e)),
             ],
           ),
           const SizedBox(height: AppSpacing.l),
-          Text('今日の問いの答えからも追加できます。',
+          Text(l.bucketFromAnswers,
               style: AppTextStyles.footnote),
         ],
         if (someday.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
-          _SectionLabel('いつか', count: someday.length),
+          _SectionLabel(l.bucketSomeday, count: someday.length),
           list(someday),
         ],
         if (done.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
-          _SectionLabel('かなえたこと', count: done.length),
+          _SectionLabel(l.bucketAchieved, count: done.length),
           list(done),
         ],
       ],
@@ -194,13 +201,14 @@ class _BucketRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final done = item.doneAt != null;
     final sub = [
-      if (done) '${_date(item.doneAt!)}にかなえた',
-      if (withName != null) '$withNameと',
-    ].join('・');
+      if (done) l.bucketDoneOn(formatDate(item.doneAt!, l.localeName)),
+      if (withName != null) l.bucketWithPerson(withName!),
+    ].join(l.subtitleSeparator);
     return Semantics(
-      onTapHint: '編集',
+      onTapHint: l.edit,
       child: InkWell(
         onTap: onOpen,
         child: ConstrainedBox(
@@ -211,7 +219,7 @@ class _BucketRow extends StatelessWidget {
                 container: true,
                 button: true,
                 checked: done,
-                label: done ? 'かなえた' : 'まだかなえていない',
+                label: done ? l.bucketDone : l.bucketNotDone,
                 excludeSemantics: true,
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
@@ -259,8 +267,6 @@ class _BucketRow extends StatelessWidget {
   }
 }
 
-String _date(DateTime d) => '${d.year}年${d.month}月${d.day}日';
-
 /// 1件を直すシート: 文・誰と・かなえた・削除
 class _BucketEditor extends ConsumerStatefulWidget {
   const _BucketEditor({required this.item, required this.persons});
@@ -302,7 +308,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
   Future<void> _delete() async {
     final ok = await showDeleteConfirmation(
       context,
-      title: '「${widget.item.title}」を削除しますか？',
+      title: context.l10n.deleteBucketItemTitle(widget.item.title),
     );
     if (!ok) return;
     await ref.read(bucketItemRepositoryProvider).delete(widget.item.id);
@@ -311,6 +317,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final canSave = _title.text.trim().isNotEmpty;
     return Padding(
       padding: EdgeInsets.only(
@@ -326,14 +333,14 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
             child: Row(
               children: [
-                _TextAction('キャンセル',
+                _TextAction(l.cancel,
                     onTap: () => Navigator.of(context).pop()),
                 Expanded(
-                  child: Text('編集',
+                  child: Text(l.edit,
                       textAlign: TextAlign.center,
                       style: AppTextStyles.headline),
                 ),
-                _TextAction('完了',
+                _TextAction(l.done,
                     strong: true, onTap: canSave ? _save : null),
               ],
             ),
@@ -368,7 +375,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                         child: Row(
                           children: [
                             Expanded(
-                                child: Text('かなえた',
+                                child: Text(l.bucketDone,
                                     style: AppTextStyles.body)),
                             CupertinoSwitch(
                               value: _done,
@@ -398,7 +405,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                         minimumSize:
                             const Size(AppSpacing.minTap, AppSpacing.minTap)),
                     icon: const Icon(CupertinoIcons.trash, size: 18),
-                    label: Text('削除',
+                    label: Text(l.delete,
                         style: AppTextStyles.body
                             .copyWith(color: AppColors.danger)),
                   ),
@@ -464,7 +471,7 @@ class _PersonChips extends StatelessWidget {
       runSpacing: AppSpacing.s,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Text('誰と（任意）', style: AppTextStyles.footnote),
+        Text(context.l10n.withWhomOptional, style: AppTextStyles.footnote),
         for (final p in persons)
           _Chip(
             label: p.nickname,
@@ -518,7 +525,7 @@ class _AddField extends StatelessWidget {
               style: AppTextStyles.body,
               cursorColor: AppColors.accent,
               decoration: InputDecoration(
-                hintText: 'バケットリストに追加',
+                hintText: context.l10n.addToBucketList,
                 hintStyle:
                     AppTextStyles.body.copyWith(color: AppColors.textDisabled),
                 counterText: '',
@@ -530,7 +537,7 @@ class _AddField extends StatelessWidget {
           Semantics(
             button: true,
             enabled: canAdd,
-            label: '追加',
+            label: context.l10n.add,
             excludeSemantics: true,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../utils/date_validator.dart';
 import '../../utils/freq_label.dart';
@@ -63,10 +64,11 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   void _submit() {
     final nick = _nickController.text.trim();
     if (nick.isEmpty) {
-      AppToast.error(context, 'ニックネームを入れると保存できます');
+      AppToast.error(context, context.l10n.nicknameNeeded);
       return;
     }
-    final error = DateValidator.validateBirthDate(_year, _month, _day);
+    final error = DateValidator.validateBirthDate(_year, _month, _day,
+        l10n: context.l10n);
     if (error != null) {
       AppToast.error(context, error);
       return;
@@ -85,6 +87,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.person != null;
+    final l = context.l10n;
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.screen),
@@ -104,30 +107,30 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isEdit ? '大切な人を編集' : '大切な人を追加',
+                    isEdit ? l.editPerson : l.addPerson,
                     style: AppTextStyles.title,
                   ),
                   const SizedBox(height: AppSpacing.xl),
 
                   // ニックネーム
-                  _label('ニックネーム', required: true),
+                  _label(l.nickname, required: true),
                   const SizedBox(height: AppSpacing.s),
                   AppInput(
                     controller: _nickController,
-                    placeholder: '例: お母さん',
+                    placeholder: l.nicknameHint,
                     maxLength: 20,
                   ),
                   const SizedBox(height: AppSpacing.l),
 
                   // 性別
-                  _label('性別'),
+                  _label(l.gender),
                   const SizedBox(height: AppSpacing.s),
                   Row(
                     children: [
                       for (final g in [
-                        (Gender.male, '男性'),
-                        (Gender.female, '女性'),
-                        (Gender.unspecified, '答えない'),
+                        (Gender.male, l.genderMale),
+                        (Gender.female, l.genderFemale),
+                        (Gender.unspecified, l.genderUnspecified),
                       ]) ...[
                         if (g.$1 != Gender.male)
                           const SizedBox(width: AppSpacing.s),
@@ -138,7 +141,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                   const SizedBox(height: AppSpacing.l),
 
                   // 生年月日
-                  _label('生年月日', required: true),
+                  _label(l.birthDate, required: true),
                   const SizedBox(height: AppSpacing.s),
                   GestureDetector(
                     onTap: () async {
@@ -169,7 +172,8 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              '$_year年$_month月$_day日',
+                              formatDate(DateTime(_year, _month, _day),
+                                  l.localeName),
                               style: AppTextStyles.callout,
                             ),
                           ),
@@ -182,22 +186,25 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                   const SizedBox(height: AppSpacing.l),
 
                   // 会う頻度
-                  _label('会う頻度', required: true),
+                  _label(l.meetingFrequency, required: true),
                   const SizedBox(height: AppSpacing.s),
                   AppPicker<int>(
                     value: _freq,
-                    displayText: freqToLabel(_freq),
-                    title: '会う頻度',
+                    displayText:
+                        capitalizeFirst(localizedFreqLabel(l, _freq)),
+                    title: l.meetingFrequency,
                     options: meetingFrequencies
-                        .map((f) =>
-                            AppPickerOption(value: f.annual, label: f.label))
+                        .map((f) => AppPickerOption(
+                            value: f.annual,
+                            label: capitalizeFirst(
+                                localizedFreqLabel(l, f.annual))))
                         .toList(),
                     onChanged: (v) => setState(() => _freq = v),
                   ),
                   const SizedBox(height: AppSpacing.l),
 
                   // 最後に会った日
-                  _label('最後に会った日（任意）'),
+                  _label(l.lastMetOptional),
                   const SizedBox(height: AppSpacing.s),
                   GestureDetector(
                     onTap: () async {
@@ -220,8 +227,8 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       ),
                       child: Text(
                         _lastMet != null
-                            ? '${_lastMet!.year}年${_lastMet!.month}月${_lastMet!.day}日'
-                            : 'なし',
+                            ? formatDate(_lastMet!, l.localeName)
+                            : l.none,
                         // 未選択のときは入力欄の例の文と同じ色
                         style: AppTextStyles.callout.copyWith(
                           color: _lastMet != null
@@ -238,14 +245,14 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       Expanded(
                         child: AppButton.secondary(
                           onPressed: () => Navigator.of(context).pop(),
-                          label: 'キャンセル',
+                          label: l.cancel,
                         ),
                       ),
                       const SizedBox(width: AppSpacing.s),
                       Expanded(
                         child: AppButton.primary(
                           onPressed: _submit,
-                          label: isEdit ? '保存' : '追加',
+                          label: isEdit ? l.save : l.add,
                         ),
                       ),
                     ],

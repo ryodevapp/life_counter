@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../l10n/l10n.dart';
 import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
@@ -32,6 +33,7 @@ class MonthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final counts = countMoods(records);
     final moods = [
       for (final s in stamps)
@@ -43,12 +45,14 @@ class MonthHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('${month.year}年${month.month}月', style: AppTextStyles.headline),
+          Text(formatYearMonth(month, l.localeName),
+              style: AppTextStyles.headline),
           const Spacer(),
           if (moods.isNotEmpty)
             Semantics(
-              label:
-                  'この月の気分 ${moods.map((m) => '${m.$1.label}${m.$2}日').join('、')}',
+              label: l.monthMoodsSemantics(moods
+                  .map((m) => l.monthMoodItem(moodLabelOf(l, m.$1.id), m.$2))
+                  .join(l.moodListSeparator)),
               excludeSemantics: true,
               child: Row(
                 children: [
@@ -56,7 +60,7 @@ class MonthHeader extends StatelessWidget {
                     const SizedBox(width: AppSpacing.m),
                     MoodBadge(moodId: s.id, size: 18),
                     const SizedBox(width: AppSpacing.xs),
-                    Text('$n日', style: AppTextStyles.footnote),
+                    Text(l.monthMoodCount(n), style: AppTextStyles.footnote),
                   ],
                 ],
               ),
@@ -103,12 +107,13 @@ class LastYearCard extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Text('1年前の今日', style: AppTextStyles.captionLabel),
+                Text(context.l10n.oneYearAgoToday,
+                    style: AppTextStyles.captionLabel),
                 if (mood != null) ...[
                   const SizedBox(width: AppSpacing.m),
                   MoodBadge(moodId: mood.id, size: 18),
                   const SizedBox(width: AppSpacing.xs),
-                  Text(mood.label,
+                  Text(moodLabel(context, mood.id),
                       style: AppTextStyles.footnote
                           .copyWith(color: moodLooks[mood.id]?.ink)),
                 ],

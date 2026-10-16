@@ -14,7 +14,7 @@ struct DayEntry: TimelineEntry {
 struct DayProvider: TimelineProvider {
     func placeholder(in context: Context) -> DayEntry {
         DayEntry(date: Date(),
-                 day: DayInfo(date: ymd(Date()), lifeDays: 12345, question: "最近、時間を忘れて没頭したことは？"),
+                 day: DayInfo(date: ymd(Date()), lifeDays: 12345, question: L10n.t("最近、時間を忘れて没頭したことは？", "What made you lose track of time lately?")),
                  stamp: nil)
     }
 
@@ -60,11 +60,11 @@ struct LifeDaysView: View {
                     .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
                     // iOS 26 の色合いを付ける表示・透明な表示で、主役の数字として色付けされる
                     .widgetAccentable()
-                Text("日目")
+                Text(L10n.t("日目", "days of life"))
                     .font(.system(size: 13, weight: .light))
                     .foregroundStyle(Tone.muted)
             } else {
-                Text("アプリを開くと表示されます")
+                Text(L10n.t("アプリを開くと表示されます", "Open the app to start"))
                     .font(.system(size: 12))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Tone.muted)
@@ -116,7 +116,7 @@ struct TodayQuestionView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "square.and.pencil")
                                 .font(.system(size: 12, weight: .semibold))
-                            Text("書く")
+                            Text(L10n.t("書く", "Write"))
                                 .font(.system(size: 13, weight: .semibold))
                         }
                         .padding(.horizontal, 12)
@@ -124,10 +124,10 @@ struct TodayQuestionView: View {
                         .foregroundStyle(.white)
                         .background(Capsule().fill(Tone.accent))
                     }
-                    .accessibilityLabel("答えを書く")
+                    .accessibilityLabel(L10n.t("答えを書く", "Write your answer"))
                 }
             } else {
-                Text("アプリを開くと、今日の問いが表示されます")
+                Text(L10n.t("アプリを開くと、今日の問いが表示されます", "Open the app to see today's question"))
                     .font(.system(size: 13))
                     .foregroundStyle(Tone.muted)
             }
@@ -142,8 +142,8 @@ struct LifeDaysWidget: Widget {
     let kind = "LifeDaysWidget"
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DayProvider()) { LifeDaysView(entry: $0) }
-            .configurationDisplayName("人生の日数")
-            .description("人生◯日目を、静かに表示します。")
+            .configurationDisplayName(L10n.t("人生の日数", "Days of Life"))
+            .description(L10n.t("人生◯日目を、静かに表示します。", "Quietly shows which day of your life it is."))
             .supportedFamilies([.systemSmall])
     }
 }
@@ -152,8 +152,8 @@ struct TodayQuestionWidget: Widget {
     let kind = "TodayQuestionWidget"
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DayProvider()) { TodayQuestionView(entry: $0) }
-            .configurationDisplayName("今日の記録")
-            .description("今日の問いを見て、気分をひと押しで残せます。「書く」から答えも書けます。")
+            .configurationDisplayName(L10n.t("今日の記録", "Today's Journal"))
+            .description(L10n.t("今日の問いを見て、気分をひと押しで残せます。「書く」から答えも書けます。", "See today's question and log your mood in one tap. Tap Write to answer."))
             .supportedFamilies([.systemMedium])
     }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:life_counter/l10n/l10n.dart';
 import 'package:life_counter/models/question.dart';
 import 'package:life_counter/models/stamp.dart';
 import 'package:life_counter/views/today/today_question_card.dart';
@@ -9,8 +10,13 @@ void main() {
   const bucket =
       Question(id: 'q2', category: 'bucket', text: '一度は行ってみたい場所は？', dayOfYear: 2);
 
+  // 画面は日本語で出す(端末が日本語のとき)
   Future<void> host(WidgetTester tester, Widget child) => tester.pumpWidget(
-      MaterialApp(home: Scaffold(body: SingleChildScrollView(child: child))));
+      MaterialApp(
+          locale: const Locale('ja'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(body: SingleChildScrollView(child: child))));
 
   group('MoodCard', () {
     testWidgets('asks how the day was and shows every mood with its label',

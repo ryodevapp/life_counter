@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_counter/models/important_person.dart';
+import 'package:life_counter/services/country_lifespans.dart';
 import 'package:life_counter/services/life_calculator.dart';
 
 void main() {
@@ -56,6 +57,29 @@ void main() {
           LifeCalculator.remainingYears(birthDate, Gender.male);
       expect(years, greaterThan(0));
       expect(years, lessThan(100));
+    });
+  });
+
+  group('LifeCalculator の国ごとの平均', () {
+    tearDown(() => LifeCalculator.regionCode = null);
+
+    test('日本か未設定なら、これまでの日本の値', () {
+      LifeCalculator.regionCode = 'JP';
+      expect(LifeCalculator.averageLifespan(Gender.male), 81.05);
+      LifeCalculator.regionCode = null;
+      expect(LifeCalculator.healthyLifespan(Gender.female), 75.38);
+    });
+
+    test('米国なら米国の WHO の値', () {
+      LifeCalculator.regionCode = 'US';
+      expect(LifeCalculator.averageLifespan(Gender.male), 76.2);
+      expect(LifeCalculator.healthyLifespan(Gender.unspecified), 64.6);
+    });
+
+    test('表にない国は世界平均', () {
+      LifeCalculator.regionCode = 'ZZ';
+      expect(LifeCalculator.averageLifespan(Gender.unspecified),
+          worldLifespan.both);
     });
   });
 }

@@ -1,3 +1,6 @@
+import 'package:flutter/widgets.dart';
+import '../l10n/l10n.dart';
+
 /// 「今日はどんな一日だった？」への気分。日替わりの問いへの答えとは別に残す
 class Stamp {
   const Stamp({required this.id, required this.emoji, required this.label});
@@ -7,7 +10,7 @@ class Stamp {
   final String label;
 }
 
-/// 気分を聞く問い
+/// 気分を聞く問い(日本語の元の文。画面では AppLocalizations.moodQuestion を使う)
 const moodQuestion = '今日はどんな一日だった？';
 
 /// 前向き2・ふつう1・後ろ向き2。つらい日にも選べるように。
@@ -27,3 +30,17 @@ Stamp? stampById(String? id) {
   }
   return null;
 }
+
+/// 気分の名前を、いまの言語で(id は保存に使うので変えない)
+String moodLabelOf(AppLocalizations l, String id) => switch (id) {
+      'happy' => l.moodHappy,
+      'calm' => l.moodCalm,
+      'neutral' => l.moodNeutral,
+      'tired' => l.moodTired,
+      'sad' => l.moodSad,
+      _ => stampById(id)?.label ?? id,
+    };
+
+/// 画面用: 気分の名前を、端末の言語で
+String moodLabel(BuildContext context, String id) =>
+    moodLabelOf(AppLocalizations.of(context), id);

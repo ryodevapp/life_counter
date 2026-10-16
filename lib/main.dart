@@ -13,14 +13,20 @@ import 'models/important_person.dart';
 import 'providers/isar_provider.dart';
 import 'providers/question_bank_provider.dart';
 import 'providers/user_settings_provider.dart';
+import 'services/life_calculator.dart';
+import 'utils/app_language.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('ja_JP');
+  // 日本語と英語の日付の書き方を読み込む
+  await initializeDateFormatting();
   await NotificationService.initialize();
 
+  // 平均の目安は、住んでいる国(端末の地域)の値で計算する
+  LifeCalculator.regionCode =
+      WidgetsBinding.instance.platformDispatcher.locale.countryCode;
   final prefs = await SharedPreferences.getInstance();
-  final questionBank = await QuestionBank.load();
+  final questionBank = await QuestionBank.load(languageCode: appLanguageCode());
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
     [DailyRecordSchema, ImportantPersonSchema, BucketItemSchema],

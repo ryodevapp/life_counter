@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
@@ -13,6 +14,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: Container(
@@ -59,17 +61,17 @@ class WelcomePage extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '人生は\n',
+                        text: l.welcomeTitleStart,
                         style: AppTextStyles.title,
                       ),
                       TextSpan(
-                        text: '有限',
+                        text: l.welcomeTitleAccent,
                         style: AppTextStyles.title.copyWith(
                           color: AppColors.accent,
                         ),
                       ),
                       TextSpan(
-                        text: 'だから',
+                        text: l.welcomeTitleEnd,
                         style: AppTextStyles.title,
                       ),
                     ],
@@ -78,7 +80,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.l),
                 Text(
-                  '今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように',
+                  l.welcomeBody,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.callout.copyWith(
                     color: AppColors.textSecondary,
@@ -86,7 +88,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xxxl),
                 // はじめるボタン
-                AppButton.primary(onPressed: onStart, label: 'はじめる'),
+                AppButton.primary(onPressed: onStart, label: l.getStarted),
                 const SizedBox(height: AppSpacing.xxxl),
                 // 下矢印アニメーション
                 const _BreathingArrow(),

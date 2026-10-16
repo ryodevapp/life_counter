@@ -1,3 +1,5 @@
+import '../l10n/l10n.dart';
+
 /// 日付バリデーション
 class DateValidator {
   DateValidator._();
@@ -15,16 +17,19 @@ class DateValidator {
   }
 
   /// 生年月日として有効かチェック（未来日でない、1920年以降）
-  static String? validateBirthDate(int year, int month, int day) {
+  /// 返す文は [l10n] の言語で(省略すると日本語)
+  static String? validateBirthDate(int year, int month, int day,
+      {AppLocalizations? l10n}) {
+    final l = l10n ?? appLocalizationsFor('ja');
     if (!isValidDate(year, month, day)) {
-      return 'この日付は選べません';
+      return l.dateNotAvailable;
     }
     final date = DateTime(year, month, day);
     if (date.isAfter(DateTime.now())) {
-      return '今日までの日付を選べます';
+      return l.dateUpToToday;
     }
     if (year < 1920) {
-      return '1920年以降の日付を選べます';
+      return l.dateFrom1920;
     }
     return null; // OK
   }

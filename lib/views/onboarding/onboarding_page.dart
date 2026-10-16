@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/user_settings_provider.dart';
@@ -135,14 +136,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   if (_step > 0) ...[
                     Expanded(
                       child:
-                          AppButton.secondary(onPressed: _prevStep, label: '戻る'),
+                          AppButton.secondary(
+                              onPressed: _prevStep, label: context.l10n.back),
                     ),
                     const SizedBox(width: AppSpacing.s),
                   ],
                   Expanded(
                     child: AppButton.primary(
                       onPressed: _nextStep,
-                      label: _step == 3 ? 'はじめる' : '次へ',
+                      label: _step == 3
+                          ? context.l10n.getStarted
+                          : context.l10n.next,
                     ),
                   ),
                 ],
@@ -156,6 +160,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Widget _stepContent(int lifeDays, int remainingDays) {
+    final l = context.l10n;
     switch (_step) {
       case 0:
         // Step 1: 人生○○日目（カウントアップ）
@@ -169,7 +174,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: AppSpacing.xxxl),
             Text(
-              'あなたの人生は今日で',
+              l.onboardingLifeDaysBefore,
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.l),
@@ -179,7 +184,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: AppSpacing.s),
             Text(
-              '日目です',
+              l.onboardingLifeDaysAfter,
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
           ],
@@ -190,7 +195,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'これからの日々は',
+              l.onboardingDaysAhead,
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.l),
@@ -200,12 +205,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: AppSpacing.s),
             Text(
-              '日（平均からの目安）',
+              l.daysEstimateUnit(remainingDays),
+              textAlign: TextAlign.center,
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xxl),
             Text(
-              'この日々を\nどう過ごしますか？',
+              l.onboardingHowToSpend,
               textAlign: TextAlign.center,
               style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
             ),
@@ -222,16 +228,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: 'でも\n今日という日は\n人生で',
+                    text: l.onceStart,
                     style: AppTextStyles.title,
                   ),
                   TextSpan(
-                    text: 'たった一度きり',
+                    text: l.onceAccent,
                     style:
                         AppTextStyles.title.copyWith(color: AppColors.accent),
                   ),
                   TextSpan(
-                    text: 'です',
+                    text: l.onceEnd,
                     style: AppTextStyles.title,
                   ),
                 ],
@@ -249,16 +255,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: '後悔のない毎日を\n',
+                    text: l.togetherStart,
                     style: AppTextStyles.title,
                   ),
                   TextSpan(
-                    text: '一緒に積み重ねて',
+                    text: l.togetherAccent,
                     style:
                         AppTextStyles.title.copyWith(color: AppColors.accent),
                   ),
                   TextSpan(
-                    text: 'いけますように',
+                    text: l.togetherEnd,
                     style: AppTextStyles.title,
                   ),
                 ],
@@ -273,14 +279,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
             const SizedBox(height: AppSpacing.xxl),
             Text(
-              '今日を素晴らしい一日にするために\n何をしますか？',
+              l.onboardingGoalQuestion,
               style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.xl),
             AppInput(
               controller: _goalController,
-              placeholder: '小さなことでOK',
+              placeholder: l.onboardingGoalHint,
               maxLength: 200,
               textAlign: TextAlign.center,
             ),

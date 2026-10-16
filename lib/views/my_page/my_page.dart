@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../models/user_settings.dart';
 import '../../providers/important_person_provider.dart';
@@ -29,17 +30,14 @@ class MyPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
     final settings = ref.watch(userSettingsProvider);
     final bd = settings.birthDate;
-    final bdText = bd != null ? '${bd.year}年${bd.month}月${bd.day}日' : '未設定';
-    final genText = switch (settings.gender) {
-      Gender.male => '男性',
-      Gender.female => '女性',
-      Gender.unspecified => '答えない',
-    };
+    final bdText = bd != null ? formatDate(bd, l.localeName) : l.notSet;
+    final genText = _genderLabel(l, settings.gender);
     final notifText = settings.notificationEnabled
         ? '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}'
-        : 'オフ';
+        : l.off;
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -47,24 +45,25 @@ class MyPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const PageHeader('設定'),
+            PageHeader(l.tabSettings),
 
             AppCard(
               padding: _groupPadding,
               child: Column(
                 children: [
                   _row(
-                    CupertinoIcons.gift, '生年月日', value: bdText,
+                    CupertinoIcons.gift, l.birthDate, value: bdText,
                     onTap: () => _editBirthDate(context, ref, settings),
                   ),
                   _divider(),
                   _row(
-                    CupertinoIcons.person, '性別', value: genText,
+                    CupertinoIcons.person, l.gender, value: genText,
                     onTap: () => _editGender(context, ref, settings),
                   ),
                   _divider(),
                   _row(
-                    CupertinoIcons.bell, '朝の通知', value: notifText,
+                    CupertinoIcons.bell, l.morningNotification,
+                    value: notifText,
                     onTap: () => _editNotification(context, ref, settings),
                   ),
                 ],
@@ -76,19 +75,19 @@ class MyPage extends ConsumerWidget {
               padding: _groupPadding,
               child: Column(
                 children: [
-                  _row(CupertinoIcons.square_arrow_up, '記録を書き出す',
+                  _row(CupertinoIcons.square_arrow_up, l.exportJournal,
                       onTap: () => _exportRecords(context, ref)),
                   _divider(),
-                  _row(CupertinoIcons.envelope, 'フィードバックを送る',
+                  _row(CupertinoIcons.envelope, l.sendFeedback,
                       onTap: () => _sendFeedback(context)),
                   _divider(),
-                  _row(CupertinoIcons.lock, 'プライバシーポリシー',
+                  _row(CupertinoIcons.lock, l.privacyPolicy,
                       onTap: () => _showLegal(context, 'privacy_policy.html',
-                          'プライバシーポリシー')),
+                          l.privacyPolicy)),
                   _divider(),
-                  _row(CupertinoIcons.doc_text, '利用規約',
+                  _row(CupertinoIcons.doc_text, l.termsOfUse,
                       onTap: () => _showLegal(
-                          context, 'terms_of_service.html', '利用規約')),
+                          context, 'terms_of_service.html', l.termsOfUse)),
                 ],
               ),
             ),
@@ -99,7 +98,7 @@ class MyPage extends ConsumerWidget {
                 future: _packageInfo,
                 builder: (context, snapshot) => Text(
                   snapshot.hasData
-                      ? 'バージョン ${snapshot.data!.version}'
+                      ? l.version(snapshot.data!.version)
                       : 'LifeCounter',
                   style: AppTextStyles.footnote,
                 ),
@@ -111,9 +110,16 @@ class MyPage extends ConsumerWidget {
     );
   }
 
+  static String _genderLabel(AppLocalizations l, Gender g) => switch (g) {
+        Gender.male => l.genderMale,
+        Gender.female => l.genderFemale,
+        Gender.unspecified => l.genderUnspecified,
+      };
+
   // ─── フィードバック ───
 
   Future<void> _sendFeedback(BuildContext context) async {
+    final subject = context.l10n.feedbackSubject;
     String version = '';
     try {
       version = ' v${(await _packageInfo).version}';
@@ -123,7 +129,7 @@ class MyPage extends ConsumerWidget {
     final uri = Uri(
       scheme: 'mailto',
       path: 'ryo.nakano.biz+lifecounter@gmail.com',
-      query: 'subject=LifeCounter フィードバック&body=\n\n---\nLifeCounter$version',
+      query: 'subject=$subject&body=\n\n---\nLifeCounter$version',
     );
     await launchUrl(uri);
   }
@@ -174,16 +180,13 @@ class MyPage extends ConsumerWidget {
             children: [
               const SheetHandle(),
               const SizedBox(height: AppSpacing.l),
-              Text('性別', style: AppTextStyles.headline),
+              Text(ctx.l10n.gender, style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
-              for (final g in [
-                (Gender.male, '男性'),
-                (Gender.female, '女性'),
-                (Gender.unspecified, '答えない'),
-              ])
+              for (final g in Gender.values)
                 ListTile(
-                  title: Text(g.$2, style: AppTextStyles.callout),
-                  trailing: settings.gender == g.$1
+                  title: Text(_genderLabel(ctx.l10n, g),
+                      style: AppTextStyles.callout),
+                  trailing: settings.gender == g
                       ? const Icon(CupertinoIcons.checkmark, color: AppColors.accent)
                       : null,
                   onTap: () async {
@@ -191,7 +194,7 @@ class MyPage extends ConsumerWidget {
                     if (settings.birthDate != null) {
                       await ref
                           .read(userSettingsProvider.notifier)
-                          .setBirthDateAndGender(settings.birthDate!, g.$1);
+                          .setBirthDateAndGender(settings.birthDate!, g);
                     }
                   },
                 ),
@@ -221,10 +224,12 @@ class MyPage extends ConsumerWidget {
             children: [
               const SheetHandle(),
               const SizedBox(height: AppSpacing.l),
-              Text('朝の通知', style: AppTextStyles.headline),
+              Text(ctx.l10n.morningNotification,
+                  style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
               SwitchListTile(
-                title: Text('朝の通知', style: AppTextStyles.callout),
+                title: Text(ctx.l10n.morningNotification,
+                    style: AppTextStyles.callout),
                 value: settings.notificationEnabled,
                 activeTrackColor: AppColors.accent,
                 onChanged: (v) async {
@@ -242,7 +247,7 @@ class MyPage extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text('時刻', style: AppTextStyles.callout),
+                title: Text(ctx.l10n.time, style: AppTextStyles.callout),
                 trailing: Text(
                   '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}',
                   style: AppTextStyles.callout
@@ -260,8 +265,8 @@ class MyPage extends ConsumerWidget {
                   if (picked != null) {
                     if (picked.hour < 5 || picked.hour > 11) {
                       if (context.mounted) {
-                        AppToast.error(context,
-                            '通知は 5:00〜11:00 の間で選べます');
+                        AppToast.error(
+                            context, context.l10n.notificationTimeRange);
                       }
                       return;
                     }
@@ -319,6 +324,7 @@ class MyPage extends ConsumerWidget {
   /// 記録をテキストにして共有シートに渡す(ファイルは作らない)
   static Future<void> _exportRecords(BuildContext context, WidgetRef ref) async {
     final box = context.findRenderObject() as RenderBox?;
+    final l = context.l10n;
     final records = await ref.read(dailyRecordRepositoryProvider).getAll();
     final buckets = await ref.read(bucketItemRepositoryProvider).getAll();
     final persons = ref.read(importantPersonsProvider).valueOrNull ?? const [];
@@ -327,10 +333,11 @@ class MyPage extends ConsumerWidget {
       buckets,
       ref.read(questionBankProvider),
       personNames: {for (final p in persons) p.id: p.nickname},
+      languageCode: l.localeName,
     );
     await SharePlus.instance.share(ShareParams(
       text: text,
-      subject: 'LifeCounter の記録',
+      subject: l.exportTitle,
       // iPad は共有の吹き出しの位置が要る
       sharePositionOrigin:
           box == null ? null : box.localToGlobal(Offset.zero) & box.size,

@@ -29,13 +29,18 @@ class QuestionBank {
 
   static const assetPath = 'assets/data/questions_v2.json';
 
+  /// 英語の問い(id・番号・分類は日本語版と同じ)
+  static const assetPathEn = 'assets/data/questions_v2_en.json';
+
   final List<Question> _all;
   final Map<int, Question> _byDay;
   final Map<String, Question> _byId;
 
   /// アセットの JSON(`{"status": ..., "questions": [...]}`)から読む。
-  static Future<QuestionBank> load() async {
-    final raw = await rootBundle.loadString(assetPath);
+  /// [languageCode] が 'ja' 以外なら英語の問いを読む
+  static Future<QuestionBank> load({String languageCode = 'ja'}) async {
+    final raw = await rootBundle
+        .loadString(languageCode == 'ja' ? assetPath : assetPathEn);
     return QuestionBank(parse(raw));
   }
 

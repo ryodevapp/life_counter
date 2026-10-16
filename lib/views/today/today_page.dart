@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:intl/intl.dart';
+import '../../l10n/l10n.dart';
 import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../providers/isar_provider.dart';
@@ -250,7 +250,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     if (!mounted) return;
     AppToast.success(
       context,
-      added ? 'バケットリストに追加しました' : 'もうバケットリストにあります',
+      added ? context.l10n.addedToBucketList : context.l10n.alreadyInBucketList,
     );
   }
 
@@ -277,20 +277,19 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         if (mounted) _answerFocus.requestFocus();
       });
     });
+    final l = context.l10n;
     final settings = ref.watch(userSettingsProvider);
     final birthDate = settings.birthDate;
     if (birthDate == null) {
       return Center(
-          child: Text('生年月日を入れると表示されます',
+          child: Text(l.birthDateNeeded,
               style: AppTextStyles.callout
                   .copyWith(color: AppColors.textMuted)));
     }
 
     final lifeDays = lifeDaysOn(birthDate, _date);
-    final formatter = NumberFormat('#,###', 'ja_JP');
-    final now = _date;
-    final dateStr =
-        '${now.year}年${now.month}月${now.day}日（${DateFormat.E('ja_JP').format(now)}）';
+    final formatter = numberFormatOf(l.localeName);
+    final dateStr = formatFullDate(_date, l.localeName);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -309,16 +308,16 @@ class _TodayPageState extends ConsumerState<TodayPage> {
               padding: const EdgeInsets.only(bottom: AppSpacing.xl),
               child: Column(
                 children: [
-                  // 日付 → 「人生 12,616 日目」(数字の下の線に、前後の言葉を揃える)
+                  // 日付 → 「人生 12,616 日目」「Day 12,616 of your life」(数字の下の線に、前後の言葉を揃える)
                   Text(dateStr, style: AppTextStyles.footnote),
                   const SizedBox(height: AppSpacing.s),
                   Text.rich(
                     TextSpan(children: [
-                      TextSpan(text: '人生 ', style: _counterWord),
+                      TextSpan(text: l.todayLifeDaysPrefix, style: _counterWord),
                       TextSpan(
                           text: formatter.format(lifeDays),
                           style: AppTextStyles.counter),
-                      TextSpan(text: ' 日目', style: _counterWord),
+                      TextSpan(text: l.todayLifeDaysSuffix, style: _counterWord),
                     ]),
                   ),
                 ],

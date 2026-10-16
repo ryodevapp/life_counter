@@ -1,16 +1,20 @@
+import '../l10n/l10n.dart';
 import '../models/bucket_item.dart';
 import '../models/daily_record.dart';
 import '../models/stamp.dart';
 import 'question_bank.dart';
 
 /// 記録をテキストにする(日付の古い順、最後にやりたいこと)。空の項目は書かない
+/// 見出しは [languageCode] の言語で(既定は日本語)
 String exportRecordsAsText(
   List<DailyRecord> records,
   List<BucketItem> buckets,
   QuestionBank bank, {
   Map<int, String> personNames = const {},
+  String languageCode = 'ja',
 }) {
-  final out = StringBuffer('LifeCounter の記録\n');
+  final l = appLocalizationsFor(languageCode);
+  final out = StringBuffer('${l.exportTitle}\n');
   final sorted = [...records]..sort((a, b) => a.date.compareTo(b.date));
   for (final r in sorted) {
     final lines = <String>[];
@@ -20,17 +24,20 @@ String exportRecordsAsText(
 
     final question =
         r.morningQuestionId == null ? null : bank.byId(r.morningQuestionId!);
-    if (r.stamp != null || r.answer != null) add('問い', question?.text);
-    add('気分', stampById(r.stamp)?.label);
-    add('答え', r.answer);
-    add('感謝していること', r.gratitude);
-    add('今日を素晴らしい一日にするために', r.todayGoal);
-    add('嬉しかったこと', r.reflectionGood);
-    add('なぜ', r.reflectionWhy);
-    add('明日の楽しみ', r.reflectionTomorrow);
-    add('明日の自分へ', r.tomorrowMessage);
-    add('今週のハイライト', r.weeklyReflectionHighlight);
-    add('来週変えること', r.weeklyReflectionChange);
+    if (r.stamp != null || r.answer != null) {
+      add(l.exportQuestion, question?.text);
+    }
+    final mood = stampById(r.stamp);
+    add(l.exportMood, mood == null ? null : moodLabelOf(l, mood.id));
+    add(l.exportAnswer, r.answer);
+    add(l.fieldGratitude, r.gratitude);
+    add(l.exportTodayGoal, r.todayGoal);
+    add(l.fieldGoodThing, r.reflectionGood);
+    add(l.exportWhy, r.reflectionWhy);
+    add(l.fieldTomorrowJoy, r.reflectionTomorrow);
+    add(l.fieldTomorrowMessage, r.tomorrowMessage);
+    add(l.fieldWeeklyHighlight, r.weeklyReflectionHighlight);
+    add(l.fieldWeeklyChange, r.weeklyReflectionChange);
     if (lines.isEmpty) continue;
     final d = r.date;
     out
@@ -41,11 +48,11 @@ String exportRecordsAsText(
   if (buckets.isNotEmpty) {
     out
       ..writeln()
-      ..writeln('バケットリスト');
+      ..writeln(l.exportBucketList);
     for (final b in buckets) {
-      final mark = b.doneAt != null ? '[かなえた] ' : '';
+      final mark = b.doneAt != null ? l.exportDoneMark : '';
       final who = personNames[b.personId];
-      out.writeln('- $mark${b.title}${who != null ? '($whoと)' : ''}');
+      out.writeln('- $mark${b.title}${who != null ? l.exportWithPerson(who) : ''}');
     }
   }
   return out.toString();

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../l10n/l10n.dart';
 import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
@@ -60,6 +60,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     return SafeArea(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -68,11 +69,11 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const PageHeader('記録'),
+            PageHeader(l.tabJournal),
             AppSegmentedControl<_RecordView>(
-              items: const [
-                SegmentItem(value: _RecordView.list, label: 'リスト'),
-                SegmentItem(value: _RecordView.calendar, label: 'カレンダー'),
+              items: [
+                SegmentItem(value: _RecordView.list, label: l.viewList),
+                SegmentItem(value: _RecordView.calendar, label: l.viewCalendar),
               ],
               selectedValue: _view,
               onChanged: (v) => setState(() => _view = v),
@@ -138,7 +139,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         firstDay: DateTime(2020),
         lastDay: DateTime.now(),
         focusedDay: _focusedDay,
-        locale: 'ja_JP',
+        locale: intlLocaleOf(context.l10n.localeName),
         startingDayOfWeek: StartingDayOfWeek.sunday,
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
@@ -227,7 +228,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     if (filtered.isEmpty) {
       return AppCard(
         child: Text(
-          '記録はまだありません',
+          context.l10n.noEntriesYet,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
@@ -287,7 +288,9 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
                           // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
                           if (stampById(r.stamp) case final mood?) ...[
                             const SizedBox(width: AppSpacing.s),
-                            _MoodTag(moodId: mood.id, label: mood.label),
+                            _MoodTag(
+                                moodId: mood.id,
+                                label: moodLabel(context, mood.id)),
                           ],
                           const Spacer(),
                           _EditIconButton(
@@ -303,32 +306,31 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         );
   }
 
-  String _formatDate(DateTime date) {
-    final weekday = DateFormat.E('ja_JP').format(date);
-    return '${date.month}月${date.day}日（$weekday）';
-  }
+  String _formatDate(DateTime date) =>
+      formatMonthDayWeekday(date, context.l10n.localeName);
 
   List<Widget> _buildInlineFields(DailyRecord r) {
+    final l = context.l10n;
     final fields = <(String, String)>[];
     // 今日の問いへの答えは、問いの文を見出しにする(何への答えかが分かるように)
     if (r.answer != null) {
       final q = r.morningQuestionId == null
           ? null
           : ref.read(questionBankProvider).byId(r.morningQuestionId!);
-      fields.add((q == null ? '今日の問い' : questionWithFollowUp(q), r.answer!));
+      fields.add((q == null ? l.todaysQuestion : questionWithFollowUp(q), r.answer!));
     }
-    if (r.gratitude != null) fields.add(('感謝していること', r.gratitude!));
-    if (r.todayGoal != null) fields.add(('今日やること', r.todayGoal!));
-    if (r.reflectionGood != null) fields.add(('嬉しかったこと', r.reflectionGood!));
-    if (r.tomorrowMessage != null) fields.add(('明日の自分へ', r.tomorrowMessage!));
-    if (r.reflectionWhy != null) fields.add(('その理由', r.reflectionWhy!));
-    if (r.reflectionTomorrow != null) fields.add(('明日の楽しみ', r.reflectionTomorrow!));
-    if (r.weeklyReflectionHighlight != null) fields.add(('今週のハイライト', r.weeklyReflectionHighlight!));
-    if (r.weeklyReflectionChange != null) fields.add(('来週変えること', r.weeklyReflectionChange!));
+    if (r.gratitude != null) fields.add((l.fieldGratitude, r.gratitude!));
+    if (r.todayGoal != null) fields.add((l.fieldTodayPlan, r.todayGoal!));
+    if (r.reflectionGood != null) fields.add((l.fieldGoodThing, r.reflectionGood!));
+    if (r.tomorrowMessage != null) fields.add((l.fieldTomorrowMessage, r.tomorrowMessage!));
+    if (r.reflectionWhy != null) fields.add((l.fieldReason, r.reflectionWhy!));
+    if (r.reflectionTomorrow != null) fields.add((l.fieldTomorrowJoy, r.reflectionTomorrow!));
+    if (r.weeklyReflectionHighlight != null) fields.add((l.fieldWeeklyHighlight, r.weeklyReflectionHighlight!));
+    if (r.weeklyReflectionChange != null) fields.add((l.fieldWeeklyChange, r.weeklyReflectionChange!));
 
     if (fields.isEmpty) {
       return [
-        if (r.stamp == null) Text('記録なし', style: AppTextStyles.footnote),
+        if (r.stamp == null) Text(l.noEntry, style: AppTextStyles.footnote),
       ];
     }
 
@@ -419,9 +421,8 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
 
   @override
   Widget build(BuildContext context) {
-    final d = widget.record.date;
-    final weekday = DateFormat.E('ja_JP').format(d);
-    final dateStr = '${d.month}月${d.day}日（$weekday）';
+    final l = context.l10n;
+    final dateStr = formatMonthDayWeekday(widget.record.date, l.localeName);
 
     return AppCard(
       child: Column(
@@ -438,7 +439,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
                     onPressed: widget.onCancel,
                     style: _textButtonStyle,
                     child: Text(
-                      'キャンセル',
+                      l.cancel,
                       style: AppTextStyles.footnote,
                     ),
                   ),
@@ -446,7 +447,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
                     onPressed: _save,
                     style: _textButtonStyle,
                     child: Text(
-                      '保存',
+                      l.save,
                       style: AppTextStyles.footnote
                           .copyWith(color: AppColors.accent),
                     ),
@@ -460,13 +461,13 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
           _editField(_questionText(), _answerCtrl),
           if (_hasDiaryFields) ...[
             const SizedBox(height: AppSpacing.m),
-            _editField('感謝していること', _gratitudeCtrl),
+            _editField(l.fieldGratitude, _gratitudeCtrl),
             const SizedBox(height: AppSpacing.m),
-            _editField('今日やること', _goalCtrl),
+            _editField(l.fieldTodayPlan, _goalCtrl),
             const SizedBox(height: AppSpacing.m),
-            _editField('嬉しかったこと', _goodCtrl),
+            _editField(l.fieldGoodThing, _goodCtrl),
             const SizedBox(height: AppSpacing.m),
-            _editField('明日の自分へ', _tomorrowMsgCtrl),
+            _editField(l.fieldTomorrowMessage, _tomorrowMsgCtrl),
           ],
         ],
       ),
@@ -518,7 +519,7 @@ class _EditIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: '編集',
+      label: context.l10n.edit,
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,

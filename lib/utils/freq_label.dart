@@ -1,3 +1,5 @@
+import '../l10n/l10n.dart';
+
 /// 会う頻度の定義（一元管理）
 class MeetingFrequency {
   const MeetingFrequency(this.label, this.annual);
@@ -23,6 +25,27 @@ String freqToLabel(int annual) {
   }
   return 'ほとんど会えない';
 }
+
+/// 年間回数を、いまの言語の言い方に(英語は文中で使う小文字。一覧では [capitalizeFirst] で頭を大文字に)
+String localizedFreqLabel(AppLocalizations l, int annual) {
+  final snapped = meetingFrequencies
+      .firstWhere((f) => annual >= f.annual,
+          orElse: () => meetingFrequencies.last)
+      .annual;
+  return switch (snapped) {
+    365 => l.freqAlmostDaily,
+    75 => l.freqWeekly,
+    18 => l.freqMonthly,
+    4 => l.freqFewMonths,
+    2 => l.freqYearly,
+    1 => l.freqYearlyOrLess,
+    _ => l.freqRarely,
+  };
+}
+
+/// 文の頭を大文字に(日本語はそのまま)
+String capitalizeFirst(String s) =>
+    s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
 /// 会える残り回数の計算（切り上げ整数）
 int calcMeetCount(int togetherYears, int annual) {

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
+import '../../l10n/l10n.dart';
 import '../../providers/question_bank_provider.dart';
 import '../../providers/today_reload_provider.dart';
 import '../../providers/user_settings_provider.dart';
@@ -30,12 +31,13 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   int _currentIndex = 0;
   final _recordKey = GlobalKey<RecordCalendarPageState>();
 
-  static const _tabs = [
-    _TabItem(CupertinoIcons.sun_max, CupertinoIcons.sun_max_fill, '今日'),
-    _TabItem(CupertinoIcons.book, CupertinoIcons.book_fill, '記録'),
-    _TabItem(CupertinoIcons.heart, CupertinoIcons.heart_fill, '人生'),
-    _TabItem(CupertinoIcons.gear_alt, CupertinoIcons.gear_alt_fill, '設定'),
-  ];
+  static List<_TabItem> _tabs(AppLocalizations l) => [
+        _TabItem(CupertinoIcons.sun_max, CupertinoIcons.sun_max_fill, l.tabToday),
+        _TabItem(CupertinoIcons.book, CupertinoIcons.book_fill, l.tabJournal),
+        _TabItem(CupertinoIcons.heart, CupertinoIcons.heart_fill, l.tabLife),
+        _TabItem(
+            CupertinoIcons.gear_alt, CupertinoIcons.gear_alt_fill, l.tabSettings),
+      ];
 
   late final _pages = [
     const TodayPage(),
@@ -46,11 +48,13 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
 
   late final AppLifecycleListener _lifecycle;
 
+  /// 通知の題に使う言語(画面と同じ)
+  String? _languageCode;
+
   @override
   void initState() {
     super.initState();
-    // 起動のたびと、アプリに戻ったときに、朝の通知を先の60日分入れ直す
-    _refreshNotifications();
+    // 起動のたび(didChangeDependencies)と、アプリに戻ったときに、朝の通知を先の60日分入れ直す
     _lifecycle = AppLifecycleListener(onResume: _refreshNotifications);
     // ウィジェットから開いたとき(lifecounter://answer?homeWidget)
     HomeWidget.initiallyLaunchedFromHomeWidget().then(_onWidgetLink);
@@ -58,6 +62,17 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   }
 
   StreamSubscription<Uri?>? _widgetLinks;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 言語が決まったら(と、端末の言語が変わったら)通知を入れ直す
+    final code = Localizations.localeOf(context).languageCode;
+    if (code != _languageCode) {
+      _languageCode = code;
+      _refreshNotifications();
+    }
+  }
 
   void _onWidgetLink(Uri? uri) {
     if (!mounted || uri == null || uri.host != 'answer') return;
@@ -76,6 +91,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     NotificationService.refresh(
       ref.read(userSettingsProvider),
       ref.read(questionBankProvider),
+      languageCode: _languageCode ?? 'ja',
     );
   }
 
@@ -134,12 +150,13 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   /// 内容の上に浮かぶ、ガラスのカプセル型のタブバー
   /// 選んだタブの下の明るいカプセルは、ばねで移り、動く間は伸びる。指でなぞっても選べる
   Widget _buildTabBar() {
+    final tabs = _tabs(context.l10n);
     return SizedBox(
       height: _barHeight,
       child: GlassSurface(
         borderRadius: AppRadius.full,
         child: SlidingPillTrack(
-          count: _tabs.length,
+          count: tabs.length,
           index: _currentIndex,
           onSelect: _onTabSelected,
           pillDecoration: const ShapeDecoration(
@@ -156,7 +173,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
             ],
           ),
           itemBuilder: (context, i, t) {
-            final tab = _tabs[i];
+            final tab = tabs[i];
             final color = Color.lerp(AppColors.textMuted, AppColors.accent, t);
             return Semantics(
               button: true,
@@ -205,7 +222,7 @@ class _KeyboardDoneBar extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Semantics(
         button: true,
-        label: 'キーボードを閉じる',
+        label: context.l10n.hideKeyboard,
         excludeSemantics: true,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -213,7 +230,7 @@ class _KeyboardDoneBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.m, vertical: AppSpacing.s),
-            child: Text('完了',
+            child: Text(context.l10n.done,
                 style: AppTextStyles.headline.copyWith(color: AppColors.accent)),
           ),
         ),

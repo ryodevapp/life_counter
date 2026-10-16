@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
@@ -52,7 +52,8 @@ class ImportantPersonDetailPage extends ConsumerWidget {
         ? DateTime.now().difference(person.lastMetDate!).inDays
         : null;
 
-    final fmt = NumberFormat('#,###', 'ja_JP');
+    final l = context.l10n;
+    final fmt = numberFormatOf(l.localeName);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +68,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
             children: [
               const Icon(CupertinoIcons.chevron_left,
                   size: 18, color: AppColors.accent),
-              Text('大切な人',
+              Text(l.peopleWhoMatter,
                   style: AppTextStyles.body.copyWith(color: AppColors.accent)),
             ],
           ),
@@ -82,26 +83,26 @@ class ImportantPersonDetailPage extends ConsumerWidget {
                 children: [
                   Text(person.nickname, style: AppTextStyles.title),
                   const SizedBox(height: AppSpacing.xs),
-                  Text('$pAge歳', style: AppTextStyles.footnote),
+                  Text(l.ageYears(pAge), style: AppTextStyles.footnote),
                 ],
               ),
             ),
             TextButton(
               onPressed: onEdit,
               style: _textButtonStyle,
-              child: Text('編集',
+              child: Text(l.edit,
                   style: AppTextStyles.body.copyWith(color: AppColors.accent)),
             ),
             TextButton(
               onPressed: () async {
                 final confirmed = await showDeleteConfirmation(
                   context,
-                  title: '${person.nickname}を削除しますか？',
+                  title: l.deletePersonTitle(person.nickname),
                 );
                 if (confirmed) onDelete();
               },
               style: _textButtonStyle,
-              child: Text('削除',
+              child: Text(l.delete,
                   style: AppTextStyles.body.copyWith(color: AppColors.danger)),
             ),
           ],
@@ -112,7 +113,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           AppCard(
             child: Center(
               child: Text(
-                '平均の年齢を超えて、日々を重ねています',
+                l.pastAveragePerson,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.callout
                     .copyWith(color: AppColors.textSecondary),
@@ -120,17 +121,22 @@ class ImportantPersonDetailPage extends ConsumerWidget {
             ),
           )
         else ...[
-          _statCard('これから', '$pRemaining', '年'),
+          _statCard(l, l.statYearsAhead, '$pRemaining',
+              l.unitYearsSpaced(pRemaining)),
           if (pHealthRemaining > 0) ...[
             const SizedBox(height: AppSpacing.cardGap),
-            _statCard('元気に過ごせる目安', '$pHealthRemaining', '年'),
+            _statCard(l, l.statHealthyYears, '$pHealthRemaining',
+                l.unitYearsSpaced(pHealthRemaining)),
           ],
           const SizedBox(height: AppSpacing.cardGap),
-          _statCard('一緒にいられる年数', '$together', '年',
-              sub: 'ふたりの平均のうち、短いほうで計算'),
+          _statCard(l, l.statYearsTogether, '$together',
+              l.unitYearsSpaced(together),
+              sub: l.togetherNote),
           const SizedBox(height: AppSpacing.cardGap),
-          _statCard('これから会える回数', fmt.format(meetCount), '回',
-              sub: '${freqToLabel(person.meetingFrequency)}会うとして',
+          _statCard(l, l.statMeetCount, fmt.format(meetCount),
+              l.unitTimesSpaced(meetCount),
+              sub: l.meetNote(
+                  localizedFreqLabel(l, person.meetingFrequency)),
               valueColor: AppColors.accent),
           if (lastMetDays != null) ...[
             const SizedBox(height: AppSpacing.cardGap),
@@ -138,7 +144,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('最後に会ってから', style: AppTextStyles.captionLabel),
+                  Text(l.sinceLastMet, style: AppTextStyles.captionLabel),
                   const SizedBox(height: AppSpacing.s),
                   Text.rich(
                     TextSpan(children: [
@@ -148,7 +154,9 @@ class ImportantPersonDetailPage extends ConsumerWidget {
                           color: AppColors.text,
                         ),
                       ),
-                      TextSpan(text: ' 日', style: AppTextStyles.footnote),
+                      TextSpan(
+                          text: l.unitDaysSpaced(lastMetDays),
+                          style: AppTextStyles.footnote),
                     ]),
                   ),
                 ],
@@ -165,7 +173,9 @@ class ImportantPersonDetailPage extends ConsumerWidget {
     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
   );
 
-  static Widget _statCard(String label, String value, String unit,
+  /// [unit] は前の空白も含めて渡す(「 年」「 years」)
+  static Widget _statCard(
+      AppLocalizations l, String label, String value, String unit,
       {String? sub, Color? valueColor}) {
     return AppCard(
       child: Column(
@@ -175,13 +185,13 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           const SizedBox(height: AppSpacing.s),
           Text.rich(
             TextSpan(children: [
-              TextSpan(text: '約 ', style: AppTextStyles.footnote),
+              TextSpan(text: l.approxSpaced, style: AppTextStyles.footnote),
               TextSpan(
                 text: value,
                 style: AppTextStyles.display
                     .copyWith(color: valueColor ?? AppColors.text),
               ),
-              TextSpan(text: ' $unit', style: AppTextStyles.footnote),
+              TextSpan(text: unit, style: AppTextStyles.footnote),
             ]),
             textAlign: TextAlign.left,
           ),

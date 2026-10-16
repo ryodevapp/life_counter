@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'l10n/l10n.dart';
 import 'router/app_router.dart';
 import 'views/shared/app_colors.dart';
 import 'views/shared/app_text_styles.dart';
@@ -14,6 +16,15 @@ class LifeCounterApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'LifeCounter',
       debugShowCheckedModeBanner: false,
+      // 端末が日本語なら日本語、それ以外は英語
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('ja'), Locale('en')],
+      localeResolutionCallback: (locale, _) => resolveAppLocale(locale),
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: AppColors.bg,

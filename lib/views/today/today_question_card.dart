@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
 import '../shared/app_card.dart';
@@ -23,7 +24,7 @@ class MoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(moodQuestion, style: AppTextStyles.headline),
+          Text(context.l10n.moodQuestion, style: AppTextStyles.headline),
           const SizedBox(height: AppSpacing.m),
           Row(
             children: [
@@ -59,10 +60,11 @@ class _MoodButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final label = moodLabel(context, stamp.id);
     return Semantics(
       button: true,
       selected: selected,
-      label: stamp.label,
+      label: label,
       excludeSemantics: true,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -93,7 +95,7 @@ class _MoodButton extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
-                stamp.label,
+                label,
                 style: AppTextStyles.captionLabel.copyWith(
                   color: selected
                       ? moodLooks[stamp.id]!.ink
@@ -134,6 +136,7 @@ class TodayQuestionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final showBucket = question.isBucket &&
         onAddToBucket != null &&
         answerController.text.trim().isNotEmpty;
@@ -141,7 +144,7 @@ class TodayQuestionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('今日の問い', style: AppTextStyles.captionLabel),
+          Text(l.todaysQuestion, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
           // 問いと、理由を聞くもう一歩を1つの文で(「没頭したいことは？ それに惹かれるのは、なぜ？」)
           Text(questionWithFollowUp(question), style: AppTextStyles.headline),
@@ -158,7 +161,7 @@ class TodayQuestionCard extends StatelessWidget {
             cursorColor: AppColors.accent,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
-              hintText: 'ひとことでも大丈夫です。\nキーボードのマイクで、話して入力することもできます',
+              hintText: l.answerHint,
               hintMaxLines: 3,
               hintStyle:
                   AppTextStyles.body.copyWith(color: AppColors.textDisabled),
@@ -178,7 +181,7 @@ class TodayQuestionCard extends StatelessWidget {
           ),
           if (lastYearAnswer != null && lastYearAnswer!.trim().isNotEmpty) ...[
             const SizedBox(height: AppSpacing.l),
-            Text('1年前の今日、あなたはこう答えました', style: AppTextStyles.captionLabel),
+            Text(l.lastYearAnswerLabel, style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
             Text(
               lastYearAnswer!,
@@ -196,7 +199,7 @@ class TodayQuestionCard extends StatelessWidget {
                   minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
                 ),
                 child: Text(
-                  'バケットリストに追加',
+                  l.addToBucketList,
                   style:
                       AppTextStyles.footnote.copyWith(color: AppColors.accent),
                 ),

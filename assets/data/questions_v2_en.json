@@ -1,0 +1,2560 @@
+{
+  "status": "draft",
+  "questions": [
+    {
+      "id": "q001",
+      "category": "self",
+      "text": "What name would you give today?",
+      "dayOfYear": 1,
+      "followUp": "What made you choose that name?"
+    },
+    {
+      "id": "q002",
+      "category": "people",
+      "text": "What's something you're too shy to tell someone you love?",
+      "dayOfYear": 2,
+      "followUp": "What keeps you from saying it?"
+    },
+    {
+      "id": "q003",
+      "category": "life",
+      "text": "What in your life right now are you grateful for?",
+      "dayOfYear": 3,
+      "followUp": "What makes you thankful for it?"
+    },
+    {
+      "id": "q004",
+      "category": "self",
+      "text": "What moment recently let you breathe a little easier?",
+      "dayOfYear": 4,
+      "followUp": "What made that moment so soothing?"
+    },
+    {
+      "id": "q005",
+      "category": "people",
+      "text": "What's something you and your family got through together?",
+      "dayOfYear": 5,
+      "followUp": "What helped you get through it together?"
+    },
+    {
+      "id": "q006",
+      "category": "bucket",
+      "text": "What natural landscape would you love to see someday?",
+      "dayOfYear": 6,
+      "followUp": "What draws you to that view?"
+    },
+    {
+      "id": "q007",
+      "category": "self",
+      "text": "What's one thing that might brighten your day today?",
+      "dayOfYear": 7,
+      "followUp": "Why do you think it would lift you?"
+    },
+    {
+      "id": "q008",
+      "category": "life",
+      "text": "What skill would you like to build from here on?",
+      "dayOfYear": 8,
+      "followUp": "What made you want it?"
+    },
+    {
+      "id": "q009",
+      "category": "people",
+      "text": "Has thinking of someone warmed your heart recently?",
+      "dayOfYear": 9,
+      "followUp": "Why do you think they came to mind?"
+    },
+    {
+      "id": "e2",
+      "category": "self",
+      "text": "If you had 30 minutes for something you love, what would it be?",
+      "dayOfYear": 10,
+      "followUp": "Why that, of all things?"
+    },
+    {
+      "id": "q010",
+      "category": "self",
+      "text": "Have you enjoyed something seasonal recently?",
+      "dayOfYear": 11,
+      "followUp": "What made you want to savor it?"
+    },
+    {
+      "id": "q011",
+      "category": "people",
+      "text": "What have you inherited from your family that you treasure?",
+      "dayOfYear": 12,
+      "followUp": "Why does it mean so much to you?"
+    },
+    {
+      "id": "q012",
+      "category": "life",
+      "text": "Who do you find yourself rooting for?",
+      "dayOfYear": 13,
+      "followUp": "What makes you want to cheer them on?"
+    },
+    {
+      "id": "q013",
+      "category": "self",
+      "text": "What's something interesting someone shared with you today?",
+      "dayOfYear": 14,
+      "followUp": "What made it so interesting?"
+    },
+    {
+      "id": "q014",
+      "category": "people",
+      "text": "Where would you go for a long, unhurried talk with someone dear?",
+      "dayOfYear": 15,
+      "followUp": "Why that place?"
+    },
+    {
+      "id": "q015",
+      "category": "bucket",
+      "text": "What sport would you like to try someday?",
+      "dayOfYear": 16,
+      "followUp": "What draws you to that sport?"
+    },
+    {
+      "id": "q016",
+      "category": "self",
+      "text": "What did you stretch yourself to try recently?",
+      "dayOfYear": 17,
+      "followUp": "What gave you the nudge to try?"
+    },
+    {
+      "id": "q017",
+      "category": "life",
+      "text": "What work earned you a \"thank you\" that really stayed with you?",
+      "dayOfYear": 18,
+      "followUp": "Why did that one mean so much?"
+    },
+    {
+      "id": "q018",
+      "category": "people",
+      "text": "If you reached out to someone today, who would it be?",
+      "dayOfYear": 19,
+      "followUp": "What brought that person to mind?"
+    },
+    {
+      "id": "q019",
+      "category": "self",
+      "text": "Have you tuned in to your own inner voice recently?",
+      "dayOfYear": 20,
+      "followUp": "What made you want to listen?"
+    },
+    {
+      "id": "q020",
+      "category": "self",
+      "text": "What can you see outside your window today?",
+      "dayOfYear": 21,
+      "followUp": "What caught your eye about it?"
+    },
+    {
+      "id": "q021",
+      "category": "people",
+      "text": "What has someone dear taught you?",
+      "dayOfYear": 22,
+      "followUp": "Why has it stayed with you?"
+    },
+    {
+      "id": "q022",
+      "category": "life",
+      "text": "What kind of people would you like to meet in the years ahead?",
+      "dayOfYear": 23,
+      "followUp": "What makes you want to meet them?"
+    },
+    {
+      "id": "q023",
+      "category": "self",
+      "text": "Right now, do you need rest or a little excitement?",
+      "dayOfYear": 24,
+      "followUp": "What makes you lean that way?"
+    },
+    {
+      "id": "q024",
+      "category": "people",
+      "text": "What's a funny moment with your family that still makes you smile?",
+      "dayOfYear": 25,
+      "followUp": "What made it so funny?"
+    },
+    {
+      "id": "q025",
+      "category": "bucket",
+      "text": "What festival or event would you love to see?",
+      "dayOfYear": 26,
+      "followUp": "What's pulling you toward it?"
+    },
+    {
+      "id": "q026",
+      "category": "self",
+      "text": "What would you say to yourself today, in a few words?",
+      "dayOfYear": 27,
+      "followUp": "Where did those words come from?"
+    },
+    {
+      "id": "m4",
+      "category": "life",
+      "text": "How will you live out one of your values today?",
+      "dayOfYear": 28,
+      "followUp": "Why does that value matter to you?"
+    },
+    {
+      "id": "q027",
+      "category": "people",
+      "text": "What is someone in your family good at that you admire?",
+      "dayOfYear": 29,
+      "followUp": "What makes you admire it?"
+    },
+    {
+      "id": "a5",
+      "category": "self",
+      "text": "If you changed just one habit today, which would it be?",
+      "dayOfYear": 30,
+      "followUp": "What makes you want to change it?"
+    },
+    {
+      "id": "q028",
+      "category": "self",
+      "text": "What could you take a little more lightly today?",
+      "dayOfYear": 31,
+      "followUp": "What lets you feel that way?"
+    },
+    {
+      "id": "q029",
+      "category": "people",
+      "text": "If you went to see someone dear, what would you bring?",
+      "dayOfYear": 32,
+      "followUp": "Why would you bring that?"
+    },
+    {
+      "id": "q030",
+      "category": "life",
+      "text": "What are three values you want to hold close?",
+      "dayOfYear": 33,
+      "followUp": "What led you to those three?"
+    },
+    {
+      "id": "q031",
+      "category": "self",
+      "text": "In what ways have you grown since your younger days?",
+      "dayOfYear": 34,
+      "followUp": "What makes you feel that?"
+    },
+    {
+      "id": "q032",
+      "category": "people",
+      "text": "What seasonal tradition did you share with your family as a child?",
+      "dayOfYear": 35,
+      "followUp": "Why has it stayed in your memory?"
+    },
+    {
+      "id": "q033",
+      "category": "bucket",
+      "text": "Which country would you love to visit?",
+      "dayOfYear": 36,
+      "followUp": "What draws you to that country?"
+    },
+    {
+      "id": "q034",
+      "category": "self",
+      "text": "When did you feel grateful today?",
+      "dayOfYear": 37,
+      "followUp": "What brought on that feeling?"
+    },
+    {
+      "id": "q035",
+      "category": "life",
+      "text": "Where do you feel most safe and at home?",
+      "dayOfYear": 38,
+      "followUp": "What makes you feel at ease there?"
+    },
+    {
+      "id": "q036",
+      "category": "people",
+      "text": "What words from a friend have carried you through?",
+      "dayOfYear": 39,
+      "followUp": "Why did they help so much?"
+    },
+    {
+      "id": "q037",
+      "category": "self",
+      "text": "Has a memory made you laugh to yourself recently?",
+      "dayOfYear": 40,
+      "followUp": "What brought it back to mind?"
+    },
+    {
+      "id": "q038",
+      "category": "self",
+      "text": "If you woke up 10 minutes early today, what would you do?",
+      "dayOfYear": 41,
+      "followUp": "What makes you want to do that?"
+    },
+    {
+      "id": "q039",
+      "category": "people",
+      "text": "Have you really listened to someone recently?",
+      "dayOfYear": 42,
+      "followUp": "What made that possible?"
+    },
+    {
+      "id": "q040",
+      "category": "life",
+      "text": "What way of living do you admire?",
+      "dayOfYear": 43,
+      "followUp": "What draws you to living that way?"
+    },
+    {
+      "id": "q041",
+      "category": "self",
+      "text": "What makes you feel fulfilled right now?",
+      "dayOfYear": 44,
+      "followUp": "Why do you think that is?"
+    },
+    {
+      "id": "q042",
+      "category": "people",
+      "text": "What view you shared with someone dear stays with you?",
+      "dayOfYear": 45,
+      "followUp": "Why does that view stay with you?"
+    },
+    {
+      "id": "q043",
+      "category": "bucket",
+      "text": "What did you want to do as a child that you could do now?",
+      "dayOfYear": 46,
+      "followUp": "What made you want to do it back then?"
+    },
+    {
+      "id": "q044",
+      "category": "self",
+      "text": "What new thing would you like to try right now?",
+      "dayOfYear": 47,
+      "followUp": "What first sparked your interest?"
+    },
+    {
+      "id": "q045",
+      "category": "life",
+      "text": "What \"good thing\" would you love to share with others?",
+      "dayOfYear": 48,
+      "followUp": "Why do you want to give it?"
+    },
+    {
+      "id": "q046",
+      "category": "people",
+      "text": "In what ways are you told you take after your family?",
+      "dayOfYear": 49,
+      "followUp": "Why do you think people say that?"
+    },
+    {
+      "id": "a1",
+      "category": "self",
+      "text": "What's one small thing you'd like to accomplish today?",
+      "dayOfYear": 50,
+      "followUp": "Why does it matter to you?"
+    },
+    {
+      "id": "q047",
+      "category": "self",
+      "text": "How would you spend an unplanned hour today?",
+      "dayOfYear": 51,
+      "followUp": "Why spend it that way?"
+    },
+    {
+      "id": "q048",
+      "category": "people",
+      "text": "Have you told someone they've worked hard recently?",
+      "dayOfYear": 52,
+      "followUp": "What prompted you to say it?"
+    },
+    {
+      "id": "q049",
+      "category": "life",
+      "text": "Is your childhood dream connected to who you are now?",
+      "dayOfYear": 53,
+      "followUp": "What makes you think so?"
+    },
+    {
+      "id": "q050",
+      "category": "self",
+      "text": "If your mood were weather, what would it be today?",
+      "dayOfYear": 54,
+      "followUp": "What's behind that weather?"
+    },
+    {
+      "id": "q051",
+      "category": "people",
+      "text": "Is there a former teacher or mentor you'd like to thank?",
+      "dayOfYear": 55,
+      "followUp": "What makes you grateful to them?"
+    },
+    {
+      "id": "q052",
+      "category": "bucket",
+      "text": "What place full of memories would you love to revisit?",
+      "dayOfYear": 56,
+      "followUp": "What calls you back there?"
+    },
+    {
+      "id": "q053",
+      "category": "self",
+      "text": "What scent would you like to enjoy today?",
+      "dayOfYear": 57,
+      "followUp": "What draws you to that scent?"
+    },
+    {
+      "id": "q054",
+      "category": "life",
+      "text": "What does \"family\" mean to you?",
+      "dayOfYear": 58,
+      "followUp": "What shaped that view?"
+    },
+    {
+      "id": "q055",
+      "category": "people",
+      "text": "What memories do you have of family birthdays?",
+      "dayOfYear": 59,
+      "followUp": "Why has it stayed with you?"
+    },
+    {
+      "id": "q056",
+      "category": "self",
+      "text": "What everyday item around you do you really like?",
+      "dayOfYear": 60,
+      "followUp": "What do you love about it?"
+    },
+    {
+      "id": "q057",
+      "category": "self",
+      "text": "What have you eaten recently that was truly delicious?",
+      "dayOfYear": 61,
+      "followUp": "What made it taste so good?"
+    },
+    {
+      "id": "q058",
+      "category": "people",
+      "text": "Have you heard from someone from your past recently?",
+      "dayOfYear": 62,
+      "followUp": "What makes that person feel so dear?"
+    },
+    {
+      "id": "q059",
+      "category": "life",
+      "text": "Who can you be fully yourself around?",
+      "dayOfYear": 63,
+      "followUp": "What lets you relax around them?"
+    },
+    {
+      "id": "q060",
+      "category": "self",
+      "text": "What's a decision you're glad you made for yourself?",
+      "dayOfYear": 64,
+      "followUp": "What makes you glad about it?"
+    },
+    {
+      "id": "q061",
+      "category": "people",
+      "text": "Have you looked back at photos of someone dear recently?",
+      "dayOfYear": 65,
+      "followUp": "What draws you back to those photos?"
+    },
+    {
+      "id": "q062",
+      "category": "bucket",
+      "text": "What dish would you like to cook someday?",
+      "dayOfYear": 66,
+      "followUp": "What makes you want to make it?"
+    },
+    {
+      "id": "q063",
+      "category": "self",
+      "text": "If you had your favorite drink today, which would it be?",
+      "dayOfYear": 67,
+      "followUp": "Why that one?"
+    },
+    {
+      "id": "q064",
+      "category": "life",
+      "text": "When did you feel you'd really helped someone?",
+      "dayOfYear": 68,
+      "followUp": "What made you feel that way?"
+    },
+    {
+      "id": "q065",
+      "category": "people",
+      "text": "What's a memory of laughing until it hurt with someone dear?",
+      "dayOfYear": 69,
+      "followUp": "Why do you think you laughed so hard?"
+    },
+    {
+      "id": "q066",
+      "category": "self",
+      "text": "When did you laugh out loud recently?",
+      "dayOfYear": 70,
+      "followUp": "What got you laughing like that?"
+    },
+    {
+      "id": "q067",
+      "category": "self",
+      "text": "What's something that smelled wonderful recently?",
+      "dayOfYear": 71,
+      "followUp": "Why did it catch your attention?"
+    },
+    {
+      "id": "q068",
+      "category": "people",
+      "text": "What did you share with someone that they really appreciated?",
+      "dayOfYear": 72,
+      "followUp": "What made you want to share it?"
+    },
+    {
+      "id": "q069",
+      "category": "life",
+      "text": "What does connection with others mean to you?",
+      "dayOfYear": 73,
+      "followUp": "What brought you to see it that way?"
+    },
+    {
+      "id": "q070",
+      "category": "self",
+      "text": "Is anything weighing on your mind a little right now?",
+      "dayOfYear": 74,
+      "followUp": "Why do you think it's on your mind?"
+    },
+    {
+      "id": "q071",
+      "category": "people",
+      "text": "Which childhood birthday do you still remember?",
+      "dayOfYear": 75,
+      "followUp": "Why has that day stuck with you?"
+    },
+    {
+      "id": "q072",
+      "category": "bucket",
+      "text": "What would you love to see with someone dear?",
+      "dayOfYear": 76,
+      "followUp": "Why see it together?"
+    },
+    {
+      "id": "q073",
+      "category": "self",
+      "text": "If you tidied up one thing today, what would it be?",
+      "dayOfYear": 77,
+      "followUp": "Why did you pick that?"
+    },
+    {
+      "id": "q074",
+      "category": "life",
+      "text": "What view do you never want to forget?",
+      "dayOfYear": 78,
+      "followUp": "What makes it so unforgettable?"
+    },
+    {
+      "id": "q075",
+      "category": "people",
+      "text": "What did someone dear teach you that still helps you today?",
+      "dayOfYear": 79,
+      "followUp": "What has kept it close all this time?"
+    },
+    {
+      "id": "q076",
+      "category": "self",
+      "text": "What kind of time would you like to save for your evening self?",
+      "dayOfYear": 80,
+      "followUp": "Why do you want that time?"
+    },
+    {
+      "id": "q077",
+      "category": "people",
+      "text": "What food holds memories of someone dear?",
+      "dayOfYear": 81,
+      "followUp": "How did it become such a cherished taste?"
+    },
+    {
+      "id": "q078",
+      "category": "self",
+      "text": "What kind of music do you feel like listening to right now?",
+      "dayOfYear": 82,
+      "followUp": "What makes you want that song?"
+    },
+    {
+      "id": "q079",
+      "category": "life",
+      "text": "When do you find your work or role most rewarding?",
+      "dayOfYear": 83,
+      "followUp": "What makes it feel worthwhile?"
+    },
+    {
+      "id": "q080",
+      "category": "self",
+      "text": "What color caught your eye today?",
+      "dayOfYear": 84,
+      "followUp": "Why do you think it stood out?"
+    },
+    {
+      "id": "q081",
+      "category": "people",
+      "text": "What words from your family made you happy as a child?",
+      "dayOfYear": 85,
+      "followUp": "Why did those words mean so much?"
+    },
+    {
+      "id": "q082",
+      "category": "bucket",
+      "text": "What would you like to try with friends?",
+      "dayOfYear": 86,
+      "followUp": "Why with friends?"
+    },
+    {
+      "id": "q083",
+      "category": "self",
+      "text": "What time of day feels most calm to you now?",
+      "dayOfYear": 87,
+      "followUp": "What makes that time so calming?"
+    },
+    {
+      "id": "q084",
+      "category": "life",
+      "text": "When in your life are you glad you were brave?",
+      "dayOfYear": 88,
+      "followUp": "What gave you the courage?"
+    },
+    {
+      "id": "q085",
+      "category": "people",
+      "text": "Do you remember how you met someone dear?",
+      "dayOfYear": 89,
+      "followUp": "What has kept that bond going?"
+    },
+    {
+      "id": "q086",
+      "category": "self",
+      "text": "What time would you like to cherish a bit more?",
+      "dayOfYear": 90,
+      "followUp": "What led you to feel that way?"
+    },
+    {
+      "id": "q087",
+      "category": "people",
+      "text": "What family story would you like to pass on to the next generation?",
+      "dayOfYear": 91,
+      "followUp": "Why do you want to pass it on?"
+    },
+    {
+      "id": "q088",
+      "category": "self",
+      "text": "What small habit do you want to keep up?",
+      "dayOfYear": 92,
+      "followUp": "Why do you want to keep it going?"
+    },
+    {
+      "id": "q089",
+      "category": "life",
+      "text": "What choices so far are you glad you made?",
+      "dayOfYear": 93,
+      "followUp": "What makes you feel good about it?"
+    },
+    {
+      "id": "q090",
+      "category": "self",
+      "text": "If you had five free minutes today, what would you do?",
+      "dayOfYear": 94,
+      "followUp": "Why do you think you'd choose that?"
+    },
+    {
+      "id": "r2",
+      "category": "people",
+      "text": "What's one thing you'd like to tell someone dear today?",
+      "dayOfYear": 95,
+      "followUp": "Why those words?"
+    },
+    {
+      "id": "q091",
+      "category": "bucket",
+      "text": "What would you love to ride at least once?",
+      "dayOfYear": 96,
+      "followUp": "What makes you want to ride it?"
+    },
+    {
+      "id": "q092",
+      "category": "self",
+      "text": "What did you do recently that you're quietly proud of?",
+      "dayOfYear": 97,
+      "followUp": "Why does it feel like a win?"
+    },
+    {
+      "id": "q093",
+      "category": "life",
+      "text": "What makes someone truly dear to you?",
+      "dayOfYear": 98,
+      "followUp": "What led you to see it that way?"
+    },
+    {
+      "id": "q094",
+      "category": "people",
+      "text": "When did someone's encouragement truly lift you?",
+      "dayOfYear": 99,
+      "followUp": "Why did it resonate so deeply?"
+    },
+    {
+      "id": "q095",
+      "category": "self",
+      "text": "Have you found a little courage recently?",
+      "dayOfYear": 100,
+      "followUp": "What helped you find it?"
+    },
+    {
+      "id": "q096",
+      "category": "people",
+      "text": "Is there something you made together with someone dear?",
+      "dayOfYear": 101,
+      "followUp": "Why does it stay with you?"
+    },
+    {
+      "id": "q097",
+      "category": "self",
+      "text": "Have you noticed a surprising side of yourself recently?",
+      "dayOfYear": 102,
+      "followUp": "What helped you notice it?"
+    },
+    {
+      "id": "q098",
+      "category": "life",
+      "text": "What choice in your life are you proud of?",
+      "dayOfYear": 103,
+      "followUp": "What makes you proud of it?"
+    },
+    {
+      "id": "q099",
+      "category": "self",
+      "text": "What's something you took a leap on recently that paid off?",
+      "dayOfYear": 104,
+      "followUp": "What helped you take the leap?"
+    },
+    {
+      "id": "q100",
+      "category": "people",
+      "text": "What did your family often talk about around the dinner table?",
+      "dayOfYear": 105,
+      "followUp": "Why do you think it came up so often?"
+    },
+    {
+      "id": "q101",
+      "category": "bucket",
+      "text": "Where would you love to go for an overnight trip?",
+      "dayOfYear": 106,
+      "followUp": "What draws you there?"
+    },
+    {
+      "id": "q102",
+      "category": "self",
+      "text": "What made you want to take a photo recently?",
+      "dayOfYear": 107,
+      "followUp": "What made you want to capture it?"
+    },
+    {
+      "id": "q103",
+      "category": "life",
+      "text": "What are three things you look forward to in life?",
+      "dayOfYear": 108,
+      "followUp": "Why do they bring you joy?"
+    },
+    {
+      "id": "q104",
+      "category": "people",
+      "text": "What games did you play with your family as a child?",
+      "dayOfYear": 109,
+      "followUp": "Why do you still remember it?"
+    },
+    {
+      "id": "q105",
+      "category": "self",
+      "text": "Have any words stayed with you recently?",
+      "dayOfYear": 110,
+      "followUp": "Why did they stay with you?"
+    },
+    {
+      "id": "q106",
+      "category": "people",
+      "text": "Which home-cooked family dish would you love to learn to make?",
+      "dayOfYear": 111,
+      "followUp": "Why that dish?"
+    },
+    {
+      "id": "q107",
+      "category": "self",
+      "text": "How can you lift your own mood today?",
+      "dayOfYear": 112,
+      "followUp": "Why does that help?"
+    },
+    {
+      "id": "q108",
+      "category": "life",
+      "text": "What words from others gave you confidence?",
+      "dayOfYear": 113,
+      "followUp": "Why did those words build you up?"
+    },
+    {
+      "id": "q109",
+      "category": "self",
+      "text": "What made you feel nostalgic recently?",
+      "dayOfYear": 114,
+      "followUp": "What brought that feeling on?"
+    },
+    {
+      "id": "r1",
+      "category": "people",
+      "text": "If you thanked someone today, who would it be?",
+      "dayOfYear": 115,
+      "followUp": "Why them, do you think?"
+    },
+    {
+      "id": "q110",
+      "category": "bucket",
+      "text": "What would you like to try by next year?",
+      "dayOfYear": 116,
+      "followUp": "What makes you want to try it?"
+    },
+    {
+      "id": "q111",
+      "category": "self",
+      "text": "What money spent on yourself recently felt worth it?",
+      "dayOfYear": 117,
+      "followUp": "What made you decide to spend it?"
+    },
+    {
+      "id": "q112",
+      "category": "life",
+      "text": "How would you describe your strength in a word?",
+      "dayOfYear": 118,
+      "followUp": "Why do you think so?"
+    },
+    {
+      "id": "m2",
+      "category": "people",
+      "text": "If your actions could help someone today, what would you do?",
+      "dayOfYear": 119,
+      "followUp": "Why would you choose that?"
+    },
+    {
+      "id": "a3",
+      "category": "self",
+      "text": "What do you want to finish this week, and what can you do today?",
+      "dayOfYear": 120,
+      "followUp": "Why does finishing it matter?"
+    },
+    {
+      "id": "q113",
+      "category": "people",
+      "text": "What would you like to tell family who live far away?",
+      "dayOfYear": 121,
+      "followUp": "Why do you want them to know?"
+    },
+    {
+      "id": "q114",
+      "category": "self",
+      "text": "What did you feel when you looked at the sky today?",
+      "dayOfYear": 122,
+      "followUp": "What stirred that feeling?"
+    },
+    {
+      "id": "q115",
+      "category": "life",
+      "text": "What do you hope to keep doing for years to come?",
+      "dayOfYear": 123,
+      "followUp": "Why do you want to keep at it?"
+    },
+    {
+      "id": "q116",
+      "category": "self",
+      "text": "Has a weight been lifted off your shoulders recently?",
+      "dayOfYear": 124,
+      "followUp": "What lifted it?"
+    },
+    {
+      "id": "q117",
+      "category": "people",
+      "text": "What family occasion did you look forward to as a child?",
+      "dayOfYear": 125,
+      "followUp": "What made it so exciting?"
+    },
+    {
+      "id": "q118",
+      "category": "bucket",
+      "text": "What path or trail would you love to walk someday?",
+      "dayOfYear": 126,
+      "followUp": "What draws you to that path?"
+    },
+    {
+      "id": "q119",
+      "category": "self",
+      "text": "When you felt unsettled recently, what helped you calm down?",
+      "dayOfYear": 127,
+      "followUp": "Why do you think it helped?"
+    },
+    {
+      "id": "q120",
+      "category": "life",
+      "text": "Is there someone you'd love to be more like?",
+      "dayOfYear": 128,
+      "followUp": "What do you admire about them?"
+    },
+    {
+      "id": "q121",
+      "category": "people",
+      "text": "What was your favorite spot in your childhood home?",
+      "dayOfYear": 129,
+      "followUp": "What made it your favorite?"
+    },
+    {
+      "id": "q122",
+      "category": "self",
+      "text": "What do you feel ready to let go of?",
+      "dayOfYear": 130,
+      "followUp": "What helped you feel ready?"
+    },
+    {
+      "id": "q123",
+      "category": "people",
+      "text": "What would you like to try if you had someone to do it with?",
+      "dayOfYear": 131,
+      "followUp": "Why is it better with someone?"
+    },
+    {
+      "id": "q124",
+      "category": "self",
+      "text": "What would you like to learn right now?",
+      "dayOfYear": 132,
+      "followUp": "What sparked your interest?"
+    },
+    {
+      "id": "q125",
+      "category": "life",
+      "text": "What kind of work feels fulfilling to you?",
+      "dayOfYear": 133,
+      "followUp": "How did you come to feel that way?"
+    },
+    {
+      "id": "q126",
+      "category": "self",
+      "text": "When did moving your body feel good recently?",
+      "dayOfYear": 134,
+      "followUp": "What made it feel so good?"
+    },
+    {
+      "id": "q127",
+      "category": "people",
+      "text": "If a family memory were a painting, which scene would it be?",
+      "dayOfYear": 135,
+      "followUp": "Why that scene?"
+    },
+    {
+      "id": "q128",
+      "category": "bucket",
+      "text": "What restaurant would you love to try someday?",
+      "dayOfYear": 136,
+      "followUp": "What's drawing you to it?"
+    },
+    {
+      "id": "q129",
+      "category": "self",
+      "text": "What's a treat for yourself these days?",
+      "dayOfYear": 137,
+      "followUp": "Why does it feel like a treat?"
+    },
+    {
+      "id": "q130",
+      "category": "life",
+      "text": "What hurdles have you overcome so far?",
+      "dayOfYear": 138,
+      "followUp": "What helped you through it?"
+    },
+    {
+      "id": "q131",
+      "category": "people",
+      "text": "Who in your neighborhood or workplace are you grateful for?",
+      "dayOfYear": 139,
+      "followUp": "What makes you thankful for them?"
+    },
+    {
+      "id": "q132",
+      "category": "self",
+      "text": "What seasonal thing has caught your interest lately?",
+      "dayOfYear": 140,
+      "followUp": "What draws you to it?"
+    },
+    {
+      "id": "q133",
+      "category": "people",
+      "text": "What happy news about your family have you had recently?",
+      "dayOfYear": 141,
+      "followUp": "Why did it make you so happy?"
+    },
+    {
+      "id": "q134",
+      "category": "self",
+      "text": "What words would you like to hold close today?",
+      "dayOfYear": 142,
+      "followUp": "Why do they matter today?"
+    },
+    {
+      "id": "q135",
+      "category": "life",
+      "text": "If your life were a book, what would the title be?",
+      "dayOfYear": 143,
+      "followUp": "Why that title?"
+    },
+    {
+      "id": "q136",
+      "category": "self",
+      "text": "What did you learn recently that fascinated you?",
+      "dayOfYear": 144,
+      "followUp": "What made it so fascinating?"
+    },
+    {
+      "id": "q137",
+      "category": "people",
+      "text": "What would you love to ask someone dear someday?",
+      "dayOfYear": 145,
+      "followUp": "What makes you curious about it?"
+    },
+    {
+      "id": "q138",
+      "category": "bucket",
+      "text": "What skill or talent would you love to pick up?",
+      "dayOfYear": 146,
+      "followUp": "What's the appeal for you?"
+    },
+    {
+      "id": "q139",
+      "category": "self",
+      "text": "What tasted good at breakfast today?",
+      "dayOfYear": 147,
+      "followUp": "What made it so tasty?"
+    },
+    {
+      "id": "q140",
+      "category": "people",
+      "text": "How do you love spending the New Year's holidays with family?",
+      "dayOfYear": 148,
+      "followUp": "What do you love about it?"
+    },
+    {
+      "id": "q141",
+      "category": "life",
+      "text": "A year from today, who do you hope to be?",
+      "dayOfYear": 149,
+      "followUp": "Why do you hope for that?"
+    },
+    {
+      "id": "q142",
+      "category": "self",
+      "text": "What gives you energy these days?",
+      "dayOfYear": 150,
+      "followUp": "Why does it lift you up?"
+    },
+    {
+      "id": "q143",
+      "category": "people",
+      "text": "Which family photo is your favorite?",
+      "dayOfYear": 151,
+      "followUp": "What do you love about that one?"
+    },
+    {
+      "id": "q144",
+      "category": "self",
+      "text": "What do you feel you're good at right now?",
+      "dayOfYear": 152,
+      "followUp": "How did you get good at it?"
+    },
+    {
+      "id": "q145",
+      "category": "life",
+      "text": "When in your life did you grow the most?",
+      "dayOfYear": 153,
+      "followUp": "What helped you grow then?"
+    },
+    {
+      "id": "q146",
+      "category": "self",
+      "text": "Which clothes feel most comfortable to you right now?",
+      "dayOfYear": 154,
+      "followUp": "What makes them so comfortable?"
+    },
+    {
+      "id": "q147",
+      "category": "people",
+      "text": "Have you had a long, unhurried talk with someone recently?",
+      "dayOfYear": 155,
+      "followUp": "How did that come about?"
+    },
+    {
+      "id": "q148",
+      "category": "self",
+      "text": "What would you like to do with some time alone today?",
+      "dayOfYear": 156,
+      "followUp": "What makes that appealing today?"
+    },
+    {
+      "id": "q149",
+      "category": "bucket",
+      "text": "What instrument would you love to learn?",
+      "dayOfYear": 157,
+      "followUp": "What draws you to that instrument?"
+    },
+    {
+      "id": "q150",
+      "category": "people",
+      "text": "Have you seen someone grow recently?",
+      "dayOfYear": 158,
+      "followUp": "What made you notice it?"
+    },
+    {
+      "id": "q151",
+      "category": "life",
+      "text": "What theme would you like to focus on this coming year?",
+      "dayOfYear": 159,
+      "followUp": "Why that theme?"
+    },
+    {
+      "id": "q152",
+      "category": "self",
+      "text": "What feeling are you nurturing in yourself right now?",
+      "dayOfYear": 160,
+      "followUp": "Why do you want to nurture it?"
+    },
+    {
+      "id": "q153",
+      "category": "people",
+      "text": "When did you feel someone's kindness recently?",
+      "dayOfYear": 161,
+      "followUp": "Why did that moment stay with you?"
+    },
+    {
+      "id": "q154",
+      "category": "self",
+      "text": "How could you be kind to yourself today?",
+      "dayOfYear": 162,
+      "followUp": "Why that, do you think?"
+    },
+    {
+      "id": "q155",
+      "category": "life",
+      "text": "Is there anything in how you spend your time you'd like to rethink?",
+      "dayOfYear": 163,
+      "followUp": "What makes you feel that way?"
+    },
+    {
+      "id": "q156",
+      "category": "self",
+      "text": "What word or phrase do you find yourself loving lately?",
+      "dayOfYear": 164,
+      "followUp": "What do you like about it?"
+    },
+    {
+      "id": "q157",
+      "category": "people",
+      "text": "Have you exchanged letters or messages with someone recently?",
+      "dayOfYear": 165,
+      "followUp": "Why did that exchange come to mind?"
+    },
+    {
+      "id": "q158",
+      "category": "self",
+      "text": "What's one thing you could do with extra care today?",
+      "dayOfYear": 166,
+      "followUp": "Why that, in particular?"
+    },
+    {
+      "id": "q159",
+      "category": "bucket",
+      "text": "What plant would you love to grow someday?",
+      "dayOfYear": 167,
+      "followUp": "What draws you to that plant?"
+    },
+    {
+      "id": "q160",
+      "category": "people",
+      "text": "Where is a place full of memories with friends?",
+      "dayOfYear": 168,
+      "followUp": "What makes it so special?"
+    },
+    {
+      "id": "q161",
+      "category": "life",
+      "text": "What in your life will you never compromise on?",
+      "dayOfYear": 169,
+      "followUp": "Why does it matter so much?"
+    },
+    {
+      "id": "q162",
+      "category": "self",
+      "text": "What helped you feel lighter recently?",
+      "dayOfYear": 170,
+      "followUp": "How did it lighten things?"
+    },
+    {
+      "id": "q163",
+      "category": "people",
+      "text": "Did your family teach you any cooking or household skills?",
+      "dayOfYear": 171,
+      "followUp": "Why do you think it's stayed with you?"
+    },
+    {
+      "id": "q164",
+      "category": "self",
+      "text": "What are you in the mood for at lunch today?",
+      "dayOfYear": 172,
+      "followUp": "What's got you craving it?"
+    },
+    {
+      "id": "q165",
+      "category": "life",
+      "text": "What do you want to keep learning about?",
+      "dayOfYear": 173,
+      "followUp": "What keeps you curious about it?"
+    },
+    {
+      "id": "q166",
+      "category": "self",
+      "text": "What unexpectedly made you happy recently?",
+      "dayOfYear": 174,
+      "followUp": "What made it such a nice surprise?"
+    },
+    {
+      "id": "q167",
+      "category": "people",
+      "text": "What family story do only you know?",
+      "dayOfYear": 175,
+      "followUp": "Why has that story stayed with you?"
+    },
+    {
+      "id": "q168",
+      "category": "self",
+      "text": "On a scale of 1 to 10, how are you feeling today?",
+      "dayOfYear": 176,
+      "followUp": "What led you to that number?"
+    },
+    {
+      "id": "q169",
+      "category": "bucket",
+      "text": "What museum or gallery would you love to visit?",
+      "dayOfYear": 177,
+      "followUp": "What draws you to that place?"
+    },
+    {
+      "id": "q170",
+      "category": "people",
+      "text": "What kind of family time would you like more of?",
+      "dayOfYear": 178,
+      "followUp": "Why would you like more of it?"
+    },
+    {
+      "id": "q171",
+      "category": "life",
+      "text": "How are you different this year from a year ago?",
+      "dayOfYear": 179,
+      "followUp": "What brought about the change?"
+    },
+    {
+      "id": "q172",
+      "category": "self",
+      "text": "When did you notice the season changing recently?",
+      "dayOfYear": 180,
+      "followUp": "What made you notice it then?"
+    },
+    {
+      "id": "q173",
+      "category": "people",
+      "text": "What's one thing you love about a friend?",
+      "dayOfYear": 181,
+      "followUp": "Why do you love that about them?"
+    },
+    {
+      "id": "q174",
+      "category": "self",
+      "text": "What scene from a book or film moved you recently?",
+      "dayOfYear": 182,
+      "followUp": "Why did that scene move you?"
+    },
+    {
+      "id": "q175",
+      "category": "life",
+      "text": "What are you glad you let go of in your life?",
+      "dayOfYear": 183,
+      "followUp": "What helped you let it go?"
+    },
+    {
+      "id": "q176",
+      "category": "self",
+      "text": "What do you love about your life as it is now?",
+      "dayOfYear": 184,
+      "followUp": "What makes it feel right?"
+    },
+    {
+      "id": "q177",
+      "category": "people",
+      "text": "Do you know your family's favorite seasons?",
+      "dayOfYear": 185,
+      "followUp": "Why do you think they love it?"
+    },
+    {
+      "id": "q178",
+      "category": "self",
+      "text": "How would you like to feel at the end of today?",
+      "dayOfYear": 186,
+      "followUp": "Why that feeling?"
+    },
+    {
+      "id": "q179",
+      "category": "bucket",
+      "text": "What photo would you love to take someday?",
+      "dayOfYear": 187,
+      "followUp": "What draws you to that shot?"
+    },
+    {
+      "id": "q180",
+      "category": "people",
+      "text": "What role do you play in your family?",
+      "dayOfYear": 188,
+      "followUp": "How did you come to have that role?"
+    },
+    {
+      "id": "q181",
+      "category": "life",
+      "text": "If you wrote a letter to your future self, what would you say?",
+      "dayOfYear": 189,
+      "followUp": "Why would you want to say that?"
+    },
+    {
+      "id": "q182",
+      "category": "self",
+      "text": "What sound around you felt soothing today?",
+      "dayOfYear": 190,
+      "followUp": "What makes it so soothing?"
+    },
+    {
+      "id": "q183",
+      "category": "people",
+      "text": "Where would you love to go back to with someone dear?",
+      "dayOfYear": 191,
+      "followUp": "What makes you want to return there?"
+    },
+    {
+      "id": "q184",
+      "category": "self",
+      "text": "Have you been moved by a view or moment recently?",
+      "dayOfYear": 192,
+      "followUp": "Why did it move you?"
+    },
+    {
+      "id": "q185",
+      "category": "life",
+      "text": "What moments make you feel happy?",
+      "dayOfYear": 193,
+      "followUp": "Why do you think they bring you joy?"
+    },
+    {
+      "id": "q186",
+      "category": "self",
+      "text": "When did you feel excited recently?",
+      "dayOfYear": 194,
+      "followUp": "What sparked the excitement?"
+    },
+    {
+      "id": "q187",
+      "category": "people",
+      "text": "What family saying or catchphrase comes to mind?",
+      "dayOfYear": 195,
+      "followUp": "Why do you think it's stuck with you?"
+    },
+    {
+      "id": "q188",
+      "category": "self",
+      "text": "Have you made anything with your hands recently?",
+      "dayOfYear": 196,
+      "followUp": "What made you want to make it?"
+    },
+    {
+      "id": "q189",
+      "category": "bucket",
+      "text": "What mountain would you love to climb someday?",
+      "dayOfYear": 197,
+      "followUp": "What draws you to that mountain?"
+    },
+    {
+      "id": "r4",
+      "category": "people",
+      "text": "What small thing could you do for someone today?",
+      "dayOfYear": 198,
+      "followUp": "What makes you want to do it?"
+    },
+    {
+      "id": "q190",
+      "category": "life",
+      "text": "Does how you're spending today connect to what matters to you?",
+      "dayOfYear": 199,
+      "followUp": "What gives you that sense?"
+    },
+    {
+      "id": "a4",
+      "category": "self",
+      "text": "What could you do today that you'll be glad you did tonight?",
+      "dayOfYear": 200,
+      "followUp": "Why do you think you'll be glad?"
+    },
+    {
+      "id": "q191",
+      "category": "people",
+      "text": "When does someone dear seem most like themselves?",
+      "dayOfYear": 201,
+      "followUp": "What makes it feel so them?"
+    },
+    {
+      "id": "q192",
+      "category": "self",
+      "text": "What would you like to pause and gaze at today?",
+      "dayOfYear": 202,
+      "followUp": "What draws your eye to it?"
+    },
+    {
+      "id": "m3",
+      "category": "life",
+      "text": "What would your future self, ten years on, say about you today?",
+      "dayOfYear": 203,
+      "followUp": "Why do you think they'd say that?"
+    },
+    {
+      "id": "q193",
+      "category": "self",
+      "text": "What are you looking forward to today?",
+      "dayOfYear": 204,
+      "followUp": "What makes you look forward to it?"
+    },
+    {
+      "id": "q194",
+      "category": "people",
+      "text": "Have you made time for someone recently?",
+      "dayOfYear": 205,
+      "followUp": "What made you want to do it for them?"
+    },
+    {
+      "id": "q195",
+      "category": "self",
+      "text": "If you could get to bed a little early tonight, what would you do?",
+      "dayOfYear": 206,
+      "followUp": "Why would you want that?"
+    },
+    {
+      "id": "q196",
+      "category": "bucket",
+      "text": "What hobby would you like to start?",
+      "dayOfYear": 207,
+      "followUp": "What got you interested?"
+    },
+    {
+      "id": "q197",
+      "category": "people",
+      "text": "What gift from someone made you happy recently?",
+      "dayOfYear": 208,
+      "followUp": "Why did it touch you so?"
+    },
+    {
+      "id": "q198",
+      "category": "life",
+      "text": "What would you like your days to look like in five years?",
+      "dayOfYear": 209,
+      "followUp": "Why do you want to live that way?"
+    },
+    {
+      "id": "q199",
+      "category": "self",
+      "text": "What would you like to do today without anyone rushing you?",
+      "dayOfYear": 210,
+      "followUp": "Why take your time with it?"
+    },
+    {
+      "id": "q200",
+      "category": "people",
+      "text": "What view comes back to you from family trips?",
+      "dayOfYear": 211,
+      "followUp": "Why do you think that view comes back?"
+    },
+    {
+      "id": "q201",
+      "category": "self",
+      "text": "What's one thing that went well today?",
+      "dayOfYear": 212,
+      "followUp": "What helped it go well?"
+    },
+    {
+      "id": "q202",
+      "category": "life",
+      "text": "What would your younger self think of you now?",
+      "dayOfYear": 213,
+      "followUp": "What makes you think that?"
+    },
+    {
+      "id": "q203",
+      "category": "self",
+      "text": "What were you doing on a day you slept really well recently?",
+      "dayOfYear": 214,
+      "followUp": "Why do you think you slept so well?"
+    },
+    {
+      "id": "q204",
+      "category": "people",
+      "text": "If you could see someone dear this year, when would it be?",
+      "dayOfYear": 215,
+      "followUp": "Why that time?"
+    },
+    {
+      "id": "q205",
+      "category": "self",
+      "text": "What would you like to praise yourself for recently?",
+      "dayOfYear": 216,
+      "followUp": "Why does it deserve praise?"
+    },
+    {
+      "id": "q206",
+      "category": "bucket",
+      "text": "What city or town would you love to visit someday?",
+      "dayOfYear": 217,
+      "followUp": "What pulls you toward that place?"
+    },
+    {
+      "id": "q207",
+      "category": "people",
+      "text": "What would you like to do with someone dear on your next day off?",
+      "dayOfYear": 218,
+      "followUp": "Why would you like to do it together?"
+    },
+    {
+      "id": "q208",
+      "category": "life",
+      "text": "What would you like to pass on to someone in your life?",
+      "dayOfYear": 219,
+      "followUp": "Why would you want them to have it?"
+    },
+    {
+      "id": "q209",
+      "category": "self",
+      "text": "If you walked a little slower today, where would you go?",
+      "dayOfYear": 220,
+      "followUp": "Why there?"
+    },
+    {
+      "id": "q210",
+      "category": "people",
+      "text": "What small help could you offer someone nearby today?",
+      "dayOfYear": 221,
+      "followUp": "Why did that come to mind?"
+    },
+    {
+      "id": "q211",
+      "category": "self",
+      "text": "How would you sum up your feelings right now in a word?",
+      "dayOfYear": 222,
+      "followUp": "What's behind that feeling?"
+    },
+    {
+      "id": "q341",
+      "category": "life",
+      "text": "What would you like to tell yourself ten years from now?",
+      "dayOfYear": 223,
+      "followUp": "Why do you want them to hear it?"
+    },
+    {
+      "id": "q212",
+      "category": "self",
+      "text": "What would you like to do before bed tonight?",
+      "dayOfYear": 224,
+      "followUp": "Why that, tonight?"
+    },
+    {
+      "id": "q213",
+      "category": "people",
+      "text": "Whose smile comes to mind when you think of someone dear?",
+      "dayOfYear": 225,
+      "followUp": "Why them?"
+    },
+    {
+      "id": "q214",
+      "category": "self",
+      "text": "What would you like to discover outside today?",
+      "dayOfYear": 226,
+      "followUp": "What makes you want to find it?"
+    },
+    {
+      "id": "q215",
+      "category": "people",
+      "text": "What do you think you mean to someone dear?",
+      "dayOfYear": 227,
+      "followUp": "What makes you see it that way?"
+    },
+    {
+      "id": "q216",
+      "category": "life",
+      "text": "Which friendships do you want to keep cherishing?",
+      "dayOfYear": 228,
+      "followUp": "Why does that bond matter to you?"
+    },
+    {
+      "id": "q217",
+      "category": "self",
+      "text": "Which part of today would you like to savor?",
+      "dayOfYear": 229,
+      "followUp": "Why that part?"
+    },
+    {
+      "id": "q218",
+      "category": "bucket",
+      "text": "What dish would you love to try at least once?",
+      "dayOfYear": 230,
+      "followUp": "What makes you curious about that dish?"
+    },
+    {
+      "id": "q219",
+      "category": "people",
+      "text": "What would you like to talk about with a loved one far away?",
+      "dayOfYear": 231,
+      "followUp": "Why that conversation?"
+    },
+    {
+      "id": "q220",
+      "category": "self",
+      "text": "What have you gotten better at recently?",
+      "dayOfYear": 232,
+      "followUp": "What helped you improve?"
+    },
+    {
+      "id": "q221",
+      "category": "life",
+      "text": "What choice feels truly like you?",
+      "dayOfYear": 233,
+      "followUp": "Why does it feel like you?"
+    },
+    {
+      "id": "q222",
+      "category": "self",
+      "text": "When did you feel yourself relax recently?",
+      "dayOfYear": 234,
+      "followUp": "What helped you unwind?"
+    },
+    {
+      "id": "q223",
+      "category": "people",
+      "text": "What casual chat with a friend did you enjoy?",
+      "dayOfYear": 235,
+      "followUp": "What made it so enjoyable?"
+    },
+    {
+      "id": "p5",
+      "category": "self",
+      "text": "What beautiful view or moment has stayed with you recently?",
+      "dayOfYear": 236,
+      "followUp": "Why do you think it's lingered?"
+    },
+    {
+      "id": "q224",
+      "category": "people",
+      "text": "When did you share a laugh with someone recently?",
+      "dayOfYear": 237,
+      "followUp": "What got you both laughing?"
+    },
+    {
+      "id": "q225",
+      "category": "life",
+      "text": "What feeling do you want to carry with you through life?",
+      "dayOfYear": 238,
+      "followUp": "Why do you want to keep it?"
+    },
+    {
+      "id": "q226",
+      "category": "self",
+      "text": "What's taking up most of your thoughts right now?",
+      "dayOfYear": 239,
+      "followUp": "Why does it feel so big right now?"
+    },
+    {
+      "id": "q227",
+      "category": "bucket",
+      "text": "What language would you love to speak someday?",
+      "dayOfYear": 240,
+      "followUp": "What draws you to that language?"
+    },
+    {
+      "id": "q228",
+      "category": "people",
+      "text": "What song from time with your family do you still remember?",
+      "dayOfYear": 241,
+      "followUp": "Why do you think it stuck?"
+    },
+    {
+      "id": "q229",
+      "category": "self",
+      "text": "What small thing made you happy this week?",
+      "dayOfYear": 242,
+      "followUp": "Why did it bring you joy?"
+    },
+    {
+      "id": "e3",
+      "category": "life",
+      "text": "What were you absorbed in as a child? Can you still do it?",
+      "dayOfYear": 243,
+      "followUp": "What made you love it so much?"
+    },
+    {
+      "id": "q230",
+      "category": "self",
+      "text": "What's a good way to spend today, given the weather?",
+      "dayOfYear": 244,
+      "followUp": "What makes it appealing?"
+    },
+    {
+      "id": "q231",
+      "category": "people",
+      "text": "What moments with someone dear do you love most?",
+      "dayOfYear": 245,
+      "followUp": "What do you love about them?"
+    },
+    {
+      "id": "q232",
+      "category": "self",
+      "text": "What did you hesitate over but are glad you chose?",
+      "dayOfYear": 246,
+      "followUp": "What helped you decide?"
+    },
+    {
+      "id": "r3",
+      "category": "people",
+      "text": "What has someone done for you recently that made you happy?",
+      "dayOfYear": 247,
+      "followUp": "Why did it mean so much?"
+    },
+    {
+      "id": "q233",
+      "category": "life",
+      "text": "What would you like less of in your life from now on?",
+      "dayOfYear": 248,
+      "followUp": "Why do you want less of it?"
+    },
+    {
+      "id": "q234",
+      "category": "self",
+      "text": "Is there something new you'd like to learn today?",
+      "dayOfYear": 249,
+      "followUp": "What makes you want to learn it?"
+    },
+    {
+      "id": "q235",
+      "category": "bucket",
+      "text": "What would you like to do in each season?",
+      "dayOfYear": 250,
+      "followUp": "What appeals to you about it?"
+    },
+    {
+      "id": "q236",
+      "category": "people",
+      "text": "What's one thing that makes someone dear happy?",
+      "dayOfYear": 251,
+      "followUp": "Why do you think it delights them?"
+    },
+    {
+      "id": "q237",
+      "category": "self",
+      "text": "Is there something you're growing or nurturing yourself?",
+      "dayOfYear": 252,
+      "followUp": "What made you want to start?"
+    },
+    {
+      "id": "q238",
+      "category": "life",
+      "text": "What kind of person do you hope to be as you grow older?",
+      "dayOfYear": 253,
+      "followUp": "What draws you to that?"
+    },
+    {
+      "id": "q239",
+      "category": "self",
+      "text": "Is there a song you feel like humming today?",
+      "dayOfYear": 254,
+      "followUp": "Why that song, do you think?"
+    },
+    {
+      "id": "q240",
+      "category": "people",
+      "text": "What stories has your family told you about when you were little?",
+      "dayOfYear": 255,
+      "followUp": "Why does it stay with you?"
+    },
+    {
+      "id": "q241",
+      "category": "self",
+      "text": "When did you lose track of time doing something recently?",
+      "dayOfYear": 256,
+      "followUp": "What made it so absorbing?"
+    },
+    {
+      "id": "q242",
+      "category": "people",
+      "text": "Is there an old friend you wonder about?",
+      "dayOfYear": 257,
+      "followUp": "What makes you think of them?"
+    },
+    {
+      "id": "q243",
+      "category": "life",
+      "text": "What does a rich life mean to you?",
+      "dayOfYear": 258,
+      "followUp": "What led you to that idea?"
+    },
+    {
+      "id": "q244",
+      "category": "self",
+      "text": "Have you made a small discovery recently?",
+      "dayOfYear": 259,
+      "followUp": "How did you come across it?"
+    },
+    {
+      "id": "q245",
+      "category": "bucket",
+      "text": "What show or concert would you love to see someday?",
+      "dayOfYear": 260,
+      "followUp": "What makes you want to see it?"
+    },
+    {
+      "id": "q246",
+      "category": "people",
+      "text": "If you wrote to someone dear, what would your first line be?",
+      "dayOfYear": 261,
+      "followUp": "Why start there?"
+    },
+    {
+      "id": "q247",
+      "category": "self",
+      "text": "What's one small goal you could set for today?",
+      "dayOfYear": 262,
+      "followUp": "Why that goal?"
+    },
+    {
+      "id": "q248",
+      "category": "life",
+      "text": "What does your ideal day off look like?",
+      "dayOfYear": 263,
+      "followUp": "What makes it ideal?"
+    },
+    {
+      "id": "q249",
+      "category": "self",
+      "text": "What recently helped you feel at peace with how things are?",
+      "dayOfYear": 264,
+      "followUp": "What helped you feel that?"
+    },
+    {
+      "id": "q250",
+      "category": "people",
+      "text": "Have you asked someone dear how they're doing recently?",
+      "dayOfYear": 265,
+      "followUp": "Why do they come to mind?"
+    },
+    {
+      "id": "p2",
+      "category": "self",
+      "text": "When did your heart feel warm recently?",
+      "dayOfYear": 266,
+      "followUp": "What brought on that warmth?"
+    },
+    {
+      "id": "q251",
+      "category": "people",
+      "text": "What's a memory of making up with family after an argument?",
+      "dayOfYear": 267,
+      "followUp": "What helped you make up?"
+    },
+    {
+      "id": "q252",
+      "category": "life",
+      "text": "What's your favorite time of year?",
+      "dayOfYear": 268,
+      "followUp": "What makes it your favorite?"
+    },
+    {
+      "id": "q253",
+      "category": "self",
+      "text": "What are you craving most right now?",
+      "dayOfYear": 269,
+      "followUp": "Why do you think you're craving it?"
+    },
+    {
+      "id": "q254",
+      "category": "bucket",
+      "text": "What would you like to try with your family?",
+      "dayOfYear": 270,
+      "followUp": "Why with your family?"
+    },
+    {
+      "id": "q255",
+      "category": "people",
+      "text": "Were there words your family lived by?",
+      "dayOfYear": 271,
+      "followUp": "Why do you think they held them dear?"
+    },
+    {
+      "id": "q256",
+      "category": "self",
+      "text": "What do you find yourself reaching for lately?",
+      "dayOfYear": 272,
+      "followUp": "What keeps you reaching for it?"
+    },
+    {
+      "id": "q257",
+      "category": "life",
+      "text": "What small habit keeps your days steady?",
+      "dayOfYear": 273,
+      "followUp": "Why does it help so much?"
+    },
+    {
+      "id": "q258",
+      "category": "self",
+      "text": "What activity feels most calming to you today?",
+      "dayOfYear": 274,
+      "followUp": "Why does it calm you?"
+    },
+    {
+      "id": "q259",
+      "category": "people",
+      "text": "Has someone helped you recently?",
+      "dayOfYear": 275,
+      "followUp": "Why did their help stay with you?"
+    },
+    {
+      "id": "q260",
+      "category": "self",
+      "text": "If you added one small joy to today, what would it be?",
+      "dayOfYear": 276,
+      "followUp": "Why that, today?"
+    },
+    {
+      "id": "q261",
+      "category": "people",
+      "text": "What do you think someone dear treasures?",
+      "dayOfYear": 277,
+      "followUp": "Why do you think it matters to them?"
+    },
+    {
+      "id": "q262",
+      "category": "life",
+      "text": "What do you naturally pour your energy into?",
+      "dayOfYear": 278,
+      "followUp": "What keeps drawing you to it?"
+    },
+    {
+      "id": "p1",
+      "category": "self",
+      "text": "What might put a smile on your face today?",
+      "dayOfYear": 279,
+      "followUp": "Why would it make you smile?"
+    },
+    {
+      "id": "q263",
+      "category": "bucket",
+      "text": "What handmade thing would you love to try making?",
+      "dayOfYear": 280,
+      "followUp": "What appeals to you about making it?"
+    },
+    {
+      "id": "q264",
+      "category": "people",
+      "text": "Where did your family often go when you were a child?",
+      "dayOfYear": 281,
+      "followUp": "Why do you think you went there so often?"
+    },
+    {
+      "id": "q265",
+      "category": "self",
+      "text": "Have you noticed someone's kindness recently?",
+      "dayOfYear": 282,
+      "followUp": "Why did it stay with you?"
+    },
+    {
+      "id": "q266",
+      "category": "life",
+      "text": "What day in your life gives you strength just remembering it?",
+      "dayOfYear": 283,
+      "followUp": "Why does that day give you strength?"
+    },
+    {
+      "id": "q267",
+      "category": "self",
+      "text": "What's one thing you like about yourself these days?",
+      "dayOfYear": 284,
+      "followUp": "What makes you like it?"
+    },
+    {
+      "id": "q268",
+      "category": "people",
+      "text": "What would you like to do next with someone dear?",
+      "dayOfYear": 285,
+      "followUp": "Why that, together?"
+    },
+    {
+      "id": "q269",
+      "category": "self",
+      "text": "What would you like to say to yourself today?",
+      "dayOfYear": 286,
+      "followUp": "Why did those words come to you?"
+    },
+    {
+      "id": "q270",
+      "category": "people",
+      "text": "What promise with a friend do you still remember?",
+      "dayOfYear": 287,
+      "followUp": "Why has it stayed with you?"
+    },
+    {
+      "id": "q271",
+      "category": "life",
+      "text": "What book or work of art are you glad to have found?",
+      "dayOfYear": 288,
+      "followUp": "What makes you glad?"
+    },
+    {
+      "id": "e1",
+      "category": "self",
+      "text": "What would you love to lose track of time doing today?",
+      "dayOfYear": 289,
+      "followUp": "Why does it draw you in?"
+    },
+    {
+      "id": "q272",
+      "category": "bucket",
+      "text": "Where would you love to go at least once?",
+      "dayOfYear": 290,
+      "followUp": "What pulls you toward it?"
+    },
+    {
+      "id": "q273",
+      "category": "people",
+      "text": "Have you heard the voice of someone dear recently?",
+      "dayOfYear": 291,
+      "followUp": "Why does their voice come to mind?"
+    },
+    {
+      "id": "p4",
+      "category": "self",
+      "text": "If you gave yourself a treat today, what would it be?",
+      "dayOfYear": 292,
+      "followUp": "Why does that feel like a treat?"
+    },
+    {
+      "id": "q274",
+      "category": "life",
+      "text": "What words would you choose as your personal motto?",
+      "dayOfYear": 293,
+      "followUp": "Why those words?"
+    },
+    {
+      "id": "q275",
+      "category": "people",
+      "text": "What stories do you know about your family when they were young?",
+      "dayOfYear": 294,
+      "followUp": "Why do you think that story stuck?"
+    },
+    {
+      "id": "q276",
+      "category": "self",
+      "text": "What would you like to quietly stop doing today?",
+      "dayOfYear": 295,
+      "followUp": "Why do you want to stop?"
+    },
+    {
+      "id": "q277",
+      "category": "self",
+      "text": "What would you like to do with a little extra care today?",
+      "dayOfYear": 296,
+      "followUp": "Why does it deserve that care?"
+    },
+    {
+      "id": "q278",
+      "category": "people",
+      "text": "Have you noticed something good in someone recently?",
+      "dayOfYear": 297,
+      "followUp": "What caught your attention?"
+    },
+    {
+      "id": "q279",
+      "category": "life",
+      "text": "What event became a turning point in your life?",
+      "dayOfYear": 298,
+      "followUp": "What made it a turning point?"
+    },
+    {
+      "id": "q280",
+      "category": "self",
+      "text": "Have you found new things to love lately?",
+      "dayOfYear": 299,
+      "followUp": "What makes you feel that way?"
+    },
+    {
+      "id": "q281",
+      "category": "bucket",
+      "text": "Who would you love to go visit someday?",
+      "dayOfYear": 300,
+      "followUp": "Why do you want to see them?"
+    },
+    {
+      "id": "q282",
+      "category": "people",
+      "text": "Is there a photo you'd love to take with your family?",
+      "dayOfYear": 301,
+      "followUp": "Why that photo?"
+    },
+    {
+      "id": "q283",
+      "category": "self",
+      "text": "What made you smile recently?",
+      "dayOfYear": 302,
+      "followUp": "Why did it make you smile?"
+    },
+    {
+      "id": "q284",
+      "category": "life",
+      "text": "What unexpected detour in life turned out well?",
+      "dayOfYear": 303,
+      "followUp": "What led you to take it?"
+    },
+    {
+      "id": "r5",
+      "category": "people",
+      "text": "Is there someone you haven't seen in a while you'd like to contact?",
+      "dayOfYear": 304,
+      "followUp": "Why did they come to mind?"
+    },
+    {
+      "id": "q285",
+      "category": "self",
+      "text": "If you put one thing around you in order today, what would it be?",
+      "dayOfYear": 305,
+      "followUp": "What makes you want to tidy it?"
+    },
+    {
+      "id": "q286",
+      "category": "self",
+      "text": "When did you feel most like yourself recently?",
+      "dayOfYear": 306,
+      "followUp": "What made it feel like you?"
+    },
+    {
+      "id": "q287",
+      "category": "people",
+      "text": "When do you feel at peace with someone?",
+      "dayOfYear": 307,
+      "followUp": "What makes those times calm?"
+    },
+    {
+      "id": "q288",
+      "category": "life",
+      "text": "What experience taught you something important in life?",
+      "dayOfYear": 308,
+      "followUp": "Why has that experience stayed with you?"
+    },
+    {
+      "id": "q289",
+      "category": "self",
+      "text": "Have you treated yourself to a small luxury recently?",
+      "dayOfYear": 309,
+      "followUp": "Why did you choose it?"
+    },
+    {
+      "id": "q290",
+      "category": "bucket",
+      "text": "What experience would you love to give someone dear?",
+      "dayOfYear": 310,
+      "followUp": "Why that experience?"
+    },
+    {
+      "id": "q291",
+      "category": "people",
+      "text": "Do you know your family's favorite songs or films?",
+      "dayOfYear": 311,
+      "followUp": "What do you think they love about it?"
+    },
+    {
+      "id": "q292",
+      "category": "self",
+      "text": "What can wait until later today?",
+      "dayOfYear": 312,
+      "followUp": "What lets you set it aside?"
+    },
+    {
+      "id": "q293",
+      "category": "life",
+      "text": "What makes a good day for you?",
+      "dayOfYear": 313,
+      "followUp": "Why does that matter to you?"
+    },
+    {
+      "id": "q294",
+      "category": "people",
+      "text": "Do you know the favorite food of someone dear?",
+      "dayOfYear": 314,
+      "followUp": "Why do you think it's their favorite?"
+    },
+    {
+      "id": "q295",
+      "category": "self",
+      "text": "What went better than you expected recently?",
+      "dayOfYear": 315,
+      "followUp": "Why do you think it went well?"
+    },
+    {
+      "id": "e5",
+      "category": "self",
+      "text": "If you tried a different route or approach today, what would it be?",
+      "dayOfYear": 316,
+      "followUp": "What makes you want to try it?"
+    },
+    {
+      "id": "q296",
+      "category": "people",
+      "text": "What dish you shared with family is unforgettable?",
+      "dayOfYear": 317,
+      "followUp": "What makes it unforgettable?"
+    },
+    {
+      "id": "q297",
+      "category": "life",
+      "text": "What has kept you smiling throughout your life?",
+      "dayOfYear": 318,
+      "followUp": "Why does it make you smile?"
+    },
+    {
+      "id": "q298",
+      "category": "self",
+      "text": "What felt refreshing recently?",
+      "dayOfYear": 319,
+      "followUp": "What made it feel so refreshing?"
+    },
+    {
+      "id": "q299",
+      "category": "bucket",
+      "text": "Where would you love to stay someday?",
+      "dayOfYear": 320,
+      "followUp": "What draws you to it?"
+    },
+    {
+      "id": "q300",
+      "category": "people",
+      "text": "Have you made someone smile recently?",
+      "dayOfYear": 321,
+      "followUp": "What made it happen?"
+    },
+    {
+      "id": "q301",
+      "category": "self",
+      "text": "What was your first thought when you woke up this morning?",
+      "dayOfYear": 322,
+      "followUp": "Why do you think it came to you?"
+    },
+    {
+      "id": "q302",
+      "category": "life",
+      "text": "If you could focus on only a few things, what would come first?",
+      "dayOfYear": 323,
+      "followUp": "Why would you put it first?"
+    },
+    {
+      "id": "q303",
+      "category": "people",
+      "text": "What day off with your family stands out in your memory?",
+      "dayOfYear": 324,
+      "followUp": "Why does that day stand out?"
+    },
+    {
+      "id": "q304",
+      "category": "self",
+      "text": "Where would you like to catch your breath today?",
+      "dayOfYear": 325,
+      "followUp": "Why there?"
+    },
+    {
+      "id": "q305",
+      "category": "self",
+      "text": "What can you thank yourself for today?",
+      "dayOfYear": 326,
+      "followUp": "What makes you want to say it?"
+    },
+    {
+      "id": "q306",
+      "category": "people",
+      "text": "What do you admire about someone dear?",
+      "dayOfYear": 327,
+      "followUp": "What makes you admire that?"
+    },
+    {
+      "id": "q307",
+      "category": "life",
+      "text": "What would you like more time for in the years ahead?",
+      "dayOfYear": 328,
+      "followUp": "Why do you want more of it?"
+    },
+    {
+      "id": "m1",
+      "category": "self",
+      "text": "What meaning would you like today to have?",
+      "dayOfYear": 329,
+      "followUp": "Why does that matter to you?"
+    },
+    {
+      "id": "q308",
+      "category": "bucket",
+      "text": "What job or craft would you love to try at least once?",
+      "dayOfYear": 330,
+      "followUp": "What draws you to it?"
+    },
+    {
+      "id": "q309",
+      "category": "people",
+      "text": "What did you learn while listening to someone dear?",
+      "dayOfYear": 331,
+      "followUp": "Why did it stay with you?"
+    },
+    {
+      "id": "q310",
+      "category": "self",
+      "text": "Have you taken a different route than usual recently?",
+      "dayOfYear": 332,
+      "followUp": "What made you take it?"
+    },
+    {
+      "id": "q311",
+      "category": "life",
+      "text": "What daily rhythm do you want to protect?",
+      "dayOfYear": 333,
+      "followUp": "Why is it worth protecting?"
+    },
+    {
+      "id": "q312",
+      "category": "people",
+      "text": "What food shared with someone made you happy?",
+      "dayOfYear": 334,
+      "followUp": "Why did sharing it feel so good?"
+    },
+    {
+      "id": "q313",
+      "category": "self",
+      "text": "When did you manage to ease up recently?",
+      "dayOfYear": 335,
+      "followUp": "What helped you ease up?"
+    },
+    {
+      "id": "q314",
+      "category": "self",
+      "text": "What pace feels just right for you now?",
+      "dayOfYear": 336,
+      "followUp": "What tells you so?"
+    },
+    {
+      "id": "q315",
+      "category": "people",
+      "text": "What recent conversation with family stayed with you?",
+      "dayOfYear": 337,
+      "followUp": "Why did it stay with you?"
+    },
+    {
+      "id": "q316",
+      "category": "life",
+      "text": "What's one experience that has helped hold you up?",
+      "dayOfYear": 338,
+      "followUp": "Why did it support you so?"
+    },
+    {
+      "id": "q317",
+      "category": "self",
+      "text": "What on today's schedule are you most looking forward to?",
+      "dayOfYear": 339,
+      "followUp": "Why are you looking forward to it?"
+    },
+    {
+      "id": "q318",
+      "category": "bucket",
+      "text": "What book would you love to read someday?",
+      "dayOfYear": 340,
+      "followUp": "What made you curious about it?"
+    },
+    {
+      "id": "q319",
+      "category": "people",
+      "text": "What did you once work hard at together with someone?",
+      "dayOfYear": 341,
+      "followUp": "What helped you keep going together?"
+    },
+    {
+      "id": "q320",
+      "category": "self",
+      "text": "Is there time today you'd like to spend quietly?",
+      "dayOfYear": 342,
+      "followUp": "What makes you want that?"
+    },
+    {
+      "id": "q321",
+      "category": "life",
+      "text": "What can you honestly say you love?",
+      "dayOfYear": 343,
+      "followUp": "How did you come to love it?"
+    },
+    {
+      "id": "q322",
+      "category": "people",
+      "text": "What games did you get lost in with friends?",
+      "dayOfYear": 344,
+      "followUp": "What made them so much fun?"
+    },
+    {
+      "id": "q323",
+      "category": "self",
+      "text": "When did you enjoy waiting for something recently?",
+      "dayOfYear": 345,
+      "followUp": "What made the wait enjoyable?"
+    },
+    {
+      "id": "q324",
+      "category": "self",
+      "text": "What have you read or watched recently that you're glad you did?",
+      "dayOfYear": 346,
+      "followUp": "What made it worthwhile?"
+    },
+    {
+      "id": "q325",
+      "category": "people",
+      "text": "Is there someone you never got around to thanking?",
+      "dayOfYear": 347,
+      "followUp": "What got in the way?"
+    },
+    {
+      "id": "q326",
+      "category": "life",
+      "text": "What would you like to tell yourself from ten years ago?",
+      "dayOfYear": 348,
+      "followUp": "Why would you tell them that?"
+    },
+    {
+      "id": "e4",
+      "category": "self",
+      "text": "If you tried something new today, what would it be?",
+      "dayOfYear": 349,
+      "followUp": "Why that one, do you think?"
+    },
+    {
+      "id": "q327",
+      "category": "bucket",
+      "text": "What view would you love to see someday?",
+      "dayOfYear": 350,
+      "followUp": "Why do you want to see it?"
+    },
+    {
+      "id": "q328",
+      "category": "people",
+      "text": "What scents or sounds remind you of family?",
+      "dayOfYear": 351,
+      "followUp": "Why do you think they've stayed with you?"
+    },
+    {
+      "id": "a2",
+      "category": "self",
+      "text": "What could you grow in, just a little, compared to yesterday?",
+      "dayOfYear": 352,
+      "followUp": "Why do you want to grow there?"
+    },
+    {
+      "id": "q329",
+      "category": "life",
+      "text": "What would you keep doing, regardless of money or time?",
+      "dayOfYear": 353,
+      "followUp": "Why does it matter so much to you?"
+    },
+    {
+      "id": "q330",
+      "category": "people",
+      "text": "What would you like to hear more about from someone dear?",
+      "dayOfYear": 354,
+      "followUp": "What makes you want to hear it?"
+    },
+    {
+      "id": "p3",
+      "category": "self",
+      "text": "What are three things you're grateful for today?",
+      "dayOfYear": 355,
+      "followUp": "Why are you grateful for them?"
+    },
+    {
+      "id": "q331",
+      "category": "self",
+      "text": "What would you happily give a thumbs-up today?",
+      "dayOfYear": 356,
+      "followUp": "What makes you appreciate it?"
+    },
+    {
+      "id": "q332",
+      "category": "people",
+      "text": "What seasonal tradition would you enjoy with someone dear?",
+      "dayOfYear": 357,
+      "followUp": "Why that tradition?"
+    },
+    {
+      "id": "q333",
+      "category": "life",
+      "text": "What place feels like home to you, deep down?",
+      "dayOfYear": 358,
+      "followUp": "What makes it feel like home?"
+    },
+    {
+      "id": "q334",
+      "category": "self",
+      "text": "What recent day would you call a really fun one?",
+      "dayOfYear": 359,
+      "followUp": "What made it so fun?"
+    },
+    {
+      "id": "q335",
+      "category": "bucket",
+      "text": "Where would you love to travel with someone dear?",
+      "dayOfYear": 360,
+      "followUp": "Why there, together?"
+    },
+    {
+      "id": "q336",
+      "category": "people",
+      "text": "What TV shows did you watch with your family as a child?",
+      "dayOfYear": 361,
+      "followUp": "Why do you think you remember it?"
+    },
+    {
+      "id": "q337",
+      "category": "self",
+      "text": "What habit are you glad you've kept up?",
+      "dayOfYear": 362,
+      "followUp": "What helped you keep it up?"
+    },
+    {
+      "id": "q338",
+      "category": "life",
+      "text": "What in life would you like to spend more time on?",
+      "dayOfYear": 363,
+      "followUp": "What led you to feel that?"
+    },
+    {
+      "id": "q339",
+      "category": "people",
+      "text": "If you gave someone dear a gift, what would you choose?",
+      "dayOfYear": 364,
+      "followUp": "Why would you choose it?"
+    },
+    {
+      "id": "q340",
+      "category": "self",
+      "text": "What's your favorite spot in your home?",
+      "dayOfYear": 365,
+      "followUp": "What do you love about it?"
+    }
+  ]
+}
