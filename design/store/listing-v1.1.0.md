@@ -1,13 +1,14 @@
 # App Store の掲載文(v1.1.0 の下書き)
 
 - 打ち出し: 家族と過ごせる時間(2026-10-16 本人決定)。名前は「問いを前に」(最初に見る体験とそろえる)
+- 名前は「日記」と言わず、1日1問で大切なものを見つける体験として出す(2026-10-17 本人決定)。「日記」で探す人のため、キーワード欄に「日記」を入れる
 - 言わない言葉: 余命・死ぬまで・あと何日・カウントダウン・後悔(キーワード欄に「平均寿命・寿命」だけ残す)
 - ASO: 名前とサブタイトルに入れた語は、キーワード欄で繰り返さない
 
 ## 日本語
 
 ### 名前(30字以内)
-LifeCounter - 1日1問の日記で、家族と人生を
+LifeCounter - 1日1問、大切なものを見つける
 
 ### サブタイトル(30字以内)
 今日は人生の何日目？大切な人と、これからを
@@ -16,7 +17,7 @@ LifeCounter - 1日1問の日記で、家族と人生を
 今日は人生の何日目か。1日1つの問いに答えながら、親や家族と過ごせる時間や、人生でいつかかなえたいことを考えるきっかけに。気分は顔をひと押し、答えは話して入力も。広告なし、記録はすべて端末の中だけに残ります。
 
 ### キーワード(100字以内)
-平均寿命,寿命,親,親孝行,両親,実家,バケットリスト,やりたいこと,ジャーナリング,気分,記録,振り返り,感謝,問いかけ,ウィジェット
+日記,平均寿命,寿命,親,親孝行,両親,実家,バケットリスト,やりたいこと,ジャーナリング,気分,記録,振り返り,感謝,問いかけ,ウィジェット
 
 ### 説明
 今日は、人生の何日目ですか。
@@ -56,7 +57,7 @@ LifeCounter は、1日1つの問いに答える日記アプリです。問いに
 ## English (U.S.)
 
 ### Name (max 30)
-LifeCounter: Daily Journal
+LifeCounter: A Question a Day
 
 ### Subtitle (max 30)
 A daily question that matters
@@ -65,7 +66,7 @@ A daily question that matters
 What day of your life is today? Answer one gentle question a day and reflect on time with your family and the things you hope to do someday. No ads. Stays on your device.
 
 ### Keywords (max 100)
-parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,self care,life expectancy
+journal,parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,self care,life expectancy
 
 ### Description
 What day of your life is today?
@@ -115,5 +116,5 @@ A big update. All your past entries are still here.
 | 2 記録 | 書いた言葉が、日々に残る / 気分と答えを、あとから振り返れます | Your days, in your own words / Look back on your moods and answers |
 | 3 大切な人 | 家族と過ごせる時間を、大切に / 親や家族と、これから会える回数の目安 | Notice your time with family / An estimate of the visits ahead |
 | 4 バケットリスト | 人生でかなえたいことを、ひとつずつ / バケットリスト。かなえた日も残ります | A bucket list for your life / Keep what you achieve, with the date |
-| 5 あなた | これからの週末や季節を、大切に / 平均からの目安で、これからの時間を知る | Cherish the weekends ahead / An estimate of the time ahead, at your age |
+| 5 あなた | これからの日々を、大切に / 平均からの目安で、これからの時間を知る | Cherish the days ahead / An estimate of the time ahead, at your age |
 | 6 ウィジェット | ホーム画面で、今日の問いに / 気分はひと押し。「書く」からすぐ答えられます | Today's question, at a glance / Log your mood in one tap, or tap Write to answer |
