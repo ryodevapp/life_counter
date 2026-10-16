@@ -66,7 +66,7 @@ A daily question that matters
 What day of your life is today? Answer one gentle question a day and reflect on time with your family and the things you hope to do someday. No ads. Stays on your device.
 
 ### Keywords (max 100)
-journal,parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,self care,life expectancy
+journal,parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,life expectancy
 
 ### Description
 What day of your life is today?
