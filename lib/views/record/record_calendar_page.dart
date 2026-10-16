@@ -292,10 +292,41 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     );
   }
 
-  Widget _listItem(DailyRecord r) => Padding(
+  /// 一覧の1日分。左へスワイプすると消せる(確かめてから。編集中は動かさない)
+  Widget _listItem(DailyRecord r) {
+    final l = context.l10n;
+    final card = Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
+      child: _recordCard(r),
+    );
+    if (_editingRecordId == r.id) return card;
+    return Dismissible(
+      key: ValueKey('record-${r.id}'),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (_) => showDeleteConfirmation(
+        context,
+        title: l.deleteDayTitle(_formatDate(r.date)),
+      ),
+      onDismissed: (_) async {
+        setState(() => _records.removeWhere((x) => x.id == r.id));
+        await ref.read(dailyRecordRepositoryProvider).delete(r.id);
+        await _afterChange(null, r.date);
+      },
+      background: Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
-        child: _recordCard(r),
-      );
+        child: Container(
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: AppSpacing.xl),
+          decoration: BoxDecoration(
+            color: AppColors.danger,
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+          ),
+          child: Icon(CupertinoIcons.trash, color: AppColors.onAccent),
+        ),
+      ),
+      child: card,
+    );
+  }
 
   String _formatDate(DateTime date) =>
       formatMonthDayWeekday(date, context.l10n.localeName);
@@ -480,21 +511,30 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
             const SizedBox(height: AppSpacing.m),
             _editField(l.fieldTomorrowMessage, _tomorrowMsgCtrl),
           ],
-          const SizedBox(height: AppSpacing.l),
-          // この日の記録をまるごと消す(確かめてから)
-          Center(
-            child: TextButton(
-              onPressed: () async {
-                final ok = await showDeleteConfirmation(
-                  context,
-                  title: l.deleteDayTitle(dateStr),
-                );
-                if (ok) await widget.onDelete();
-              },
-              style: _textButtonStyle,
-              child: Text(l.deleteDay,
-                  style: AppTextStyles.footnote
-                      .copyWith(color: AppColors.danger)),
+          // 記録ごと消すのはまれなので、目立たせず右下に小さなゴミ箱だけ置く(確かめてから消す)
+          Align(
+            alignment: Alignment.centerRight,
+            child: Semantics(
+              button: true,
+              label: l.deleteDay,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  final ok = await showDeleteConfirmation(
+                    context,
+                    title: l.deleteDayTitle(dateStr),
+                  );
+                  if (ok) await widget.onDelete();
+                },
+                child: SizedBox.square(
+                  dimension: AppSpacing.minTap,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Icon(CupertinoIcons.trash,
+                        size: 18, color: AppColors.textMuted),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

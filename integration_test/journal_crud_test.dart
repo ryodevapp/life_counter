@@ -127,15 +127,28 @@ void main() {
     expect(byText('答え2日前'), findsNothing);
     expect((await at(2))?.answer, isNull);
 
-    // 消す: 「この日の記録を削除」で記録ごと消える(古い版の記録)
+    // 消す: 編集の右下のゴミ箱で記録ごと消える(古い版の記録)
     await editCardWith('古い版の感謝');
-    await tapText(tester, 'この日の記録を削除');
+    final trash = inEdit(find.byIcon(CupertinoIcons.trash));
+    await tester.ensureVisible(trash);
+    await wait(tester, 300);
+    await tester.tap(trash);
+    await wait(tester);
     await shot(binding, tester, 'j_03_delete_confirm');
     await tester.tap(find.text('削除').last);
     await wait(tester, 1200);
     expect(await at(10), isNull);
     expect(byText('古い版の感謝'), findsNothing);
     await shot(binding, tester, 'j_04_list_after');
+
+    // 消す: 一覧で左へスワイプして消す(確かめてから)
+    await tester.drag(cardWith('答え3日前(直した)'), const Offset(-500, 0));
+    await wait(tester, 1000);
+    await shot(binding, tester, 'j_04b_swipe_confirm');
+    await tester.tap(find.text('削除').last);
+    await wait(tester, 1200);
+    expect(await at(3), isNull);
+    expect(byText('答え3日前(直した)'), findsNothing);
 
     // 見る(カレンダー): 選んだ日に気分の札が出る
     await tapText(tester, 'カレンダー');

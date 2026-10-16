@@ -12,7 +12,6 @@ class AppInput extends StatelessWidget {
     this.maxLength,
     this.textAlign = TextAlign.start,
     this.onChanged,
-    this.showBorder = false,
     this.focusNode,
     this.textInputAction,
     this.minLines,
@@ -24,7 +23,6 @@ class AppInput extends StatelessWidget {
   final int? maxLength;
   final TextAlign textAlign;
   final ValueChanged<String>? onChanged;
-  final bool showBorder;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final int? minLines;
@@ -42,32 +40,28 @@ class AppInput extends StatelessWidget {
       maxLines: maxLines,
       onChanged: onChanged,
       style: AppTextStyles.callout,
+      cursorColor: AppColors.accent,
+      // 今日の答えの欄と同じ見た目: 地より一段沈んだ面 + うすい枠。暗い表示でも書く場所が分かるように
       decoration: InputDecoration(
         hintText: placeholder,
         hintStyle: AppTextStyles.callout.copyWith(color: AppColors.textDisabled),
         filled: true,
-        fillColor: AppColors.bgWarm,
+        fillColor: AppColors.bg,
         counterText: '',
         // 高さ 48 以上(callout の1行 24 + 上下 12)
         contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.l, vertical: AppSpacing.m),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
-          borderSide: showBorder
-              ? BorderSide(color: AppColors.border)
-              : BorderSide.none,
+          borderSide: BorderSide(color: AppColors.divider),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
-          borderSide: showBorder
-              ? BorderSide(color: AppColors.border)
-              : BorderSide.none,
+          borderSide: BorderSide(color: AppColors.divider),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.field),
-          borderSide: showBorder
-              ? BorderSide(color: AppColors.borderAccent)
-              : BorderSide.none,
+          borderSide: BorderSide(color: AppColors.borderAccent, width: 1.5),
         ),
       ),
     );
