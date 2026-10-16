@@ -1,14 +1,14 @@
 # App Store の掲載文(v1.1.0 の下書き)
 
 - 打ち出し: 家族と過ごせる時間(2026-10-16 本人決定)。名前は「問いを前に」(最初に見る体験とそろえる)
-- 名前は「日記」と言わず、1日1問で大切なものを見つける体験として出す(2026-10-17 本人決定)。「日記」で探す人のため、キーワード欄に「日記」を入れる
+- 名前は「日記」と言わず、1日1問で大切なものが見つかる体験として出す(2026-10-17 本人決定)。「日記」で探す人のため、キーワード欄に「日記」を入れる
 - 言わない言葉: 余命・死ぬまで・あと何日・カウントダウン・後悔(キーワード欄に「平均寿命・寿命」だけ残す)
 - ASO: 名前とサブタイトルに入れた語は、キーワード欄で繰り返さない
 
 ## 日本語
 
 ### 名前(30字以内)
-LifeCounter - 1日1問、大切なものを見つける
+LifeCounter - 1日1問、大切なものが見つかる
 
 ### サブタイトル(30字以内)
 今日は人生の何日目？大切な人と、これからを
@@ -57,7 +57,7 @@ LifeCounter は、1日1つの問いに答える日記アプリです。問いに
 ## English (U.S.)
 
 ### Name (max 30)
-LifeCounter: A Question a Day
+LifeCounter: Question Journal
 
 ### Subtitle (max 30)
 A daily question that matters
@@ -66,7 +66,7 @@ A daily question that matters
 What day of your life is today? Answer one gentle question a day and reflect on time with your family and the things you hope to do someday. No ads. Stays on your device.
 
 ### Keywords (max 100)
-journal,parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,life expectancy
+parents,family,bucket list,prompts,reflection,gratitude,mood,diary,widget,self care,life expectancy
 
 ### Description
 What day of your life is today?
