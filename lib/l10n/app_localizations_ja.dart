@@ -607,4 +607,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get estimateNote => '数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。';
+
+  @override
+  String get editMood => '気分';
+
+  @override
+  String get deleteDay => 'この日の記録を削除';
+
+  @override
+  String deleteDayTitle(String date) {
+    return '$dateの記録を削除しますか？';
+  }
 }

@@ -350,5 +350,15 @@
       }
     }
   },
-  "estimateNote": "数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。"
+  "estimateNote": "数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。",
+  "editMood": "気分",
+  "deleteDay": "この日の記録を削除",
+  "deleteDayTitle": "{date}の記録を削除しますか？",
+  "@deleteDayTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

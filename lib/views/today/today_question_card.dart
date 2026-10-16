@@ -26,21 +26,36 @@ class MoodCard extends StatelessWidget {
         children: [
           Text(context.l10n.moodQuestion, style: AppTextStyles.headline),
           const SizedBox(height: AppSpacing.m),
-          Row(
-            children: [
-              for (final s in stamps)
-                Expanded(
-                  child: _MoodButton(
-                    stamp: s,
-                    selected: s.id == selectedId,
-                    dimmed: selectedId != null && s.id != selectedId,
-                    onTap: () => onSelect(s.id == selectedId ? null : s.id),
-                  ),
-                ),
-            ],
-          ),
+          MoodPicker(selectedId: selectedId, onSelect: onSelect),
         ],
       ),
+    );
+  }
+}
+
+/// 気分の顔5つの並び(今日の画面と、記録の編集で同じものを使う)
+class MoodPicker extends StatelessWidget {
+  const MoodPicker({super.key, required this.selectedId, required this.onSelect});
+
+  final String? selectedId;
+
+  /// 同じものをもう一度押したら null(取り消し)
+  final ValueChanged<String?> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (final s in stamps)
+          Expanded(
+            child: _MoodButton(
+              stamp: s,
+              selected: s.id == selectedId,
+              dimmed: selectedId != null && s.id != selectedId,
+              onTap: () => onSelect(s.id == selectedId ? null : s.id),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -69,9 +84,11 @@ class _MoodButton extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
+        // 選んでいない顔は、ウィジェットと同じ濃さ(0.4)まで薄くして、どれを選んだかをはっきりさせる
         child: AnimatedOpacity(
-          duration: AppMotion.fast,
-          opacity: dimmed ? 0.85 : 1,
+          duration: AppMotion.base,
+          curve: Curves.easeOut,
+          opacity: dimmed ? 0.4 : 1,
           child: Column(
             children: [
               // 選ぶと、ばねで少し大きくなり、茶色の輪が付く

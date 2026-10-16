@@ -162,5 +162,8 @@
   "notifyLater": "Not Now",
   "statDaysShared": "Days you've shared",
   "unitDaysTight": "{count, plural, one{ day} other{ days}}",
-  "estimateNote": "These are averages, not predictions. No one's life is decided by a number."
+  "estimateNote": "These are averages, not predictions. No one's life is decided by a number.",
+  "editMood": "Mood",
+  "deleteDay": "Delete This Entry",
+  "deleteDayTitle": "Delete the entry for {date}?"
 }

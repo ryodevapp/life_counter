@@ -637,4 +637,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get estimateNote =>
       'These are averages, not predictions. No one\'s life is decided by a number.';
+
+  @override
+  String get editMood => 'Mood';
+
+  @override
+  String get deleteDay => 'Delete This Entry';
+
+  @override
+  String deleteDayTitle(String date) {
+    return 'Delete the entry for $date?';
+  }
 }

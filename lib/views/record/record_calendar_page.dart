@@ -9,6 +9,11 @@ import '../../models/stamp.dart';
 import 'reflection_view.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
+import '../../providers/user_settings_provider.dart';
+import '../../services/widget_sync.dart';
+import '../../utils/date_only.dart';
+import '../shared/action_buttons.dart';
+import '../today/today_question_card.dart' show MoodPicker;
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
@@ -93,35 +98,63 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     );
   }
 
-  /// カレンダーで選択した日の記録カード（インライン表示）
-  Widget _buildSelectedRecordCard() {
-    final r = _selectedRecord!;
-    final isEditing = _editingRecordId == r.id;
+  /// カレンダーで選択した日の記録カード(一覧と同じカード・同じ編集)
+  Widget _buildSelectedRecordCard() => _recordCard(_selectedRecord!, inCalendar: true);
 
-    if (isEditing) {
+  /// 記録を書き換えたあと: 一覧を読み直し、今日の分ならウィジェットにも伝える
+  Future<void> _afterChange(DailyRecord? updated, DateTime date) async {
+    if (dateOnly(date) == dateOnly(DateTime.now())) {
+      await WidgetSync.update(
+        birthDate: ref.read(userSettingsProvider).birthDate,
+        bank: ref.read(questionBankProvider),
+        todayStampId: updated?.stamp,
+      );
+    }
+    await _loadRecords();
+  }
+
+  /// 一覧とカレンダーで共通の、1日分のカード(見るとき・直すとき)
+  Widget _recordCard(DailyRecord r, {bool inCalendar = false}) {
+    if (_editingRecordId == r.id) {
       return _InlineEditCard(
         record: r,
         onSave: (updated) async {
-          final repo = ref.read(dailyRecordRepositoryProvider);
-          await repo.save(updated);
+          await ref.read(dailyRecordRepositoryProvider).save(updated);
+          if (!mounted) return;
           setState(() {
             _editingRecordId = null;
-            _selectedRecord = updated;
+            if (inCalendar) _selectedRecord = updated;
           });
-          _loadRecords();
+          await _afterChange(updated, updated.date);
+        },
+        onDelete: () async {
+          await ref.read(dailyRecordRepositoryProvider).delete(r.id);
+          if (!mounted) return;
+          setState(() {
+            _editingRecordId = null;
+            if (inCalendar) _selectedRecord = null;
+          });
+          await _afterChange(null, r.date);
         },
         onCancel: () => setState(() => _editingRecordId = null),
       );
     }
-
     return AppCard(
+      // 右上の編集ボタンは押せる範囲 44 の分だけ上と右が膨らむので、そこだけ余白を詰めて上下を揃える
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.card, AppSpacing.s, AppSpacing.s, AppSpacing.card),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(_formatDate(r.date), style: AppTextStyles.headline),
+              // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
+              if (stampById(r.stamp) case final mood?) ...[
+                const SizedBox(width: AppSpacing.s),
+                _MoodTag(moodId: mood.id, label: moodLabel(context, mood.id)),
+              ],
+              const Spacer(),
               _EditIconButton(
                   onTap: () => setState(() => _editingRecordId = r.id)),
             ],
@@ -259,52 +292,10 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     );
   }
 
-  Widget _listItem(DailyRecord r) {
-        final isEditing = _editingRecordId == r.id;
-        return Padding(
-          padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
-          child: isEditing
-              ? _InlineEditCard(
-                  record: r,
-                  onSave: (updated) async {
-                    final repo = ref.read(dailyRecordRepositoryProvider);
-                    await repo.save(updated);
-                    setState(() => _editingRecordId = null);
-                    _loadRecords();
-                  },
-                  onCancel: () => setState(() => _editingRecordId = null),
-                )
-              : AppCard(
-                  // 右上の編集ボタンは押せる範囲 44 の分だけ上と右が膨らむので、そこだけ余白を詰めて上下を揃える
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.card,
-                      AppSpacing.s, AppSpacing.s, AppSpacing.card),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(_formatDate(r.date),
-                              style: AppTextStyles.headline),
-                          // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
-                          if (stampById(r.stamp) case final mood?) ...[
-                            const SizedBox(width: AppSpacing.s),
-                            _MoodTag(
-                                moodId: mood.id,
-                                label: moodLabel(context, mood.id)),
-                          ],
-                          const Spacer(),
-                          _EditIconButton(
-                              onTap: () =>
-                                  setState(() => _editingRecordId = r.id)),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.s),
-                      ..._buildInlineFields(r),
-                    ],
-                  ),
-                ),
-        );
-  }
+  Widget _listItem(DailyRecord r) => Padding(
+        padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
+        child: _recordCard(r),
+      );
 
   String _formatDate(DateTime date) =>
       formatMonthDayWeekday(date, context.l10n.localeName);
@@ -359,11 +350,13 @@ class _InlineEditCard extends ConsumerStatefulWidget {
   const _InlineEditCard({
     required this.record,
     required this.onSave,
+    required this.onDelete,
     required this.onCancel,
   });
 
   final DailyRecord record;
   final Future<void> Function(DailyRecord) onSave;
+  final Future<void> Function() onDelete;
   final VoidCallback onCancel;
 
   @override
@@ -376,6 +369,8 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
   late final TextEditingController _goalCtrl;
   late final TextEditingController _goodCtrl;
   late final TextEditingController _tomorrowMsgCtrl;
+  /// 編集中の気分(押したらここだけ変わり、保存で書く)
+  String? _stampId;
 
   /// v1.0 系の4つの欄のどれかがある記録だけ、その欄を編集に出す
   bool get _hasDiaryFields =>
@@ -387,6 +382,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
   @override
   void initState() {
     super.initState();
+    _stampId = widget.record.stamp;
     _answerCtrl = TextEditingController(text: widget.record.answer ?? '');
     _gratitudeCtrl = TextEditingController(text: widget.record.gratitude ?? '');
     _goalCtrl = TextEditingController(text: widget.record.todayGoal ?? '');
@@ -411,6 +407,11 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
             .getByDate(widget.record.date) ??
         widget.record;
     r.morningQuestionId ??= ref.read(questionBankProvider).forDate(r.date).id;
+    if (_stampId != r.stamp) {
+      r.stamp = _stampId;
+      // ウィジェットで押した気分と比べるときの時刻(あとで直したほうを残す)
+      r.stampAt = DateTime.now();
+    }
     r.answer = _answerCtrl.text.trim().isNotEmpty ? _answerCtrl.text : null;
     r.gratitude = _gratitudeCtrl.text.isNotEmpty ? _gratitudeCtrl.text : null;
     r.todayGoal = _goalCtrl.text.isNotEmpty ? _goalCtrl.text : null;
@@ -457,6 +458,16 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
             ],
           ),
           const SizedBox(height: AppSpacing.s),
+          // 気分(今日の画面と同じ顔。同じ顔をもう一度押すと取り消し)
+          Text(l.editMood,
+              style:
+                  AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
+          const SizedBox(height: AppSpacing.s),
+          MoodPicker(
+            selectedId: _stampId,
+            onSelect: (id) => setState(() => _stampId = id),
+          ),
+          const SizedBox(height: AppSpacing.l),
           // 何への答えかが分かるように、その日の問いの文そのものを見出しにする
           _editField(_questionText(), _answerCtrl),
           if (_hasDiaryFields) ...[
@@ -469,6 +480,23 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
             const SizedBox(height: AppSpacing.m),
             _editField(l.fieldTomorrowMessage, _tomorrowMsgCtrl),
           ],
+          const SizedBox(height: AppSpacing.l),
+          // この日の記録をまるごと消す(確かめてから)
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                final ok = await showDeleteConfirmation(
+                  context,
+                  title: l.deleteDayTitle(dateStr),
+                );
+                if (ok) await widget.onDelete();
+              },
+              style: _textButtonStyle,
+              child: Text(l.deleteDay,
+                  style: AppTextStyles.footnote
+                      .copyWith(color: AppColors.danger)),
+            ),
+          ),
         ],
       ),
     );

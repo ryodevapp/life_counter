@@ -1075,6 +1075,24 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。'**
   String get estimateNote;
+
+  /// No description provided for @editMood.
+  ///
+  /// In ja, this message translates to:
+  /// **'気分'**
+  String get editMood;
+
+  /// No description provided for @deleteDay.
+  ///
+  /// In ja, this message translates to:
+  /// **'この日の記録を削除'**
+  String get deleteDay;
+
+  /// No description provided for @deleteDayTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'{date}の記録を削除しますか？'**
+  String deleteDayTitle(String date);
 }
 
 class _AppLocalizationsDelegate
