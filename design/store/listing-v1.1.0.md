@@ -106,3 +106,14 @@ A big update. All your past entries are still here.
 - 検索で表示 → 製品ページへ進む割合(いま 7%。10% 以上を目指す)
 - 製品ページ → ダウンロードの割合
 - 今の利用者の評価とレビュー
+
+## スクリーンショット(6.9 インチ、design/store/screenshots/{ja,en}/1〜6.png)
+
+| | 日本語の見出し / 小見出し | English title / subtitle |
+|---|---|---|
+| 1 今日 | 今日は、人生の何日目？ / 1日1問。答えのあとに、理由もたずねます | What day of your life is today? / One question a day, and a gentle why |
+| 2 記録 | 書いた言葉が、日々に残る / 気分と答えを、あとから振り返れます | Your days, in your own words / Look back on your moods and answers |
+| 3 大切な人 | 家族と過ごせる時間を、大切に / 親や家族と、これから会える回数の目安 | Notice your time with family / An estimate of the visits ahead |
+| 4 バケットリスト | 人生でかなえたいことを、ひとつずつ / バケットリスト。かなえた日も残ります | A bucket list for your life / Keep what you achieve, with the date |
+| 5 あなた | これからの週末や季節を、大切に / 平均からの目安で、これからの時間を知る | Cherish the weekends ahead / An estimate of the time ahead, at your age |
+| 6 ウィジェット | ホーム画面で、今日の問いに / 気分はひと押し。「書く」からすぐ答えられます | Today's question, at a glance / Log your mood in one tap, or tap Write to answer |
