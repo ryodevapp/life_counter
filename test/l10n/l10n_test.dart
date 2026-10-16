@@ -71,13 +71,33 @@ void main() {
       en.healthyDaysLabel,
       en.pastAverageSelf,
       en.pastAveragePerson,
-      en.onboardingDaysAhead,
+      en.welcomeTitle,
+      en.onboardingLifeDaysNote,
+      en.onboardingQuestionBody,
       en.notificationTitle(100),
       en.statYearsAhead,
     ];
     for (final t in texts) {
       for (final w in words) {
         expect(t.toLowerCase().contains(w), isFalse, reason: t);
+      }
+    }
+  });
+
+  test('はじめての案内は、有限さや後悔で動かす言葉を使わない', () {
+    final words = ['有限', '後悔', '残りの日', '寿命', '余命', '一度きり'];
+    final texts = [
+      ja.welcomeTitle,
+      ja.welcomeBody,
+      ja.birthBody,
+      ja.onboardingLifeDaysNote,
+      ja.onboardingQuestionTitle,
+      ja.onboardingQuestionBody,
+      ja.onboardingNotifyBody('7:00'),
+    ];
+    for (final t in texts) {
+      for (final w in words) {
+        expect(t.contains(w), isFalse, reason: t);
       }
     }
   });

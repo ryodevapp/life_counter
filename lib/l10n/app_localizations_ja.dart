@@ -551,59 +551,46 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dateFrom1920 => '1920年以降の日付を選べます';
 
   @override
-  String get welcomeTitleStart => '人生は\n';
-
-  @override
-  String get welcomeTitleAccent => '有限';
-
-  @override
-  String get welcomeTitleEnd => 'だから';
+  String get welcomeTitle => '今日は、人生の何日目？';
 
   @override
   String get welcomeBody =>
-      '今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように';
+      '1日1つの問いに答える日記です。\n答えるうちに、家族と過ごす時間や、\nこれから大切にしたいことが見えてきます。';
 
   @override
-  String get aboutYou => 'あなたについて';
+  String get birthTitle => '生年月日を教えてください';
 
   @override
-  String get aboutYouBody => '人生の日数と、これからの目安の計算に使います';
+  String get birthBody => '今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。';
 
   @override
-  String get onboardingLifeDaysBefore => 'あなたの人生は今日で';
+  String get genderNote => '平均からの目安に使います';
+
+  @override
+  String get onboardingLifeDaysBefore => '今日は、あなたの人生';
 
   @override
   String get onboardingLifeDaysAfter => '日目です';
 
   @override
-  String get onboardingDaysAhead => 'これからの日々は';
+  String get onboardingLifeDaysNote => 'この数字は、毎日ひとつずつ増えていきます。';
 
   @override
-  String get onboardingHowToSpend => 'この日々を\nどう過ごしますか？';
+  String get onboardingQuestionTitle => '毎日ひとつ、問いが届きます';
 
   @override
-  String get onceStart => 'でも\n今日という日は\n人生で';
+  String get onboardingQuestionBody => '気分は顔をひと押し。\n答えはひとことでも大丈夫です。';
 
   @override
-  String get onceAccent => 'たった一度きり';
+  String onboardingNotifyBody(String time) {
+    return '毎朝$timeに、その日の問いをお知らせします。\n時刻は設定で変えられます。';
+  }
 
   @override
-  String get onceEnd => 'です';
+  String get notifyAllow => '通知を受け取る';
 
   @override
-  String get togetherStart => '後悔のない毎日を\n';
-
-  @override
-  String get togetherAccent => '一緒に積み重ねて';
-
-  @override
-  String get togetherEnd => 'いけますように';
-
-  @override
-  String get onboardingGoalQuestion => '今日を素晴らしい一日にするために\n何をしますか？';
-
-  @override
-  String get onboardingGoalHint => '小さなことでOK';
+  String get notifyLater => '今はしない';
 
   @override
   String get statDaysShared => '一緒に過ごしてきた日々';

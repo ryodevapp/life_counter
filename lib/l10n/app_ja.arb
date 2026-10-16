@@ -321,24 +321,26 @@
   "dateNotAvailable": "この日付は選べません",
   "dateUpToToday": "今日までの日付を選べます",
   "dateFrom1920": "1920年以降の日付を選べます",
-  "welcomeTitleStart": "人生は\n",
-  "welcomeTitleAccent": "有限",
-  "welcomeTitleEnd": "だから",
-  "welcomeBody": "今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように",
-  "aboutYou": "あなたについて",
-  "aboutYouBody": "人生の日数と、これからの目安の計算に使います",
-  "onboardingLifeDaysBefore": "あなたの人生は今日で",
+  "welcomeTitle": "今日は、人生の何日目？",
+  "welcomeBody": "1日1つの問いに答える日記です。\n答えるうちに、家族と過ごす時間や、\nこれから大切にしたいことが見えてきます。",
+  "birthTitle": "生年月日を教えてください",
+  "birthBody": "今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。",
+  "genderNote": "平均からの目安に使います",
+  "onboardingLifeDaysBefore": "今日は、あなたの人生",
   "onboardingLifeDaysAfter": "日目です",
-  "onboardingDaysAhead": "これからの日々は",
-  "onboardingHowToSpend": "この日々を\nどう過ごしますか？",
-  "onceStart": "でも\n今日という日は\n人生で",
-  "onceAccent": "たった一度きり",
-  "onceEnd": "です",
-  "togetherStart": "後悔のない毎日を\n",
-  "togetherAccent": "一緒に積み重ねて",
-  "togetherEnd": "いけますように",
-  "onboardingGoalQuestion": "今日を素晴らしい一日にするために\n何をしますか？",
-  "onboardingGoalHint": "小さなことでOK",
+  "onboardingLifeDaysNote": "この数字は、毎日ひとつずつ増えていきます。",
+  "onboardingQuestionTitle": "毎日ひとつ、問いが届きます",
+  "onboardingQuestionBody": "気分は顔をひと押し。\n答えはひとことでも大丈夫です。",
+  "onboardingNotifyBody": "毎朝{time}に、その日の問いをお知らせします。\n時刻は設定で変えられます。",
+  "@onboardingNotifyBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "notifyAllow": "通知を受け取る",
+  "notifyLater": "今はしない",
   "statDaysShared": "一緒に過ごしてきた日々",
   "unitDaysTight": "{count, plural, other{日}}",
   "@unitDaysTight": {

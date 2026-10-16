@@ -2,8 +2,10 @@ import SwiftUI
 import WidgetKit
 
 // 1つのウィジェットに役目は1つ。それ以外の情報は載せない
-//   小(LifeDaysWidget)     : 人生◯日目だけ
-//   中(TodayQuestionWidget): 今日の問い・気分の顔5つ・「書く」(押すとアプリの答えの欄が開く)
+//   今日の記録(TodayQuestionWidget): 小=今日の問いだけ(押すと答えの欄が開く)、中=問い・気分の顔5つ・「書く」
+//   人生の日数(LifeDaysWidget)     : 小=人生◯日目だけ
+// アイコンの長押しで選べる大きさは、WidgetBundle の最初のウィジェットが対応する大きさだけ。
+// だから小と中の両方に対応する「今日の記録」を最初に置く
 
 struct DayEntry: TimelineEntry {
     let date: Date
@@ -76,23 +78,69 @@ struct LifeDaysView: View {
 
 // MARK: - 中: 今日の問い + スタンプ
 
+/// 問いの文。いちばん大きい字から始め、行数に収まらないときだけ字を縮める(問いの長さは日によって違う)
+struct QuestionText: View {
+    @Environment(\.colorScheme) var scheme
+    let text: String
+    let size: CGFloat
+    let minSize: CGFloat
+    let lines: Int
+
+    var body: some View {
+        Text(text)
+            .font(.system(size: size, weight: .medium))
+            .lineSpacing(size * 0.12)
+            .lineLimit(lines)
+            .minimumScaleFactor(minSize / size)
+            .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
+            .widgetAccentable()
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 struct TodayQuestionView: View {
     @Environment(\.colorScheme) var scheme
+    @Environment(\.widgetFamily) var family
     let entry: DayEntry
 
     /// 押すと、アプリの答えの欄にキーボードが出た状態で開く(ウィジェットでは文字を入力できないため)
     static let answerURL = URL(string: "lifecounter://answer?homeWidget")!
 
     var body: some View {
+        if family == .systemSmall {
+            small
+        } else {
+            medium
+        }
+    }
+
+    /// 小: 問いだけ。どこを押しても答えの欄が開く
+    private var small: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let day = entry.day {
+                QuestionText(text: day.question, size: 17, minSize: 12, lines: 5)
+                Spacer(minLength: 0)
+                Image(systemName: "square.and.pencil")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Tone.accent)
+                    .accessibilityLabel(L10n.t("答えを書く", "Write your answer"))
+            } else {
+                Text(L10n.t("アプリを開くと、今日の問いが表示されます", "Open the app to see today's question"))
+                    .font(.system(size: 12))
+                    .foregroundStyle(Tone.muted)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .widgetURL(Self.answerURL)
+        .containerBackground(for: .widget) { scheme == .dark ? Tone.bgDark : Tone.bg }
+    }
+
+    /// 中: 問い・気分の顔・「書く」
+    private var medium: some View {
         VStack(alignment: .leading, spacing: 10) {
             if let day = entry.day {
-                // 問い(理由を聞くもう一歩もつなげた1文)
-                Text(day.question)
-                    .font(.system(size: 14, weight: .medium))
-                    .lineLimit(3)
-                    .minimumScaleFactor(0.85)
-                    .foregroundStyle(scheme == .dark ? Tone.textDark : Tone.text)
-                    .widgetAccentable()
+                // 問い(理由を聞くもう一歩もつなげた1文)。3行に収まるいちばん大きい字で
+                QuestionText(text: day.question, size: 20, minSize: 13, lines: 3)
                 Spacer(minLength: 0)
                 HStack(spacing: 6) {
                     // 気分はその場で押して残せる
@@ -153,15 +201,16 @@ struct TodayQuestionWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DayProvider()) { TodayQuestionView(entry: $0) }
             .configurationDisplayName(L10n.t("今日の記録", "Today's Journal"))
-            .description(L10n.t("今日の問いを見て、気分をひと押しで残せます。「書く」から答えも書けます。", "See today's question and log your mood in one tap. Tap Write to answer."))
-            .supportedFamilies([.systemMedium])
+            .description(L10n.t("今日の問いを表示します。押すと答えを書けます。中サイズでは、気分もひと押しで残せます。", "Shows today's question. Tap to write your answer. The medium size also lets you log your mood in one tap."))
+            .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
 @main
 struct LifeCounterWidgets: WidgetBundle {
     var body: some Widget {
-        LifeDaysWidget()
+        // 最初のウィジェットの大きさが、アイコンの長押しで選べる大きさになる
         TodayQuestionWidget()
+        LifeDaysWidget()
     }
 }

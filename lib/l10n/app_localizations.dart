@@ -980,46 +980,40 @@ abstract class AppLocalizations {
   /// **'1920年以降の日付を選べます'**
   String get dateFrom1920;
 
-  /// No description provided for @welcomeTitleStart.
+  /// No description provided for @welcomeTitle.
   ///
   /// In ja, this message translates to:
-  /// **'人生は\n'**
-  String get welcomeTitleStart;
-
-  /// No description provided for @welcomeTitleAccent.
-  ///
-  /// In ja, this message translates to:
-  /// **'有限'**
-  String get welcomeTitleAccent;
-
-  /// No description provided for @welcomeTitleEnd.
-  ///
-  /// In ja, this message translates to:
-  /// **'だから'**
-  String get welcomeTitleEnd;
+  /// **'今日は、人生の何日目？'**
+  String get welcomeTitle;
 
   /// No description provided for @welcomeBody.
   ///
   /// In ja, this message translates to:
-  /// **'今日が人生の何日目か\n知っていますか\n\n残りの日々を意識することで\n毎日をもっと大切に過ごせるように'**
+  /// **'1日1つの問いに答える日記です。\n答えるうちに、家族と過ごす時間や、\nこれから大切にしたいことが見えてきます。'**
   String get welcomeBody;
 
-  /// No description provided for @aboutYou.
+  /// No description provided for @birthTitle.
   ///
   /// In ja, this message translates to:
-  /// **'あなたについて'**
-  String get aboutYou;
+  /// **'生年月日を教えてください'**
+  String get birthTitle;
 
-  /// No description provided for @aboutYouBody.
+  /// No description provided for @birthBody.
   ///
   /// In ja, this message translates to:
-  /// **'人生の日数と、これからの目安の計算に使います'**
-  String get aboutYouBody;
+  /// **'今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。'**
+  String get birthBody;
+
+  /// No description provided for @genderNote.
+  ///
+  /// In ja, this message translates to:
+  /// **'平均からの目安に使います'**
+  String get genderNote;
 
   /// No description provided for @onboardingLifeDaysBefore.
   ///
   /// In ja, this message translates to:
-  /// **'あなたの人生は今日で'**
+  /// **'今日は、あなたの人生'**
   String get onboardingLifeDaysBefore;
 
   /// No description provided for @onboardingLifeDaysAfter.
@@ -1028,65 +1022,41 @@ abstract class AppLocalizations {
   /// **'日目です'**
   String get onboardingLifeDaysAfter;
 
-  /// No description provided for @onboardingDaysAhead.
+  /// No description provided for @onboardingLifeDaysNote.
   ///
   /// In ja, this message translates to:
-  /// **'これからの日々は'**
-  String get onboardingDaysAhead;
+  /// **'この数字は、毎日ひとつずつ増えていきます。'**
+  String get onboardingLifeDaysNote;
 
-  /// No description provided for @onboardingHowToSpend.
+  /// No description provided for @onboardingQuestionTitle.
   ///
   /// In ja, this message translates to:
-  /// **'この日々を\nどう過ごしますか？'**
-  String get onboardingHowToSpend;
+  /// **'毎日ひとつ、問いが届きます'**
+  String get onboardingQuestionTitle;
 
-  /// No description provided for @onceStart.
+  /// No description provided for @onboardingQuestionBody.
   ///
   /// In ja, this message translates to:
-  /// **'でも\n今日という日は\n人生で'**
-  String get onceStart;
+  /// **'気分は顔をひと押し。\n答えはひとことでも大丈夫です。'**
+  String get onboardingQuestionBody;
 
-  /// No description provided for @onceAccent.
+  /// No description provided for @onboardingNotifyBody.
   ///
   /// In ja, this message translates to:
-  /// **'たった一度きり'**
-  String get onceAccent;
+  /// **'毎朝{time}に、その日の問いをお知らせします。\n時刻は設定で変えられます。'**
+  String onboardingNotifyBody(String time);
 
-  /// No description provided for @onceEnd.
+  /// No description provided for @notifyAllow.
   ///
   /// In ja, this message translates to:
-  /// **'です'**
-  String get onceEnd;
+  /// **'通知を受け取る'**
+  String get notifyAllow;
 
-  /// No description provided for @togetherStart.
+  /// No description provided for @notifyLater.
   ///
   /// In ja, this message translates to:
-  /// **'後悔のない毎日を\n'**
-  String get togetherStart;
-
-  /// No description provided for @togetherAccent.
-  ///
-  /// In ja, this message translates to:
-  /// **'一緒に積み重ねて'**
-  String get togetherAccent;
-
-  /// No description provided for @togetherEnd.
-  ///
-  /// In ja, this message translates to:
-  /// **'いけますように'**
-  String get togetherEnd;
-
-  /// No description provided for @onboardingGoalQuestion.
-  ///
-  /// In ja, this message translates to:
-  /// **'今日を素晴らしい一日にするために\n何をしますか？'**
-  String get onboardingGoalQuestion;
-
-  /// No description provided for @onboardingGoalHint.
-  ///
-  /// In ja, this message translates to:
-  /// **'小さなことでOK'**
-  String get onboardingGoalHint;
+  /// **'今はしない'**
+  String get notifyLater;
 
   /// No description provided for @statDaysShared.
   ///

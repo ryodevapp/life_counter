@@ -577,24 +577,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dateFrom1920 => 'You can pick a date from 1920 onward.';
 
   @override
-  String get welcomeTitleStart => 'Because life\nis ';
-
-  @override
-  String get welcomeTitleAccent => 'finite';
-
-  @override
-  String get welcomeTitleEnd => '';
+  String get welcomeTitle => 'What day of your life is today?';
 
   @override
   String get welcomeBody =>
-      'Do you know which day\nof your life today is?\n\nKeeping the days ahead in mind\ncan help you treasure each one a little more.';
+      'A journal with one question a day.\nAs you answer, you’ll see more clearly\nthe time you have with your family\nand what matters to you.';
 
   @override
-  String get aboutYou => 'About You';
+  String get birthTitle => 'When were you born?';
 
   @override
-  String get aboutYouBody =>
-      'Used to count the days of your life and estimate the days ahead.';
+  String get birthBody =>
+      'We use it to count the days of your life.\nEverything stays on this iPhone.';
+
+  @override
+  String get genderNote => 'Used for estimates based on averages';
 
   @override
   String get onboardingLifeDaysBefore => 'Today is day';
@@ -603,34 +600,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingLifeDaysAfter => 'of your life';
 
   @override
-  String get onboardingDaysAhead => 'The days ahead of you';
+  String get onboardingLifeDaysNote => 'This number grows by one every day.';
 
   @override
-  String get onboardingHowToSpend => 'How would you like\nto spend them?';
+  String get onboardingQuestionTitle => 'One question, every day';
 
   @override
-  String get onceStart => 'But\ntoday comes\n';
+  String get onboardingQuestionBody =>
+      'Log your mood with one tap.\nA few words are enough for an answer.';
 
   @override
-  String get onceAccent => 'only once';
+  String onboardingNotifyBody(String time) {
+    return 'Each morning at $time, we’ll let you know the day’s question.\nYou can change the time in Settings.';
+  }
 
   @override
-  String get onceEnd => '\nin a lifetime';
+  String get notifyAllow => 'Turn On Notifications';
 
   @override
-  String get togetherStart => 'Here’s to days\nwithout regret,\n';
-
-  @override
-  String get togetherAccent => 'built together';
-
-  @override
-  String get togetherEnd => '';
-
-  @override
-  String get onboardingGoalQuestion => 'What would make\ntoday a great day?';
-
-  @override
-  String get onboardingGoalHint => 'Something small is fine';
+  String get notifyLater => 'Not Now';
 
   @override
   String get statDaysShared => 'Days you\'ve shared';

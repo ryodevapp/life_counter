@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
-import '../../providers/isar_provider.dart';
+import '../../models/question.dart';
+import '../../providers/question_bank_provider.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../../services/notification_service.dart';
+import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
-import '../shared/app_input.dart';
 import '../shared/count_up_text.dart';
 import 'welcome_page.dart';
 import 'birth_input_page.dart';
 
-/// オンボーディング全体フロー
+/// はじめての人の案内: はじめに → 生年月日 → 人生の日数 → 毎日の問い(通知)
+/// 終わったら今日の画面に入り、最初の問いにそのまま答えられる
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
 
@@ -23,134 +26,96 @@ class OnboardingPage extends ConsumerStatefulWidget {
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-enum _Screen { welcome, birth, steps }
+enum _Screen { welcome, birth, lifeDays, question }
 
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   _Screen _screen = _Screen.welcome;
-  int _step = 0;
   DateTime? _birthDate;
-  Gender _gender = Gender.unspecified;
-  final _goalController = TextEditingController();
+  bool _finishing = false;
 
-  @override
-  void dispose() {
-    _goalController.dispose();
-    super.dispose();
-  }
-
-  void _goToBirth() => setState(() => _screen = _Screen.birth);
-
-  void _goToSteps(DateTime birthDate, Gender gender) {
+  void _goToLifeDays(DateTime birthDate, Gender gender) {
     setState(() {
       _birthDate = birthDate;
-      _gender = gender;
-      _screen = _Screen.steps;
-      _step = 0;
+      _screen = _Screen.lifeDays;
     });
     ref
         .read(userSettingsProvider.notifier)
         .setBirthDateAndGender(birthDate, gender);
   }
 
-  void _nextStep() {
-    if (_step < 3) {
-      setState(() => _step++);
-    } else {
-      _complete();
-    }
-  }
-
-  void _prevStep() {
-    if (_step > 0) setState(() => _step--);
-  }
-
-  Future<void> _complete() async {
-    // オンボーディングのゴールをIsarに保存
-    if (_goalController.text.isNotEmpty) {
-      final repo = ref.read(dailyRecordRepositoryProvider);
-      final record = await repo.getOrCreate(DateTime.now());
-      record.todayGoal = _goalController.text;
-      await repo.save(record);
-    }
-    // 通知許可リクエスト
-    await NotificationService.requestPermission();
-    // 朝の通知は、オンボーディングの完了を受けて MainTabView が予約する
-    await ref.read(userSettingsProvider.notifier).completeOnboarding();
+  /// 通知を受け取るかどうかを決めて、案内を終える
+  Future<void> _complete({required bool notify}) async {
+    if (_finishing) return;
+    setState(() => _finishing = true);
+    final settings = ref.read(userSettingsProvider);
+    final notifier = ref.read(userSettingsProvider.notifier);
+    // 許可を求めるのは「通知を受け取る」を押したときだけ。断られたら設定も切っておく
+    final enabled =
+        notify ? await NotificationService.requestPermission() : false;
+    await notifier.updateNotification(
+      enabled: enabled,
+      hour: settings.notificationHour,
+      minute: settings.notificationMinute,
+    );
+    // 朝の通知は、案内の完了を受けて MainTabView が予約する
+    await notifier.completeOnboarding();
   }
 
   @override
   Widget build(BuildContext context) {
     switch (_screen) {
       case _Screen.welcome:
-        return WelcomePage(onStart: _goToBirth);
+        return WelcomePage(
+            onStart: () => setState(() => _screen = _Screen.birth));
       case _Screen.birth:
-        return BirthInputPage(onNext: _goToSteps);
-      case _Screen.steps:
-        return _buildSteps();
+        return BirthInputPage(onNext: _goToLifeDays);
+      case _Screen.lifeDays:
+        return _frame(
+          content: _lifeDays(),
+          buttons: [
+            AppButton.primary(
+              onPressed: () => setState(() => _screen = _Screen.question),
+              label: context.l10n.next,
+            ),
+          ],
+        );
+      case _Screen.question:
+        return _frame(
+          content: _question(),
+          buttons: [
+            AppButton.primary(
+              onPressed: _finishing ? null : () => _complete(notify: true),
+              label: context.l10n.notifyAllow,
+            ),
+            const SizedBox(height: AppSpacing.s),
+            TextButton(
+              onPressed: _finishing ? null : () => _complete(notify: false),
+              style: TextButton.styleFrom(
+                minimumSize:
+                    const Size(double.infinity, AppSpacing.buttonHeight),
+                foregroundColor: AppColors.textSecondary,
+                textStyle: AppTextStyles.body,
+              ),
+              child: Text(context.l10n.notifyLater),
+            ),
+          ],
+        );
     }
   }
 
-  Widget _buildSteps() {
-    final lifeDays = LifeCalculator.lifeDays(_birthDate!);
-    final remainingDays =
-        LifeCalculator.remainingDays(_birthDate!, _gender);
-
+  /// 内容を上下の真ん中に、ボタンを下にまとめる
+  Widget _frame({required Widget content, required List<Widget> buttons}) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.xxxl),
-                    child: _stepContent(lifeDays, remainingDays),
-                  ),
-                ),
+                child: Center(child: SingleChildScrollView(child: content)),
               ),
-              // ページインジケーター
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (i) {
-                  return AnimatedContainer(
-                    duration: AppMotion.slow,
-                    curve: Curves.easeOutCubic,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-                    width: i == _step ? AppSpacing.xl : AppSpacing.s,
-                    height: AppSpacing.s,
-                    decoration: BoxDecoration(
-                      color: i == _step ? AppColors.accent : AppColors.bgSub,
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
-                  );
-                }),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              // ナビゲーションボタン
-              Row(
-                children: [
-                  if (_step > 0) ...[
-                    Expanded(
-                      child:
-                          AppButton.secondary(
-                              onPressed: _prevStep, label: context.l10n.back),
-                    ),
-                    const SizedBox(width: AppSpacing.s),
-                  ],
-                  Expanded(
-                    child: AppButton.primary(
-                      onPressed: _nextStep,
-                      label: _step == 3
-                          ? context.l10n.getStarted
-                          : context.l10n.next,
-                    ),
-                  ),
-                ],
-              ),
+              ...buttons,
               const SizedBox(height: AppSpacing.xxl),
             ],
           ),
@@ -159,141 +124,71 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _stepContent(int lifeDays, int remainingDays) {
+  Widget _lifeDays() {
     final l = context.l10n;
-    switch (_step) {
-      case 0:
-        // Step 1: 人生○○日目（カウントアップ）
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // ブランドの表示なので英字のまま。字間だけはロゴとして広げる
-            Text(
-              'YOUR LIFE IN NUMBERS',
-              style: AppTextStyles.captionLabel.copyWith(letterSpacing: 3),
-            ),
-            const SizedBox(height: AppSpacing.xxxl),
-            Text(
-              l.onboardingLifeDaysBefore,
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.l),
-            CountUpText(
-              target: lifeDays,
-              style: AppTextStyles.counter.copyWith(color: AppColors.accent),
-            ),
-            const SizedBox(height: AppSpacing.s),
-            Text(
-              l.onboardingLifeDaysAfter,
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            ),
-          ],
-        );
-      case 1:
-        // Step 2: 残りの人生
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              l.onboardingDaysAhead,
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.l),
-            CountUpText(
-              target: remainingDays,
-              style: AppTextStyles.counter.copyWith(color: AppColors.accent),
-            ),
-            const SizedBox(height: AppSpacing.s),
-            Text(
-              l.daysEstimateUnit(remainingDays),
-              textAlign: TextAlign.center,
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            Text(
-              l.onboardingHowToSpend,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
-            ),
-          ],
-        );
-      case 2:
-        // Step 3: たった一度きり
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('\u{1F932}', style: AppTextStyles.display), // 🤲
-            const SizedBox(height: AppSpacing.xxl),
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: l.onceStart,
-                    style: AppTextStyles.title,
-                  ),
-                  TextSpan(
-                    text: l.onceAccent,
-                    style:
-                        AppTextStyles.title.copyWith(color: AppColors.accent),
-                  ),
-                  TextSpan(
-                    text: l.onceEnd,
-                    style: AppTextStyles.title,
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      case 3:
-        // Step 4: 今日何をしますか + 入力
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: l.togetherStart,
-                    style: AppTextStyles.title,
-                  ),
-                  TextSpan(
-                    text: l.togetherAccent,
-                    style:
-                        AppTextStyles.title.copyWith(color: AppColors.accent),
-                  ),
-                  TextSpan(
-                    text: l.togetherEnd,
-                    style: AppTextStyles.title,
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            Container(
-              width: AppSpacing.xxl,
-              height: 1,
-              color: AppColors.accent.withValues(alpha: 0.3),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            Text(
-              l.onboardingGoalQuestion,
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            AppInput(
-              controller: _goalController,
-              placeholder: l.onboardingGoalHint,
-              maxLength: 200,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      default:
-        return const SizedBox.shrink();
-    }
+    final lifeDays = LifeCalculator.lifeDays(_birthDate!);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          l.onboardingLifeDaysBefore,
+          style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.l),
+        CountUpText(
+          target: lifeDays,
+          style: AppTextStyles.counter.copyWith(color: AppColors.accent),
+        ),
+        const SizedBox(height: AppSpacing.s),
+        Text(
+          l.onboardingLifeDaysAfter,
+          style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.xxl),
+        Text(
+          l.onboardingLifeDaysNote,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
+        ),
+      ],
+    );
+  }
+
+  Widget _question() {
+    final l = context.l10n;
+    final settings = ref.watch(userSettingsProvider);
+    final question = ref.read(questionBankProvider).forDate(DateTime.now());
+    final time = DateFormat.jm(l.localeName).format(DateTime(
+        2000, 1, 1, settings.notificationHour, settings.notificationMinute));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(l.onboardingQuestionTitle, style: AppTextStyles.title),
+        const SizedBox(height: AppSpacing.xl),
+        // 今日の問いの実物
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l.todaysQuestion, style: AppTextStyles.captionLabel),
+              const SizedBox(height: AppSpacing.s),
+              Text(questionWithFollowUp(question),
+                  style: AppTextStyles.headline),
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        Text(
+          l.onboardingQuestionBody,
+          style: AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.m),
+        Text(
+          l.onboardingNotifyBody(time),
+          style: AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
+        ),
+      ],
+    );
   }
 }
