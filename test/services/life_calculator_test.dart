@@ -44,11 +44,11 @@ void main() {
       expect(remaining, greaterThan(0));
     });
 
-    test('remainingDays: 非常に高齢なら0', () {
+    test('remainingDays: 非常に高齢でも0にはならない(105歳以上の平均余命、約1年)', () {
       final birthDate = DateTime(1900, 1, 1);
       final remaining =
           LifeCalculator.remainingDays(birthDate, Gender.male);
-      expect(remaining, 0);
+      expect(remaining, inInclusiveRange(365, 400));
     });
 
     test('remainingYears: 正の整数を返す', () {
@@ -80,6 +80,42 @@ void main() {
       LifeCalculator.regionCode = 'ZZ';
       expect(LifeCalculator.averageLifespan(Gender.unspecified),
           worldLifespan.both);
+    });
+  });
+
+  group('その年齢の平均余命(生命表)', () {
+    tearDown(() => LifeCalculator.regionCode = null);
+    final now = DateTime(2026, 10, 16);
+
+    test('日本: 72歳の女性は約18.4年、85歳の男性は約6.4年(引き算のように消えない)', () {
+      expect(
+          LifeCalculator.expectedYearsAhead(
+              DateTime(1954, 10, 16), Gender.female, now),
+          closeTo(18.39, 0.05));
+      expect(
+          LifeCalculator.expectedYearsAhead(
+              DateTime(1941, 10, 16), Gender.male, now),
+          closeTo(6.44, 0.05));
+    });
+
+    test('105歳を越えても0にならない', () {
+      expect(
+          LifeCalculator.expectedYearsAhead(
+              DateTime(1915, 1, 1), Gender.male, now),
+          greaterThan(1.0));
+    });
+
+    test('米国は WHO の表(75歳の男性は約11年)', () {
+      LifeCalculator.regionCode = 'US';
+      final y = LifeCalculator.expectedYearsAhead(
+          DateTime(1951, 10, 16), Gender.male, now);
+      expect(y, inInclusiveRange(10.0, 13.0));
+    });
+
+    test('若い人では、生まれたときの平均からの引き算とほぼ同じ', () {
+      final y = LifeCalculator.expectedYearsAhead(
+          DateTime(1986, 10, 16), Gender.male, now);
+      expect((y - (81.35 - 40)).abs(), lessThan(1.5));
     });
   });
 }

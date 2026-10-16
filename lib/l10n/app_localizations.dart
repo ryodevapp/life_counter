@@ -497,13 +497,13 @@ abstract class AppLocalizations {
   /// No description provided for @pastAverageSelf.
   ///
   /// In ja, this message translates to:
-  /// **'平均を超えて、日々を重ねています'**
+  /// **'平均寿命を越えて、日々を重ねています'**
   String get pastAverageSelf;
 
   /// 大きな数字の下に出す単位と説明
   ///
   /// In ja, this message translates to:
-  /// **'{count, plural, other{日（平均からの目安）}}'**
+  /// **'{count, plural, other{日（いまの年齢からの平均の目安）}}'**
   String daysEstimateUnit(int count);
 
   /// No description provided for @healthyDaysLabel.
@@ -665,7 +665,7 @@ abstract class AppLocalizations {
   /// No description provided for @togetherNote.
   ///
   /// In ja, this message translates to:
-  /// **'ふたりの平均のうち、短いほうで計算'**
+  /// **'ふたりの、いまの年齢からの平均のうち短いほう'**
   String get togetherNote;
 
   /// No description provided for @meetNote.
@@ -683,7 +683,7 @@ abstract class AppLocalizations {
   /// No description provided for @pastAveragePerson.
   ///
   /// In ja, this message translates to:
-  /// **'平均の年齢を超えて、日々を重ねています'**
+  /// **'平均寿命を越えて、日々を重ねています'**
   String get pastAveragePerson;
 
   /// No description provided for @nickname.
@@ -1087,6 +1087,24 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'小さなことでOK'**
   String get onboardingGoalHint;
+
+  /// No description provided for @statDaysShared.
+  ///
+  /// In ja, this message translates to:
+  /// **'一緒に過ごしてきた日々'**
+  String get statDaysShared;
+
+  /// No description provided for @unitDaysTight.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count, plural, other{日}}'**
+  String unitDaysTight(int count);
+
+  /// No description provided for @estimateNote.
+  ///
+  /// In ja, this message translates to:
+  /// **'数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。'**
+  String get estimateNote;
 }
 
 class _AppLocalizationsDelegate

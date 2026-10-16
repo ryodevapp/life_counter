@@ -113,16 +113,15 @@ class _ImportantPeopleSectionState
   Widget _personList(List<ImportantPerson> persons, DateTime? myBirthDate,
       UserSettings settings) {
     final fmt = numberFormatOf(context.l10n.localeName);
-    final myAge = myBirthDate != null
-        ? LifeCalculator.currentAge(myBirthDate)
-        : 0;
-    final myAL = LifeCalculator.averageLifespan(
-        myBirthDate != null ? settings.gender : Gender.unspecified);
+    // 自分の「これから」(その年齢の平均余命)。生年月日がまだなら上限なし
+    final myAhead = myBirthDate != null
+        ? LifeCalculator.expectedYearsAhead(myBirthDate, settings.gender)
+        : double.infinity;
 
     return Column(
       children: [
         for (final p in persons) ...[
-          _personCard(p, myAge, myAL, fmt),
+          _personCard(p, myAhead, myBirthDate, fmt),
           const SizedBox(height: AppSpacing.cardGap),
         ],
         _addButton(),
@@ -130,19 +129,16 @@ class _ImportantPeopleSectionState
     );
   }
 
-  Widget _personCard(
-      ImportantPerson p, int myAge, double myAL, NumberFormat fmt) {
+  Widget _personCard(ImportantPerson p, double myAhead, DateTime? myBirthDate,
+      NumberFormat fmt) {
     final pAge = LifeCalculator.currentAge(p.birthDate);
-    final pAL = LifeCalculator.averageLifespan(p.gender);
-    final pHL = LifeCalculator.healthyLifespan(p.gender);
-    final pPastAL = pAge >= pAL;
-    final myR = (myAL - myAge).clamp(0, 999);
-    final pR = (pAL - pAge).clamp(0, 999);
-    final together = myR < pR ? myR.floor() : pR.floor();
+    final pAhead = LifeCalculator.expectedYearsAhead(p.birthDate, p.gender);
+    final pPastAL = LifeCalculator.isPastAverage(p.birthDate, p.gender);
+    final together = (myAhead < pAhead ? myAhead : pAhead).floor();
     final meet = calcMeetCount(together, p.meetingFrequency);
-    final pHR = (pHL - pAge).clamp(0, 999).floor();
+    final shared = sharedDays(myBirthDate, p.birthDate);
     final l = context.l10n;
-    final years = pR.floor();
+    final years = pAhead.floor();
 
     return AppCard(
       onTap: () => setState(() => _selectedPerson = p),
@@ -164,7 +160,12 @@ class _ImportantPeopleSectionState
                   size: 15, color: AppColors.textDisabled),
             ],
           ),
-          if (!pPastAL) ...[
+          // 平均寿命を越えた人にも数字は出し、ひとこと添えるだけにする
+          if (pPastAL) ...[
+            const SizedBox(height: AppSpacing.s),
+            Text(l.pastAveragePerson, style: AppTextStyles.footnote),
+          ],
+          ...[
             const SizedBox(height: AppSpacing.l),
             Row(
               children: [
@@ -172,12 +173,13 @@ class _ImportantPeopleSectionState
                     child: _miniStat(l, l.statYearsAhead, '$years',
                         l.unitYearsTight(years))),
                 const SizedBox(width: AppSpacing.m),
+                // 健康の年数の代わりに、ふえていく数字(一緒に過ごしてきた日々)
                 Expanded(
-                    child: pHR > 0
-                        ? _miniStat(l, l.statHealthyYears, '$pHR',
-                            l.unitYearsTight(pHR),
-                            valueColor: AppColors.accent)
-                        : const SizedBox.shrink()),
+                    child: shared == null
+                        ? const SizedBox.shrink()
+                        : _miniStat(l, l.statDaysShared, fmt.format(shared),
+                            l.unitDaysTight(shared),
+                            approx: false)),
               ],
             ),
             const SizedBox(height: AppSpacing.m),
@@ -201,7 +203,7 @@ class _ImportantPeopleSectionState
 
   static Widget _miniStat(
       AppLocalizations l, String label, String value, String unit,
-      {Color? valueColor}) {
+      {Color? valueColor, bool approx = true}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -209,7 +211,8 @@ class _ImportantPeopleSectionState
         Text(label, style: AppTextStyles.captionLabel),
         const SizedBox(height: AppSpacing.xs),
         Text.rich(TextSpan(children: [
-          TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
+          if (approx)
+            TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
           TextSpan(
             text: value,
             style: AppTextStyles.display
@@ -220,4 +223,11 @@ class _ImportantPeopleSectionState
       ],
     );
   }
+}
+
+/// 一緒に過ごしてきた日数(ふたりのうち、あとに生まれた人の誕生日から今日まで)
+int? sharedDays(DateTime? myBirth, DateTime theirBirth) {
+  if (myBirth == null) return null;
+  final start = myBirth.isAfter(theirBirth) ? myBirth : theirBirth;
+  return DateTime.now().difference(start).inDays + 1;
 }

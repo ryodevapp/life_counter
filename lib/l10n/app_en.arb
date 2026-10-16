@@ -1,6 +1,5 @@
 {
   "@@locale": "en",
-
   "cancel": "Cancel",
   "save": "Save",
   "add": "Add",
@@ -20,20 +19,17 @@
   "loadError": "Couldn’t load this. Reopening the app may help.",
   "readMore": "Read more",
   "showLess": "Show less",
-
   "birthDate": "Date of birth",
   "gender": "Gender",
   "genderOptional": "Gender (optional)",
   "genderMale": "Male",
   "genderFemale": "Female",
   "genderUnspecified": "Rather not say",
-
   "tabToday": "Today",
   "tabJournal": "Journal",
   "tabLife": "Life",
   "tabSettings": "Settings",
   "hideKeyboard": "Hide keyboard",
-
   "todayLifeDaysPrefix": "Day ",
   "todayLifeDaysSuffix": " of your life",
   "notificationTitle": "Day {days} of your life",
@@ -49,7 +45,6 @@
   "addToBucketList": "Add to bucket list",
   "addedToBucketList": "Added to your bucket list",
   "alreadyInBucketList": "Already on your bucket list",
-
   "viewList": "List",
   "viewCalendar": "Calendar",
   "noEntriesYet": "No entries yet",
@@ -67,13 +62,12 @@
   "monthMoodItem": "{count, plural, one{{mood}, 1 day} other{{mood}, {count} days}}",
   "monthMoodsSemantics": "Moods this month: {moods}",
   "moodListSeparator": "; ",
-
   "segmentYou": "You",
   "segmentPeople": "People",
   "segmentBucketList": "Bucket list",
   "peopleWhoMatter": "People who matter",
-  "pastAverageSelf": "Past the average, and still adding to your days",
-  "daysEstimateUnit": "{count, plural, one{day, estimated from the average} other{days, estimated from the average}}",
+  "pastAverageSelf": "Beyond the average, and still adding to the days",
+  "daysEstimateUnit": "{count, plural, one{day, estimated from the average at your age} other{days, estimated from the average at your age}}",
   "healthyDaysLabel": "Of these, days in good health",
   "aboutDays": "{count, plural, one{About {count} day} other{About {count} days}}",
   "aheadOfYou": "Ahead of you",
@@ -85,7 +79,6 @@
   "aboutBooks": "About {count}",
   "movies": "Movies (at 20 a year)",
   "aboutMovies": "About {count}",
-
   "peopleEmpty": "Add a parent, family member, or friend to see an estimate of the time you have together.",
   "addPerson": "Add Someone",
   "editPerson": "Edit Person",
@@ -101,10 +94,10 @@
   "unitTimesTight": "{count, plural, one{ time} other{ times}}",
   "unitTimesSpaced": "{count, plural, one{ time} other{ times}}",
   "unitDaysSpaced": "{count, plural, one{ day} other{ days}}",
-  "togetherNote": "Based on the shorter of your two averages",
+  "togetherNote": "Based on the shorter of your two estimates at your current ages",
   "meetNote": "If you meet {frequency}",
   "sinceLastMet": "Since you last met",
-  "pastAveragePerson": "Past the average age, with more days still to share",
+  "pastAveragePerson": "Beyond the average, and still adding to the days",
   "nickname": "Nickname",
   "nicknameHint": "e.g. Mom",
   "nicknameNeeded": "Add a nickname to save.",
@@ -117,7 +110,6 @@
   "freqYearly": "once or twice a year",
   "freqYearlyOrLess": "once a year or less",
   "freqRarely": "rarely",
-
   "bucketIntro": "Things you hope to do someday in your life.\nOn your own, or with family and friends.",
   "bucketAlreadyOnList": "It’s already on your list",
   "forExample": "For example",
@@ -134,7 +126,6 @@
   "bucketWithPerson": "with {name}",
   "subtitleSeparator": " · ",
   "withWhomOptional": "With (optional)",
-
   "morningNotification": "Morning notification",
   "time": "Time",
   "notificationTimeRange": "Notifications can be set between 5:00 and 11:00.",
@@ -144,7 +135,6 @@
   "termsOfUse": "Terms of Use",
   "version": "Version {version}",
   "feedbackSubject": "LifeCounter Feedback",
-
   "exportTitle": "LifeCounter Journal",
   "exportQuestion": "Question",
   "exportMood": "Mood",
@@ -154,11 +144,9 @@
   "exportBucketList": "Bucket list",
   "exportDoneMark": "[Done] ",
   "exportWithPerson": " (with {name})",
-
   "dateNotAvailable": "This date isn’t available.",
   "dateUpToToday": "You can pick a date up to today.",
   "dateFrom1920": "You can pick a date from 1920 onward.",
-
   "welcomeTitleStart": "Because life\nis ",
   "welcomeTitleAccent": "finite",
   "welcomeTitleEnd": "",
@@ -176,5 +164,8 @@
   "togetherAccent": "built together",
   "togetherEnd": "",
   "onboardingGoalQuestion": "What would make\ntoday a great day?",
-  "onboardingGoalHint": "Something small is fine"
+  "onboardingGoalHint": "Something small is fine",
+  "statDaysShared": "Days you've shared",
+  "unitDaysTight": "{count, plural, one{ day} other{ days}}",
+  "estimateNote": "These are averages, not predictions. No one's life is decided by a number."
 }

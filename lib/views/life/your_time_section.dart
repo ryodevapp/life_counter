@@ -35,22 +35,11 @@ class YourTimeSection extends ConsumerWidget {
     final healthyRemaining =
         LifeCalculator.healthyRemainingDays(birthDate, gender);
     final age = LifeCalculator.currentAge(birthDate);
-    final al = LifeCalculator.averageLifespan(gender);
     final hl = LifeCalculator.healthyLifespan(gender);
     final remainingYears = LifeCalculator.remainingYears(birthDate, gender);
-    final pastAL = age >= al;
+    // 平均寿命を越えても数字は出し、ひとこと添えるだけにする
+    final pastAL = LifeCalculator.isPastAverage(birthDate, gender);
     final pastHL = age >= hl;
-
-
-    if (pastAL) {
-      return AppCard(
-        child: Text(
-          l.pastAverageSelf,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.headline,
-        ),
-      );
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -69,6 +58,12 @@ class YourTimeSection extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(l.daysEstimateUnit(remainingDays),
                   textAlign: TextAlign.center, style: AppTextStyles.footnote),
+              if (pastAL) ...[
+                const SizedBox(height: AppSpacing.s),
+                Text(l.pastAverageSelf,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.footnote),
+              ],
               if (!pastHL) ...[
                 const SizedBox(height: AppSpacing.l),
                 // 長い1文にすると「日」だけが次の行に落ちるので、言葉と数を2行に分ける
@@ -105,6 +100,12 @@ class YourTimeSection extends ConsumerWidget {
                   l.aboutMovies(remainingYears * 20)),
             ],
           ),
+        ),
+        const SizedBox(height: AppSpacing.l),
+        // 平均から出した目安だと、静かに添える
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+          child: Text(l.estimateNote, style: AppTextStyles.footnote),
         ),
       ],
     );

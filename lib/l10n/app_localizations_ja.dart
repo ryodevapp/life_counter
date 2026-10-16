@@ -224,14 +224,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get peopleWhoMatter => '大切な人';
 
   @override
-  String get pastAverageSelf => '平均を超えて、日々を重ねています';
+  String get pastAverageSelf => '平均寿命を越えて、日々を重ねています';
 
   @override
   String daysEstimateUnit(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '日（平均からの目安）',
+      other: '日（いまの年齢からの平均の目安）',
     );
     return '$_temp0';
   }
@@ -382,7 +382,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get togetherNote => 'ふたりの平均のうち、短いほうで計算';
+  String get togetherNote => 'ふたりの、いまの年齢からの平均のうち短いほう';
 
   @override
   String meetNote(String frequency) {
@@ -393,7 +393,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sinceLastMet => '最後に会ってから';
 
   @override
-  String get pastAveragePerson => '平均の年齢を超えて、日々を重ねています';
+  String get pastAveragePerson => '平均寿命を越えて、日々を重ねています';
 
   @override
   String get nickname => 'ニックネーム';
@@ -604,4 +604,20 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardingGoalHint => '小さなことでOK';
+
+  @override
+  String get statDaysShared => '一緒に過ごしてきた日々';
+
+  @override
+  String unitDaysTight(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '日',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get estimateNote => '数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。';
 }

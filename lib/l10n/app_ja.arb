@@ -1,6 +1,5 @@
 {
   "@@locale": "ja",
-
   "cancel": "キャンセル",
   "save": "保存",
   "add": "追加",
@@ -16,36 +15,46 @@
   "deleteConfirmMessage": "この操作は取り消せません。",
   "deletePersonTitle": "{name}を削除しますか？",
   "@deletePersonTitle": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "deleteBucketItemTitle": "「{title}」を削除しますか？",
   "@deleteBucketItemTitle": {
-    "placeholders": { "title": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   },
   "birthDateNeeded": "生年月日を入れると表示されます",
   "loadError": "読み込めませんでした。アプリを開き直してください。",
   "readMore": "続きを読む",
   "showLess": "閉じる",
-
   "birthDate": "生年月日",
   "gender": "性別",
   "genderOptional": "性別（任意）",
   "genderMale": "男性",
   "genderFemale": "女性",
   "genderUnspecified": "答えない",
-
   "tabToday": "今日",
   "tabJournal": "記録",
   "tabLife": "人生",
   "tabSettings": "設定",
   "hideKeyboard": "キーボードを閉じる",
-
   "todayLifeDaysPrefix": "人生 ",
   "todayLifeDaysSuffix": " 日目",
   "notificationTitle": "人生 {days}日目",
   "@notificationTitle": {
     "description": "朝の通知の題。今日が人生の何日目か",
-    "placeholders": { "days": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
   "moodQuestion": "今日はどんな一日だった？",
   "moodHappy": "うれしい",
@@ -59,7 +68,6 @@
   "addToBucketList": "バケットリストに追加",
   "addedToBucketList": "バケットリストに追加しました",
   "alreadyInBucketList": "もうバケットリストにあります",
-
   "viewList": "リスト",
   "viewCalendar": "カレンダー",
   "noEntriesYet": "記録はまだありません",
@@ -76,62 +84,108 @@
   "monthMoodCount": "{count}日",
   "@monthMoodCount": {
     "description": "月の見出しで、気分の顔の横に出す日数(英語は数だけ)",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "monthMoodItem": "{mood}{count}日",
   "@monthMoodItem": {
     "description": "読み上げ用。気分と日数",
-    "placeholders": { "mood": { "type": "String" }, "count": { "type": "int" } }
+    "placeholders": {
+      "mood": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "monthMoodsSemantics": "この月の気分 {moods}",
   "@monthMoodsSemantics": {
-    "placeholders": { "moods": { "type": "String" } }
+    "placeholders": {
+      "moods": {
+        "type": "String"
+      }
+    }
   },
   "moodListSeparator": "、",
-
   "segmentYou": "あなた",
   "segmentPeople": "大切な人",
   "segmentBucketList": "バケットリスト",
   "peopleWhoMatter": "大切な人",
-  "pastAverageSelf": "平均を超えて、日々を重ねています",
-  "daysEstimateUnit": "{count, plural, other{日（平均からの目安）}}",
+  "pastAverageSelf": "平均寿命を越えて、日々を重ねています",
+  "daysEstimateUnit": "{count, plural, other{日（いまの年齢からの平均の目安）}}",
   "@daysEstimateUnit": {
     "description": "大きな数字の下に出す単位と説明",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "healthyDaysLabel": "そのうち、元気に過ごせる目安",
   "aboutDays": "約 {count} 日",
   "@aboutDays": {
-    "placeholders": { "count": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
   "aheadOfYou": "これから迎える",
   "weekends": "週末",
   "aboutTimes": "約{count}回",
   "@aboutTimes": {
-    "placeholders": { "count": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
   "seasons": "夏・桜・正月",
   "aboutTimesEach": "それぞれ約{count}回",
   "@aboutTimesEach": {
-    "placeholders": { "count": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
   "books": "本（年50冊なら）",
   "aboutBooks": "約{count}冊",
   "@aboutBooks": {
-    "placeholders": { "count": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
   "movies": "映画（年20本なら）",
   "aboutMovies": "約{count}本",
   "@aboutMovies": {
-    "placeholders": { "count": { "type": "int", "format": "decimalPattern" } }
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
   },
-
   "peopleEmpty": "親や家族、友だちを追加すると、一緒に過ごせる時間の目安が分かります。",
   "addPerson": "大切な人を追加",
   "editPerson": "大切な人を編集",
   "ageYears": "{age}歳",
   "@ageYears": {
-    "placeholders": { "age": { "type": "int" } }
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
   },
   "statYearsAhead": "これから",
   "statHealthyYears": "元気に過ごせる目安",
@@ -141,31 +195,55 @@
   "approxSpaced": "約 ",
   "unitYearsTight": "{count, plural, other{年}}",
   "@unitYearsTight": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "unitYearsSpaced": "{count, plural, other{ 年}}",
   "@unitYearsSpaced": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "unitTimesTight": "{count, plural, other{回}}",
   "@unitTimesTight": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "unitTimesSpaced": "{count, plural, other{ 回}}",
   "@unitTimesSpaced": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "unitDaysSpaced": "{count, plural, other{ 日}}",
   "@unitDaysSpaced": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
-  "togetherNote": "ふたりの平均のうち、短いほうで計算",
+  "togetherNote": "ふたりの、いまの年齢からの平均のうち短いほう",
   "meetNote": "{frequency}会うとして",
   "@meetNote": {
-    "placeholders": { "frequency": { "type": "String" } }
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      }
+    }
   },
   "sinceLastMet": "最後に会ってから",
-  "pastAveragePerson": "平均の年齢を超えて、日々を重ねています",
+  "pastAveragePerson": "平均寿命を越えて、日々を重ねています",
   "nickname": "ニックネーム",
   "nicknameHint": "例: お母さん",
   "nicknameNeeded": "ニックネームを入れると保存できます",
@@ -178,7 +256,6 @@
   "freqYearly": "年に1〜2回",
   "freqYearlyOrLess": "年に1回以下",
   "freqRarely": "ほとんど会えない",
-
   "bucketIntro": "人生のうちに、いつかかなえたいことのリスト。\nひとりでも、家族や友だちとでも。",
   "bucketAlreadyOnList": "もうリストにあります",
   "forExample": "たとえば",
@@ -193,15 +270,22 @@
   "bucketNotDone": "まだかなえていない",
   "bucketDoneOn": "{date}にかなえた",
   "@bucketDoneOn": {
-    "placeholders": { "date": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "bucketWithPerson": "{name}と",
   "@bucketWithPerson": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "subtitleSeparator": "・",
   "withWhomOptional": "誰と（任意）",
-
   "morningNotification": "朝の通知",
   "time": "時刻",
   "notificationTimeRange": "通知は 5:00〜11:00 の間で選べます",
@@ -211,10 +295,13 @@
   "termsOfUse": "利用規約",
   "version": "バージョン {version}",
   "@version": {
-    "placeholders": { "version": { "type": "String" } }
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   },
   "feedbackSubject": "LifeCounter フィードバック",
-
   "exportTitle": "LifeCounter の記録",
   "exportQuestion": "問い",
   "exportMood": "気分",
@@ -225,13 +312,15 @@
   "exportDoneMark": "[かなえた] ",
   "exportWithPerson": "({name}と)",
   "@exportWithPerson": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
-
   "dateNotAvailable": "この日付は選べません",
   "dateUpToToday": "今日までの日付を選べます",
   "dateFrom1920": "1920年以降の日付を選べます",
-
   "welcomeTitleStart": "人生は\n",
   "welcomeTitleAccent": "有限",
   "welcomeTitleEnd": "だから",
@@ -249,5 +338,15 @@
   "togetherAccent": "一緒に積み重ねて",
   "togetherEnd": "いけますように",
   "onboardingGoalQuestion": "今日を素晴らしい一日にするために\n何をしますか？",
-  "onboardingGoalHint": "小さなことでOK"
+  "onboardingGoalHint": "小さなことでOK",
+  "statDaysShared": "一緒に過ごしてきた日々",
+  "unitDaysTight": "{count, plural, other{日}}",
+  "@unitDaysTight": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "estimateNote": "数字はみんなの平均から出した目安です。一人ひとりの人生は、数字では決まりません。"
 }

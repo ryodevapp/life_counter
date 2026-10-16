@@ -232,15 +232,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pastAverageSelf =>
-      'Past the average, and still adding to your days';
+      'Beyond the average, and still adding to the days';
 
   @override
   String daysEstimateUnit(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'days, estimated from the average',
-      one: 'day, estimated from the average',
+      other: 'days, estimated from the average at your age',
+      one: 'day, estimated from the average at your age',
     );
     return '$_temp0';
   }
@@ -403,7 +403,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get togetherNote => 'Based on the shorter of your two averages';
+  String get togetherNote =>
+      'Based on the shorter of your two estimates at your current ages';
 
   @override
   String meetNote(String frequency) {
@@ -415,7 +416,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pastAveragePerson =>
-      'Past the average age, with more days still to share';
+      'Beyond the average, and still adding to the days';
 
   @override
   String get nickname => 'Nickname';
@@ -630,4 +631,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingGoalHint => 'Something small is fine';
+
+  @override
+  String get statDaysShared => 'Days you\'ve shared';
+
+  @override
+  String unitDaysTight(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: ' days',
+      one: ' day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get estimateNote =>
+      'These are averages, not predictions. No one\'s life is decided by a number.';
 }
