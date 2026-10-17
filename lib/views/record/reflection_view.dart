@@ -82,7 +82,7 @@ class LastYearCard extends ConsumerWidget {
   static DailyRecord? find(List<DailyRecord> records) {
     final ago = oneYearAgo(dateOnly(DateTime.now()));
     for (final r in records) {
-      if (dateOnly(r.date) == ago && (r.answer != null || r.stamp != null)) {
+      if (r.day == ago && (r.answer != null || r.stamp != null)) {
         return r;
       }
     }

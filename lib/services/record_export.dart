@@ -2,6 +2,7 @@ import '../l10n/l10n.dart';
 import '../models/bucket_item.dart';
 import '../models/daily_record.dart';
 import '../models/stamp.dart';
+import '../utils/day_key.dart';
 import 'question_bank.dart';
 
 /// 記録をテキストにする(日付の古い順、最後にやりたいこと)。空の項目は書かない
@@ -15,7 +16,7 @@ String exportRecordsAsText(
 }) {
   final l = appLocalizationsFor(languageCode);
   final out = StringBuffer('${l.exportTitle}\n');
-  final sorted = [...records]..sort((a, b) => a.date.compareTo(b.date));
+  final sorted = [...records]..sort((a, b) => a.day.compareTo(b.day));
   for (final r in sorted) {
     final lines = <String>[];
     void add(String label, String? value) {
@@ -39,10 +40,9 @@ String exportRecordsAsText(
     add(l.fieldWeeklyHighlight, r.weeklyReflectionHighlight);
     add(l.fieldWeeklyChange, r.weeklyReflectionChange);
     if (lines.isEmpty) continue;
-    final d = r.date;
     out
       ..writeln()
-      ..writeln('${d.year}-${_two(d.month)}-${_two(d.day)}')
+      ..writeln(dayKeyOf(r.day))
       ..writeAll(lines.map((l) => '$l\n'));
   }
   if (buckets.isNotEmpty) {
@@ -57,5 +57,3 @@ String exportRecordsAsText(
   }
   return out.toString();
 }
-
-String _two(int n) => n.toString().padLeft(2, '0');

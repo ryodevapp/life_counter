@@ -44,4 +44,15 @@ void main() {
     expect(text, contains('- 温泉に行く(母と)'));
     expect(text, contains('- [かなえた] 富士山'));
   });
+
+  test('uses the record day (dayKey), not the saved instant', () {
+    // 東京で作った 10/15 の記録を、時差の違う地域で読むと date は 10/14 の昼になる
+    final r = DailyRecord()
+      ..dayKey = '2026-10-15'
+      ..date = DateTime(2026, 10, 14, 12)
+      ..answer = '散歩した';
+    final text = exportRecordsAsText([r], const [], bank);
+    expect(text, contains('2026-10-15'));
+    expect(text.contains('2026-10-14'), isFalse);
+  });
 }

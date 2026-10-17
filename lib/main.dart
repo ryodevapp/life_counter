@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'services/notification_service.dart';
+import 'services/day_key_migration.dart';
 import 'services/question_bank.dart';
 import 'models/bucket_item.dart';
 import 'models/daily_record.dart';
@@ -32,6 +33,13 @@ void main() async {
     [DailyRecordSchema, ImportantPersonSchema, BucketItemSchema],
     directory: dir.path,
   );
+
+  // 古い記録に dayKey を入れる(1回だけ)。失敗しても始め、次の起動でやり直す
+  try {
+    await migrateDayKeys(isar, prefs);
+  } catch (e, st) {
+    debugPrint('dayKey migration error: $e\n$st');
+  }
 
   runApp(
     ProviderScope(

@@ -32,68 +32,73 @@ const DailyRecordSchema = CollectionSchema(
       name: r'date',
       type: IsarType.dateTime,
     ),
-    r'gratitude': PropertySchema(
+    r'dayKey': PropertySchema(
       id: 3,
+      name: r'dayKey',
+      type: IsarType.string,
+    ),
+    r'gratitude': PropertySchema(
+      id: 4,
       name: r'gratitude',
       type: IsarType.string,
     ),
     r'greatPersonId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'greatPersonId',
       type: IsarType.string,
     ),
     r'morningQuestionId': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'morningQuestionId',
       type: IsarType.string,
     ),
     r'reflectionGood': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'reflectionGood',
       type: IsarType.string,
     ),
     r'reflectionTomorrow': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'reflectionTomorrow',
       type: IsarType.string,
     ),
     r'reflectionWhy': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'reflectionWhy',
       type: IsarType.string,
     ),
     r'stamp': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'stamp',
       type: IsarType.string,
     ),
     r'stampAt': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'stampAt',
       type: IsarType.dateTime,
     ),
     r'todayGoal': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'todayGoal',
       type: IsarType.string,
     ),
     r'tomorrowMessage': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'tomorrowMessage',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'weeklyReflectionChange': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'weeklyReflectionChange',
       type: IsarType.string,
     ),
     r'weeklyReflectionHighlight': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'weeklyReflectionHighlight',
       type: IsarType.string,
     )
@@ -104,10 +109,23 @@ const DailyRecordSchema = CollectionSchema(
   deserializeProp: _dailyRecordDeserializeProp,
   idName: r'id',
   indexes: {
+    r'dayKey': IndexSchema(
+      id: -3264092797330672150,
+      name: r'dayKey',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'dayKey',
+          type: IndexType.value,
+          caseSensitive: true,
+        )
+      ],
+    ),
     r'date': IndexSchema(
       id: -7552997827385218417,
       name: r'date',
-      unique: true,
+      unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
@@ -138,6 +156,7 @@ int _dailyRecordEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.dayKey.length * 3;
   {
     final value = object.gratitude;
     if (value != null) {
@@ -216,19 +235,20 @@ void _dailyRecordSerialize(
   writer.writeString(offsets[0], object.answer);
   writer.writeDateTime(offsets[1], object.createdAt);
   writer.writeDateTime(offsets[2], object.date);
-  writer.writeString(offsets[3], object.gratitude);
-  writer.writeString(offsets[4], object.greatPersonId);
-  writer.writeString(offsets[5], object.morningQuestionId);
-  writer.writeString(offsets[6], object.reflectionGood);
-  writer.writeString(offsets[7], object.reflectionTomorrow);
-  writer.writeString(offsets[8], object.reflectionWhy);
-  writer.writeString(offsets[9], object.stamp);
-  writer.writeDateTime(offsets[10], object.stampAt);
-  writer.writeString(offsets[11], object.todayGoal);
-  writer.writeString(offsets[12], object.tomorrowMessage);
-  writer.writeDateTime(offsets[13], object.updatedAt);
-  writer.writeString(offsets[14], object.weeklyReflectionChange);
-  writer.writeString(offsets[15], object.weeklyReflectionHighlight);
+  writer.writeString(offsets[3], object.dayKey);
+  writer.writeString(offsets[4], object.gratitude);
+  writer.writeString(offsets[5], object.greatPersonId);
+  writer.writeString(offsets[6], object.morningQuestionId);
+  writer.writeString(offsets[7], object.reflectionGood);
+  writer.writeString(offsets[8], object.reflectionTomorrow);
+  writer.writeString(offsets[9], object.reflectionWhy);
+  writer.writeString(offsets[10], object.stamp);
+  writer.writeDateTime(offsets[11], object.stampAt);
+  writer.writeString(offsets[12], object.todayGoal);
+  writer.writeString(offsets[13], object.tomorrowMessage);
+  writer.writeDateTime(offsets[14], object.updatedAt);
+  writer.writeString(offsets[15], object.weeklyReflectionChange);
+  writer.writeString(offsets[16], object.weeklyReflectionHighlight);
 }
 
 DailyRecord _dailyRecordDeserialize(
@@ -241,20 +261,21 @@ DailyRecord _dailyRecordDeserialize(
   object.answer = reader.readStringOrNull(offsets[0]);
   object.createdAt = reader.readDateTime(offsets[1]);
   object.date = reader.readDateTime(offsets[2]);
-  object.gratitude = reader.readStringOrNull(offsets[3]);
-  object.greatPersonId = reader.readStringOrNull(offsets[4]);
+  object.dayKey = reader.readString(offsets[3]);
+  object.gratitude = reader.readStringOrNull(offsets[4]);
+  object.greatPersonId = reader.readStringOrNull(offsets[5]);
   object.id = id;
-  object.morningQuestionId = reader.readStringOrNull(offsets[5]);
-  object.reflectionGood = reader.readStringOrNull(offsets[6]);
-  object.reflectionTomorrow = reader.readStringOrNull(offsets[7]);
-  object.reflectionWhy = reader.readStringOrNull(offsets[8]);
-  object.stamp = reader.readStringOrNull(offsets[9]);
-  object.stampAt = reader.readDateTimeOrNull(offsets[10]);
-  object.todayGoal = reader.readStringOrNull(offsets[11]);
-  object.tomorrowMessage = reader.readStringOrNull(offsets[12]);
-  object.updatedAt = reader.readDateTime(offsets[13]);
-  object.weeklyReflectionChange = reader.readStringOrNull(offsets[14]);
-  object.weeklyReflectionHighlight = reader.readStringOrNull(offsets[15]);
+  object.morningQuestionId = reader.readStringOrNull(offsets[6]);
+  object.reflectionGood = reader.readStringOrNull(offsets[7]);
+  object.reflectionTomorrow = reader.readStringOrNull(offsets[8]);
+  object.reflectionWhy = reader.readStringOrNull(offsets[9]);
+  object.stamp = reader.readStringOrNull(offsets[10]);
+  object.stampAt = reader.readDateTimeOrNull(offsets[11]);
+  object.todayGoal = reader.readStringOrNull(offsets[12]);
+  object.tomorrowMessage = reader.readStringOrNull(offsets[13]);
+  object.updatedAt = reader.readDateTime(offsets[14]);
+  object.weeklyReflectionChange = reader.readStringOrNull(offsets[15]);
+  object.weeklyReflectionHighlight = reader.readStringOrNull(offsets[16]);
   return object;
 }
 
@@ -272,7 +293,7 @@ P _dailyRecordDeserializeProp<P>(
     case 2:
       return (reader.readDateTime(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -286,16 +307,18 @@ P _dailyRecordDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 11:
       return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
-      return (reader.readDateTime(offset)) as P;
-    case 14:
       return (reader.readStringOrNull(offset)) as P;
+    case 14:
+      return (reader.readDateTime(offset)) as P;
     case 15:
+      return (reader.readStringOrNull(offset)) as P;
+    case 16:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -315,66 +338,19 @@ void _dailyRecordAttach(
   object.id = id;
 }
 
-extension DailyRecordByIndex on IsarCollection<DailyRecord> {
-  Future<DailyRecord?> getByDate(DateTime date) {
-    return getByIndex(r'date', [date]);
-  }
-
-  DailyRecord? getByDateSync(DateTime date) {
-    return getByIndexSync(r'date', [date]);
-  }
-
-  Future<bool> deleteByDate(DateTime date) {
-    return deleteByIndex(r'date', [date]);
-  }
-
-  bool deleteByDateSync(DateTime date) {
-    return deleteByIndexSync(r'date', [date]);
-  }
-
-  Future<List<DailyRecord?>> getAllByDate(List<DateTime> dateValues) {
-    final values = dateValues.map((e) => [e]).toList();
-    return getAllByIndex(r'date', values);
-  }
-
-  List<DailyRecord?> getAllByDateSync(List<DateTime> dateValues) {
-    final values = dateValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'date', values);
-  }
-
-  Future<int> deleteAllByDate(List<DateTime> dateValues) {
-    final values = dateValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'date', values);
-  }
-
-  int deleteAllByDateSync(List<DateTime> dateValues) {
-    final values = dateValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'date', values);
-  }
-
-  Future<Id> putByDate(DailyRecord object) {
-    return putByIndex(r'date', object);
-  }
-
-  Id putByDateSync(DailyRecord object, {bool saveLinks = true}) {
-    return putByIndexSync(r'date', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByDate(List<DailyRecord> objects) {
-    return putAllByIndex(r'date', objects);
-  }
-
-  List<Id> putAllByDateSync(List<DailyRecord> objects,
-      {bool saveLinks = true}) {
-    return putAllByIndexSync(r'date', objects, saveLinks: saveLinks);
-  }
-}
-
 extension DailyRecordQueryWhereSort
     on QueryBuilder<DailyRecord, DailyRecord, QWhere> {
   QueryBuilder<DailyRecord, DailyRecord, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhere> anyDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'dayKey'),
+      );
     });
   }
 
@@ -452,6 +428,142 @@ extension DailyRecordQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyEqualTo(
+      String dayKey) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'dayKey',
+        value: [dayKey],
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyNotEqualTo(
+      String dayKey) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'dayKey',
+              lower: [],
+              upper: [dayKey],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'dayKey',
+              lower: [dayKey],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'dayKey',
+              lower: [dayKey],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'dayKey',
+              lower: [],
+              upper: [dayKey],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyGreaterThan(
+    String dayKey, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'dayKey',
+        lower: [dayKey],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyLessThan(
+    String dayKey, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'dayKey',
+        lower: [],
+        upper: [dayKey],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyBetween(
+    String lowerDayKey,
+    String upperDayKey, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'dayKey',
+        lower: [lowerDayKey],
+        includeLower: includeLower,
+        upper: [upperDayKey],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyStartsWith(
+      String DayKeyPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'dayKey',
+        lower: [DayKeyPrefix],
+        upper: ['$DayKeyPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'dayKey',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterWhereClause> dayKeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'dayKey',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'dayKey',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'dayKey',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'dayKey',
+              upper: [''],
+            ));
+      }
     });
   }
 
@@ -804,6 +916,140 @@ extension DailyRecordQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition>
+      dayKeyGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dayKey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition>
+      dayKeyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'dayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition> dayKeyMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'dayKey',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition>
+      dayKeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dayKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterFilterCondition>
+      dayKeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'dayKey',
+        value: '',
       ));
     });
   }
@@ -2727,6 +2973,18 @@ extension DailyRecordQuerySortBy
     });
   }
 
+  QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> sortByDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> sortByDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayKey', Sort.desc);
+    });
+  }
+
   QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> sortByGratitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gratitude', Sort.asc);
@@ -2934,6 +3192,18 @@ extension DailyRecordQuerySortThenBy
     });
   }
 
+  QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> thenByDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> thenByDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayKey', Sort.desc);
+    });
+  }
+
   QueryBuilder<DailyRecord, DailyRecord, QAfterSortBy> thenByGratitude() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'gratitude', Sort.asc);
@@ -3136,6 +3406,13 @@ extension DailyRecordQueryWhereDistinct
     });
   }
 
+  QueryBuilder<DailyRecord, DailyRecord, QDistinct> distinctByDayKey(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dayKey', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<DailyRecord, DailyRecord, QDistinct> distinctByGratitude(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3257,6 +3534,12 @@ extension DailyRecordQueryProperty
   QueryBuilder<DailyRecord, DateTime, QQueryOperations> dateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'date');
+    });
+  }
+
+  QueryBuilder<DailyRecord, String, QQueryOperations> dayKeyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dayKey');
     });
   }
 

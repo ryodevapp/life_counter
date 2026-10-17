@@ -60,7 +60,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   /// 記録がある日 → その日の記録
   Map<DateTime, DailyRecord> get _recordsByDate => {
         for (final r in _records.where(_hasContent))
-          DateTime(r.date.year, r.date.month, r.date.day): r,
+          r.day: r,
       };
 
   @override
@@ -125,7 +125,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
             _editingRecordId = null;
             if (inCalendar) _selectedRecord = updated;
           });
-          await _afterChange(updated, updated.date);
+          await _afterChange(updated, updated.day);
         },
         onDelete: () async {
           await ref.read(dailyRecordRepositoryProvider).delete(r.id);
@@ -134,7 +134,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
             _editingRecordId = null;
             if (inCalendar) _selectedRecord = null;
           });
-          await _afterChange(null, r.date);
+          await _afterChange(null, r.day);
         },
         onCancel: () => setState(() => _editingRecordId = null),
       );
@@ -148,7 +148,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         children: [
           Row(
             children: [
-              Text(_formatDate(r.date), style: AppTextStyles.headline),
+              Text(_formatDate(r.day), style: AppTextStyles.headline),
               // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
               if (stampById(r.stamp) case final mood?) ...[
                 const SizedBox(width: AppSpacing.s),
@@ -271,7 +271,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     final children = <Widget>[LastYearCard(records: _records)];
     DateTime? month;
     for (final r in filtered) {
-      final m = DateTime(r.date.year, r.date.month);
+      final m = DateTime(r.day.year, r.day.month);
       if (m != month) {
         if (month != null) {
           children.add(const SizedBox(height: AppSpacing.l));
@@ -280,7 +280,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         children.add(MonthHeader(
           month: m,
           records: filtered
-              .where((x) => x.date.year == m.year && x.date.month == m.month)
+              .where((x) => x.day.year == m.year && x.day.month == m.month)
               .toList(),
         ));
       }
@@ -305,12 +305,12 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) => showDeleteConfirmation(
         context,
-        title: l.deleteDayTitle(_formatDate(r.date)),
+        title: l.deleteDayTitle(_formatDate(r.day)),
       ),
       onDismissed: (_) async {
         setState(() => _records.removeWhere((x) => x.id == r.id));
         await ref.read(dailyRecordRepositoryProvider).delete(r.id);
-        await _afterChange(null, r.date);
+        await _afterChange(null, r.day);
       },
       background: Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.cardGap),
@@ -435,9 +435,9 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
     // 開いてからほかの画面やウィジェットで変わった項目(スタンプなど)を消さないよう、読み直してから書く
     final r = await ref
             .read(dailyRecordRepositoryProvider)
-            .getByDate(widget.record.date) ??
+            .getByDate(widget.record.day) ??
         widget.record;
-    r.morningQuestionId ??= ref.read(questionBankProvider).forDate(r.date).id;
+    r.morningQuestionId ??= ref.read(questionBankProvider).forDate(r.day).id;
     if (_stampId != r.stamp) {
       r.stamp = _stampId;
       // ウィジェットで押した気分と比べるときの時刻(あとで直したほうを残す)
@@ -454,7 +454,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final dateStr = formatMonthDayWeekday(widget.record.date, l.localeName);
+    final dateStr = formatMonthDayWeekday(widget.record.day, l.localeName);
 
     return AppCard(
       child: Column(
@@ -552,7 +552,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
     final bank = ref.read(questionBankProvider);
     final id = widget.record.morningQuestionId;
     final q = (id == null ? null : bank.byId(id)) ??
-        bank.forDate(widget.record.date);
+        bank.forDate(widget.record.day);
     return questionWithFollowUp(q);
   }
 
