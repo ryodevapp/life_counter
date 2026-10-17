@@ -132,7 +132,7 @@ class MyPage extends ConsumerWidget {
     }
     final uri = Uri(
       scheme: 'mailto',
-      path: 'ryo.nakano.biz+lifecounter@gmail.com',
+      path: 'ryo.dev.app+lifecounter@gmail.com',
       query: 'subject=$subject&body=\n\n---\nLifeCounter$version',
     );
     await launchUrl(uri);
