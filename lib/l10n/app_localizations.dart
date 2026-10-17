@@ -1117,6 +1117,24 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'保存しました'**
   String get answerSaved;
+
+  /// No description provided for @dataOpenErrorTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'記録を開けませんでした'**
+  String get dataOpenErrorTitle;
+
+  /// No description provided for @dataOpenErrorMessage.
+  ///
+  /// In ja, this message translates to:
+  /// **'一時的な問題かもしれません。もう一度試してください。直らないときは、端末の空き容量を確かめてから、アプリを開き直してください。'**
+  String get dataOpenErrorMessage;
+
+  /// No description provided for @retry.
+  ///
+  /// In ja, this message translates to:
+  /// **'もう一度試す'**
+  String get retry;
 }
 
 class _AppLocalizationsDelegate

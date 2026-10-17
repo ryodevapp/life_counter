@@ -630,4 +630,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get answerSaved => '保存しました';
+
+  @override
+  String get dataOpenErrorTitle => '記録を開けませんでした';
+
+  @override
+  String get dataOpenErrorMessage =>
+      '一時的な問題かもしれません。もう一度試してください。直らないときは、端末の空き容量を確かめてから、アプリを開き直してください。';
+
+  @override
+  String get retry => 'もう一度試す';
 }

@@ -661,4 +661,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answerSaved => 'Saved';
+
+  @override
+  String get dataOpenErrorTitle => 'Couldn\'t open your entries';
+
+  @override
+  String get dataOpenErrorMessage =>
+      'This may be a temporary problem. Please try again. If it keeps happening, check your device\'s free storage and reopen the app.';
+
+  @override
+  String get retry => 'Try Again';
 }

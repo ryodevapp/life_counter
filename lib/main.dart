@@ -16,6 +16,7 @@ import 'providers/question_bank_provider.dart';
 import 'providers/user_settings_provider.dart';
 import 'services/life_calculator.dart';
 import 'utils/app_language.dart';
+import 'views/startup/data_open_error_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +29,30 @@ void main() async {
       WidgetsBinding.instance.platformDispatcher.locale.countryCode;
   final prefs = await SharedPreferences.getInstance();
   final questionBank = await QuestionBank.load(languageCode: appLanguageCode());
+  await _start(prefs, questionBank);
+}
+
+Future<Isar> _openIsar() async {
+  // 前回の試しで開けていれば、それを使う
+  final opened = Isar.getInstance();
+  if (opened != null) return opened;
   final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open(
+  return Isar.open(
     [DailyRecordSchema, ImportantPersonSchema, BucketItemSchema],
     directory: dir.path,
   );
+}
+
+/// 記録を開いてアプリを始める。開けなければ、落とさずに「もう一度試す」の画面を出す
+Future<void> _start(SharedPreferences prefs, QuestionBank questionBank) async {
+  final Isar isar;
+  try {
+    isar = await _openIsar();
+  } catch (e, st) {
+    debugPrint('Isar open error: $e\n$st');
+    runApp(DataOpenErrorApp(onRetry: () => _start(prefs, questionBank)));
+    return;
+  }
 
   // 古い記録に dayKey を入れる(1回だけ)。失敗しても始め、次の起動でやり直す
   try {
