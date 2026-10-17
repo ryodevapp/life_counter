@@ -531,6 +531,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsOfUse => 'Terms of Use';
 
   @override
+  String get licenses => 'Licenses';
+
+  @override
   String version(String version) {
     return 'Version $version';
   }

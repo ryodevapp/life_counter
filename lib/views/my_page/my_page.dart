@@ -88,6 +88,10 @@ class MyPage extends ConsumerWidget {
                   _row(CupertinoIcons.doc_text, l.termsOfUse,
                       onTap: () => _showLegal(
                           context, 'terms_of_service.html', l.termsOfUse)),
+                  _divider(),
+                  // アプリに入れた書体(OFL)と、使っている部品のライセンス
+                  _row(CupertinoIcons.info, l.licenses,
+                      onTap: () => _showLicenses(context)),
                 ],
               ),
             ),
@@ -135,6 +139,21 @@ class MyPage extends ConsumerWidget {
   }
 
   // ─── 法的ページ ───
+
+  Future<void> _showLicenses(BuildContext context) async {
+    String? version;
+    try {
+      version = (await _packageInfo).version;
+    } catch (_) {
+      // 版が読めなくても、ライセンスは出す
+    }
+    if (!context.mounted) return;
+    showLicensePage(
+      context: context,
+      applicationName: 'LifeCounter',
+      applicationVersion: version,
+    );
+  }
 
   void _showLegal(BuildContext context, String fileName, String title) {
     // 英語の画面では英語版(privacy_policy_en.html など)を出す

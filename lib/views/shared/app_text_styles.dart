@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 /// 文字(design/design-system.md の「3. 文字」)
@@ -21,21 +20,23 @@ class AppTextStyles {
         fontFamilyFallback: jpFallback,
       );
 
-  /// 今日の「人生◯日目」だけ
-  static TextStyle get counter => GoogleFonts.cormorantGaramond(
-        fontSize: 76,
-        fontWeight: FontWeight.w300,
-        height: 1.0,
+  /// 大きな数字の書体。アプリに入れた Cormorant Garamond を使い、Google のサーバーからは読まない。
+  /// 太さを変えられる1つのファイル(300〜700)なので、太さは fontVariations で指定する
+  /// (fontWeight だけでは、ファイルの既定の太さ 300 のままになる)
+  static TextStyle _serif(double size, int weight, double height) => TextStyle(
+        fontFamily: 'CormorantGaramond',
+        fontSize: size,
+        fontWeight: FontWeight.values[weight ~/ 100 - 1],
+        fontVariations: [FontVariation('wght', weight.toDouble())],
+        height: height,
         color: AppColors.text,
       );
 
+  /// 今日の「人生◯日目」だけ
+  static TextStyle get counter => _serif(76, 300, 1.0);
+
   /// 大きな数字(人生タブなど)
-  static TextStyle get display => GoogleFonts.cormorantGaramond(
-        fontSize: 34,
-        fontWeight: FontWeight.w400,
-        height: 1.1,
-        color: AppColors.text,
-      );
+  static TextStyle get display => _serif(34, 400, 1.1);
 
   /// 画面のいちばん上の題。ヒラギノは SF より黒く見えるので、34pt・太字にせず 28pt・600 にとどめる
   static TextStyle get largeTitle => _sans(28, FontWeight.w600, 1.25);

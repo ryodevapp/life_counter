@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:isar/isar.dart';
@@ -20,6 +22,11 @@ import 'views/startup/data_open_error_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // アプリに入れた書体のライセンス(OFL)を「ライセンス」の画面に出す
+  LicenseRegistry.addLicense(() async* {
+    final text = await rootBundle.loadString('assets/fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['Cormorant Garamond'], text);
+  });
   // 日本語と英語の日付の書き方を読み込む
   await initializeDateFormatting();
   await NotificationService.initialize();

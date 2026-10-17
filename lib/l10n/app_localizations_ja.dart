@@ -505,6 +505,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get termsOfUse => '利用規約';
 
   @override
+  String get licenses => 'ライセンス';
+
+  @override
   String version(String version) {
     return 'バージョン $version';
   }

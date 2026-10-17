@@ -293,6 +293,7 @@
   "sendFeedback": "フィードバックを送る",
   "privacyPolicy": "プライバシーポリシー",
   "termsOfUse": "利用規約",
+  "licenses": "ライセンス",
   "version": "バージョン {version}",
   "@version": {
     "placeholders": {

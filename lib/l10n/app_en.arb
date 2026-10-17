@@ -133,6 +133,7 @@
   "sendFeedback": "Send Feedback",
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
+  "licenses": "Licenses",
   "version": "Version {version}",
   "feedbackSubject": "LifeCounter Feedback",
   "exportTitle": "LifeCounter Journal",

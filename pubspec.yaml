@@ -22,7 +22,6 @@ dependencies:
   table_calendar: ^3.2.0
   intl: ^0.20.2
   path_provider: ^2.1.5
-  google_fonts: ^6.2.1
   timezone: ^0.10.1
   url_launcher: ^6.3.1
   in_app_review: ^2.0.10
@@ -48,3 +47,11 @@ flutter:
     - assets/data/
     - assets/images/
     - assets/legal/
+    - assets/fonts/OFL.txt
+
+  # 大きな数字の書体。Google のサーバーから読み込まず、アプリに入れる(LC-18)
+  # google/fonts の ofl/cormorantgaramond/CormorantGaramond[wght].ttf(太さを変えられる1つのファイル)
+  fonts:
+    - family: CormorantGaramond
+      fonts:
+        - asset: assets/fonts/CormorantGaramond-VariableFont_wght.ttf
