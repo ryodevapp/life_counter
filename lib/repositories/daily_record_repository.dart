@@ -63,6 +63,18 @@ class DailyRecordRepository {
     return record;
   }
 
+  /// その日の記録を読み、[change] で直して書く。読む・直す・書くを1回の書き込みの中で行う
+  Future<DailyRecord> _update(
+      DateTime date, void Function(DailyRecord record) change) {
+    return _isar.writeTxn(() async {
+      final record = await _getOrCreateInTxn(date);
+      change(record);
+      record.updatedAt = DateTime.now();
+      await _isar.dailyRecords.put(record);
+      return record;
+    });
+  }
+
   Future<void> save(DailyRecord record) async {
     record.updatedAt = DateTime.now();
     if (record.dayKey.isEmpty) record.dayKey = legacyDayKey(record.date);
@@ -70,25 +82,38 @@ class DailyRecordRepository {
   }
 
   /// 今日の問いのスタンプを残す。null で取り消し
-  Future<void> setStamp(DateTime date, String? stampId,
-      {required String questionId, DateTime? at}) async {
-    final record = await getOrCreate(date);
-    record
-      ..stamp = stampId
-      ..stampAt = at ?? DateTime.now()
-      ..morningQuestionId = questionId;
-    await save(record);
+  ///
+  /// [onlyIf] を渡すと、書き込みの中で今の記録(無ければ null)を見て、false なら何もしない。
+  /// 書いたら true を返す
+  Future<bool> setStamp(DateTime date, String? stampId,
+      {required String questionId,
+      DateTime? at,
+      bool Function(DailyRecord? current)? onlyIf}) {
+    return _isar.writeTxn(() async {
+      if (onlyIf != null) {
+        final current = await _findByKey(dayKeyOf(date));
+        if (!onlyIf(current)) return false;
+      }
+      final record = await _getOrCreateInTxn(date);
+      record
+        ..stamp = stampId
+        ..stampAt = at ?? DateTime.now()
+        ..morningQuestionId = questionId
+        ..updatedAt = DateTime.now();
+      await _isar.dailyRecords.put(record);
+      return true;
+    });
   }
 
   /// 今日の問いへの答えを残す。空なら null で保存する
   Future<void> setAnswer(DateTime date, String? answer,
       {required String questionId}) async {
     final trimmed = answer?.trim();
-    final record = await getOrCreate(date);
-    record
-      ..answer = (trimmed == null || trimmed.isEmpty) ? null : answer
-      ..morningQuestionId = questionId;
-    await save(record);
+    await _update(date, (record) {
+      record
+        ..answer = (trimmed == null || trimmed.isEmpty) ? null : answer
+        ..morningQuestionId = questionId;
+    });
   }
 
   /// 1年前の同じ日の記録(2月29日は前年の2月28日)

@@ -55,13 +55,64 @@ void main() {
               enc([
                 {'d': '2026-10-15', 's': 'unknown', 't': t}, // 知らないスタンプ
                 {'d': '2026-13-40', 's': 'happy', 't': t}, // ありえない日付
-                {'d': '2026-10-10', 's': 'happy', 't': t}, // 古すぎる
+                {'d': '2026-10-07', 's': 'happy', 't': t}, // 古すぎる(8日前)
                 {'d': '2026-10-16', 's': 'happy', 't': t}, // 未来
                 {'d': '2026-10-15', 's': 'happy'}, // 時刻がない
                 'string',
               ]),
               now),
           isEmpty);
+    });
+
+    test('keeps stamps from 3 days ago (app not opened for a while)', () {
+      // 10/12 に押して、アプリを開いたのは 10/15
+      final tapped = DateTime(2026, 10, 12, 21).millisecondsSinceEpoch / 1000;
+      final list = parsePendingStamps(
+          enc([
+            {'d': '2026-10-12', 's': 'tired', 't': tapped},
+            {'d': '2026-10-13', 's': '', 't': tapped + 86400},
+          ]),
+          now);
+      expect(list.length, 2);
+      expect(list[0].date, DateTime(2026, 10, 12));
+      expect(list[0].stampId, 'tired');
+      expect(list[0].at, DateTime(2026, 10, 12, 21));
+      expect(list[1].date, DateTime(2026, 10, 13));
+      expect(list[1].stampId, isNull);
+    });
+
+    test('accepts up to maxPendingStampDays days back, not more', () {
+      final edge = DateTime(2026, 10, 15 - maxPendingStampDays, 12);
+      final tooOld = DateTime(2026, 10, 15 - maxPendingStampDays - 1, 12);
+      String entry(DateTime d) => enc([
+            {'d': ymd(d), 's': 'calm', 't': d.millisecondsSinceEpoch / 1000},
+          ]);
+      expect(parsePendingStamps(entry(edge), now).length, 1);
+      expect(parsePendingStamps(entry(tooOld), now), isEmpty);
+    });
+
+    test('a tap time long before the stamp day is dropped', () {
+      // 10/12 の分なのに、押した時刻が 10/10 (前日の 0:00 より前)
+      final t = DateTime(2026, 10, 10, 12).millisecondsSinceEpoch / 1000;
+      expect(
+          parsePendingStamps(
+              enc([
+                {'d': '2026-10-12', 's': 'happy', 't': t},
+              ]),
+              now),
+          isEmpty);
+    });
+
+    test('an old widget stamp still loses to a later edit in the app', () {
+      final tapped = DateTime(2026, 10, 12, 21);
+      final p = parsePendingStamps(
+              enc([
+                {'d': '2026-10-12', 's': 'tired', 't': tapped.millisecondsSinceEpoch / 1000},
+              ]),
+              now)
+          .single;
+      expect(widgetStampWins(DateTime(2026, 10, 15, 8), p.at), isFalse);
+      expect(widgetStampWins(DateTime(2026, 10, 12, 20), p.at), isTrue);
     });
 
     test('caps the number of entries', () {

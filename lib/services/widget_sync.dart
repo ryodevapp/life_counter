@@ -4,6 +4,7 @@ import 'package:home_widget/home_widget.dart';
 import '../models/stamp.dart';
 import '../repositories/daily_record_repository.dart';
 import '../utils/date_only.dart';
+import '../utils/day_key.dart';
 import 'morning_schedule.dart';
 import '../models/question.dart';
 import 'question_bank.dart';
@@ -43,6 +44,10 @@ List<Map<String, Object?>> buildWidgetPayload({
   ];
 }
 
+/// ウィジェットで押したスタンプを、何日前の分まで取り込むか
+/// (アプリをしばらく開かなくても、押した気分が消えないように)
+const maxPendingStampDays = 7;
+
 /// ウィジェットから受け取った JSON を安全に読む。壊れたものは捨てる
 List<PendingStamp> parsePendingStamps(String? raw, DateTime now) {
   if (raw == null || raw.isEmpty) return const [];
@@ -62,9 +67,12 @@ List<PendingStamp> parsePendingStamps(String? raw, DateTime now) {
     if (d is! String || t is! num) continue;
     final date = DateTime.tryParse(d);
     if (date == null || ymd(date) != d) continue;
-    // 今日と前日だけ受け取る(ウィジェットは今日の問いしか出さない)
-    final diff = today.difference(dateOnly(date)).inDays;
-    if (diff < 0 || diff > 1) continue;
+    // 今日から [maxPendingStampDays] 日前までを受け取る。未来の日は捨てる
+    // (日数は年月日で数える。夏時間の切り替えで 23 時間・25 時間の日があってもずれない)
+    final diff = DateTime.utc(today.year, today.month, today.day)
+        .difference(DateTime.utc(date.year, date.month, date.day))
+        .inDays;
+    if (diff < 0 || diff > maxPendingStampDays) continue;
     final String? stampId;
     if (s == null || s == '') {
       stampId = null;
@@ -73,10 +81,12 @@ List<PendingStamp> parsePendingStamps(String? raw, DateTime now) {
     } else {
       continue;
     }
-    // 押した時刻は「2日前〜1時間後」だけ受け取る(極端な値で落ちたり、未来の値で後勝ちを奪ったりしないように)
+    // 押した時刻は「その日の前日の 0:00 〜 今の1時間後」だけ受け取る
+    // (極端な値で落ちたり、未来の値で後勝ちを奪ったりしないように。前日の分は地域の違いの余裕)
     final ms = t * 1000;
     if (!ms.isFinite) continue;
-    final earliest = now.subtract(const Duration(days: 2)).millisecondsSinceEpoch;
+    final earliest = DateTime(date.year, date.month, date.day - 1)
+        .millisecondsSinceEpoch;
     final latest = now.add(const Duration(hours: 1)).millisecondsSinceEpoch;
     if (ms < earliest || ms > latest) continue;
     final at = DateTime.fromMillisecondsSinceEpoch(ms.round());
@@ -108,8 +118,8 @@ String remainingAfterImport(String imported, String? latest) {
 bool widgetStampWins(DateTime? appStampAt, DateTime widgetAt) =>
     appStampAt == null || widgetAt.isAfter(appStampAt);
 
-String ymd(DateTime d) =>
-    '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+/// 「yyyy-MM-dd」。記録の dayKey と同じ書き方
+String ymd(DateTime d) => dayKeyOf(d);
 
 /// ホーム画面のウィジェットと、App Group 経由でやりとりする
 class WidgetSync {
@@ -136,11 +146,12 @@ class WidgetSync {
       // 取り込みは何度やっても結果が同じ(後勝ち)なので、取り込んでから消す
       for (final p in parsePendingStamps(raw, DateTime.now())) {
         try {
-          final record = await repo.getByDate(p.date);
-          if (!widgetStampWins(record?.stampAt, p.at)) continue;
-          await repo.setStamp(p.date, p.stampId,
-              questionId: bank.forDate(p.date).id, at: p.at);
-          count++;
+          // 比べるのと書くのは同じ書き込みの中で(アプリで後から押し直したほうを残す)
+          final applied = await repo.setStamp(p.date, p.stampId,
+              questionId: bank.forDate(p.date).id,
+              at: p.at,
+              onlyIf: (current) => widgetStampWins(current?.stampAt, p.at));
+          if (applied) count++;
         } catch (e) {
           debugPrint('Widget stamp import error: $e');
         }
