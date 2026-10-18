@@ -146,24 +146,41 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(_formatDate(r.day), style: AppTextStyles.headline),
-              // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
-              if (stampById(r.stamp) case final mood?) ...[
-                const SizedBox(width: AppSpacing.s),
-                _MoodTag(moodId: mood.id, label: moodLabel(context, mood.id)),
-              ],
-              const Spacer(),
-              _EditIconButton(
-                  onTap: () => setState(() => _editingRecordId = r.id)),
-            ],
-          ),
+          ..._buildCardHeader(r),
           const SizedBox(height: AppSpacing.s),
           ..._buildInlineFields(r),
         ],
       ),
     );
+  }
+
+  /// カードの頭: 日付・その日の気分の札・編集のボタン
+  /// 大きい文字では横に入らないので、日付と編集を1行目、気分の札を2行目に積む
+  List<Widget> _buildCardHeader(DailyRecord r) {
+    final date = Text(_formatDate(r.day), style: AppTextStyles.headline);
+    final edit =
+        _EditIconButton(onTap: () => setState(() => _editingRecordId = r.id));
+    // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
+    final mood = stampById(r.stamp);
+    final tag = mood == null
+        ? null
+        : _MoodTag(moodId: mood.id, label: moodLabel(context, mood.id));
+    if (AppTextStyles.isAccessibilitySize(context)) {
+      return [
+        Row(children: [Expanded(child: date), edit]),
+        ?tag,
+      ];
+    }
+    return [
+      Row(
+        children: [
+          date,
+          if (tag != null) ...[const SizedBox(width: AppSpacing.s), tag],
+          const Spacer(),
+          edit,
+        ],
+      ),
+    ];
   }
 
   Widget _buildCalendar() {
@@ -628,9 +645,11 @@ class _MoodTag extends StatelessWidget {
         children: [
           MoodBadge(moodId: moodId, size: 18),
           const SizedBox(width: AppSpacing.xs + 2),
-          Text(label,
-              style: AppTextStyles.footnote
-                  .copyWith(color: moodTextColor(moodId))),
+          Flexible(
+            child: Text(label,
+                style: AppTextStyles.footnote
+                    .copyWith(color: moodTextColor(moodId))),
+          ),
         ],
       ),
     );

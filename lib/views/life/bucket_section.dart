@@ -500,19 +500,35 @@ class _AddField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final focused = focusNode.hasFocus;
+    final large = AppTextStyles.isAccessibilitySize(context);
     return AnimatedContainer(
       duration: AppMotion.base,
       curve: Curves.easeOutCubic,
-      height: AppSpacing.buttonHeight,
+      // 大きい文字では高さを最低限だけ決め、折り返した分だけ伸ばす(既定の文字では今までどおり固定)
+      height: large ? null : AppSpacing.buttonHeight,
+      constraints: large
+          ? const BoxConstraints(minHeight: AppSpacing.buttonHeight)
+          : null,
       decoration: ShapeDecoration(
         color: AppColors.card,
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: focused ? AppColors.borderAccent : AppColors.divider,
-          ),
-        ),
+        // 大きい文字で背が伸びたときは、カプセルだと角が大きすぎるので角丸の四角に
+        shape: large
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                side: BorderSide(
+                  color: focused ? AppColors.borderAccent : AppColors.divider,
+                ),
+              )
+            : StadiumBorder(
+                side: BorderSide(
+                  color: focused ? AppColors.borderAccent : AppColors.divider,
+                ),
+              ),
       ),
-      padding: const EdgeInsets.only(left: AppSpacing.screen),
+      padding: EdgeInsets.only(
+          left: AppSpacing.screen,
+          top: large ? AppSpacing.s : 0,
+          bottom: large ? AppSpacing.s : 0),
       child: Row(
         children: [
           Expanded(
@@ -520,12 +536,17 @@ class _AddField extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               maxLength: 100,
+              // 大きい文字では入力と案内の文字を折り返す(1行だと「バケット…」で切れる)
+              keyboardType: TextInputType.text,
+              minLines: 1,
+              maxLines: large ? null : 1,
               textInputAction: TextInputAction.done,
               onSubmitted: (_) => onAdd(),
               style: AppTextStyles.body,
               cursorColor: AppColors.accent,
               decoration: InputDecoration(
                 hintText: context.l10n.addToBucketList,
+                hintMaxLines: 3,
                 hintStyle:
                     AppTextStyles.body.copyWith(color: AppColors.textDisabled),
                 counterText: '',
@@ -595,7 +616,9 @@ class _Chip extends StatelessWidget {
           duration: AppMotion.base,
           curve: Curves.easeOutCubic,
           constraints: const BoxConstraints(minHeight: 36),
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m + 2),
+          // 上下の余白は折り返したときのため(既定の文字では高さ 36 のまま変わらない)
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.m + 2, vertical: AppSpacing.xs),
           decoration: ShapeDecoration(
             color: selected ? AppColors.accent : AppColors.card,
             shape: StadiumBorder(
@@ -610,7 +633,11 @@ class _Chip extends StatelessWidget {
                 Icon(icon, size: 14, color: AppColors.accent),
                 const SizedBox(width: AppSpacing.xs),
               ],
-              Text(label, style: AppTextStyles.callout.copyWith(color: color)),
+              // 大きい文字では札の中で折り返す(選ぶ文字は切らない)
+              Flexible(
+                child: Text(label,
+                    style: AppTextStyles.callout.copyWith(color: color)),
+              ),
             ],
           ),
         ),

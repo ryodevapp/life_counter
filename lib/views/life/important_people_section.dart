@@ -105,7 +105,10 @@ class _ImportantPeopleSectionState
           children: [
             Icon(CupertinoIcons.add, size: 18, color: AppColors.accent),
             const SizedBox(width: AppSpacing.s),
-            Text(context.l10n.addPerson),
+            // 大きい文字では折り返す(操作の文字は切らない)
+            Flexible(
+                child: Text(context.l10n.addPerson,
+                    textAlign: TextAlign.center)),
           ],
         ),
       );

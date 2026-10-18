@@ -39,34 +39,58 @@ class MonthHeader extends StatelessWidget {
       for (final s in stamps)
         if (counts[s.id]! > 0) (s, counts[s.id]!),
     ];
+    final title = Text(formatYearMonth(month, l.localeName),
+        style: AppTextStyles.headline);
+    final moodSummary = moods.isEmpty
+        ? null
+        : Semantics(
+            label: l.monthMoodsSemantics(moods
+                .map((m) => l.monthMoodItem(moodLabelOf(l, m.$1.id), m.$2))
+                .join(l.moodListSeparator)),
+            excludeSemantics: true,
+            child: Wrap(
+              spacing: AppSpacing.m,
+              runSpacing: AppSpacing.xs,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                for (final (s, n) in moods)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MoodBadge(moodId: s.id, size: 18),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(l.monthMoodCount(n), style: AppTextStyles.footnote),
+                    ],
+                  ),
+              ],
+            ),
+          );
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           AppSpacing.xs, 0, AppSpacing.xs, AppSpacing.m),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(formatYearMonth(month, l.localeName),
-              style: AppTextStyles.headline),
-          const Spacer(),
-          if (moods.isNotEmpty)
-            Semantics(
-              label: l.monthMoodsSemantics(moods
-                  .map((m) => l.monthMoodItem(moodLabelOf(l, m.$1.id), m.$2))
-                  .join(l.moodListSeparator)),
-              excludeSemantics: true,
-              child: Row(
-                children: [
-                  for (final (s, n) in moods) ...[
-                    const SizedBox(width: AppSpacing.m),
-                    MoodBadge(moodId: s.id, size: 18),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(l.monthMoodCount(n), style: AppTextStyles.footnote),
-                  ],
+      // 大きい文字では横に並ばないので、年月の下に気分の内訳を折り返して並べる
+      child: AppTextStyles.isAccessibilitySize(context)
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                title,
+                if (moodSummary != null) ...[
+                  const SizedBox(height: AppSpacing.xs),
+                  moodSummary,
                 ],
-              ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                title,
+                const Spacer(),
+                if (moodSummary != null) ...[
+                  const SizedBox(width: AppSpacing.m),
+                  moodSummary,
+                ],
+              ],
             ),
-        ],
-      ),
     );
   }
 }

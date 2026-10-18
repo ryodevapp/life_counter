@@ -24,6 +24,10 @@ class AppSegmentedControl<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final index = items.indexWhere((i) => i.value == selectedValue);
+    // 大きい文字では横に入らず項目の名前が切れるので、縦に並べる
+    if (AppTextStyles.isAccessibilitySize(context)) {
+      return _buildStacked(index < 0 ? 0 : index);
+    }
     // 押せる範囲は 44 を保つ(見た目の土台は 36)
     return SizedBox(
       height: AppSpacing.minTap,
@@ -72,6 +76,55 @@ class AppSegmentedControl<T> extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// 大きい文字のときの形: 同じ土台の中に項目を縦に並べ、選んだ項目に白い面を敷く
+  Widget _buildStacked(int index) {
+    return Container(
+      padding: const EdgeInsets.all(_inset),
+      decoration: ShapeDecoration(
+        color: AppColors.bgSub,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.lg)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < items.length; i++)
+            Semantics(
+              button: true,
+              selected: i == index,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onChanged(items[i].value),
+                child: AnimatedContainer(
+                  duration: AppMotion.base,
+                  curve: Curves.easeOutCubic,
+                  constraints:
+                      const BoxConstraints(minHeight: AppSpacing.minTap),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.l, vertical: AppSpacing.xs),
+                  alignment: Alignment.centerLeft,
+                  decoration: ShapeDecoration(
+                    color: i == index ? AppColors.segmentPill : null,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md)),
+                  ),
+                  child: Text(
+                    items[i].label,
+                    style: AppTextStyles.callout.copyWith(
+                      fontSize: 14,
+                      fontWeight:
+                          i == index ? FontWeight.w600 : FontWeight.w400,
+                      color: i == index ? AppColors.text : AppColors.textMuted,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
