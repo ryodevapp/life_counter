@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:in_app_review/in_app_review.dart';
 import '../../l10n/l10n.dart';
-import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../providers/isar_provider.dart';
 import '../../providers/question_bank_provider.dart';
@@ -14,7 +12,6 @@ import '../../services/morning_schedule.dart';
 import '../../services/review_prompt.dart';
 import '../../services/widget_sync.dart';
 import '../../utils/date_only.dart';
-import '../../utils/prefs_keys.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
@@ -56,7 +53,6 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     _question = ref.read(questionBankProvider).forDate(_date);
     _syncWidget();
     _scheduleMidnight();
-    _checkReviewTiming();
 
     // フォーカスが外れた時に保存
     _answerFocus.addListener(() {
@@ -78,58 +74,6 @@ class _TodayPageState extends ConsumerState<TodayPage> {
         }
       },
     );
-  }
-
-  static bool _hasEntry(DailyRecord r) =>
-      r.stamp != null ||
-      r.answer != null ||
-      r.reflectionGood != null ||
-      r.tomorrowMessage != null;
-
-  /// レビュー依頼のタイミングをチェック
-  Future<void> _checkReviewTiming() async {
-    try {
-      final prefs = ref.read(sharedPreferencesProvider);
-      final repo = ref.read(dailyRecordRepositoryProvider);
-
-      // 前日に記録があるか確認
-      final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      final yesterdayRecord = await repo.getByDate(yesterday);
-      if (yesterdayRecord == null || !_hasEntry(yesterdayRecord)) return;
-
-      // 記録がある日数をカウント
-      final allRecords = await repo.getAll();
-      final eveningDays = allRecords.where(_hasEntry).length;
-
-      final alreadyDay2 = prefs.getBool(PrefsKeys.reviewRequestedDay2) ?? false;
-      final alreadyDay7 = prefs.getBool(PrefsKeys.reviewRequestedDay7) ?? false;
-
-      bool shouldRequest = false;
-
-      // Day 2: 記録が2日以上 & まだ表示していない
-      if (eveningDays >= 2 && !alreadyDay2) {
-        await prefs.setBool(PrefsKeys.reviewRequestedDay2, true);
-        shouldRequest = true;
-      }
-      // Day 7: 記録が7日以上 & まだ表示していない
-      else if (eveningDays >= 7 && !alreadyDay7) {
-        await prefs.setBool(PrefsKeys.reviewRequestedDay7, true);
-        shouldRequest = true;
-      }
-
-      if (shouldRequest) {
-        final inAppReview = InAppReview.instance;
-        if (await inAppReview.isAvailable()) {
-          // 少し遅延させて、画面が落ち着いてから表示
-          await Future.delayed(const Duration(seconds: 2));
-          if (mounted) {
-            await inAppReview.requestReview();
-          }
-        }
-      }
-    } catch (e) {
-      debugPrint('Review check error: $e');
-    }
   }
 
   /// 画面の日の問い・スタンプ・答え・1年前の答えを読む
