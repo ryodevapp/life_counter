@@ -24,7 +24,7 @@ when_to_use: 「画面を作って」「部品を足して」「ウィジェッ�
 - **標準の部品を先に。** NavigationStack・toolbar・TabView・sheet・List・Form・標準のボタンとコントロールを使う。自作するときは理由を1行コメントに書く(アプリの顔の部分だけ)
 - **ナビとツールバーに背景を付けない。** ガラス(Liquid Glass)は中身の上に浮かぶ操作の層だけ。中身の層には当てない。自作の部品に使うのは控えめに、複数なら `GlassEffectContainer`。Flutter ではガラスを自作でまねない(不透明な面と影にする)
 - **色は役割の名前で呼ぶ。** 昼・夜の両方で文字のコントラストを確かめる(本文 4.5:1、18pt 以上・太字は 3:1)。色だけで意味を伝えない(文字か記号も添える)
-- **文字は text style(Dynamic Type)に相対。** 最小 11pt。最大の文字でも重ならない・切れないを目指す(横に詰まるなら縦に積む)。切り詰めるかどうかはアプリの決定に従う
+- **文字は text style(Dynamic Type)に相対。** 最小 11pt(縮小後も)。**本文と操作は切らない**(スクロールする画面は折り返しで全文。一覧・ウィジェットは詳細で全文が読めるときだけ切ってよい)。アクセシビリティサイズでは横並びを縦に積む。`dynamicTypeSize` の上限は飾りの大きな数字と固定枠の記号だけで、本文・ボタンの文字には付けない(記号に付けるなら AX3 以上)。アプリが別に決めていれば、その決定と理由を design-system に書く
 - **押せる範囲は 44×44pt 以上。** 記号だけのボタンには読み上げ名(`accessibilityLabel`/Flutter は `Semantics`)
 - **動きは「視差効果を減らす」で止める**(`accessibilityReduceMotion`)。ガラスや半透明は「透明度を下げる」で不透明に変わっても読めること
 - **ウィジェットは `widgetRenderingMode` で分ける。** 色合い・クリア(`.accented`)とロック画面(`.vibrant`)では系が色を塗り替える。テーマ色を塗るのは `.fullColor` のときだけ。画像は `.widgetAccentedRenderingMode(.accentedDesaturated)`(または `.desaturated`)、`.fullColor` は作品の画像だけ
@@ -43,6 +43,7 @@ when_to_use: 「画面を作って」「部品を足して」「ウィジェッ�
 
 - Accessibility(押せる範囲 44×44pt、コントラスト、視差効果を減らす): https://developer.apple.com/design/human-interface-guidelines/accessibility
 - Typography(最小 11pt、text style、大きい文字での切り詰めを減らす): https://developer.apple.com/design/human-interface-guidelines/typography
+- Larger Text の評価基準(200% 以上、折り返しを切り詰めより先に、一覧は詳細で全文なら切ってよい): https://developer.apple.com/help/app-store-connect/manage-app-accessibility/larger-text-evaluation-criteria
 - Color(昼・夜・コントラストを上げるで確かめる、意味で呼ぶ色): https://developer.apple.com/design/human-interface-guidelines/color
 - Materials(ガラスは操作の層だけ、中身の層に使わない、控えめに): https://developer.apple.com/design/human-interface-guidelines/materials
 - Widgets(full color・accented・vibrant、フルカラーの画像は控えめに、色だけで伝えない): https://developer.apple.com/design/human-interface-guidelines/widgets
