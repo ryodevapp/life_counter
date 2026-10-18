@@ -477,12 +477,22 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          // 大きい文字では日付とボタンが横に入らないので、日付の下にボタンを置く
+          Flex(
+            direction: AppTextStyles.isAccessibilitySize(context)
+                ? Axis.vertical
+                : Axis.horizontal,
+            // 縦のときは高さを中身に合わせる(カードの Column の中で高さが決まらないため)
+            mainAxisSize: AppTextStyles.isAccessibilitySize(context)
+                ? MainAxisSize.min
+                : MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: AppTextStyles.isAccessibilitySize(context)
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
             children: [
               Text(dateStr, style: AppTextStyles.headline),
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              Wrap(
                 children: [
                   TextButton(
                     onPressed: widget.onCancel,

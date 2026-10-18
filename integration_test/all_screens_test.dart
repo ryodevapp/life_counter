@@ -24,8 +24,7 @@ void main() {
     app.main();
     await wait(tester, 3500);
 
-    await tester.tap(find.text('おだやか'));
-    await wait(tester);
+    await tapText(tester, 'おだやか');
     await tester.enterText(find.byType(TextField).first, '祖父の本棚にあった、星の図鑑。夏休みに祖父の家へ行くたびに、縁側で一緒にページをめくった。夜になると庭に出て、図鑑で覚えた星座を探した。あのとき見上げた空の広さが、いまも何かに夢中になるときの気持ちの原点になっている気がする。');
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
@@ -36,8 +35,7 @@ void main() {
 
     await tapText(tester, '記録');
     await shot(binding, tester, '${prefix}02_records_list');
-    await tester.tap(find.byIcon(CupertinoIcons.pencil).first);
-    await wait(tester);
+    await tapVisible(tester, find.byIcon(CupertinoIcons.pencil).first);
     FocusManager.instance.primaryFocus?.unfocus();
     await shot(binding, tester, '${prefix}02e_record_edit');
     await tapText(tester, 'キャンセル');
@@ -50,27 +48,26 @@ void main() {
     await tester.ensureVisible(find.text('人生').first);
     await wait(tester);
     await shot(binding, tester, '${prefix}05_life_you');
+    await shotAt(binding, tester, find.text('週末'), '${prefix}05b_life_you_rows');
     await tapText(tester, '大切な人');
     await shot(binding, tester, '${prefix}06_life_people');
+    await shotAt(binding, tester, find.text('大切な人を追加'), '${prefix}06b_people_add');
     await tapText(tester, 'バケットリスト');
     await shot(binding, tester, '${prefix}07_life_bucket');
+    await shotAt(binding, tester, find.text('たとえば'), '${prefix}07a_bucket_examples');
     await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
     await wait(tester);
     await shot(binding, tester, '${prefix}07b_bucket_typing');
-    await tester.tap(find.bySemanticsLabel('追加'));
-    await wait(tester);
+    await tapVisible(tester, find.bySemanticsLabel('追加'));
     await tester.enterText(find.byType(TextField).last, 'オーロラを見る');
     await wait(tester, 300);
-    await tester.tap(find.bySemanticsLabel('追加'));
-    await wait(tester, 300);
+    await tapVisible(tester, find.bySemanticsLabel('追加'));
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
-    await tester.tap(find.bySemanticsLabel('まだかなえていない').last);
-    await wait(tester);
+    await tapVisible(tester, find.bySemanticsLabel('まだかなえていない').last);
     await shot(binding, tester, '${prefix}07c_bucket_items');
     // 行を押すと編集のシート
-    await tester.tap(find.text('オーロラを見る').last);
-    await wait(tester);
+    await tapVisible(tester, find.text('オーロラを見る').last);
     await shot(binding, tester, '${prefix}07d_bucket_edit');
     await tapText(tester, 'キャンセル');
 

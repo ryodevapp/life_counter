@@ -52,16 +52,19 @@ class MyPage extends ConsumerWidget {
               child: Column(
                 children: [
                   _row(
+                    context,
                     CupertinoIcons.gift, l.birthDate, value: bdText,
                     onTap: () => _editBirthDate(context, ref, settings),
                   ),
                   _divider(),
                   _row(
+                    context,
                     CupertinoIcons.person, l.gender, value: genText,
                     onTap: () => _editGender(context, ref, settings),
                   ),
                   _divider(),
                   _row(
+                    context,
                     CupertinoIcons.bell, l.morningNotification,
                     value: notifText,
                     onTap: () => _editNotification(context, ref, settings),
@@ -75,22 +78,22 @@ class MyPage extends ConsumerWidget {
               padding: _groupPadding,
               child: Column(
                 children: [
-                  _row(CupertinoIcons.square_arrow_up, l.exportJournal,
+                  _row(context, CupertinoIcons.square_arrow_up, l.exportJournal,
                       onTap: () => _exportRecords(context, ref)),
                   _divider(),
-                  _row(CupertinoIcons.envelope, l.sendFeedback,
+                  _row(context, CupertinoIcons.envelope, l.sendFeedback,
                       onTap: () => _sendFeedback(context)),
                   _divider(),
-                  _row(CupertinoIcons.lock, l.privacyPolicy,
+                  _row(context, CupertinoIcons.lock, l.privacyPolicy,
                       onTap: () => _showLegal(context, 'privacy_policy.html',
                           l.privacyPolicy)),
                   _divider(),
-                  _row(CupertinoIcons.doc_text, l.termsOfUse,
+                  _row(context, CupertinoIcons.doc_text, l.termsOfUse,
                       onTap: () => _showLegal(
                           context, 'terms_of_service.html', l.termsOfUse)),
                   _divider(),
                   // アプリに入れた書体(OFL)と、使っている部品のライセンス
-                  _row(CupertinoIcons.info, l.licenses,
+                  _row(context, CupertinoIcons.info, l.licenses,
                       onTap: () => _showLicenses(context)),
                 ],
               ),
@@ -313,8 +316,17 @@ class MyPage extends ConsumerWidget {
   // ─── UI ───
 
   /// マイページの行。どの行も「線のアイコン・項目・(値)・›」の同じ形
-  static Widget _row(IconData icon, String label,
+  static Widget _row(BuildContext context, IconData icon, String label,
       {String? value, VoidCallback? onTap}) {
+    final labelText =
+        Text(label, style: AppTextStyles.body.copyWith(height: 1.3));
+    final valueText = value == null
+        ? null
+        : Text(value,
+            style: AppTextStyles.body
+                .copyWith(height: 1.3, color: AppColors.textMuted));
+    // 大きい文字では項目名と値が横に入らないので、項目名の下に値を積む
+    final stacked = AppTextStyles.isAccessibilitySize(context);
     return Semantics(
       button: true,
       child: GestureDetector(
@@ -322,22 +334,29 @@ class MyPage extends ConsumerWidget {
         behavior: HitTestBehavior.opaque,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 52),
-          child: Row(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: stacked ? AppSpacing.s : 0),
+            child: Row(
             children: [
               // iOS の設定の行と同じ並び: アイコン・項目名・今の値・小さな矢印
               Icon(icon, size: 22, color: AppColors.accent),
               const SizedBox(width: AppSpacing.m),
-              Expanded(
-                  child: Text(label,
-                      style: AppTextStyles.body.copyWith(height: 1.3))),
-              if (value != null)
-                Text(value,
-                    style: AppTextStyles.body
-                        .copyWith(height: 1.3, color: AppColors.textMuted)),
+              if (stacked)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [labelText, ?valueText],
+                  ),
+                )
+              else ...[
+                Expanded(child: labelText),
+                ?valueText,
+              ],
               const SizedBox(width: AppSpacing.s),
               Icon(CupertinoIcons.chevron_right,
                   size: 15, color: AppColors.textDisabled),
             ],
+          ),
           ),
         ),
       ),

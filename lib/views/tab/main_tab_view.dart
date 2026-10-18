@@ -153,7 +153,7 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
     final tabs = _tabs(context.l10n);
     // iOS のタブバーと同じく、文字の設定を大きくしてもタブの文字は大きくしない
     return MediaQuery.withClampedTextScaling(
-      maxScaleFactor: AppTextStyles.tabMaxTextScale,
+      maxScaleFactor: AppTextStyles.barMaxTextScale,
       child: SizedBox(
         height: _barHeight,
         child: GlassSurface(

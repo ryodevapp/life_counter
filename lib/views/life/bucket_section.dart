@@ -329,20 +329,24 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
         children: [
           const SheetHandle(),
           // iOS のシートと同じ並び: 左にキャンセル、まん中に題、右に完了
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
-            child: Row(
-              children: [
-                _TextAction(l.cancel,
-                    onTap: () => Navigator.of(context).pop()),
-                Expanded(
-                  child: Text(l.edit,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.headline),
-                ),
-                _TextAction(l.done,
-                    strong: true, onTap: canSave ? _save : null),
-              ],
+          // iOS のナビゲーションバーと同じく、文字の設定を大きくしてもこの列は大きくしない
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: AppTextStyles.barMaxTextScale,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
+              child: Row(
+                children: [
+                  _TextAction(l.cancel,
+                      onTap: () => Navigator.of(context).pop()),
+                  Expanded(
+                    child: Text(l.edit,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.headline),
+                  ),
+                  _TextAction(l.done,
+                      strong: true, onTap: canSave ? _save : null),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -360,6 +364,12 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                       TextField(
                         controller: _title,
                         maxLength: 100,
+                        // 大きい文字では折り返して全文を出す(1行だと途中で切れる)。改行は入れさせない
+                        keyboardType: TextInputType.text,
+                        minLines: 1,
+                        maxLines: AppTextStyles.isAccessibilitySize(context)
+                            ? null
+                            : 1,
                         style: AppTextStyles.body,
                         cursorColor: AppColors.accent,
                         decoration: const InputDecoration(

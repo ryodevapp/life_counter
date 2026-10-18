@@ -23,6 +23,22 @@ Future<void> tapText(WidgetTester tester, String text) async {
   await wait(tester);
 }
 
+/// tapText の Finder 版(記号や読み上げ名で探すもの)。見える位置まで送ってから押す
+Future<void> tapVisible(WidgetTester tester, Finder finder) async {
+  await tester.ensureVisible(finder);
+  await wait(tester, 400);
+  await tester.tap(finder);
+  await wait(tester);
+}
+
+/// 画面の下のほうにあるものを見える位置まで送って撮る(最大の文字では1画面に入らない)
+Future<void> shotAt(IntegrationTestWidgetsFlutterBinding binding,
+    WidgetTester tester, Finder finder, String name) async {
+  await tester.ensureVisible(finder);
+  await wait(tester);
+  await shot(binding, tester, name);
+}
+
 Finder byText(String text) => find.byWidgetPredicate(
     (w) => w is Text && (w.data ?? '').contains(text));
 
