@@ -50,6 +50,7 @@ struct DayProvider: TimelineProvider {
 
 struct LifeDaysView: View {
     @Environment(\.colorScheme) var scheme
+    @Environment(\.widgetRenderingMode) var renderingMode
     let entry: DayEntry
 
     var body: some View {
@@ -64,7 +65,9 @@ struct LifeDaysView: View {
                     .widgetAccentable()
                 Text(L10n.t("日目", "days of life"))
                     .font(.system(size: 13, weight: .light))
-                    .foregroundStyle(Tone.muted)
+                    // 色合い・クリアでは、数字(選んだ色)より一段うすい白に
+                    .foregroundStyle(isTinted(renderingMode) ? AnyShapeStyle(Color.white.opacity(TintOpacity.muted))
+                                                             : AnyShapeStyle(Tone.muted))
             } else {
                 Text(L10n.t("アプリを開くと表示されます", "Open the app to start"))
                     .font(.system(size: 12))
@@ -101,6 +104,7 @@ struct QuestionText: View {
 struct TodayQuestionView: View {
     @Environment(\.colorScheme) var scheme
     @Environment(\.widgetFamily) var family
+    @Environment(\.widgetRenderingMode) var renderingMode
     let entry: DayEntry
 
     /// 押すと、アプリの答えの欄にキーボードが出た状態で開く(ウィジェットでは文字を入力できないため)
@@ -123,6 +127,8 @@ struct TodayQuestionView: View {
                 Image(systemName: "square.and.pencil")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(Tone.accent)
+                    // 色合いでは、問いと同じく選んだ色で
+                    .widgetAccentable()
                     .accessibilityLabel(L10n.t("答えを書く", "Write your answer"))
             } else {
                 Text(L10n.t("アプリを開くと、今日の問いが表示されます", "Open the app to see today's question"))
@@ -152,6 +158,8 @@ struct TodayQuestionView: View {
                                     Circle().stroke(Tone.accent, lineWidth: 1.5)
                                         .padding(-2)
                                         .opacity(entry.stamp == s.id ? 1 : 0)
+                                        // 色合いでは、選んだ気分の輪を選んだ色で
+                                        .widgetAccentable()
                                 )
                                 .opacity(entry.stamp == nil || entry.stamp == s.id ? 1 : 0.4)
                         }
@@ -170,7 +178,9 @@ struct TodayQuestionView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 7)
                         .foregroundStyle(.white)
-                        .background(Capsule().fill(Tone.accent))
+                        // 色合い・クリアでは地と字が同じ白になり字が消えるので、地をうすい白にして字を残す
+                        .background(Capsule().fill(isTinted(renderingMode)
+                                                   ? Color.white.opacity(TintOpacity.buttonFill) : Tone.accent))
                     }
                     .accessibilityLabel(L10n.t("答えを書く", "Write your answer"))
                 }

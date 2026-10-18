@@ -151,47 +151,51 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
   /// 選んだタブの下の明るいカプセルは、ばねで移り、動く間は伸びる。指でなぞっても選べる
   Widget _buildTabBar() {
     final tabs = _tabs(context.l10n);
-    return SizedBox(
-      height: _barHeight,
-      child: GlassSurface(
-        borderRadius: AppRadius.full,
-        child: SlidingPillTrack(
-          count: tabs.length,
-          index: _currentIndex,
-          onSelect: _onTabSelected,
-          pillDecoration: ShapeDecoration(
-            color: AppColors.glassPill,
-            shape: StadiumBorder(
-              side: BorderSide(color: AppColors.glassEdge, width: 0.5),
+    // iOS のタブバーと同じく、文字の設定を大きくしてもタブの文字は大きくしない
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: AppTextStyles.barMaxTextScale,
+      child: SizedBox(
+        height: _barHeight,
+        child: GlassSurface(
+          borderRadius: AppRadius.full,
+          child: SlidingPillTrack(
+            count: tabs.length,
+            index: _currentIndex,
+            onSelect: _onTabSelected,
+            pillDecoration: ShapeDecoration(
+              color: AppColors.glassPill,
+              shape: StadiumBorder(
+                side: BorderSide(color: AppColors.glassEdge, width: 0.5),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: AppColors.faintShadow,
+                  offset: Offset(0, 1),
+                  blurRadius: 4,
+                ),
+              ],
             ),
-            shadows: [
-              BoxShadow(
-                color: AppColors.faintShadow,
-                offset: Offset(0, 1),
-                blurRadius: 4,
-              ),
-            ],
+            itemBuilder: (context, i, t) {
+              final tab = tabs[i];
+              final color = Color.lerp(AppColors.textMuted, AppColors.accent, t);
+              return Semantics(
+                button: true,
+                selected: i == _currentIndex,
+                label: tab.label,
+                excludeSemantics: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(t > 0.5 ? tab.activeIcon : tab.icon,
+                        size: 24, color: color),
+                    const SizedBox(height: 2),
+                    Text(tab.label,
+                        maxLines: 1, style: AppTextStyles.tab.copyWith(color: color)),
+                  ],
+                ),
+              );
+            },
           ),
-          itemBuilder: (context, i, t) {
-            final tab = tabs[i];
-            final color = Color.lerp(AppColors.textMuted, AppColors.accent, t);
-            return Semantics(
-              button: true,
-              selected: i == _currentIndex,
-              label: tab.label,
-              excludeSemantics: true,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(t > 0.5 ? tab.activeIcon : tab.icon,
-                      size: 24, color: color),
-                  const SizedBox(height: 2),
-                  Text(tab.label,
-                      maxLines: 1, style: AppTextStyles.tab.copyWith(color: color)),
-                ],
-              ),
-            );
-          },
         ),
       ),
     );

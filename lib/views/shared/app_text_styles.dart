@@ -63,4 +63,14 @@ class AppTextStyles {
 
   /// 下のタブの文字(iOS のタブバーと同じ 10〜11pt)
   static TextStyle get tab => _sans(11, FontWeight.w600, 1.2);
+
+  /// 下のタブとシートの上の操作の列(キャンセル・題・完了)の文字の倍率の上限。
+  /// iOS のタブバーやナビゲーションバーと同じく、文字の設定を大きくしても大きくしない
+  /// (Apple の Larger Text の基準で、繰り返し出る移動の部品は小さいままでよい)
+  static const barMaxTextScale = 1.0;
+
+  /// 文字の設定がアクセシビリティの大きさ(AX1 以上)か。横並びを縦に積むかの分かれ目。
+  /// 本文 17pt が標準の最大(xxxLarge)で 23pt(1.35 倍)、AX1 で 28pt(1.65 倍)なので、その間で分ける
+  static bool isAccessibilitySize(BuildContext context) =>
+      MediaQuery.textScalerOf(context).scale(17) / 17 > 1.5;
 }

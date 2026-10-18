@@ -45,6 +45,22 @@ class MoodPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 大きい文字では5つが横に入らず名前が1文字ずつ折れるので、顔と名前を横に並べた行を縦に積む
+    if (AppTextStyles.isAccessibilitySize(context)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final s in stamps)
+            _MoodButton(
+              stamp: s,
+              selected: s.id == selectedId,
+              dimmed: selectedId != null && s.id != selectedId,
+              onTap: () => onSelect(s.id == selectedId ? null : s.id),
+              horizontal: true,
+            ),
+        ],
+      );
+    }
     return Row(
       children: [
         for (final s in stamps)
@@ -67,6 +83,7 @@ class _MoodButton extends StatelessWidget {
     required this.selected,
     required this.dimmed,
     required this.onTap,
+    this.horizontal = false,
   });
 
   final Stamp stamp;
@@ -74,9 +91,18 @@ class _MoodButton extends StatelessWidget {
   final bool dimmed;
   final VoidCallback onTap;
 
+  /// 顔の右に名前(大きい文字のとき)。既定は顔の下に名前
+  final bool horizontal;
+
   @override
   Widget build(BuildContext context) {
     final label = moodLabel(context, stamp.id);
+    final text = Text(
+      label,
+      style: AppTextStyles.captionLabel.copyWith(
+        color: selected ? moodTextColor(stamp.id) : AppColors.textSecondary,
+      ),
+    );
     return Semantics(
       button: true,
       selected: selected,
@@ -90,7 +116,8 @@ class _MoodButton extends StatelessWidget {
           duration: AppMotion.base,
           curve: Curves.easeOut,
           opacity: dimmed ? (AppColors.dark ? 0.55 : 0.4) : 1,
-          child: Column(
+          child: Flex(
+            direction: horizontal ? Axis.horizontal : Axis.vertical,
             children: [
               // 選ぶと、ばねで少し大きくなり、茶色の輪が付く
               AnimatedScale(
@@ -111,15 +138,11 @@ class _MoodButton extends StatelessWidget {
                   child: MoodBadge(moodId: stamp.id, size: 46),
                 ),
               ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                label,
-                style: AppTextStyles.captionLabel.copyWith(
-                  color: selected
-                      ? moodTextColor(stamp.id)
-                      : AppColors.textSecondary,
-                ),
-              ),
+              SizedBox(
+                  height: horizontal ? 0 : AppSpacing.xs,
+                  width: horizontal ? AppSpacing.m : 0),
+              // 横に並べるときだけ、残りの幅で折り返す(縦のときは高さが決まらないので付けない)
+              if (horizontal) Flexible(child: text) else text,
             ],
           ),
         ),

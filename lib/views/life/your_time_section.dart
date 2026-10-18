@@ -51,11 +51,16 @@ class YourTimeSection extends ConsumerWidget {
               // 何の日数かを先に言う(数字だけだと分からないため)
               Text(l.daysAheadRow, style: AppTextStyles.captionLabel),
               const SizedBox(height: AppSpacing.s),
-              Text(
-                formatter.format(remainingDays),
-                style: AppTextStyles.display.copyWith(
-                  fontSize: 44,
-                  color: AppColors.accent,
+              // 飾りの大きな数字は途中で折り返さない。大きい文字で入らないときだけ縮める
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  formatter.format(remainingDays),
+                  maxLines: 1,
+                  style: AppTextStyles.display.copyWith(
+                    fontSize: 44,
+                    color: AppColors.accent,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.xs),
@@ -90,16 +95,16 @@ class YourTimeSection extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
           child: Column(
             children: [
-              _row(CupertinoIcons.sun_max, l.weekends,
+              _row(context, CupertinoIcons.sun_max, l.weekends,
                   l.aboutTimes(remainingYears * 52)),
               _divider,
-              _row(CupertinoIcons.tree, l.seasons,
+              _row(context, CupertinoIcons.tree, l.seasons,
                   l.aboutTimesEach(remainingYears)),
               _divider,
-              _row(CupertinoIcons.book, l.books,
+              _row(context, CupertinoIcons.book, l.books,
                   l.aboutBooks(remainingYears * 50)),
               _divider,
-              _row(CupertinoIcons.film, l.movies,
+              _row(context, CupertinoIcons.film, l.movies,
                   l.aboutMovies(remainingYears * 20)),
             ],
           ),
@@ -117,17 +122,34 @@ class YourTimeSection extends ConsumerWidget {
   static Widget get _divider =>
       Divider(height: 1, indent: 22 + AppSpacing.m, color: AppColors.divider);
 
-  static Widget _row(IconData icon, String label, String value) {
+  static Widget _row(
+      BuildContext context, IconData icon, String label, String value) {
+    final labelText = Text(label, style: AppTextStyles.body);
+    final valueText = Text(value,
+        style: AppTextStyles.body.copyWith(color: AppColors.textMuted));
+    // 大きい文字では言葉と数が横に入らないので、言葉の下に数を積む
+    final stacked = AppTextStyles.isAccessibilitySize(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 52),
-      child: Row(
-        children: [
-          Icon(icon, size: 22, color: AppColors.accent),
-          const SizedBox(width: AppSpacing.m),
-          Expanded(child: Text(label, style: AppTextStyles.body)),
-          Text(value,
-              style: AppTextStyles.body.copyWith(color: AppColors.textMuted)),
-        ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: stacked ? AppSpacing.s : 0),
+        child: Row(
+          children: [
+            Icon(icon, size: 22, color: AppColors.accent),
+            const SizedBox(width: AppSpacing.m),
+            if (stacked)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [labelText, valueText],
+                ),
+              )
+            else ...[
+              Expanded(child: labelText),
+              valueText,
+            ],
+          ],
+        ),
       ),
     );
   }

@@ -329,20 +329,24 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
         children: [
           const SheetHandle(),
           // iOS のシートと同じ並び: 左にキャンセル、まん中に題、右に完了
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
-            child: Row(
-              children: [
-                _TextAction(l.cancel,
-                    onTap: () => Navigator.of(context).pop()),
-                Expanded(
-                  child: Text(l.edit,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.headline),
-                ),
-                _TextAction(l.done,
-                    strong: true, onTap: canSave ? _save : null),
-              ],
+          // iOS のナビゲーションバーと同じく、文字の設定を大きくしてもこの列は大きくしない
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: AppTextStyles.barMaxTextScale,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
+              child: Row(
+                children: [
+                  _TextAction(l.cancel,
+                      onTap: () => Navigator.of(context).pop()),
+                  Expanded(
+                    child: Text(l.edit,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.headline),
+                  ),
+                  _TextAction(l.done,
+                      strong: true, onTap: canSave ? _save : null),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -360,6 +364,12 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                       TextField(
                         controller: _title,
                         maxLength: 100,
+                        // 大きい文字では折り返して全文を出す(1行だと途中で切れる)。改行は入れさせない
+                        keyboardType: TextInputType.text,
+                        minLines: 1,
+                        maxLines: AppTextStyles.isAccessibilitySize(context)
+                            ? null
+                            : 1,
                         style: AppTextStyles.body,
                         cursorColor: AppColors.accent,
                         decoration: const InputDecoration(
@@ -500,19 +510,35 @@ class _AddField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final focused = focusNode.hasFocus;
+    final large = AppTextStyles.isAccessibilitySize(context);
     return AnimatedContainer(
       duration: AppMotion.base,
       curve: Curves.easeOutCubic,
-      height: AppSpacing.buttonHeight,
+      // 大きい文字では高さを最低限だけ決め、折り返した分だけ伸ばす(既定の文字では今までどおり固定)
+      height: large ? null : AppSpacing.buttonHeight,
+      constraints: large
+          ? const BoxConstraints(minHeight: AppSpacing.buttonHeight)
+          : null,
       decoration: ShapeDecoration(
         color: AppColors.card,
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: focused ? AppColors.borderAccent : AppColors.divider,
-          ),
-        ),
+        // 大きい文字で背が伸びたときは、カプセルだと角が大きすぎるので角丸の四角に
+        shape: large
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                side: BorderSide(
+                  color: focused ? AppColors.borderAccent : AppColors.divider,
+                ),
+              )
+            : StadiumBorder(
+                side: BorderSide(
+                  color: focused ? AppColors.borderAccent : AppColors.divider,
+                ),
+              ),
       ),
-      padding: const EdgeInsets.only(left: AppSpacing.screen),
+      padding: EdgeInsets.only(
+          left: AppSpacing.screen,
+          top: large ? AppSpacing.s : 0,
+          bottom: large ? AppSpacing.s : 0),
       child: Row(
         children: [
           Expanded(
@@ -520,12 +546,17 @@ class _AddField extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               maxLength: 100,
+              // 大きい文字では入力と案内の文字を折り返す(1行だと「バケット…」で切れる)
+              keyboardType: TextInputType.text,
+              minLines: 1,
+              maxLines: large ? null : 1,
               textInputAction: TextInputAction.done,
               onSubmitted: (_) => onAdd(),
               style: AppTextStyles.body,
               cursorColor: AppColors.accent,
               decoration: InputDecoration(
                 hintText: context.l10n.addToBucketList,
+                hintMaxLines: 3,
                 hintStyle:
                     AppTextStyles.body.copyWith(color: AppColors.textDisabled),
                 counterText: '',
@@ -595,7 +626,9 @@ class _Chip extends StatelessWidget {
           duration: AppMotion.base,
           curve: Curves.easeOutCubic,
           constraints: const BoxConstraints(minHeight: 36),
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m + 2),
+          // 上下の余白は折り返したときのため(既定の文字では高さ 36 のまま変わらない)
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.m + 2, vertical: AppSpacing.xs),
           decoration: ShapeDecoration(
             color: selected ? AppColors.accent : AppColors.card,
             shape: StadiumBorder(
@@ -610,7 +643,11 @@ class _Chip extends StatelessWidget {
                 Icon(icon, size: 14, color: AppColors.accent),
                 const SizedBox(width: AppSpacing.xs),
               ],
-              Text(label, style: AppTextStyles.callout.copyWith(color: color)),
+              // 大きい文字では札の中で折り返す(選ぶ文字は切らない)
+              Flexible(
+                child: Text(label,
+                    style: AppTextStyles.callout.copyWith(color: color)),
+              ),
             ],
           ),
         ),
