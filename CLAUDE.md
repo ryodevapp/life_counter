@@ -3,7 +3,7 @@
 「人生◯日目」と今日の問い・気分のスタンプ・やりたいことリストを出す Flutter の iOS アプリとウィジェット。ソロ開発。
 App Store で配信中(v1.1.1+39 が `main`)。日本語と英語。課題の台帳は Jira(キー LC)。
 
-- 入口は `~/Projects`、アプリをまたぐ方針は `~/Projects/playbook`(`decisions.md`・`backlog.md`)
+- 全リポジトリ共通の進め方とリポジトリの地図は `~/Projects/CLAUDE.md`(本体は `playbook/claude/projects-CLAUDE.md`)
 
 ## 地図
 
@@ -45,7 +45,6 @@ App Store で配信中(v1.1.1+39 が `main`)。日本語と英語。課題の台
 
 ## 進め方
 
-- **会話は作業1つにつき1本。** 終わったら `/clear` するか新しい会話にする。**1時間以上あけたら、続きからでなく新しい会話で始める**(キャッシュの寿命が1時間で、切れると会話全体を読み直す)。引き継ぎは Jira かコミットに書く
 - 終わりの条件: `flutter analyze` でエラー0、`flutter test` が全部通る、触った画面はシミュレーターで撮って直す前と見比べる
 - 見た目を変えるときは `design/design-system.md` を先に読む
 - ストアの文・Product Hunt の文は content-writing スキルで書き、本人の OK をもらう
