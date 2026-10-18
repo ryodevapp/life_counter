@@ -16,7 +16,7 @@ App Store で配信中(v1.1.1+39 が `main`)。日本語と英語。課題の台
 - `lib/l10n/` 文言。`app_ja.arb` が元、`app_en.arb` が英語(`app_localizations*.dart` は生成物)
 - `ios/LifeWidget/` ウィジェット拡張(Swift)。アプリとは App Group でデータを渡す
 - `test/` 単体テスト / `integration_test/` シミュレーターで動かす結合テストと撮影(`store_shots_test.dart` など)
-- `tools/` `check_ipa.sh`(本番のアーカイブにシミュレーター用が混ざっていないか)・`use_native_assets.sh`(sim と device の切り替え)
+- `tools/` `check_ipa.sh`(本番のアーカイブにシミュレーター用が混ざっていないか)・`use_native_assets.sh`(sim と device の切り替え)・`shots.sh`(撮影の条件の2段)
 - `design/` 正本の文書: `design-system.md`(色・文字・余白)、`specs/`・`plans/`(v1.1 の設計と計画)、`checklists/`(実機の確認)、`store/`(ストアの文・Product Hunt・スクリーンショット)
 - `docs/` 公開ページ(規約・プライバシーポリシー、日英)
 
@@ -26,6 +26,7 @@ App Store で配信中(v1.1.1+39 が `main`)。日本語と英語。課題の台
 - テスト: `flutter test`
 - 生成: `dart run build_runner build --delete-conflicting-outputs`(models を変えたとき)
 - 結合テスト・撮影: `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/<名前>.dart`
+- 撮影の条件は2段(2026-10-18 本人の決定。3アプリ共通)。**毎回**(画面を直したら)= 昼夜・既定と最大の文字・iOS 27・ウィジェットの色合い → `tools/shots.sh every [テストの名前]`(昼夜は `--dart-define=THEME=dark`、最大の文字は `--dart-define=TEXT=max`。色合いはウィジェットを直したときにホーム画面を「色合い」にして手で撮る)。**出す前だけ**(審査に出す前)= iOS 26・SE・透明度を下げる・ロック画面 → `tools/shots.sh release`(透明度を下げるは Flutter に値が無いのでシミュレーターの設定で手で、ロック画面のウィジェットは無い)。既定(昼・既定の文字)の画像の名前は今のまま
 - シミュレーター用のビルド: `flutter build ios --simulator --no-codesign`
 - 本番: `tools/use_native_assets.sh device` → `flutter build ipa` → `tools/check_ipa.sh`。シミュレーターに戻すときは `tools/use_native_assets.sh sim`
 - flutter・dart はサンドボックスの中ではキャッシュに書けず止まる。このリポジトリの `.claude/settings.local.json` の `excludedCommands` は、リポジトリの中で起動したときだけ効く

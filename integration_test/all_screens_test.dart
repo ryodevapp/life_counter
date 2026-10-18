@@ -10,9 +10,12 @@ import 'helpers.dart';
 /// 画像の名前の頭に SHOT_PREFIX(なければ a_)を付けて、直す前と後を並べて比べられるようにする
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  const prefix = String.fromEnvironment('SHOT_PREFIX', defaultValue: 'a_');
+  // 昼夜と文字の大きさ(THEME・TEXT。helpers.dart)は名前の頭に足す
+  const basePrefix = String.fromEnvironment('SHOT_PREFIX', defaultValue: 'a_');
+  final prefix = '$basePrefix${shotSuffix.isEmpty ? '' : '${shotSuffix.substring(1)}_'}';
 
   testWidgets('all screens', (tester) async {
+    applyShotConditions(binding);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
     await prefs.setInt('birth_date', DateTime(1992, 4, 1).millisecondsSinceEpoch);

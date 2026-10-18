@@ -22,6 +22,26 @@ enum Tone {
     static let accent = Color(red: 0.722, green: 0.471, blue: 0.306)
 }
 
+// MARK: - 色合い・クリアの表示(ホーム画面のカスタマイズ)
+
+/// ホーム画面の「色合い」「クリア」(`widgetRenderingMode` が `.accented`・`.vibrant`)か。
+/// このとき iOS は色を捨てて不透明度だけを残し、白(色合いでは選んだ色)で描く。
+/// 同じ白になって見分けがつかなくなる所(「書く」の地と字、気分の顔の丸と線)だけ、不透明度で描き分ける
+/// (2026-10-18 本人の決定。1.1.2 で入れる)
+func isTinted(_ mode: WidgetRenderingMode) -> Bool {
+    mode != .fullColor
+}
+
+/// 色合いのときの不透明度(地・補いの文字・丸)。文字と線は 1
+enum TintOpacity {
+    /// 「書く」の地(字は 1)
+    static let buttonFill = 0.22
+    /// 気分の顔の丸の地(線と目は 1)
+    static let faceFill = 0.18
+    /// 補いの文字(「日目」など)
+    static let muted = 0.6
+}
+
 // MARK: - スタンプ(lib/models/stamp.dart と同じ並びと id)
 
 struct StampDef {
@@ -140,20 +160,25 @@ struct MoodFaceDots: Shape {
     }
 }
 
-/// うすい色の丸 + 細い線の顔(表情はおもに目で出す)
+/// うすい色の丸 + 細い線の顔(表情はおもに目で出す)。
+/// 色合い・クリアでは、丸をうすい白に、線と目を白にする(色のままだと丸と線が同じ白になり顔が消える)
 struct MoodFaceView: View {
+    @Environment(\.widgetRenderingMode) var renderingMode
     let moodId: String
 
     var body: some View {
         GeometryReader { geo in
             let s = min(geo.size.width, geo.size.height)
             let lw = min(max(s / 27.5, 1.0), 2.2)
+            let tinted = isTinted(renderingMode)
             if let look = moodLooks[moodId] {
                 ZStack {
-                    Circle().fill(look.light.opacity(0.6)).padding(lw)
+                    Circle()
+                        .fill(tinted ? Color.white.opacity(TintOpacity.faceFill) : look.light.opacity(0.6))
+                        .padding(lw)
                     MoodFaceLines(moodId: moodId)
-                        .stroke(look.ink, style: StrokeStyle(lineWidth: lw, lineCap: .round))
-                    MoodFaceDots(moodId: moodId).fill(look.ink)
+                        .stroke(tinted ? Color.white : look.ink, style: StrokeStyle(lineWidth: lw, lineCap: .round))
+                    MoodFaceDots(moodId: moodId).fill(tinted ? Color.white : look.ink)
                 }
                 .frame(width: s, height: s)
             }

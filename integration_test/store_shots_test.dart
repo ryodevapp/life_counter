@@ -13,6 +13,7 @@ import 'helpers.dart';
 
 /// App Store のスクリーンショット用に、見本のデータを入れて5画面を撮る
 /// --dart-define=LANG=en で英語(米国)、なければ日本語。撮影日は 2026-10-16 の前提で答えを合わせてある
+/// --dart-define=THEME=dark で夜、--dart-define=TEXT=max で最大の文字(helpers.dart。名前の後ろに _dark・_ax5)
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   const lang = String.fromEnvironment('LANG', defaultValue: 'ja');
@@ -53,6 +54,7 @@ void main() {
       binding.platformDispatcher.localeTestValue = const Locale('ja', 'JP');
       binding.platformDispatcher.localesTestValue = const [Locale('ja', 'JP')];
     }
+    applyShotConditions(binding);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
     await prefs.setInt('birth_date', DateTime(1988, 6, 12).millisecondsSinceEpoch);
@@ -106,25 +108,25 @@ void main() {
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
-    await shot(binding, tester, 'store_${lang}_1_today');
+    await shot(binding, tester, 'store_${lang}_1_today$shotSuffix');
 
     // 2. 記録
     await tester.tap(find.byIcon(CupertinoIcons.book));
     await wait(tester, 1200);
-    await shot(binding, tester, 'store_${lang}_2_journal');
+    await shot(binding, tester, 'store_${lang}_2_journal$shotSuffix');
 
     // 3. 大切な人
     await tester.tap(find.byIcon(CupertinoIcons.heart));
     await wait(tester);
     await tapText(tester, en ? 'People' : '大切な人');
-    await shot(binding, tester, 'store_${lang}_3_people');
+    await shot(binding, tester, 'store_${lang}_3_people$shotSuffix');
 
     // 4. バケットリスト
     await tapText(tester, en ? 'Bucket list' : 'バケットリスト');
-    await shot(binding, tester, 'store_${lang}_4_bucket');
+    await shot(binding, tester, 'store_${lang}_4_bucket$shotSuffix');
 
     // 5. あなた
     await tapText(tester, en ? 'You' : 'あなた');
-    await shot(binding, tester, 'store_${lang}_5_you');
+    await shot(binding, tester, 'store_${lang}_5_you$shotSuffix');
   });
 }
