@@ -22,20 +22,32 @@ esac
 
 cd "$(dirname "$0")/.."
 
-# OS の版(27 など)と端末の名前から、使えるシミュレーターの UDID を1つ選ぶ。無ければ止める
+# OS の版(27 など)と機種の名前から、使えるシミュレーターの UDID を1つ選ぶ。
+# 名前でなく機種で探す(「iPhone 16 26.5」のように名前を変えたものも拾う)。名前が同じものを先に選ぶ。
+# その版にその機種が無ければ、新しい版の OS で作る(作るだけで、何も消さない)。OS が無ければ止める
 udid_for() {
-  xcrun simctl list devices available -j | /usr/bin/python3 -c '
-import json, sys
+  /usr/bin/python3 - "$1" "$2" <<'PY'
+import json, subprocess, sys
 os_major, name = sys.argv[1], sys.argv[2]
-devices = json.load(sys.stdin)["devices"]
-for runtime in sorted(devices, reverse=True):
-    if f".iOS-{os_major}-" not in runtime + "-":
-        continue
-    for d in devices[runtime]:
-        if d["name"] == name:
-            print(d["udid"]); sys.exit(0)
-sys.exit(f"iOS {os_major} の {name} のシミュレーターがありません(Xcode の Settings → Components で入れる)")
-' "$1" "$2"
+def simctl(*args):
+    return subprocess.run(["xcrun", "simctl", *args], check=True, capture_output=True, text=True).stdout
+types = json.loads(simctl("list", "devicetypes", "-j"))["devicetypes"]
+type_id = next((t["identifier"] for t in types if t["name"] == name), None)
+if type_id is None:
+    sys.exit(f"{name} という機種がありません")
+runtimes = [r for r in json.loads(simctl("list", "runtimes", "available", "-j"))["runtimes"]
+            if r["identifier"].startswith(f"com.apple.CoreSimulator.SimRuntime.iOS-{os_major}-")]
+if not runtimes:
+    sys.exit(f"iOS {os_major} のシミュレーターがありません(Xcode の Settings → Components で入れる)")
+devices = json.loads(simctl("list", "devices", "available", "-j"))["devices"]
+for runtime in sorted((r["identifier"] for r in runtimes), reverse=True):
+    found = [d for d in devices.get(runtime, []) if d.get("deviceTypeIdentifier") == type_id]
+    found.sort(key=lambda d: d["name"] != name)
+    if found:
+        print(found[0]["udid"]); sys.exit(0)
+newest = max(runtimes, key=lambda r: [int(x) for x in r["version"].split(".")])
+print(simctl("create", f"{name} (shots)", type_id, newest["identifier"]).strip())
+PY
 }
 
 for device in "${devices[@]}"; do
