@@ -11,7 +11,14 @@ class ReviewPrompt {
 
   static const answeredDaysToAsk = 7;
   static const _askedKey = 'review_asked';
+  // 1.1.1 までの覚え方(2日目・7日目にお願いした印)。残っていれば、もうお願いした人として出さない
+  static const _legacyAskedKeys = ['review_requested_day2', 'review_requested_day7'];
   static const _channel = MethodChannel('lifecounter/review');
+
+  /// もうお願いしたか(1.1.1 までの印も見る)
+  static bool alreadyAsked(SharedPreferences prefs) =>
+      (prefs.getBool(_askedKey) ?? false) ||
+      _legacyAskedKeys.any(prefs.containsKey);
 
   /// 出すかどうか(テストできるように、決め方だけを切り出す)
   static bool shouldAsk({required int answeredDays, required bool alreadyAsked}) =>
@@ -24,9 +31,9 @@ class ReviewPrompt {
 
   static Future<void> maybeAsk(
       List<DailyRecord> records, SharedPreferences prefs) async {
-    final alreadyAsked = prefs.getBool(_askedKey) ?? false;
     if (!shouldAsk(
-        answeredDays: answeredDays(records), alreadyAsked: alreadyAsked)) {
+        answeredDays: answeredDays(records),
+        alreadyAsked: alreadyAsked(prefs))) {
       return;
     }
     await prefs.setBool(_askedKey, true);
