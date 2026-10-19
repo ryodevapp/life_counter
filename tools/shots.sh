@@ -59,6 +59,9 @@ for device in "${devices[@]}"; do
   else
     udid="$(udid_for "$os" "$name")"
     xcrun simctl boot "$udid" 2>/dev/null || true
+    # 新しいシミュレーターでは、マップのウィジェットが位置情報の許可を求める小窓を出し、アプリが隠れて白い画像になる
+    xcrun simctl privacy "$udid" grant location-always com.apple.Maps 2>/dev/null || true
+    xcrun simctl privacy "$udid" grant location-always com.apple.Maps.GeneralMapsWidget 2>/dev/null || true
   fi
   for theme in light dark; do
     for text in default max; do

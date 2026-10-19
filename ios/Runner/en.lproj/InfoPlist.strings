@@ -1,0 +1,2 @@
+/* App name on the Home Screen (same as Info.plist). Its presence lists English on the App Store */
+"CFBundleDisplayName" = "LifeCounter";

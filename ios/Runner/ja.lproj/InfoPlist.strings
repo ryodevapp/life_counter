@@ -1,0 +1,2 @@
+/* ホーム画面のアプリの名前(Info.plist と同じ)。この束があると App Store に日本語が出る */
+"CFBundleDisplayName" = "LifeCounter";
