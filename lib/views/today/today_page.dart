@@ -227,6 +227,23 @@ class _TodayPageState extends ConsumerState<TodayPage> {
   static final _counterWord =
       AppTextStyles.body.copyWith(color: AppColors.textMuted);
 
+  /// 数字は途中で折り返さない。最大の文字で幅に入らないときは、数字だけ幅に入る大きさまで下げる
+  /// (前後の言葉はそのまま大きくする。文の中に置いたままなので、下の線は揃ったまま)
+  static TextStyle _counterFitting(
+      BuildContext context, String number, double maxWidth) {
+    final style = AppTextStyles.counter;
+    final painter = TextPainter(
+      text: TextSpan(text: number, style: style),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+      maxLines: 1,
+    )..layout();
+    final width = painter.width;
+    painter.dispose();
+    if (width <= maxWidth) return style;
+    return style.copyWith(fontSize: style.fontSize! * maxWidth / width * 0.98);
+  }
+
   @override
   Widget build(BuildContext context) {
     // 今日タブに戻ったら、ほかの画面で直した答えを読み直す(入力中は上書きしない)
@@ -271,15 +288,19 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                   // 日付 → 「人生 12,616 日目」「Day 12,616 of your life」(数字の下の線に、前後の言葉を揃える)
                   Text(dateStr, style: AppTextStyles.footnote),
                   const SizedBox(height: AppSpacing.s),
-                  Text.rich(
-                    TextSpan(children: [
-                      TextSpan(text: l.todayLifeDaysPrefix, style: _counterWord),
-                      TextSpan(
-                          text: formatter.format(lifeDays),
-                          style: AppTextStyles.counter),
-                      TextSpan(text: l.todayLifeDaysSuffix, style: _counterWord),
-                    ]),
-                  ),
+                  LayoutBuilder(builder: (context, constraints) {
+                    final number = formatter.format(lifeDays);
+                    return Text.rich(
+                      TextSpan(children: [
+                        TextSpan(text: l.todayLifeDaysPrefix, style: _counterWord),
+                        TextSpan(
+                            text: number,
+                            style: _counterFitting(
+                                context, number, constraints.maxWidth)),
+                        TextSpan(text: l.todayLifeDaysSuffix, style: _counterWord),
+                      ]),
+                    );
+                  }),
                 ],
               ),
             ),
