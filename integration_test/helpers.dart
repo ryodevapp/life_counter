@@ -31,6 +31,17 @@ Future<void> tapVisible(WidgetTester tester, Finder finder) async {
   await wait(tester);
 }
 
+/// 縦のスクロールをすべていちばん上へ戻す。ドラッグで戻すと、キーボードが閉じる途中や
+/// 最大の文字の長い画面で戻り切らず、上が切れた画像になる(10/19 の今日の画面)
+Future<void> scrollToTop(WidgetTester tester) async {
+  for (final s in tester.stateList<ScrollableState>(find.byType(Scrollable))) {
+    if (s.position.axis == Axis.vertical) {
+      s.position.jumpTo(s.position.minScrollExtent);
+    }
+  }
+  await wait(tester);
+}
+
 /// 画面の下のほうにあるものを見える位置まで送って撮る(最大の文字では1画面に入らない)
 Future<void> shotAt(IntegrationTestWidgetsFlutterBinding binding,
     WidgetTester tester, Finder finder, String name) async {

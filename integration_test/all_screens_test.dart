@@ -29,8 +29,7 @@ void main() {
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
-    await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, 800));
-    await wait(tester);
+    await scrollToTop(tester);
     await shot(binding, tester, '${prefix}01_today');
 
     await tapText(tester, '記録');

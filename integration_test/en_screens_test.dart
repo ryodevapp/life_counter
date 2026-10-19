@@ -13,6 +13,7 @@ void main() {
   testWidgets('english screens', (tester) async {
     binding.platformDispatcher.localeTestValue = const Locale('en', 'US');
     binding.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
+    applyShotConditions(binding);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
     await prefs.setInt('birth_date', DateTime(1992, 4, 1).millisecondsSinceEpoch);
@@ -27,20 +28,21 @@ void main() {
     await wait(tester, 2600);
     FocusManager.instance.primaryFocus?.unfocus();
     await wait(tester);
-    await shot(binding, tester, 'en_01_today');
+    await scrollToTop(tester);
+    await shot(binding, tester, 'en_01_today$shotSuffix');
 
     await tester.tap(find.byIcon(CupertinoIcons.book));
     await wait(tester);
-    await shot(binding, tester, 'en_02_journal');
+    await shot(binding, tester, 'en_02_journal$shotSuffix');
 
     await tester.tap(find.byIcon(CupertinoIcons.heart));
     await wait(tester);
-    await shot(binding, tester, 'en_03_life_you');
+    await shot(binding, tester, 'en_03_life_you$shotSuffix');
     await tapText(tester, 'Bucket list');
-    await shot(binding, tester, 'en_04_bucket');
+    await shot(binding, tester, 'en_04_bucket$shotSuffix');
 
     await tester.tap(find.byIcon(CupertinoIcons.gear_alt));
     await wait(tester);
-    await shot(binding, tester, 'en_05_settings');
+    await shot(binding, tester, 'en_05_settings$shotSuffix');
   });
 }

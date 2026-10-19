@@ -50,6 +50,23 @@ print(simctl("create", f"{name} (shots)", type_id, newest["identifier"]).strip()
 PY
 }
 
+# その回に撮った画像がすべて同じ中身なら止める。
+# iOS 26 以降の新しいシミュレーターは、ホーム画面のマップのウィジェットが位置情報の許可の小窓を出し、
+# それがアプリを隠して全部が白い画像になる(10/19 に120枚)。simctl privacy では消せない。
+# tools/sim_clear_maps_prompt.sh <UDID> で消せる(ウィジェットを外し、保留の許可を消して起動し直す)
+check_not_blank() {
+  local dir="$1" marker="$2" udid="$3"
+  local files kinds
+  files="$(find "$dir" -name '*.png' -newer "$marker" | wc -l | tr -d ' ')"
+  [ "$files" -ge 2 ] || return 0
+  kinds="$(find "$dir" -name '*.png' -newer "$marker" -exec md5 -q {} \; | sort -u | wc -l | tr -d ' ')"
+  if [ "$kinds" -eq 1 ]; then
+    echo "NG  $dir に撮った $files 枚がすべて同じ画像です(白い画像のおそれ)。" >&2
+    echo "    シミュレーター $udid に小窓が出ていないか見てください。マップの位置情報の小窓なら tools/sim_clear_maps_prompt.sh $udid で消してから撮り直す" >&2
+    exit 1
+  fi
+}
+
 for device in "${devices[@]}"; do
   os="${device%%|*}"
   name="${device#*|}"
@@ -59,9 +76,6 @@ for device in "${devices[@]}"; do
   else
     udid="$(udid_for "$os" "$name")"
     xcrun simctl boot "$udid" 2>/dev/null || true
-    # 新しいシミュレーターでは、マップのウィジェットが位置情報の許可を求める小窓を出し、アプリが隠れて白い画像になる
-    xcrun simctl privacy "$udid" grant location-always com.apple.Maps 2>/dev/null || true
-    xcrun simctl privacy "$udid" grant location-always com.apple.Maps.GeneralMapsWidget 2>/dev/null || true
   fi
   for theme in light dark; do
     for text in default max; do
@@ -69,7 +83,10 @@ for device in "${devices[@]}"; do
            -d "$udid" --dart-define=THEME="$theme" --dart-define=TEXT="$text" "$@")
       echo "SCREENS_DIR=$dir ${cmd[*]}"
       if [ -z "${DRY:-}" ]; then
+        marker="$(mktemp)"
         SCREENS_DIR="$dir" "${cmd[@]}"
+        check_not_blank "$dir" "$marker" "$udid"
+        rm -f "$marker"
       fi
     done
   done
