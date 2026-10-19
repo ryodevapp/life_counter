@@ -5,7 +5,7 @@
 - 言わない言葉: death・countdown・dying。life expectancy は計算を聞かれたときだけ
 - 票を頼まない。まだ決めていない機能を約束しない(yet・next version と言わない)
 - iPad にも対応しているので、端末は device と言う(iPhone だけと言わない)
-- 照合した記録: lib/utils/freq_label.dart(会う頻度と回数)、lib/services/life_calculator.dart・life_tables.dart(平均の出どころ)、lib/services/record_export.dart(書き出し)、lib/views/shared/app_text_styles.dart(Google Fonts は大きな数字の1書体だけ)、assets/legal/privacy_policy_en.html(データ・通信・分析)、lib/services/question_bank.dart(日付ごとの問い)、ios/Runner.xcodeproj の TARGETED_DEVICE_FAMILY(iPhone と iPad)
+- 照合した記録: lib/utils/freq_label.dart(会う頻度と回数)、lib/services/life_calculator.dart・life_tables.dart(平均の出どころ)、lib/services/record_export.dart(書き出し)、lib/views/shared/app_text_styles.dart(大きな数字の書体はアプリに同梱。1.1.1 から)、assets/legal/privacy_policy_en.html(データ・通信・分析)、lib/services/question_bank.dart(日付ごとの問い)、ios/Runner.xcodeproj の TARGETED_DEVICE_FAMILY(iPhone と iPad)
 
 ## 1. Android 版はあるか
 
@@ -15,8 +15,8 @@ It's on iPhone and iPad only for now. I'd like to bring it to Android too. Most 
 
 Everything you write stays on your device. There's no account and no server, and the app has no analytics or ads. If you want a copy, Settings > Export Journal turns your entries and bucket list into plain text that you can save to Notes or send by email. There's no sync between devices right now.
 
-(「ネットにはつながるのか」と聞かれたら、次を足す)
-The app itself only connects to Google Fonts, to load the font for the large numbers. No personal information goes with it.
+(「ネットにはつながるのか」と聞かれたら、次を足す。1.1.1 で書体をアプリに入れ、Google Fonts へ取りに行かなくなった ── a62542d・LC-18。`lib/` に通信の処理と通信のパッケージは無い。10/19 に確かめた)
+The app doesn't connect to any server. Even the font for the large numbers is built into the app.
 
 (バックアップには触れない。新しい端末への復元はまだ試していない。確かめるのは LC-21)
 
