@@ -16,7 +16,14 @@ class PageHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(child: Text(title, style: AppTextStyles.largeTitle)),
+          // 題は1語。最大の文字で幅に入らないときは、語の途中で折らずに1行のまま縮める(「Journa / l」にしない)
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(title, style: AppTextStyles.largeTitle, maxLines: 1),
+            ),
+          ),
           ?trailing,
         ],
       ),

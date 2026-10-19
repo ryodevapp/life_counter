@@ -185,12 +185,20 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 
   Widget _buildCalendar() {
     return AppCard(
-      child: TableCalendar(
+      // 日付の並びは枠の大きさが決まっていて、本文と同じ3倍では数字が割れて読めない。
+      // iOS のカレンダーと同じく、並びの文字は大きくしすぎない(1.3倍まで)
+      child: MediaQuery.withClampedTextScaling(
+        maxScaleFactor: 1.3,
+        child: TableCalendar(
         firstDay: DateTime(2020),
         lastDay: DateTime.now(),
         focusedDay: _focusedDay,
         locale: intlLocaleOf(context.l10n.localeName),
         startingDayOfWeek: StartingDayOfWeek.sunday,
+        // 曜日の行の高さは決まった値(16)なので、文字を大きくすると下が欠ける。倍率に合わせて伸ばす
+        daysOfWeekHeight: MediaQuery.textScalerOf(context)
+            .clamp(maxScaleFactor: 1.3)
+            .scale(20),
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
@@ -256,6 +264,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
           }
         },
         onPageChanged: (focused) => _focusedDay = focused,
+        ),
       ),
     );
   }
