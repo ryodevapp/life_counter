@@ -14,7 +14,7 @@ LifeCounter
 One question a day, and the time you have with your parents
 
 ## Description (max 260)
-LifeCounter gives you one question a day, with a short follow-up, so a one-word answer grows into a few honest sentences. It also estimates how many more visits you may have with your parents, so you can plan the next. Free, no ads, all on your device.
+LifeCounter gives you one question a day, with a short follow-up, so a one-word answer can grow into a few honest sentences. It also estimates how many more visits you may have with your parents, so you can plan your next one. Free, no ads, all on your device.
 
 ## First comment
 
@@ -29,10 +29,19 @@ You can also add your parents and family. From how often you meet and the averag
 Also inside:
 - Your mood in one tap, a monthly look-back, and "a year ago today"
 - A bucket list, with the date you achieved each one
-- A home screen widget that shows today's question
+- A Home Screen widget for today's question, with a one-tap mood in the medium size
 
-If you skip a day, tomorrow just brings a new question. Everything you write stays on your device. It's free, with no ads.
+If you skip a day, tomorrow just brings a new question. Everything you write stays on your device, and the app doesn't connect to any server. It's free, with no ads.
 
-LifeCounter has been on the App Store in Japanese since March, and this is the first version in English. I wrote the questions in Japanese first, so if any of them read oddly, please tell me.
+LifeCounter has been on the App Store in Japanese since March, and the English version came out this week. The questions were written in Japanese first, so if any of them read oddly in English, please tell me.
 
 Here's one of the 365 for you: what would you like to tell family who live far away?
+
+## 1.1.2 以降が公開されたら(当日に最初のコメントへ足す)
+
+予約は上の版で入れる(decisions「2026-10-19 LifeCounter の Product Hunt」)。1.1.2 以降(1.1.3 でも)が 10/24 16:01 までに公開されていたら、「Also inside」の行を次のように直す。
+
+- ウィジェットの行を `- A Home Screen widget for today's question, with a one-tap mood in the medium size. The Write button and mood faces now stay visible on Tinted and Clear Home Screens` に(直したのは「書く」と気分の顔だけ。whats-new-v1.1.2.md)
+- 最後に `- Screens that still fit at the largest text size` を足す
+
+公開を 10/31 にずらしたときは、英語の段落の `came out this week` を `came out last week` に直す(英語版の初出は 1.1.0、10/19)。
