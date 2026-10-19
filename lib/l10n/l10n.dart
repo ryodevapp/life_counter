@@ -25,22 +25,39 @@ String intlLocaleOf(String localeName) => _isJa(localeName) ? 'ja_JP' : 'en_US';
 NumberFormat numberFormatOf(String localeName) =>
     NumberFormat.decimalPattern(intlLocaleOf(localeName));
 
+/// 行を折らせない印(WORD JOINER。幅0で見えない)
+const wordJoiner = '⁠';
+
+/// 日本語の短いまとまりの中で行を折らせない(大きい文字で「4/月」「見/る」と割れないように)。
+/// 字の間に [wordJoiner] を入れる。まとまりとまとまりの間は今までどおり折れる。
+/// 画面に出す文字だけに使う。保存・書き出しの前には [stripWordJoiners] で外す
+String keepTogether(String s) => s.characters.join(wordJoiner);
+
+/// [keepTogether] や arb の文言に入れた印を外す(利用者の記録に残さない)
+String stripWordJoiners(String s) => s.replaceAll(wordJoiner, '');
+
+String _jaWeekday(DateTime d) =>
+    keepTogether('（${DateFormat.E('ja_JP').format(d)}）');
+
 /// 2026年10月16日（金） / Fri, Oct 16, 2026
 String formatFullDate(DateTime d, String localeName) => _isJa(localeName)
-    ? '${d.year}年${d.month}月${d.day}日（${DateFormat.E('ja_JP').format(d)}）'
+    ? '${keepTogether('${d.year}年')}${keepTogether('${d.month}月')}'
+        '${keepTogether('${d.day}日')}${_jaWeekday(d)}'
     : DateFormat('EEE, MMM d, y', 'en_US').format(d);
 
 /// 10月16日（金） / Fri, Oct 16
 String formatMonthDayWeekday(DateTime d, String localeName) => _isJa(localeName)
-    ? '${d.month}月${d.day}日（${DateFormat.E('ja_JP').format(d)}）'
+    ? '${keepTogether('${d.month}月')}${keepTogether('${d.day}日')}'
+        '${_jaWeekday(d)}'
     : DateFormat('EEE, MMM d', 'en_US').format(d);
 
 /// 2026年10月16日 / Oct 16, 2026
 String formatDate(DateTime d, String localeName) => _isJa(localeName)
-    ? '${d.year}年${d.month}月${d.day}日'
+    ? '${keepTogether('${d.year}年')}${keepTogether('${d.month}月')}'
+        '${keepTogether('${d.day}日')}'
     : DateFormat.yMMMd('en_US').format(d);
 
 /// 2026年10月 / October 2026
 String formatYearMonth(DateTime d, String localeName) => _isJa(localeName)
-    ? '${d.year}年${d.month}月'
+    ? '${keepTogether('${d.year}年')}${keepTogether('${d.month}月')}'
     : DateFormat.yMMMM('en_US').format(d);

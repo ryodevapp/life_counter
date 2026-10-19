@@ -113,7 +113,7 @@
   "moodListSeparator": "、",
   "segmentYou": "あなた",
   "segmentPeople": "大切な人",
-  "segmentBucketList": "バケットリスト",
+  "segmentBucketList": "バ⁠ケ⁠ッ⁠ト⁠リ⁠ス⁠ト",
   "peopleWhoMatter": "大切な人",
   "pastAverageSelf": "平均寿命を越えて、日々を重ねています",
   "daysEstimateUnit": "{count, plural, other{日（いまの年齢からの平均の目安）}}",
@@ -137,7 +137,7 @@
   },
   "aheadOfYou": "これから迎える",
   "weekends": "週末",
-  "aboutTimes": "約{count}回",
+  "aboutTimes": "約⁠{count}⁠回",
   "@aboutTimes": {
     "placeholders": {
       "count": {
@@ -146,8 +146,8 @@
       }
     }
   },
-  "seasons": "夏・桜・正月",
-  "aboutTimesEach": "それぞれ約{count}回",
+  "seasons": "夏⁠・桜⁠・正⁠月",
+  "aboutTimesEach": "そ⁠れ⁠ぞ⁠れ約⁠{count}⁠回",
   "@aboutTimesEach": {
     "placeholders": {
       "count": {
@@ -177,7 +177,7 @@
     }
   },
   "peopleEmpty": "親や家族、友だちを追加すると、一緒に過ごせる時間の目安が分かります。",
-  "addPerson": "大切な人を追加",
+  "addPerson": "大⁠切⁠な⁠人⁠を追⁠加",
   "editPerson": "大切な人を編集",
   "ageYears": "{age}歳",
   "@ageYears": {
@@ -256,13 +256,13 @@
   "freqYearly": "年に1〜2回",
   "freqYearlyOrLess": "年に1回以下",
   "freqRarely": "ほとんど会えない",
-  "bucketIntro": "人生のうちに、いつかかなえたいことのリスト。\nひとりでも、家族や友だちとでも。",
+  "bucketIntro": "人生のうちに、いつかかなえたいことのリ⁠ス⁠ト⁠。\nひとりでも、家族や友だちとでも。",
   "bucketAlreadyOnList": "もうリストにあります",
   "forExample": "たとえば",
-  "bucketExample1": "オーロラを見る",
-  "bucketExample2": "家族で温泉に行く",
-  "bucketExample3": "親と旅行に行く",
-  "bucketExample4": "富士山に登る",
+  "bucketExample1": "オ⁠ー⁠ロ⁠ラ⁠を見⁠る",
+  "bucketExample2": "家⁠族⁠で温⁠泉⁠に行⁠く",
+  "bucketExample3": "親⁠と旅⁠行⁠に行⁠く",
+  "bucketExample4": "富⁠士⁠山⁠に登⁠る",
   "bucketFromAnswers": "今日の問いの答えからも追加できます。",
   "bucketSomeday": "いつか",
   "bucketAchieved": "かなえたこと",

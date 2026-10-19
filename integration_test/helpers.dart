@@ -15,11 +15,23 @@ Future<void> shot(IntegrationTestWidgetsFlutterBinding binding,
   await binding.takeScreenshot(name);
 }
 
+/// find.text と同じだが、行を折らせない印(U+2060)を無視して比べる。
+/// 日本語の短い語には印が入っている(lib/l10n/l10n.dart の keepTogether)ので、find.text では見つからない
+Finder findText(String text) => find.byWidgetPredicate((w) {
+      // find.text と同じく Text と入力欄だけを見る(Text の中にできる RichText は数えない)
+      final data = w is Text
+          ? (w.data ?? w.textSpan?.toPlainText())
+          : w is EditableText
+              ? w.controller.text
+              : null;
+      return data != null && data.replaceAll('\u2060', '') == text;
+    }, description: 'text "$text"');
+
 Future<void> tapText(WidgetTester tester, String text) async {
   // 小さい画面では画面外にあることがあるので、見える位置まで送ってから押す
-  await tester.ensureVisible(find.text(text).last);
+  await tester.ensureVisible(findText(text).last);
   await wait(tester, 400);
-  await tester.tap(find.text(text).last);
+  await tester.tap(findText(text).last);
   await wait(tester);
 }
 

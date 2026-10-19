@@ -54,7 +54,8 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
   }
 
   Future<void> _add([String? text]) async {
-    final title = (text ?? _input.text).trim();
+    // 例の文言には行を折らせない印が入っているので、記録に残す前に外す
+    final title = stripWordJoiners(text ?? _input.text).trim();
     if (title.isEmpty) return;
     final added = await ref
         .read(bucketItemRepositoryProvider)

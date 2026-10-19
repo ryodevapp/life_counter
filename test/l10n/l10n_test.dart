@@ -42,14 +42,25 @@ void main() {
   test('dates: Japanese keeps the current formats, English reads naturally', () {
     final fri = DateTime(2026, 10, 16);
     final thu = DateTime(2026, 10, 15);
-    expect(formatFullDate(fri, 'ja'), '2026年10月16日（金）');
+    expect(stripWordJoiners(formatFullDate(fri, 'ja')), '2026年10月16日（金）');
     expect(formatFullDate(fri, 'en'), 'Fri, Oct 16, 2026');
-    expect(formatMonthDayWeekday(thu, 'ja'), '10月15日（木）');
+    expect(stripWordJoiners(formatMonthDayWeekday(thu, 'ja')), '10月15日（木）');
     expect(formatMonthDayWeekday(thu, 'en'), 'Thu, Oct 15');
-    expect(formatYearMonth(fri, 'ja'), '2026年10月');
+    expect(stripWordJoiners(formatYearMonth(fri, 'ja')), '2026年10月');
     expect(formatYearMonth(fri, 'en'), 'October 2026');
-    expect(formatDate(thu, 'ja'), '2026年10月15日');
+    expect(stripWordJoiners(formatDate(thu, 'ja')), '2026年10月15日');
     expect(en.bucketDoneOn(formatDate(thu, 'en')), 'Achieved Oct 15, 2026');
+  });
+
+  test('大きい文字で日付が「4/月」と割れないよう、年・月・日・曜日の中に印を入れる', () {
+    const wj = wordJoiner;
+    expect(formatDate(DateTime(1992, 4, 1), 'ja'),
+        '1${wj}9${wj}9${wj}2$wj年4$wj月1$wj日');
+    expect(formatMonthDayWeekday(DateTime(2026, 10, 15), 'ja'),
+        '1${wj}0$wj月1${wj}5$wj日（$wj木$wj）');
+    // 英語には入れない
+    expect(formatDate(DateTime(1992, 4, 1), 'en').contains(wj), isFalse);
+    expect(stripWordJoiners('オ$wjー$wjロ$wjラ'), 'オーロラ');
   });
 
   test('numbers and plurals', () {

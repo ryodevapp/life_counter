@@ -64,7 +64,7 @@ class AppTextStyles {
   /// 下のタブの文字(iOS のタブバーと同じ 10〜11pt)
   static TextStyle get tab => _sans(11, FontWeight.w600, 1.2);
 
-  /// 下のタブとシートの上の操作の列(キャンセル・題・完了)の文字の倍率の上限。
+  /// 下のタブ・シートの上の操作の列(キャンセル・題・完了)・キーボードの上の「完了」の帯の文字の倍率の上限。
   /// iOS のタブバーやナビゲーションバーと同じく、文字の設定を大きくしても大きくしない
   /// (Apple の Larger Text の基準で、繰り返し出る移動の部品は小さいままでよい)
   static const barMaxTextScale = 1.0;

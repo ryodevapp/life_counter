@@ -67,10 +67,10 @@ void main() {
 
     // 開いている編集のカード(「保存」があるカード)の中だけを探す
     Finder editCard() => find.ancestor(
-        of: find.text('保存'), matching: find.byType(AppCard)).first;
+        of: findText('保存'), matching: find.byType(AppCard)).first;
     Finder inEdit(Finder f) => find.descendant(of: editCard(), matching: f);
     Future<void> pickMood(String label) async {
-      await tester.tap(inEdit(find.text(label)).first);
+      await tester.tap(inEdit(findText(label)).first);
       await wait(tester, 300);
     }
     Future<void> typeAnswer(String text) async {
@@ -85,14 +85,14 @@ void main() {
 
     // 見る: 一覧に気分の札・答え・古い版の欄が出る
     expect(byText('答え3日前'), findsOneWidget);
-    expect(find.descendant(of: cardWith('答え3日前'), matching: find.text('うれしい')),
+    expect(find.descendant(of: cardWith('答え3日前'), matching: findText('うれしい')),
         findsOneWidget, reason: '一覧の気分の札');
     expect(byText('古い版の感謝'), findsOneWidget);
     await shot(binding, tester, 'j_01_list');
 
     // 直す(一覧): 気分を「おだやか」に、答えを書き換える
     await editCardWith('答え3日前');
-    expect(find.text('気分'), findsOneWidget, reason: '編集に気分の欄がある');
+    expect(findText('気分'), findsOneWidget, reason: '編集に気分の欄がある');
     await shot(binding, tester, 'j_02_edit');
     await pickMood('おだやか');
     await typeAnswer('答え3日前(直した)');
@@ -100,7 +100,7 @@ void main() {
     var r = await at(3);
     expect(r?.stamp, 'calm');
     expect(r?.answer, '答え3日前(直した)');
-    expect(find.descendant(of: cardWith('答え3日前(直した)'), matching: find.text('おだやか')),
+    expect(find.descendant(of: cardWith('答え3日前(直した)'), matching: findText('おだやか')),
         findsOneWidget);
 
     // 直す: キャンセルすると元のまま
@@ -135,7 +135,7 @@ void main() {
     await tester.tap(trash);
     await wait(tester);
     await shot(binding, tester, 'j_03_delete_confirm');
-    await tester.tap(find.text('削除').last);
+    await tester.tap(findText('削除').last);
     await wait(tester, 1200);
     expect(await at(10), isNull);
     expect(byText('古い版の感謝'), findsNothing);
@@ -145,7 +145,7 @@ void main() {
     await tester.drag(cardWith('答え3日前(直した)'), const Offset(-500, 0));
     await wait(tester, 1000);
     await shot(binding, tester, 'j_04b_swipe_confirm');
-    await tester.tap(find.text('削除').last);
+    await tester.tap(findText('削除').last);
     await wait(tester, 1200);
     expect(await at(3), isNull);
     expect(byText('答え3日前(直した)'), findsNothing);
@@ -153,10 +153,10 @@ void main() {
     // 見る(カレンダー): 選んだ日に気分の札が出る
     await tapText(tester, 'カレンダー');
     await wait(tester, 1000);
-    await tester.tap(find.text('${day(5).day}').last);
+    await tester.tap(findText('${day(5).day}').last);
     await wait(tester, 1200);
     expect(byText('答え5日前'), findsOneWidget);
-    expect(find.descendant(of: cardWith('答え5日前'), matching: find.text('かなしい')),
+    expect(find.descendant(of: cardWith('答え5日前'), matching: findText('かなしい')),
         findsOneWidget, reason: 'カレンダーの気分の札');
     await shot(binding, tester, 'j_05_calendar');
 
@@ -165,13 +165,13 @@ void main() {
     await pickMood('ふつう');
     await tapText(tester, '保存');
     expect((await at(5))?.stamp, 'neutral');
-    expect(find.descendant(of: cardWith('答え5日前'), matching: find.text('ふつう')),
+    expect(find.descendant(of: cardWith('答え5日前'), matching: findText('ふつう')),
         findsOneWidget);
 
     // 作る(カレンダー): 記録のない日を選んで、気分と答えを残す
-    await tester.tap(find.text('${day(7).day}').last);
+    await tester.tap(findText('${day(7).day}').last);
     await wait(tester, 1200);
-    expect(find.text('記録なし'), findsOneWidget);
+    expect(findText('記録なし'), findsOneWidget);
     await editCardWith('記録なし');
     await pickMood('うれしい');
     await typeAnswer('新しく書いた答え');
@@ -182,7 +182,7 @@ void main() {
     await shot(binding, tester, 'j_06_calendar_created');
 
     // 直す(今日): カレンダーで今日を直すと、今日の画面にも出る
-    await tester.tap(find.text('${day(0).day}').last);
+    await tester.tap(findText('${day(0).day}').last);
     await wait(tester, 1200);
     await editCardWith('記録なし');
     await pickMood('つかれた');

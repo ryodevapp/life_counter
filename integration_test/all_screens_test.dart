@@ -44,16 +44,16 @@ void main() {
     await tapText(tester, '人生');
     await tapText(tester, 'あなた');
     // 押した切り替えが見える位置まで送られているので、題が見える位置に戻す
-    await tester.ensureVisible(find.text('人生').first);
+    await tester.ensureVisible(findText('人生').first);
     await wait(tester);
     await shot(binding, tester, '${prefix}05_life_you');
-    await shotAt(binding, tester, find.text('週末'), '${prefix}05b_life_you_rows');
+    await shotAt(binding, tester, findText('週末'), '${prefix}05b_life_you_rows');
     await tapText(tester, '大切な人');
     await shot(binding, tester, '${prefix}06_life_people');
-    await shotAt(binding, tester, find.text('大切な人を追加'), '${prefix}06b_people_add');
+    await shotAt(binding, tester, findText('大切な人を追加'), '${prefix}06b_people_add');
     await tapText(tester, 'バケットリスト');
     await shot(binding, tester, '${prefix}07_life_bucket');
-    await shotAt(binding, tester, find.text('たとえば'), '${prefix}07a_bucket_examples');
+    await shotAt(binding, tester, findText('たとえば'), '${prefix}07a_bucket_examples');
     await tester.enterText(find.byType(TextField).last, '家族で温泉に行く');
     await wait(tester);
     await shot(binding, tester, '${prefix}07b_bucket_typing');
@@ -66,12 +66,12 @@ void main() {
     await tapVisible(tester, find.bySemanticsLabel('まだかなえていない').last);
     await shot(binding, tester, '${prefix}07c_bucket_items');
     // 行を押すと編集のシート
-    await tapVisible(tester, find.text('オーロラを見る').last);
+    await tapVisible(tester, findText('オーロラを見る').last);
     await shot(binding, tester, '${prefix}07d_bucket_edit');
     await tapText(tester, 'キャンセル');
 
     // 下のタブの印が動いている途中(伸びているか)と、止まったところ
-    await tester.tap(find.text('設定').last);
+    await tester.tap(findText('設定').last);
     await tester.pump(const Duration(milliseconds: 90));
     await binding.takeScreenshot('${prefix}08m_tab_moving');
     await shot(binding, tester, '${prefix}08_my_page');

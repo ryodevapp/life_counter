@@ -485,7 +485,7 @@ abstract class AppLocalizations {
   /// No description provided for @segmentBucketList.
   ///
   /// In ja, this message translates to:
-  /// **'バケットリスト'**
+  /// **'バ⁠ケ⁠ッ⁠ト⁠リ⁠ス⁠ト'**
   String get segmentBucketList;
 
   /// No description provided for @peopleWhoMatter.
@@ -533,19 +533,19 @@ abstract class AppLocalizations {
   /// No description provided for @aboutTimes.
   ///
   /// In ja, this message translates to:
-  /// **'約{count}回'**
+  /// **'約⁠{count}⁠回'**
   String aboutTimes(int count);
 
   /// No description provided for @seasons.
   ///
   /// In ja, this message translates to:
-  /// **'夏・桜・正月'**
+  /// **'夏⁠・桜⁠・正⁠月'**
   String get seasons;
 
   /// No description provided for @aboutTimesEach.
   ///
   /// In ja, this message translates to:
-  /// **'それぞれ約{count}回'**
+  /// **'そ⁠れ⁠ぞ⁠れ約⁠{count}⁠回'**
   String aboutTimesEach(int count);
 
   /// No description provided for @books.
@@ -581,7 +581,7 @@ abstract class AppLocalizations {
   /// No description provided for @addPerson.
   ///
   /// In ja, this message translates to:
-  /// **'大切な人を追加'**
+  /// **'大⁠切⁠な⁠人⁠を追⁠加'**
   String get addPerson;
 
   /// No description provided for @editPerson.
@@ -761,7 +761,7 @@ abstract class AppLocalizations {
   /// No description provided for @bucketIntro.
   ///
   /// In ja, this message translates to:
-  /// **'人生のうちに、いつかかなえたいことのリスト。\nひとりでも、家族や友だちとでも。'**
+  /// **'人生のうちに、いつかかなえたいことのリ⁠ス⁠ト⁠。\nひとりでも、家族や友だちとでも。'**
   String get bucketIntro;
 
   /// No description provided for @bucketAlreadyOnList.
@@ -779,25 +779,25 @@ abstract class AppLocalizations {
   /// No description provided for @bucketExample1.
   ///
   /// In ja, this message translates to:
-  /// **'オーロラを見る'**
+  /// **'オ⁠ー⁠ロ⁠ラ⁠を見⁠る'**
   String get bucketExample1;
 
   /// No description provided for @bucketExample2.
   ///
   /// In ja, this message translates to:
-  /// **'家族で温泉に行く'**
+  /// **'家⁠族⁠で温⁠泉⁠に行⁠く'**
   String get bucketExample2;
 
   /// No description provided for @bucketExample3.
   ///
   /// In ja, this message translates to:
-  /// **'親と旅行に行く'**
+  /// **'親⁠と旅⁠行⁠に行⁠く'**
   String get bucketExample3;
 
   /// No description provided for @bucketExample4.
   ///
   /// In ja, this message translates to:
-  /// **'富士山に登る'**
+  /// **'富⁠士⁠山⁠に登⁠る'**
   String get bucketExample4;
 
   /// No description provided for @bucketFromAnswers.

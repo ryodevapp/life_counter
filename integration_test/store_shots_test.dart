@@ -102,7 +102,7 @@ void main() {
     await wait(tester, 1500);
 
     // 1. 今日
-    await tester.tap(find.text(en ? 'Calm' : 'おだやか'));
+    await tester.tap(findText(en ? 'Calm' : 'おだやか'));
     await wait(tester);
     await tester.enterText(find.byType(TextField).first, en ? todayEn : todayJa);
     await wait(tester, 2600);

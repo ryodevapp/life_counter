@@ -21,7 +21,7 @@ void main() {
 
     app.main();
     await wait(tester, 3500);
-    await tester.tap(find.text('Calm'));
+    await tester.tap(findText('Calm'));
     await wait(tester);
     await tester.enterText(find.byType(TextField).first,
         'My grandfather\'s star atlas. Every summer we turned its pages on the porch, then went out to find the constellations.');

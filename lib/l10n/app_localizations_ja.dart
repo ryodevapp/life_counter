@@ -218,7 +218,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get segmentPeople => '大切な人';
 
   @override
-  String get segmentBucketList => 'バケットリスト';
+  String get segmentBucketList => 'バ⁠ケ⁠ッ⁠ト⁠リ⁠ス⁠ト';
 
   @override
   String get peopleWhoMatter => '大切な人';
@@ -260,11 +260,11 @@ class AppLocalizationsJa extends AppLocalizations {
         intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return '約$countString回';
+    return '約⁠$countString⁠回';
   }
 
   @override
-  String get seasons => '夏・桜・正月';
+  String get seasons => '夏⁠・桜⁠・正⁠月';
 
   @override
   String aboutTimesEach(int count) {
@@ -272,7 +272,7 @@ class AppLocalizationsJa extends AppLocalizations {
         intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return 'それぞれ約$countString回';
+    return 'そ⁠れ⁠ぞ⁠れ約⁠$countString⁠回';
   }
 
   @override
@@ -303,7 +303,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get peopleEmpty => '親や家族、友だちを追加すると、一緒に過ごせる時間の目安が分かります。';
 
   @override
-  String get addPerson => '大切な人を追加';
+  String get addPerson => '大⁠切⁠な⁠人⁠を追⁠加';
 
   @override
   String get editPerson => '大切な人を編集';
@@ -432,7 +432,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get freqRarely => 'ほとんど会えない';
 
   @override
-  String get bucketIntro => '人生のうちに、いつかかなえたいことのリスト。\nひとりでも、家族や友だちとでも。';
+  String get bucketIntro => '人生のうちに、いつかかなえたいことのリ⁠ス⁠ト⁠。\nひとりでも、家族や友だちとでも。';
 
   @override
   String get bucketAlreadyOnList => 'もうリストにあります';
@@ -441,16 +441,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get forExample => 'たとえば';
 
   @override
-  String get bucketExample1 => 'オーロラを見る';
+  String get bucketExample1 => 'オ⁠ー⁠ロ⁠ラ⁠を見⁠る';
 
   @override
-  String get bucketExample2 => '家族で温泉に行く';
+  String get bucketExample2 => '家⁠族⁠で温⁠泉⁠に行⁠く';
 
   @override
-  String get bucketExample3 => '親と旅行に行く';
+  String get bucketExample3 => '親⁠と旅⁠行⁠に行⁠く';
 
   @override
-  String get bucketExample4 => '富士山に登る';
+  String get bucketExample4 => '富⁠士⁠山⁠に登⁠る';
 
   @override
   String get bucketFromAnswers => '今日の問いの答えからも追加できます。';

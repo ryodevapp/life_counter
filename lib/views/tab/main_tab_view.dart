@@ -119,7 +119,11 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
               left: 0,
               right: 0,
               bottom: bottomInset,
-              child: const _KeyboardDoneBar(height: _doneBarHeight),
+              // iOS の入力欄の上の帯と同じく、文字の設定を大きくしても大きくしない(高さが固定で、大きくすると「完了」が切れる)
+              child: MediaQuery.withClampedTextScaling(
+                maxScaleFactor: AppTextStyles.barMaxTextScale,
+                child: const _KeyboardDoneBar(height: _doneBarHeight),
+              ),
             ),
           if (bottomInset == 0)
             Positioned(

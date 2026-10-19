@@ -26,7 +26,7 @@ void main() {
 
     // 今日: 気分のカードと、今日の問いのカード
     await shot(binding, tester, '01_today');
-    await tester.tap(find.text('うれしい'));
+    await tester.tap(findText('うれしい'));
     await midShot(tester, '01m_mood_tapping');
     await wait(tester);
     await tester.enterText(find.byType(TextField).first,
@@ -41,11 +41,11 @@ void main() {
     // 記録: リスト → カレンダー(切り替えの途中も撮る)
     await tapText(tester, '記録');
     await shot(binding, tester, '03_records_list');
-    await tester.tap(find.text('カレンダー').last);
+    await tester.tap(findText('カレンダー').last);
     await midShot(tester, '03m_switch_to_calendar');
     await wait(tester);
     await shot(binding, tester, '04_records_calendar');
-    await tester.tap(find.text('リスト').last);
+    await tester.tap(findText('リスト').last);
     await midShot(tester, '05m_switch_to_list');
     await wait(tester);
 
@@ -67,7 +67,7 @@ void main() {
     await tester.tap(find.bySemanticsLabel('まだかなえていない').last);
     await wait(tester);
     await shot(binding, tester, '09_bucket_done');
-    await tester.tap(find.text('オーロラを見る').last);
+    await tester.tap(findText('オーロラを見る').last);
     await wait(tester);
     await shot(binding, tester, '10_bucket_edit');
   });
