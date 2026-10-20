@@ -635,7 +635,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get answerSaved => '保存しました';
 
   @override
-  String get dataOpenErrorTitle => '記録を開けませんでした';
+  String get dataOpenErrorTitle => '記⁠録⁠を開⁠け⁠ま⁠せ⁠んで⁠し⁠た';
 
   @override
   String get dataOpenErrorMessage =>

@@ -1127,7 +1127,7 @@ abstract class AppLocalizations {
   /// No description provided for @dataOpenErrorTitle.
   ///
   /// In ja, this message translates to:
-  /// **'記録を開けませんでした'**
+  /// **'記⁠録⁠を開⁠け⁠ま⁠せ⁠んで⁠し⁠た'**
   String get dataOpenErrorTitle;
 
   /// No description provided for @dataOpenErrorMessage.

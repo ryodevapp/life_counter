@@ -366,7 +366,7 @@
   },
   "daysAheadRow": "これからの日々",
   "answerSaved": "保存しました",
-  "dataOpenErrorTitle": "記録を開けませんでした",
+  "dataOpenErrorTitle": "記⁠録⁠を開⁠け⁠ま⁠せ⁠んで⁠し⁠た",
   "dataOpenErrorMessage": "一時的な問題なら、もう一度試すと開けます。直らないときは、端末の空き容量を増やすか、アプリを開き直すと、開けることがあります。",
   "retry": "もう一度試す"
 }

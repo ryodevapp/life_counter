@@ -112,13 +112,20 @@ class AppSegmentedControl<T> extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md)),
                   ),
-                  child: Text(
-                    items[i].label,
-                    style: AppTextStyles.callout.copyWith(
-                      fontSize: 14,
-                      fontWeight:
-                          i == index ? FontWeight.w600 : FontWeight.w400,
-                      color: i == index ? AppColors.text : AppColors.textMuted,
+                  // 1語の名前なので、SE の最大の文字で幅に入らないときは1行のまま縮める(「バケットリス / ト」にしない)
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      items[i].label,
+                      maxLines: 1,
+                      style: AppTextStyles.callout.copyWith(
+                        fontSize: 14,
+                        fontWeight:
+                            i == index ? FontWeight.w600 : FontWeight.w400,
+                        color:
+                            i == index ? AppColors.text : AppColors.textMuted,
+                      ),
                     ),
                   ),
                 ),
