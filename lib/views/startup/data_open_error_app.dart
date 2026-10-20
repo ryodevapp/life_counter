@@ -62,24 +62,31 @@ class _DataOpenErrorPageState extends State<DataOpenErrorPage> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     return Scaffold(
+      // 最大の文字では1画面に入らないので、ふだんは中央に置き、入らないときだけ送れるようにする
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.screen),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(l.dataOpenErrorTitle,
-                  style: AppTextStyles.title, textAlign: TextAlign.center),
-              const SizedBox(height: AppSpacing.l),
-              Text(l.dataOpenErrorMessage,
-                  style: AppTextStyles.body, textAlign: TextAlign.center),
-              const SizedBox(height: AppSpacing.xxl),
-              AppButton.primary(
-                onPressed: _busy ? null : _retry,
-                label: l.retry,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.screen),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight - AppSpacing.screen * 2),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(l.dataOpenErrorTitle,
+                      style: AppTextStyles.title, textAlign: TextAlign.center),
+                  const SizedBox(height: AppSpacing.l),
+                  Text(l.dataOpenErrorMessage,
+                      style: AppTextStyles.body, textAlign: TextAlign.center),
+                  const SizedBox(height: AppSpacing.xxl),
+                  AppButton.primary(
+                    onPressed: _busy ? null : _retry,
+                    label: l.retry,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -61,7 +61,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get birthDateNeeded => '生年月日を入れると表示されます';
 
   @override
-  String get loadError => '読み込めませんでした。アプリを開き直してください。';
+  String get loadError => '読み込めませんでした。アプリを開き直すと、直ることがあります。';
 
   @override
   String get readMore => '続きを読む';
@@ -224,7 +224,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get peopleWhoMatter => '大切な人';
 
   @override
-  String get pastAverageSelf => '平均寿命を越えて、日々を重ねています';
+  String get pastAverageSelf => '平均の目安を越えて、日々を重ねています';
 
   @override
   String daysEstimateUnit(int count) {
@@ -393,7 +393,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sinceLastMet => '最後に会ってから';
 
   @override
-  String get pastAveragePerson => '平均寿命を越えて、日々を重ねています';
+  String get pastAveragePerson => '平均の目安を越えて、日々を重ねています';
 
   @override
   String get nickname => 'ニックネーム';
@@ -561,7 +561,7 @@ class AppLocalizationsJa extends AppLocalizations {
       '1日1つの問いに答える日記です。\n答えるうちに、家族と過ごす時間や、\nこれから大切にしたいことが見えてきます。';
 
   @override
-  String get birthTitle => '生年月日を教えてください';
+  String get birthTitle => 'いつ生まれましたか？';
 
   @override
   String get birthBody => '今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。';
@@ -639,7 +639,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get dataOpenErrorMessage =>
-      '一時的な問題かもしれません。もう一度試してください。直らないときは、端末の空き容量を確かめてから、アプリを開き直してください。';
+      '一時的な問題なら、もう一度試すと開けます。直らないときは、端末の空き容量を増やすか、アプリを開き直すと、開けることがあります。';
 
   @override
   String get retry => 'もう一度試す';

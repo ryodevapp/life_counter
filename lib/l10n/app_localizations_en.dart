@@ -670,7 +670,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataOpenErrorMessage =>
-      'This may be a temporary problem. Please try again. If it keeps happening, check your device\'s free storage and reopen the app.';
+      'This may be a temporary problem, and trying again may help. If it keeps happening, freeing up storage or reopening the app may help.';
 
   @override
   String get retry => 'Try Again';

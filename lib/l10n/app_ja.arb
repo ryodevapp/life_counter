@@ -30,7 +30,7 @@
     }
   },
   "birthDateNeeded": "生年月日を入れると表示されます",
-  "loadError": "読み込めませんでした。アプリを開き直してください。",
+  "loadError": "読み込めませんでした。アプリを開き直すと、直ることがあります。",
   "readMore": "続きを読む",
   "showLess": "閉じる",
   "birthDate": "生年月日",
@@ -115,7 +115,7 @@
   "segmentPeople": "大切な人",
   "segmentBucketList": "バ⁠ケ⁠ッ⁠ト⁠リ⁠ス⁠ト",
   "peopleWhoMatter": "大切な人",
-  "pastAverageSelf": "平均寿命を越えて、日々を重ねています",
+  "pastAverageSelf": "平均の目安を越えて、日々を重ねています",
   "daysEstimateUnit": "{count, plural, other{日（いまの年齢からの平均の目安）}}",
   "@daysEstimateUnit": {
     "description": "大きな数字の下に出す単位と説明",
@@ -243,7 +243,7 @@
     }
   },
   "sinceLastMet": "最後に会ってから",
-  "pastAveragePerson": "平均寿命を越えて、日々を重ねています",
+  "pastAveragePerson": "平均の目安を越えて、日々を重ねています",
   "nickname": "ニックネーム",
   "nicknameHint": "例: お母さん",
   "nicknameNeeded": "ニックネームを入れると保存できます",
@@ -324,7 +324,7 @@
   "dateFrom1920": "1920年以降の日付を選べます",
   "welcomeTitle": "今日は、人生の何日目？",
   "welcomeBody": "1日1つの問いに答える日記です。\n答えるうちに、家族と過ごす時間や、\nこれから大切にしたいことが見えてきます。",
-  "birthTitle": "生年月日を教えてください",
+  "birthTitle": "いつ生まれましたか？",
   "birthBody": "今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。",
   "genderNote": "平均からの目安に使います",
   "onboardingLifeDaysBefore": "今日は、あなたの人生",
@@ -367,6 +367,6 @@
   "daysAheadRow": "これからの日々",
   "answerSaved": "保存しました",
   "dataOpenErrorTitle": "記録を開けませんでした",
-  "dataOpenErrorMessage": "一時的な問題かもしれません。もう一度試してください。直らないときは、端末の空き容量を確かめてから、アプリを開き直してください。",
+  "dataOpenErrorMessage": "一時的な問題なら、もう一度試すと開けます。直らないときは、端末の空き容量を増やすか、アプリを開き直すと、開けることがあります。",
   "retry": "もう一度試す"
 }

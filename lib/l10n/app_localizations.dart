@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @loadError.
   ///
   /// In ja, this message translates to:
-  /// **'読み込めませんでした。アプリを開き直してください。'**
+  /// **'読み込めませんでした。アプリを開き直すと、直ることがあります。'**
   String get loadError;
 
   /// No description provided for @readMore.
@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// No description provided for @pastAverageSelf.
   ///
   /// In ja, this message translates to:
-  /// **'平均寿命を越えて、日々を重ねています'**
+  /// **'平均の目安を越えて、日々を重ねています'**
   String get pastAverageSelf;
 
   /// 大きな数字の下に出す単位と説明
@@ -683,7 +683,7 @@ abstract class AppLocalizations {
   /// No description provided for @pastAveragePerson.
   ///
   /// In ja, this message translates to:
-  /// **'平均寿命を越えて、日々を重ねています'**
+  /// **'平均の目安を越えて、日々を重ねています'**
   String get pastAveragePerson;
 
   /// No description provided for @nickname.
@@ -1001,7 +1001,7 @@ abstract class AppLocalizations {
   /// No description provided for @birthTitle.
   ///
   /// In ja, this message translates to:
-  /// **'生年月日を教えてください'**
+  /// **'いつ生まれましたか？'**
   String get birthTitle;
 
   /// No description provided for @birthBody.
@@ -1133,7 +1133,7 @@ abstract class AppLocalizations {
   /// No description provided for @dataOpenErrorMessage.
   ///
   /// In ja, this message translates to:
-  /// **'一時的な問題かもしれません。もう一度試してください。直らないときは、端末の空き容量を確かめてから、アプリを開き直してください。'**
+  /// **'一時的な問題なら、もう一度試すと開けます。直らないときは、端末の空き容量を増やすか、アプリを開き直すと、開けることがあります。'**
   String get dataOpenErrorMessage;
 
   /// No description provided for @retry.
