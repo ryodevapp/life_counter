@@ -109,6 +109,7 @@
 | 消す確認 | `showDeleteConfirmation` だけを使う。「消す」は danger の色、既定の選択にしない |
 | お知らせ | `AppToast` だけを使う(SnackBar を直接書かない) |
 | 空の状態 | 説明1文(callout・textMuted)。必要なら主ボタン1つ。絵文字は使わない |
+| 起動画面 | iOS の `LaunchScreen.storyboard` だけで作る(依存は足さない)。地は色のアセット `LaunchBackground`(昼 #FDFBF7・夜 #1C1A18 = `bg`)、真ん中にアイコンの砂時計だけ(64×85pt、`LaunchImage`。昼は生成りの部分をアイコンの地の茶 #4A2814 に替え、夜はアイコンの暗い版と同じ生成り)。文字は置かない。`bg` を変えたら、この2つのアセットと `Main.storyboard` の地も同じ値にする(違うと Flutter の最初の画面へ切り替わるときにちらつく) |
 | 画面の題 | `PageHeader`。日本語の題(largeTitle 34pt 太字)を左寄せ |
 
 ## 9. 言葉
