@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/common.dart';
 import 'package:integration_test/integration_test.dart';
+
+import '../test/support/text_truncation.dart';
 
 /// アニメーションが止まらない画面があるので、pumpAndSettle の代わりに時間で進める
 Future<void> wait(WidgetTester tester, [int ms = 800]) async {
@@ -13,7 +16,37 @@ Future<void> shot(IntegrationTestWidgetsFlutterBinding binding,
     WidgetTester tester, String name) async {
   await wait(tester, 1200);
   await binding.takeScreenshot(name);
+  recordTruncatedText(binding, tester, name);
 }
+
+/// 撮るたびに、文字が「…」や行数の上限で切れていないかを見る(test/support/text_truncation.dart)。
+/// 1枚目で止めずに最後まで撮り、テストの終わりに切れた所を全部並べて失敗にする。
+/// 同じ文が何枚にも写るときは、最初に見つけた画像の名前で1回だけ出す。
+/// 終わりの片付け(addTearDown)での失敗は flutter drive の合否に入らない(テストの本体の結果しか見ない)ので、
+/// binding.results にも失敗を足す(足さないと「All tests passed.」のまま終わる。10/23 に確かめた)
+void recordTruncatedText(IntegrationTestWidgetsFlutterBinding binding,
+    WidgetTester tester, String name) {
+  var pending = _truncations;
+  if (pending == null) {
+    pending = _truncations = {};
+    addTearDown(() {
+      final found = _truncations!;
+      _truncations = null;
+      if (found.isEmpty) return;
+      final message =
+          '文字が切れています(${found.length}箇所)。画像の名前・文・切れ方・文字の大きさ・位置(左,上 幅×高さ)\n'
+          '${found.values.map((v) => '  - $v').join('\n')}';
+      binding.results['文字の切れ(${binding.results.length})'] =
+          Failure('文字の切れ', message);
+      fail(message);
+    });
+  }
+  for (final t in findTruncatedText(tester)) {
+    pending.putIfAbsent(t.summary, () => '$name $t');
+  }
+}
+
+Map<String, String>? _truncations;
 
 /// find.text と同じだが、行を折らせない印(U+2060)を無視して比べる。
 /// 日本語の短い語には印が入っている(lib/l10n/l10n.dart の keepTogether)ので、find.text では見つからない

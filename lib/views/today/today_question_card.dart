@@ -207,7 +207,7 @@ class TodayQuestionCard extends StatelessWidget {
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
               hintText: l.answerHint,
-              hintMaxLines: 3,
+              // 案内の文は行数で切らない(最大の文字では3行に入らず「…」で切れていた)。欄は答えと同じく下へ伸びる
               hintStyle:
                   AppTextStyles.body.copyWith(color: AppColors.textDisabled),
               counterText: '',
