@@ -591,7 +591,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get birthBody =>
-      'We use it to count the days of your life.\nEverything stays on this iPhone.';
+      'We use it to count the days of your life.\nEverything stays on this device.';
 
   @override
   String get genderNote => 'Used for estimates based on averages';

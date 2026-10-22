@@ -564,7 +564,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get birthTitle => 'いつ生まれましたか？';
 
   @override
-  String get birthBody => '今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。';
+  String get birthBody => '今日が人生の何日目かを数えます。\n記録はこの端末の中だけに残ります。';
 
   @override
   String get genderNote => '平均からの目安に使います';

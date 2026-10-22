@@ -1007,7 +1007,7 @@ abstract class AppLocalizations {
   /// No description provided for @birthBody.
   ///
   /// In ja, this message translates to:
-  /// **'今日が人生の何日目かを数えます。\n記録はこの iPhone の中だけに残ります。'**
+  /// **'今日が人生の何日目かを数えます。\n記録はこの端末の中だけに残ります。'**
   String get birthBody;
 
   /// No description provided for @genderNote.
