@@ -4,6 +4,7 @@ import '../../l10n/l10n.dart';
 import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 
 /// 記録(データベース)を開けなかったときの画面。落とさずに、もう一度試せるようにする
@@ -67,24 +68,26 @@ class _DataOpenErrorPageState extends State<DataOpenErrorPage> {
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.screen),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight - AppSpacing.screen * 2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(l.dataOpenErrorTitle,
-                      style: AppTextStyles.title, textAlign: TextAlign.center),
-                  const SizedBox(height: AppSpacing.l),
-                  Text(l.dataOpenErrorMessage,
-                      style: AppTextStyles.body, textAlign: TextAlign.center),
-                  const SizedBox(height: AppSpacing.xxl),
-                  AppButton.primary(
-                    onPressed: _busy ? null : _retry,
-                    label: l.retry,
-                  ),
-                ],
+            child: ReadableWidth(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - AppSpacing.screen * 2),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(l.dataOpenErrorTitle,
+                        style: AppTextStyles.title, textAlign: TextAlign.center),
+                    const SizedBox(height: AppSpacing.l),
+                    Text(l.dataOpenErrorMessage,
+                        style: AppTextStyles.body, textAlign: TextAlign.center),
+                    const SizedBox(height: AppSpacing.xxl),
+                    AppButton.primary(
+                      onPressed: _busy ? null : _retry,
+                      label: l.retry,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

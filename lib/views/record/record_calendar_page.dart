@@ -16,6 +16,7 @@ import '../shared/action_buttons.dart';
 import '../today/today_question_card.dart' show MoodPicker;
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/mood_face.dart';
 import '../shared/mood_shape.dart';
@@ -71,28 +72,30 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
             AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            PageHeader(l.tabJournal),
-            AppSegmentedControl<_RecordView>(
-              items: [
-                SegmentItem(value: _RecordView.list, label: l.viewList),
-                SegmentItem(value: _RecordView.calendar, label: l.viewCalendar),
-              ],
-              selectedValue: _view,
-              onChanged: (v) => setState(() => _view = v),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            if (_view == _RecordView.calendar) ...[
-              _buildCalendar(),
-              if (_selectedRecord != null) ...[
-                const SizedBox(height: AppSpacing.cardGap),
-                _buildSelectedRecordCard(),
-              ],
-            ] else
-              _buildList(),
-          ],
+        child: ReadableWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PageHeader(l.tabJournal),
+              AppSegmentedControl<_RecordView>(
+                items: [
+                  SegmentItem(value: _RecordView.list, label: l.viewList),
+                  SegmentItem(value: _RecordView.calendar, label: l.viewCalendar),
+                ],
+                selectedValue: _view,
+                onChanged: (v) => setState(() => _view = v),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              if (_view == _RecordView.calendar) ...[
+                _buildCalendar(),
+                if (_selectedRecord != null) ...[
+                  const SizedBox(height: AppSpacing.cardGap),
+                  _buildSelectedRecordCard(),
+                ],
+              ] else
+                _buildList(),
+            ],
+          ),
         ),
       ),
     );

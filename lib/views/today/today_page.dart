@@ -14,6 +14,7 @@ import '../../services/widget_sync.dart';
 import '../../utils/date_only.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_toast.dart';
 import 'today_question_card.dart';
@@ -278,45 +279,47 @@ class _TodayPageState extends ConsumerState<TodayPage> {
           AppSpacing.screen,
           130,
         ),
-        child: Column(
-          children: [
-            // いちばん上: 人生の日数 + 日付
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-              child: Column(
-                children: [
-                  // 日付 → 「人生 12,616 日目」「Day 12,616 of your life」(数字の下の線に、前後の言葉を揃える)
-                  Text(dateStr, style: AppTextStyles.footnote),
-                  const SizedBox(height: AppSpacing.s),
-                  LayoutBuilder(builder: (context, constraints) {
-                    final number = formatter.format(lifeDays);
-                    return Text.rich(
-                      TextSpan(children: [
-                        TextSpan(text: l.todayLifeDaysPrefix, style: _counterWord),
-                        TextSpan(
-                            text: number,
-                            style: _counterFitting(
-                                context, number, constraints.maxWidth)),
-                        TextSpan(text: l.todayLifeDaysSuffix, style: _counterWord),
-                      ]),
-                    );
-                  }),
-                ],
+        child: ReadableWidth(
+          child: Column(
+            children: [
+              // いちばん上: 人生の日数 + 日付
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+                child: Column(
+                  children: [
+                    // 日付 → 「人生 12,616 日目」「Day 12,616 of your life」(数字の下の線に、前後の言葉を揃える)
+                    Text(dateStr, style: AppTextStyles.footnote),
+                    const SizedBox(height: AppSpacing.s),
+                    LayoutBuilder(builder: (context, constraints) {
+                      final number = formatter.format(lifeDays);
+                      return Text.rich(
+                        TextSpan(children: [
+                          TextSpan(text: l.todayLifeDaysPrefix, style: _counterWord),
+                          TextSpan(
+                              text: number,
+                              style: _counterFitting(
+                                  context, number, constraints.maxWidth)),
+                          TextSpan(text: l.todayLifeDaysSuffix, style: _counterWord),
+                        ]),
+                      );
+                    }),
+                  ],
+                ),
               ),
-            ),
 
-            MoodCard(selectedId: _stampId, onSelect: _onStamp),
-            const SizedBox(height: AppSpacing.cardGap),
-            TodayQuestionCard(
-              question: _question,
-              answerController: _answerController,
-              answerFocus: _answerFocus,
-              lastYearAnswer: _lastYearAnswer,
-              onAnswerChanged: _onAnswerChanged,
-              onAddToBucket: _addToBucket,
-              saved: _saved,
-            ),
-          ],
+              MoodCard(selectedId: _stampId, onSelect: _onStamp),
+              const SizedBox(height: AppSpacing.cardGap),
+              TodayQuestionCard(
+                question: _question,
+                answerController: _answerController,
+                answerFocus: _answerFocus,
+                lastYearAnswer: _lastYearAnswer,
+                onAnswerChanged: _onAnswerChanged,
+                onAddToBucket: _addToBucket,
+                saved: _saved,
+              ),
+            ],
+          ),
         ),
       ),
     );

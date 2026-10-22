@@ -4,6 +4,7 @@ import '../../providers/isar_provider.dart';
 import '../../l10n/l10n.dart';
 import '../shared/app_segmented_control.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/page_header.dart';
 import 'your_time_section.dart';
 import 'important_people_section.dart';
@@ -40,30 +41,32 @@ class _LifeTabPageState extends ConsumerState<LifeTabPage> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.fromLTRB(
             AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            PageHeader(l.tabLife),
-            AppSegmentedControl<_LifeSegment>(
-              items: [
-                SegmentItem(value: _LifeSegment.time, label: l.segmentYou),
-                SegmentItem(value: _LifeSegment.people, label: l.segmentPeople),
-                SegmentItem(
-                    value: _LifeSegment.bucket, label: l.segmentBucketList),
-              ],
-              selectedValue: _segment,
-              onChanged: (v) => setState(() {
-                _chosen = true;
-                _segment = v;
-              }),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            switch (_segment) {
-              _LifeSegment.time => const YourTimeSection(),
-              _LifeSegment.people => const ImportantPeopleSection(),
-              _LifeSegment.bucket => const BucketSection(),
-            },
-          ],
+        child: ReadableWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PageHeader(l.tabLife),
+              AppSegmentedControl<_LifeSegment>(
+                items: [
+                  SegmentItem(value: _LifeSegment.time, label: l.segmentYou),
+                  SegmentItem(value: _LifeSegment.people, label: l.segmentPeople),
+                  SegmentItem(
+                      value: _LifeSegment.bucket, label: l.segmentBucketList),
+                ],
+                selectedValue: _segment,
+                onChanged: (v) => setState(() {
+                  _chosen = true;
+                  _segment = v;
+                }),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              switch (_segment) {
+                _LifeSegment.time => const YourTimeSection(),
+                _LifeSegment.people => const ImportantPeopleSection(),
+                _LifeSegment.bucket => const BucketSection(),
+              },
+            ],
+          ),
         ),
       ),
     );

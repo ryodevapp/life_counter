@@ -15,6 +15,7 @@ import '../../services/record_export.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
@@ -42,76 +43,78 @@ class MyPage extends ConsumerWidget {
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
             AppSpacing.screen, AppSpacing.l, AppSpacing.screen, 130),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            PageHeader(l.tabSettings),
+        child: ReadableWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PageHeader(l.tabSettings),
 
-            AppCard(
-              padding: _groupPadding,
-              child: Column(
-                children: [
-                  _row(
-                    context,
-                    CupertinoIcons.gift, l.birthDate, value: bdText,
-                    onTap: () => _editBirthDate(context, ref, settings),
-                  ),
-                  _divider(),
-                  _row(
-                    context,
-                    CupertinoIcons.person, l.gender, value: genText,
-                    onTap: () => _editGender(context, ref, settings),
-                  ),
-                  _divider(),
-                  _row(
-                    context,
-                    CupertinoIcons.bell, l.morningNotification,
-                    value: notifText,
-                    onTap: () => _editNotification(context, ref, settings),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-
-            AppCard(
-              padding: _groupPadding,
-              child: Column(
-                children: [
-                  _row(context, CupertinoIcons.square_arrow_up, l.exportJournal,
-                      onTap: () => _exportRecords(context, ref)),
-                  _divider(),
-                  _row(context, CupertinoIcons.envelope, l.sendFeedback,
-                      onTap: () => _sendFeedback(context)),
-                  _divider(),
-                  _row(context, CupertinoIcons.lock, l.privacyPolicy,
-                      onTap: () => _showLegal(context, 'privacy_policy.html',
-                          l.privacyPolicy)),
-                  _divider(),
-                  _row(context, CupertinoIcons.doc_text, l.termsOfUse,
-                      onTap: () => _showLegal(
-                          context, 'terms_of_service.html', l.termsOfUse)),
-                  _divider(),
-                  // アプリに入れた書体(OFL)と、使っている部品のライセンス
-                  _row(context, CupertinoIcons.info, l.licenses,
-                      onTap: () => _showLicenses(context)),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.section),
-
-            Center(
-              child: FutureBuilder<PackageInfo>(
-                future: _packageInfo,
-                builder: (context, snapshot) => Text(
-                  snapshot.hasData
-                      ? l.version(snapshot.data!.version)
-                      : 'LifeCounter',
-                  style: AppTextStyles.footnote,
+              AppCard(
+                padding: _groupPadding,
+                child: Column(
+                  children: [
+                    _row(
+                      context,
+                      CupertinoIcons.gift, l.birthDate, value: bdText,
+                      onTap: () => _editBirthDate(context, ref, settings),
+                    ),
+                    _divider(),
+                    _row(
+                      context,
+                      CupertinoIcons.person, l.gender, value: genText,
+                      onTap: () => _editGender(context, ref, settings),
+                    ),
+                    _divider(),
+                    _row(
+                      context,
+                      CupertinoIcons.bell, l.morningNotification,
+                      value: notifText,
+                      onTap: () => _editNotification(context, ref, settings),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: AppSpacing.xl),
+
+              AppCard(
+                padding: _groupPadding,
+                child: Column(
+                  children: [
+                    _row(context, CupertinoIcons.square_arrow_up, l.exportJournal,
+                        onTap: () => _exportRecords(context, ref)),
+                    _divider(),
+                    _row(context, CupertinoIcons.envelope, l.sendFeedback,
+                        onTap: () => _sendFeedback(context)),
+                    _divider(),
+                    _row(context, CupertinoIcons.lock, l.privacyPolicy,
+                        onTap: () => _showLegal(context, 'privacy_policy.html',
+                            l.privacyPolicy)),
+                    _divider(),
+                    _row(context, CupertinoIcons.doc_text, l.termsOfUse,
+                        onTap: () => _showLegal(
+                            context, 'terms_of_service.html', l.termsOfUse)),
+                    _divider(),
+                    // アプリに入れた書体(OFL)と、使っている部品のライセンス
+                    _row(context, CupertinoIcons.info, l.licenses,
+                        onTap: () => _showLicenses(context)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSpacing.section),
+
+              Center(
+                child: FutureBuilder<PackageInfo>(
+                  future: _packageInfo,
+                  builder: (context, snapshot) => Text(
+                    snapshot.hasData
+                        ? l.version(snapshot.data!.version)
+                        : 'LifeCounter',
+                    style: AppTextStyles.footnote,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -422,9 +425,11 @@ class _LegalPage extends StatelessWidget {
           final sections = _parseHtml(html);
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.screen),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: sections,
+            child: ReadableWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: sections,
+              ),
             ),
           );
         },
