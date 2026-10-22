@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
+import '../../l10n/phrase_break.dart';
 import '../../models/bucket_item.dart';
 import '../../models/important_person.dart';
 import '../../providers/bucket_provider.dart';
@@ -152,8 +153,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
             ],
           ),
           const SizedBox(height: AppSpacing.l),
-          Text(l.bucketFromAnswers,
-              style: AppTextStyles.footnote),
+          PhraseText(l.bucketFromAnswers, style: AppTextStyles.footnote),
         ],
         if (someday.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
@@ -249,7 +249,8 @@ class _BucketRow extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.title,
+                      // 利用者の書いた文も、文節の途中で折らない(読み上げは元の文)
+                      PhraseText(item.title,
                           style: AppTextStyles.body.copyWith(height: 1.4)),
                       if (sub.isNotEmpty)
                         Text(sub, style: AppTextStyles.footnote),
@@ -556,7 +557,7 @@ class _AddField extends StatelessWidget {
               style: AppTextStyles.body,
               cursorColor: AppColors.accent,
               decoration: InputDecoration(
-                hintText: context.l10n.addToBucketList,
+                hintText: PhraseBreak.apply(context.l10n.addToBucketList),
                 hintMaxLines: 3,
                 hintStyle:
                     AppTextStyles.body.copyWith(color: AppColors.textDisabled),

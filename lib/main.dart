@@ -7,6 +7,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
+import 'l10n/phrase_break.dart';
 import 'services/notification_service.dart';
 import 'services/day_key_migration.dart';
 import 'services/question_bank.dart';
@@ -30,6 +31,8 @@ void main() async {
   // 日本語と英語の日付の書き方を読み込む
   await initializeDateFormatting();
   await NotificationService.initialize();
+  // 日本語を文節の途中で折らないための辞書(BudouX の ja。約17KB)
+  await PhraseBreak.load();
 
   // 平均の目安は、住んでいる国(端末の地域)の値で計算する
   LifeCalculator.regionCode =
