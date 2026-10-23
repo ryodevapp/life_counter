@@ -87,7 +87,10 @@ class PhraseBreak {
   /// 返すのは表示の文の切れ端の並び。1行に入らない語は1つの切れ端にし、[PhraseFitPiece.width] にその幅を入れる
   /// (それ以外は 0。[measure] は1行で組んだ幅)
   static List<PhraseFitPiece> fit(
-      String text, double maxWidth, double Function(String) measure) {
+    String text,
+    double maxWidth,
+    double Function(String) measure,
+  ) {
     final segments = _segmentsOf(text);
     if (segments == null) return [PhraseFitPiece(text, 0)];
     final out = <PhraseFitPiece>[];
@@ -192,7 +195,8 @@ class PhraseBreak {
             continue;
           }
           // 絵文字は前の文節に付ける(行の頭に絵文字だけが落ちないように)
-          final glue = j > 0 || (i > 0 && c.length > 1 && !_japanese.hasMatch(c));
+          final glue =
+              j > 0 || (i > 0 && c.length > 1 && !_japanese.hasMatch(c));
           if (!glue) flush();
           current.write(c);
         }
@@ -242,13 +246,15 @@ class PhraseBreak {
     if (current.isNotEmpty) out.add(current.toString());
     return [
       for (final w in out)
-        for (final c in _splitCompound(w)) ..._splitAuxiliary(c)
+        for (final c in _splitCompound(w)) ..._splitAuxiliary(c),
     ];
   }
 
   /// 漢字で始まる語の送りがなの後ろの助動詞の前で分ける(大きな見出しの「生まれ/ましたか？」「過ごして/いきますか。」)。
   /// 「て」の後と「ます・ました・ません」の前だけ。ひらがなだけの語(「ひとことでも」)は分けない
-  static final _auxiliary = RegExp(r'(?<=[ぁ-ゖ]て)(?=[ぁ-ゖ]{2})|(?<=[㐀-鿿々][ぁ-ゖ]*)(?=ま[すしせ])');
+  static final _auxiliary = RegExp(
+    r'(?<=[ぁ-ゖ]て)(?=[ぁ-ゖ]{2})|(?<=[㐀-鿿々][ぁ-ゖ]*)(?=ま[すしせ])',
+  );
 
   static List<String> _splitAuxiliary(String word) {
     if (!_kanjiStart.hasMatch(word)) return [word];
@@ -307,16 +313,27 @@ class PhraseFitPiece {
 /// 1文節が1行に入らないときは、その文節を語の切れ目で折り、それでも入らない語があれば、
 /// その語だけ入る大きさまで縮める(下限は今の 0.85 倍かつ 11pt)。読み上げ(semanticsLabel)は元の文のまま。
 ///
-/// 幅を見るのに [LayoutBuilder] を使うので、内在の大きさを測る親(IntrinsicWidth など)の中では使わない
+/// 幅を見るのに [LayoutBuilder] を使うので、内在の大きさを測る親(IntrinsicWidth・CupertinoAlertDialog など)の
+/// 中では使わない。そこでは [width] に入る幅を渡す(LayoutBuilder を使わずに組む)
 class PhraseText extends StatelessWidget {
-  const PhraseText(this.data,
-      {super.key, this.style, this.textAlign, this.maxLines, this.overflow});
+  const PhraseText(
+    this.data, {
+    super.key,
+    this.style,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.width,
+  });
 
   final String data;
   final TextStyle? style;
   final TextAlign? textAlign;
   final int? maxLines;
   final TextOverflow? overflow;
+
+  /// 文が入る幅(分かっているときだけ)。渡すと親の幅を測らない
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -325,42 +342,55 @@ class PhraseText extends StatelessWidget {
     if (simple == data) {
       return _text(simple, null);
     }
-    return LayoutBuilder(builder: (context, constraints) {
-      final maxWidth = constraints.maxWidth;
-      if (!maxWidth.isFinite) return _text(simple, semanticsLabel);
-      final effective = DefaultTextStyle.of(context).style.merge(style);
-      final scaler = MediaQuery.textScalerOf(context);
-      final direction = Directionality.of(context);
-      double measure(String s, TextScaler sc) {
-        final p = TextPainter(
-          text: TextSpan(text: s, style: effective),
-          textDirection: direction,
-          textScaler: sc,
-          maxLines: 1,
-        )..layout();
-        final w = p.width;
-        p.dispose();
-        return w;
-      }
+    if (width != null) {
+      return _fitted(context, width!, simple, semanticsLabel);
+    }
+    return LayoutBuilder(
+      builder: (context, constraints) =>
+          _fitted(context, constraints.maxWidth, simple, semanticsLabel),
+    );
+  }
 
-      // ほとんどの文は1行に入るか、どの文節も1行に入る。そのときは今までどおり
-      if (measure(simple, scaler) <= maxWidth) {
-        return _text(simple, semanticsLabel);
-      }
-      final pieces =
-          PhraseBreak.fit(data, maxWidth, (s) => measure(s, scaler));
-      if (pieces.every((p) => p.width == 0)) {
-        return _text(pieces.map((p) => p.text).join(), semanticsLabel);
-      }
-      // 1行に入らない語がある: その語だけ、入る大きさまで縮める。
-      // 下限は今の大きさの [PhraseBreak.minShrink] 倍かつ [PhraseBreak.minFontSize] pt(それでも入らなければ字の間で折れる)
-      final fontSize = effective.fontSize ?? 14;
-      final now = scaler.scale(fontSize);
-      final floor = (now * PhraseBreak.minShrink)
-          .clamp(PhraseBreak.minFontSize, now)
-          .toDouble();
-      return Text.rich(
-        TextSpan(children: [
+  Widget _fitted(
+    BuildContext context,
+    double maxWidth,
+    String simple,
+    String semanticsLabel,
+  ) {
+    if (!maxWidth.isFinite) return _text(simple, semanticsLabel);
+    final effective = DefaultTextStyle.of(context).style.merge(style);
+    final scaler = MediaQuery.textScalerOf(context);
+    final direction = Directionality.of(context);
+    double measure(String s, TextScaler sc) {
+      final p = TextPainter(
+        text: TextSpan(text: s, style: effective),
+        textDirection: direction,
+        textScaler: sc,
+        maxLines: 1,
+      )..layout();
+      final w = p.width;
+      p.dispose();
+      return w;
+    }
+
+    // ほとんどの文は1行に入るか、どの文節も1行に入る。そのときは今までどおり
+    if (measure(simple, scaler) <= maxWidth) {
+      return _text(simple, semanticsLabel);
+    }
+    final pieces = PhraseBreak.fit(data, maxWidth, (s) => measure(s, scaler));
+    if (pieces.every((p) => p.width == 0)) {
+      return _text(pieces.map((p) => p.text).join(), semanticsLabel);
+    }
+    // 1行に入らない語がある: その語だけ、入る大きさまで縮める。
+    // 下限は今の大きさの [PhraseBreak.minShrink] 倍かつ [PhraseBreak.minFontSize] pt(それでも入らなければ字の間で折れる)
+    final fontSize = effective.fontSize ?? 14;
+    final now = scaler.scale(fontSize);
+    final floor = (now * PhraseBreak.minShrink)
+        .clamp(PhraseBreak.minFontSize, now)
+        .toDouble();
+    return Text.rich(
+      TextSpan(
+        children: [
           for (final p in pieces)
             if (p.width == 0)
               TextSpan(text: p.text)
@@ -369,18 +399,20 @@ class PhraseText extends StatelessWidget {
               TextSpan(
                 text: p.text,
                 style: TextStyle(
-                    fontSize: fontSize *
-                        (now * maxWidth / p.width * 0.98).clamp(floor, now) /
-                        now),
+                  fontSize:
+                      fontSize *
+                      (now * maxWidth / p.width * 0.98).clamp(floor, now) /
+                      now,
+                ),
               ),
-        ]),
-        style: style,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        overflow: overflow,
-        semanticsLabel: semanticsLabel,
-      );
-    });
+        ],
+      ),
+      style: style,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: overflow,
+      semanticsLabel: semanticsLabel,
+    );
   }
 
   Widget _text(String shown, String? semanticsLabel) {

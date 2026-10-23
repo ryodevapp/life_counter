@@ -84,5 +84,27 @@ void main() {
         '${name}_bucket_items$shotSuffix');
     await shotAt(binding, tester, find.byType(TextField).last,
         '${name}_bucket_hint$shotSuffix');
+
+    // 4. トースト(もうリストにある項目を足す)
+    await tester.enterText(find.byType(TextField).last, buckets[1]);
+    await wait(tester, 300);
+    await tester.ensureVisible(find.bySemanticsLabel('追加'));
+    await wait(tester, 400);
+    await tester.tap(find.bySemanticsLabel('追加'));
+    // トーストは2秒で消えるので、shot の待ち(1.2秒)を通さずに撮る
+    await wait(tester, 600);
+    await binding.takeScreenshot('${name}_toast$shotSuffix');
+    recordTruncatedText(binding, tester, '${name}_toast$shotSuffix');
+    recordPhraseSplits(binding, tester, '${name}_toast$shotSuffix');
+    expect(findText('もうリストにあります'), findsOneWidget);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await wait(tester, 2500);
+
+    // 5. 削除の確認の小窓(項目の名前が入る長い見出し)
+    await tapVisible(tester, findText(buckets[1]).last);
+    await tapVisible(tester, find.bySemanticsLabel('削除').last);
+    await shot(binding, tester, '${name}_delete_dialog$shotSuffix');
+    await tester.tap(findText('キャンセル').last);
+    await wait(tester);
   });
 }

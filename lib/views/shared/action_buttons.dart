@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../../l10n/l10n.dart';
+import '../../l10n/phrase_break.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -88,8 +89,12 @@ Future<bool> showDeleteConfirmation(
   final result = await showCupertinoDialog<bool>(
     context: context,
     builder: (ctx) => CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(message ?? l.deleteConfirmMessage),
+      // 小窓は中身の高さを内在の大きさで測るので、PhraseText には文の入る幅を渡す
+      title: PhraseText(title, width: cupertinoAlertTextWidth(ctx)),
+      content: PhraseText(
+        message ?? l.deleteConfirmMessage,
+        width: cupertinoAlertTextWidth(ctx),
+      ),
       actions: [
         CupertinoDialogAction(
           onPressed: () => Navigator.of(ctx).pop(false),
@@ -104,4 +109,11 @@ Future<bool> showDeleteConfirmation(
     ),
   );
   return result ?? false;
+}
+
+/// CupertinoAlertDialog の見出しと本文の入る幅(Flutter の cupertino/dialog.dart と同じ値)。
+/// 小窓の幅は 270、大きい文字(14pt が 1.4 倍を超える)では 310。左右に 20 ずつの余白
+double cupertinoAlertTextWidth(BuildContext context) {
+  final large = MediaQuery.textScalerOf(context).scale(14) > 14 * 1.4;
+  return (large ? 310.0 : 270.0) - 20 * 2;
 }

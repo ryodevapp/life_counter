@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/phrase_break.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -21,13 +22,51 @@ class AppSegmentedControl<T> extends StatelessWidget {
   static const _height = 36.0;
   static const _inset = 3.0;
 
+  /// 横並びのとき、項目の名前の左右に空ける幅(印の端に字が触れないように)
+  static const _labelGap = 8.0;
+
+  static TextStyle _labelStyle(bool selected) => AppTextStyles.callout.copyWith(
+        fontSize: 14,
+        fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+      );
+
+  /// どれかの名前が、均等に分けた1項目の幅に1行で入らないか(太字で測る)
+  bool _labelsOverflow(BuildContext context, double width) {
+    if (!width.isFinite) return false;
+    final slot = (width - _inset * 2) / items.length - _labelGap * 2;
+    final scaler = MediaQuery.textScalerOf(context);
+    final direction = Directionality.of(context);
+    for (final item in items) {
+      final p = TextPainter(
+        text: TextSpan(text: item.label, style: _labelStyle(true)),
+        textDirection: direction,
+        textScaler: scaler,
+        maxLines: 1,
+      )..layout();
+      final w = p.width;
+      p.dispose();
+      if (w > slot) return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final index = items.indexWhere((i) => i.value == selectedValue);
-    // 大きい文字では横に入らず項目の名前が切れるので、縦に並べる
+    // 大きい文字(AX1 以上)か、標準の最大でも名前が1項目の幅に入らない(SE の「バケットリスト」など)ときは、
+    // 名前を切らずに縦に並べる(decisions 2026-10-23 夕方の段階表の②)
     if (AppTextStyles.isAccessibilitySize(context)) {
       return _buildStacked(index < 0 ? 0 : index);
     }
+    return LayoutBuilder(builder: (context, constraints) {
+      if (_labelsOverflow(context, constraints.maxWidth)) {
+        return _buildStacked(index < 0 ? 0 : index);
+      }
+      return _buildRow(context, index);
+    });
+  }
+
+  Widget _buildRow(BuildContext context, int index) {
     // 押せる範囲は 44 を保つ(見た目の土台は 36)
     return SizedBox(
       height: AppSpacing.minTap,
@@ -66,9 +105,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
                 child: Text(
                   items[i].label,
                   maxLines: 1,
-                  style: AppTextStyles.callout.copyWith(
-                    fontSize: 14,
-                    fontWeight: t > 0.5 ? FontWeight.w600 : FontWeight.w400,
+                  style: _labelStyle(t > 0.5).copyWith(
                     color: Color.lerp(AppColors.textMuted, AppColors.text, t),
                   ),
                 ),
@@ -112,20 +149,12 @@ class AppSegmentedControl<T> extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md)),
                   ),
-                  // 1語の名前なので、SE の最大の文字で幅に入らないときは1行のまま縮める(「バケットリス / ト」にしない)
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      items[i].label,
-                      maxLines: 1,
-                      style: AppTextStyles.callout.copyWith(
-                        fontSize: 14,
-                        fontWeight:
-                            i == index ? FontWeight.w600 : FontWeight.w400,
-                        color:
-                            i == index ? AppColors.text : AppColors.textMuted,
-                      ),
+                  // 幅に入らない名前は、語の切れ目で行を増やす(「バケット / リスト」)。
+                  // それでも入らない1語だけ縮める(下限 0.85 倍かつ 11pt。PhraseText)
+                  child: PhraseText(
+                    items[i].label,
+                    style: _labelStyle(i == index).copyWith(
+                      color: i == index ? AppColors.text : AppColors.textMuted,
                     ),
                   ),
                 ),

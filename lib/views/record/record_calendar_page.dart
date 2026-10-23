@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../l10n/l10n.dart';
 import '../../models/daily_record.dart';
@@ -188,16 +189,19 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   }
 
   Widget _buildCalendar() {
+    final locale = intlLocaleOf(context.l10n.localeName);
+    // 月の見出しは文なので、端末の文字の大きさのまま(下の 1.3 倍の上限を戻す)
+    final textScaler = MediaQuery.textScalerOf(context);
     return AppCard(
-      // 日付の並びは枠の大きさが決まっていて、本文と同じ3倍では数字が割れて読めない。
-      // iOS のカレンダーと同じく、並びの文字は大きくしすぎない(1.3倍まで)
+      // 日付の並び(曜日と日の数字)は枠の大きさが決まっていて、本文と同じ3倍では数字が割れて読めない。
+      // iOS のカレンダーと同じく、並びの文字は大きくしすぎない(1.3倍まで)。月の見出しは headerTitleBuilder で外す
       child: MediaQuery.withClampedTextScaling(
         maxScaleFactor: 1.3,
         child: TableCalendar(
         firstDay: DateTime(2020),
         lastDay: DateTime.now(),
         focusedDay: _focusedDay,
-        locale: intlLocaleOf(context.l10n.localeName),
+        locale: locale,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         // 曜日の行の高さは決まった値(16)なので、文字を大きくすると下が欠ける。倍率に合わせて伸ばす
         daysOfWeekHeight: MediaQuery.textScalerOf(context)
@@ -237,6 +241,14 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
           return r == null ? [] : [r];
         },
         calendarBuilders: CalendarBuilders(
+          headerTitleBuilder: (context, day) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+            child: PhraseText(
+              DateFormat.yMMMM(locale).format(day),
+              style: AppTextStyles.headline,
+              textAlign: TextAlign.center,
+            ),
+          ),
           // スタンプがある日はその絵、ない日は点
           markerBuilder: (context, day, events) {
             if (events.isEmpty) return null;

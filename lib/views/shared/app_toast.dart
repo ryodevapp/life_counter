@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/phrase_break.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -21,7 +22,8 @@ class AppToast {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
+        // 文節の途中で折らない(decisions 2026-10-23 夕方の段階表)
+        content: PhraseText(
           message,
           style: AppTextStyles.callout.copyWith(color: AppColors.onAccent),
         ),
