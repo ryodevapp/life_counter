@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
+import '../../l10n/phrase_break.dart';
 import '../../models/bucket_item.dart';
 import '../../models/important_person.dart';
 import '../../providers/bucket_provider.dart';
@@ -152,8 +153,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
             ],
           ),
           const SizedBox(height: AppSpacing.l),
-          Text(l.bucketFromAnswers,
-              style: AppTextStyles.footnote),
+          PhraseText(l.bucketFromAnswers, style: AppTextStyles.footnote),
         ],
         if (someday.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
