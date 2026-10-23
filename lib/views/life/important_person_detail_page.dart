@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
-import 'important_people_section.dart' show sharedDays;
+import 'important_people_section.dart' show daysSince, sharedDays;
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../../utils/freq_label.dart';
@@ -48,7 +48,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
     final shared = sharedDays(myBirthDate, person.birthDay);
 
     final lastMetDays = person.lastMetDay != null
-        ? DateTime.now().difference(person.lastMetDay!).inDays
+        ? daysSince(person.lastMetDay!)
         : null;
 
     final l = context.l10n;

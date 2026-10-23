@@ -25,13 +25,8 @@ const morningDays = 60;
 
 /// 生まれた日を1日目として、その日が人生の何日目か
 int lifeDaysOn(DateTime birthDate, DateTime date) {
-  final b = dateOnly(birthDate);
-  final d = dateOnly(date);
-  // 夏時間で1日が23時間になる地域でもずれないよう、UTC の日付で数える
-  final diff = DateTime.utc(d.year, d.month, d.day)
-      .difference(DateTime.utc(b.year, b.month, b.day))
-      .inDays;
-  return diff + 1;
+  // 夏時間で1日が23時間になる地域でもずれないよう、暦の日で数える
+  return calendarDaysBetween(birthDate, date) + 1;
 }
 
 /// これから [days] 日分の朝の通知。今日の時刻を過ぎていれば明日から
