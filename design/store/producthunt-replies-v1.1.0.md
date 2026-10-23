@@ -46,3 +46,18 @@ Yes, of course. I build the app with Claude Code, and the English questions were
 ## 8. 機能の要望をもらったとき
 
 (要望の中身に一言触れてから) I've noted it, and I'll think about it for a future update.
+
+## 9. iPad で使えるか
+
+(10/23 に足した。照合: ios/Runner.xcodeproj の TARGETED_DEVICE_FAMILY = "1,2"、iTunes の lookup で iPad が対応端末に入っている。公開中の 1.1.2 は iPad で中身が横いっぱいに広がる。読みやすい幅に寄せる直し LC-15 はまだ出ていないので、出るとは言わない。ウィジェットは iPad の実機で確かめていない・iOS 17 以上が要るので、聞かれるまで触れない)
+Yes, it runs on iPad too. The layout was designed for iPhone first, so on a big screen the content stretches wide. Your iPhone and iPad keep separate journals, since nothing syncs between devices.
+
+## 10. 新しい端末へ移せるか / 機種変更でデータは残るか
+
+(10/23 に足した。照合: lib/main.dart は記録を getApplicationDocumentsDirectory に置き、バックアップから外す設定は無い。iOS は Documents を iCloud とコンピュータのバックアップに含める。復元は本人も AI もまだ試していない(LC-21)ので「should」までにし、試していないと言う。書き出しはファイルを作らず、テキストを共有シートに渡す(my_page.dart の _exportRecords)。中身は答え・気分・感謝・ふりかえりなどの記録とやりたいことで、大切な人のカードは入らない。読み込みの機能は無い。照合役・読み手役 10/23 の指摘で、file→text、iPhone→device、バックアップが入っているときだけ、に直した)
+Your entries are saved on your device, and iOS includes them in iCloud and computer backups when those are on. So restoring a backup, or setting up a new device with Quick Start, should bring your entries along. I haven't tested a restore myself, though, so it's worth keeping a copy too: Settings > Export Journal turns your entries, moods, and bucket list into plain text. That text is a copy for you to keep, and the app can't import it back.
+
+## 11. ダウンロードのリンクを聞かれたら
+
+Product Hunt のメインの URL は計測なし(decisions 2026-10-19。Product Hunt は計測つきの URL を受け付けない)。コメントでリンクを貼るときだけ、計測つきのこちらを使う(10/23 に開くのを確かめた。App Store Connect の「キャンペーン」に producthunt で出る。初回の DL が5人に届くまで画面に出ない)。
+It's free on the App Store for iPhone and iPad: https://apps.apple.com/us/app/lifecounter-question-journal/id6761015343?pt=375608344&ct=producthunt&mt=8
