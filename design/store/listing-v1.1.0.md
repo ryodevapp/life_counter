@@ -1,8 +1,8 @@
 # App Store の掲載文(v1.1.0 の下書き)
 
 - 打ち出し: 家族と過ごせる時間(2026-10-16 本人決定)。名前は「問いを前に」(最初に見る体験とそろえる)
-- 名前は「日記」と言わず、1日1問で大切なものが見つかる体験として出す(2026-10-17 本人決定)。「日記」で探す人のため、キーワード欄に「日記」を入れる
-- 言わない言葉: 余命・死ぬまで・あと何日・カウントダウン・後悔(キーワード欄に「平均寿命・寿命」だけ残す)
+- 名前は「日記」と言わず、1日1問で大切なものが見つかる体験として出す(2026-10-17 本人決定)。キーワード欄の「日記」は 1.1.3 で外した(LC-29。100位の外だったため。下の「キーワード」の注)
+- 言わない言葉: 余命・死ぬまで・あと何日・カウントダウン・後悔。キーワード欄では「平均寿命・寿命」は残し、「残り時間」は「親 残り時間」「家族 残り時間」の組み合わせに入るよう 1.1.3 で足した(LC-29)
 - ASO: 名前とサブタイトルに入れた語は、キーワード欄で繰り返さない
 
 ## 日本語
@@ -42,7 +42,7 @@ LifeCounter は、1日1つの問いに答えるアプリです。問いに答え
 今日の問いを見て、気分をそのまま選べます。「書く」を押すと、すぐ答えの欄が開きます。
 
 ▼ 記録は端末の中だけ
-すべての記録はお使いの iPhone の中だけに保存されます。サーバーへの送信、広告、トラッキングはありません。記録はいつでもテキストで書き出せます。
+すべての記録はお使いの端末の中だけに保存されます。サーバーへの送信、広告、トラッキングはありません。記録はいつでもテキストで書き出せます。
 
 人生◯日目という数字は、毎日ひとつずつ増えていきます。その1日を大切な人とどう過ごすか、考える小さなきっかけになりますように。
 
@@ -91,7 +91,7 @@ HOME SCREEN WIDGET
 See today's question and log your mood right from your home screen. Tap Write to jump straight to your answer.
 
 PRIVATE BY DESIGN
-Everything stays on your iPhone. No servers, no ads, no tracking. Export your journal as text anytime.
+Everything stays on your device. No servers, no ads, no tracking. Export your journal as text anytime.
 
 The number grows by one every day. We hope it helps you think about how to spend that day with the people you love.
 
