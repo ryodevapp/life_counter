@@ -12,6 +12,7 @@ void main() {
   final en = lang == 'en';
 
   testWidgets('onboarding screens', (tester) async {
+    applyShotConditions(binding);
     binding.platformDispatcher.localeTestValue =
         en ? const Locale('en', 'US') : const Locale('ja', 'JP');
     binding.platformDispatcher.localesTestValue =
@@ -22,19 +23,19 @@ void main() {
 
     app.main();
     await wait(tester, 3500);
-    await shot(binding, tester, 'o_${lang}_1_welcome');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_1_welcome');
     await tapText(tester, en ? 'Get Started' : 'はじめる');
-    await shot(binding, tester, 'o_${lang}_2_birth');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_2_birth');
     await tapText(tester, en ? 'Next' : '次へ');
     await wait(tester, 2500);
-    await shot(binding, tester, 'o_${lang}_3_life_days');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_3_life_days');
     await tapText(tester, en ? 'Next' : '次へ');
     await wait(tester, 2500);
-    await shot(binding, tester, 'o_${lang}_3b_days_ahead');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_3b_days_ahead');
     await tapText(tester, en ? 'Next' : '次へ');
-    await shot(binding, tester, 'o_${lang}_4_question');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_4_question');
     await tapText(tester, en ? 'Not Now' : '今はしない');
     await wait(tester, 2500);
-    await shot(binding, tester, 'o_${lang}_5_today');
+    await shot(binding, tester, 'o_$lang${shotSuffix}_5_today');
   });
 }

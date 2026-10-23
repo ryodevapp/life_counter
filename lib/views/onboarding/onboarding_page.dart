@@ -11,6 +11,7 @@ import '../../services/notification_service.dart';
 import '../shared/app_card.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
 import '../shared/count_up_text.dart';
@@ -123,14 +124,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(child: SingleChildScrollView(child: content)),
-              ),
-              ...buttons,
-              const SizedBox(height: AppSpacing.xxl),
-            ],
+          child: ReadableWidth(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(child: SingleChildScrollView(child: content)),
+                ),
+                ...buttons,
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
           ),
         ),
       ),

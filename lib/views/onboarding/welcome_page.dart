@@ -3,6 +3,7 @@ import '../../l10n/l10n.dart';
 import '../shared/app_button.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 
 /// はじめに(何のアプリかを1つの問いかけと2行で伝える)
@@ -19,41 +20,43 @@ class WelcomePage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // ブランドの表示なので英字のまま。字間だけはロゴとして広げる
-                        Text(
-                          'LIFE COUNTER',
-                          style: AppTextStyles.captionLabel
-                              .copyWith(letterSpacing: 3),
-                        ),
-                        const SizedBox(height: AppSpacing.xxl),
-                        Text(
-                          l.welcomeTitle,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.title,
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
-                        Text(
-                          l.welcomeBody,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.callout
-                              .copyWith(color: AppColors.textSecondary),
-                        ),
-                      ],
+          child: ReadableWidth(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // ブランドの表示なので英字のまま。字間だけはロゴとして広げる
+                          Text(
+                            'LIFE COUNTER',
+                            style: AppTextStyles.captionLabel
+                                .copyWith(letterSpacing: 3),
+                          ),
+                          const SizedBox(height: AppSpacing.xxl),
+                          Text(
+                            l.welcomeTitle,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.title,
+                          ),
+                          const SizedBox(height: AppSpacing.xl),
+                          Text(
+                            l.welcomeBody,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.callout
+                                .copyWith(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              AppButton.primary(onPressed: onStart, label: l.getStarted),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
+                AppButton.primary(onPressed: onStart, label: l.getStarted),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
           ),
         ),
       ),

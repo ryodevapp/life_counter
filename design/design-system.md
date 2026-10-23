@@ -63,6 +63,7 @@
 | `card` | 20(カードの内側) |
 | `cardGap` | 12(カードとカードの間) |
 | `section` | 32(まとまりとまとまりの間) |
+| `readableWidth` | 672(中身の最大の幅。iPad では `ReadableWidth` でこの幅までにして左右の真ん中に置く。下のタブバーも同じ幅まで。UIKit の readableContentGuide が既定の文字で iPad に返す幅と同じ。文字を大きくした人には本文の文字の倍率だけ広げる(readableContentGuide と同じ考え。最大の文字では画面いっぱい)。iPhone では効かない。下から出るシートは Flutter の既定で 640 まで) |
 
 ## 5. 角の丸み
 

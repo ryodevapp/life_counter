@@ -29,6 +29,11 @@ class AppSpacing {
 
   /// ボタンの高さ
   static const double buttonHeight = 50;
+
+  /// 中身の最大の幅(iPad で横に広がりすぎないように。UIKit の readableContentGuide が
+  /// 既定の文字で iPad に返す幅と同じ。文字を大きくした人には広げる。iPhone の幅では効かない)。
+  /// `ReadableWidth` で使う
+  static const double readableWidth = 672;
 }
 
 /// 角の丸み。design/design-system.md の「5. 角の丸み」

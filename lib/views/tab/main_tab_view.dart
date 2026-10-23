@@ -11,6 +11,7 @@ import '../../providers/user_settings_provider.dart';
 import '../../services/notification_service.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/glass_surface.dart';
 import '../shared/sliding_pill_track.dart';
@@ -133,7 +134,9 @@ class _MainTabViewState extends ConsumerState<MainTabView> {
               bottom: MediaQuery.viewPaddingOf(context).bottom > 0
                   ? _barBottom
                   : AppSpacing.m,
-              child: _buildTabBar(),
+              child: ReadableWidth(
+                child: _buildTabBar(),
+              ),
             ),
         ],
       ),

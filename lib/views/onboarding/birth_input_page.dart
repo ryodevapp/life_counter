@@ -4,6 +4,7 @@ import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
+import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
 
@@ -31,74 +32,76 @@ class _BirthInputPageState extends State<BirthInputPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screen),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: AppSpacing.xxxl),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l.birthTitle, style: AppTextStyles.title),
-                      const SizedBox(height: AppSpacing.s),
-                      Text(
-                        l.birthBody,
-                        style: AppTextStyles.callout
-                            .copyWith(color: AppColors.textMuted),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-
-                      // 生年月日(iOS の回転式)
-                      Text(l.birthDate, style: AppTextStyles.captionLabel),
-                      const SizedBox(height: AppSpacing.s),
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: AppColors.bgWarm,
-                          borderRadius: BorderRadius.circular(AppRadius.field),
+          child: ReadableWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: AppSpacing.xxxl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.birthTitle, style: AppTextStyles.title),
+                        const SizedBox(height: AppSpacing.s),
+                        Text(
+                          l.birthBody,
+                          style: AppTextStyles.callout
+                              .copyWith(color: AppColors.textMuted),
                         ),
-                        child: CupertinoDatePicker(
-                          mode: CupertinoDatePickerMode.date,
-                          initialDateTime: _birthDate,
-                          minimumDate: DateTime(1920),
-                          maximumDate: DateTime(today.year, today.month, today.day),
-                          onDateTimeChanged: (d) => _birthDate = d,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.xl),
 
-                      // 性別(任意)
-                      Text(l.genderOptional, style: AppTextStyles.captionLabel),
-                      const SizedBox(height: AppSpacing.s),
-                      Row(
-                        children: [
-                          for (final g in [
-                            (Gender.male, l.genderMale),
-                            (Gender.female, l.genderFemale),
-                            (Gender.unspecified, l.genderUnspecified),
-                          ]) ...[
-                            if (g.$1 != Gender.male)
-                              const SizedBox(width: AppSpacing.s),
-                            Expanded(child: _genderButton(g.$1, g.$2)),
+                        // 生年月日(iOS の回転式)
+                        Text(l.birthDate, style: AppTextStyles.captionLabel),
+                        const SizedBox(height: AppSpacing.s),
+                        Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: AppColors.bgWarm,
+                            borderRadius: BorderRadius.circular(AppRadius.field),
+                          ),
+                          child: CupertinoDatePicker(
+                            mode: CupertinoDatePickerMode.date,
+                            initialDateTime: _birthDate,
+                            minimumDate: DateTime(1920),
+                            maximumDate: DateTime(today.year, today.month, today.day),
+                            onDateTimeChanged: (d) => _birthDate = d,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // 性別(任意)
+                        Text(l.genderOptional, style: AppTextStyles.captionLabel),
+                        const SizedBox(height: AppSpacing.s),
+                        Row(
+                          children: [
+                            for (final g in [
+                              (Gender.male, l.genderMale),
+                              (Gender.female, l.genderFemale),
+                              (Gender.unspecified, l.genderUnspecified),
+                            ]) ...[
+                              if (g.$1 != Gender.male)
+                                const SizedBox(width: AppSpacing.s),
+                              Expanded(child: _genderButton(g.$1, g.$2)),
+                            ],
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.s),
-                      Text(l.genderNote, style: AppTextStyles.footnote),
-                      const SizedBox(height: AppSpacing.xl),
-                    ],
+                        ),
+                        const SizedBox(height: AppSpacing.s),
+                        Text(l.genderNote, style: AppTextStyles.footnote),
+                        const SizedBox(height: AppSpacing.xl),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              AppButton.primary(
-                onPressed: () => widget.onNext(
-                    DateTime(_birthDate.year, _birthDate.month, _birthDate.day),
-                    _gender),
-                label: l.next,
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
+                AppButton.primary(
+                  onPressed: () => widget.onNext(
+                      DateTime(_birthDate.year, _birthDate.month, _birthDate.day),
+                      _gender),
+                  label: l.next,
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
           ),
         ),
       ),
