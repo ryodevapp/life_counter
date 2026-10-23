@@ -135,9 +135,9 @@ class _ImportantPeopleSectionState
 
   Widget _personCard(ImportantPerson p, double myAhead, DateTime? myBirthDate,
       NumberFormat fmt) {
-    final pAge = LifeCalculator.currentAge(p.birthDate);
-    final pAhead = LifeCalculator.expectedYearsAhead(p.birthDate, p.gender);
-    final pPastAL = LifeCalculator.isPastAverage(p.birthDate, p.gender);
+    final pAge = LifeCalculator.currentAge(p.birthDay);
+    final pAhead = LifeCalculator.expectedYearsAhead(p.birthDay, p.gender);
+    final pPastAL = LifeCalculator.isPastAverage(p.birthDay, p.gender);
     final together = (myAhead < pAhead ? myAhead : pAhead).floor();
     final meet = calcMeetCount(together, p.meetingFrequency);
     final l = context.l10n;

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_settings.dart';
 import '../models/important_person.dart';
+import '../services/birth_day_key_migration.dart';
+import '../utils/day_key.dart';
 import '../utils/prefs_keys.dart';
 
 /// SharedPreferencesのプロバイダー
@@ -22,11 +24,9 @@ class UserSettingsNotifier extends Notifier<UserSettings> {
   @override
   UserSettings build() {
     try {
-      final bdMillis = _prefs.getInt(PrefsKeys.birthDate);
       return UserSettings(
-        birthDate: bdMillis != null
-            ? DateTime.fromMillisecondsSinceEpoch(bdMillis)
-            : null,
+        // 誕生日は dayKey を先に読む。読めなければ古い値から日を決める(LC-30)
+        birthDate: readBirthDate(_prefs),
         gender: Gender.values.byName(
           _prefs.getString(PrefsKeys.gender) ?? Gender.unspecified.name,
         ),
@@ -47,9 +47,12 @@ class UserSettingsNotifier extends Notifier<UserSettings> {
 
   Future<void> setBirthDateAndGender(
       DateTime birthDate, Gender gender) async {
-    await _prefs.setInt(PrefsKeys.birthDate, birthDate.millisecondsSinceEpoch);
+    final day = DateTime(birthDate.year, birthDate.month, birthDate.day);
+    // 誕生日は「yyyy-MM-dd」で持つ(LC-30)。古い形も書き続ける(前の版に戻したときに読めるように)
+    await _prefs.setString(PrefsKeys.birthDayKey, dayKeyOf(day));
+    await _prefs.setInt(PrefsKeys.birthDate, day.millisecondsSinceEpoch);
     await _prefs.setString(PrefsKeys.gender, gender.name);
-    state = state.copyWith(birthDate: birthDate, gender: gender);
+    state = state.copyWith(birthDate: day, gender: gender);
   }
 
   Future<void> completeOnboarding() async {
