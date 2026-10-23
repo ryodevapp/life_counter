@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 画面の題(iOS の Large Title と同じ 34pt・太字・左寄せ)。どの画面も同じ位置・大きさ
 class PageHeader extends StatelessWidget {
@@ -21,7 +22,7 @@ class PageHeader extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: Text(title, style: AppTextStyles.largeTitle, maxLines: 1),
+              child: PhraseText(title, style: AppTextStyles.largeTitle, maxLines: 1),
             ),
           ),
           ?trailing,

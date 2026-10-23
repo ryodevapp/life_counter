@@ -6,6 +6,7 @@ import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 記録(データベース)を開けなかったときの画面。落とさずに、もう一度試せるようにする
 class DataOpenErrorApp extends StatelessWidget {
@@ -76,10 +77,10 @@ class _DataOpenErrorPageState extends State<DataOpenErrorPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(l.dataOpenErrorTitle,
+                    PhraseText(l.dataOpenErrorTitle,
                         style: AppTextStyles.title, textAlign: TextAlign.center),
                     const SizedBox(height: AppSpacing.l),
-                    Text(l.dataOpenErrorMessage,
+                    PhraseText(l.dataOpenErrorMessage,
                         style: AppTextStyles.body, textAlign: TextAlign.center),
                     const SizedBox(height: AppSpacing.xxl),
                     AppButton.primary(

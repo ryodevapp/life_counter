@@ -17,6 +17,7 @@ import '../shared/app_card.dart';
 import '../shared/app_button.dart';
 import 'important_person_form_page.dart';
 import 'important_person_detail_page.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 大切な人セクション（プロトタイプの people セグメント再現）
 class ImportantPeopleSection extends ConsumerStatefulWidget {
@@ -71,7 +72,7 @@ class _ImportantPeopleSectionState
     return personsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => AppCard(
-        child: Text(context.l10n.loadError,
+        child: PhraseText(context.l10n.loadError,
             textAlign: TextAlign.center,
             style:
                 AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
@@ -88,7 +89,7 @@ class _ImportantPeopleSectionState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        PhraseText(
           context.l10n.peopleEmpty,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
         ),
@@ -107,7 +108,7 @@ class _ImportantPeopleSectionState
             const SizedBox(width: AppSpacing.s),
             // 大きい文字では折り返す(操作の文字は切らない)
             Flexible(
-                child: Text(context.l10n.addPerson,
+                child: PhraseText(context.l10n.addPerson,
                     textAlign: TextAlign.center)),
           ],
         ),
@@ -164,11 +165,11 @@ class _ImportantPeopleSectionState
           // 平均寿命を越えた人にも数字は出し、ひとこと添えるだけにする
           if (pPastAL) ...[
             const SizedBox(height: AppSpacing.s),
-            Text(l.pastAveragePerson, style: AppTextStyles.footnote),
+            PhraseText(l.pastAveragePerson, style: AppTextStyles.footnote),
           ],
           // 主役は「これから会える回数」。重なりやすい「これから」と「一緒に過ごしてきた日々」は詳しい画面だけに
           const SizedBox(height: AppSpacing.l),
-          Text(l.statMeetCount, style: AppTextStyles.captionLabel),
+          PhraseText(l.statMeetCount, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.xs),
           Text.rich(TextSpan(children: [
             TextSpan(text: l.approxTight, style: AppTextStyles.captionLabel),
@@ -180,7 +181,7 @@ class _ImportantPeopleSectionState
             TextSpan(text: l.unitTimesTight(meet), style: AppTextStyles.captionLabel),
           ])),
           const SizedBox(height: AppSpacing.s),
-          Text(
+          PhraseText(
             '${l.statYearsTogether}  ${l.approxTight}$together${l.unitYearsTight(together)}',
             style: AppTextStyles.footnote,
           ),

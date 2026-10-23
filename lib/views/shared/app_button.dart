@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/phrase_break.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
@@ -27,7 +28,8 @@ class AppButton extends StatelessWidget {
       key: key,
       onPressed: onPressed,
       primary: true,
-      child: Text(label),
+      // 文節で折る(最大の文字では行を増やす。1行に固定しない)
+      child: PhraseText(label, textAlign: TextAlign.center),
     );
   }
 
@@ -39,7 +41,8 @@ class AppButton extends StatelessWidget {
     return AppButton(
       key: key,
       onPressed: onPressed,
-      child: Text(label),
+      // 文節で折る(最大の文字では行を増やす。1行に固定しない)
+      child: PhraseText(label, textAlign: TextAlign.center),
     );
   }
 

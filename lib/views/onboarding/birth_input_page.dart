@@ -7,6 +7,7 @@ import '../shared/app_spacing.dart';
 import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_button.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 生年月日と性別(任意)。人生の日数と、平均からの目安に使う
 class BirthInputPage extends StatefulWidget {
@@ -42,9 +43,9 @@ class _BirthInputPageState extends State<BirthInputPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(l.birthTitle, style: AppTextStyles.title),
+                        PhraseText(l.birthTitle, style: AppTextStyles.title),
                         const SizedBox(height: AppSpacing.s),
-                        Text(
+                        PhraseText(
                           l.birthBody,
                           style: AppTextStyles.callout
                               .copyWith(color: AppColors.textMuted),
@@ -52,7 +53,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                         const SizedBox(height: AppSpacing.xl),
 
                         // 生年月日(iOS の回転式)
-                        Text(l.birthDate, style: AppTextStyles.captionLabel),
+                        PhraseText(l.birthDate, style: AppTextStyles.captionLabel),
                         const SizedBox(height: AppSpacing.s),
                         Container(
                           height: 200,
@@ -71,7 +72,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                         const SizedBox(height: AppSpacing.xl),
 
                         // 性別(任意)
-                        Text(l.genderOptional, style: AppTextStyles.captionLabel),
+                        PhraseText(l.genderOptional, style: AppTextStyles.captionLabel),
                         const SizedBox(height: AppSpacing.s),
                         Row(
                           children: [
@@ -87,7 +88,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
                           ],
                         ),
                         const SizedBox(height: AppSpacing.s),
-                        Text(l.genderNote, style: AppTextStyles.footnote),
+                        PhraseText(l.genderNote, style: AppTextStyles.footnote),
                         const SizedBox(height: AppSpacing.xl),
                       ],
                     ),
@@ -130,7 +131,7 @@ class _BirthInputPageState extends State<BirthInputPage> {
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(
+              child: PhraseText(
                 label,
                 maxLines: 1,
                 textAlign: TextAlign.center,

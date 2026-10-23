@@ -40,7 +40,7 @@ class MonthHeader extends StatelessWidget {
       for (final s in stamps)
         if (counts[s.id]! > 0) (s, counts[s.id]!),
     ];
-    final title = Text(formatYearMonth(month, l.localeName),
+    final title = PhraseText(formatYearMonth(month, l.localeName),
         style: AppTextStyles.headline);
     final moodSummary = moods.isEmpty
         ? null
@@ -60,7 +60,7 @@ class MonthHeader extends StatelessWidget {
                     children: [
                       MoodBadge(moodId: s.id, size: 18),
                       const SizedBox(width: AppSpacing.xs),
-                      Text(l.monthMoodCount(n), style: AppTextStyles.footnote),
+                      PhraseText(l.monthMoodCount(n), style: AppTextStyles.footnote),
                     ],
                   ),
               ],
@@ -132,13 +132,13 @@ class LastYearCard extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Text(context.l10n.oneYearAgoToday,
+                PhraseText(context.l10n.oneYearAgoToday,
                     style: AppTextStyles.captionLabel),
                 if (mood != null) ...[
                   const SizedBox(width: AppSpacing.m),
                   MoodBadge(moodId: mood.id, size: 18),
                   const SizedBox(width: AppSpacing.xs),
-                  Text(moodLabel(context, mood.id),
+                  PhraseText(moodLabel(context, mood.id),
                       style: AppTextStyles.footnote
                           .copyWith(color: moodTextColor(mood.id))),
                 ],
@@ -147,7 +147,7 @@ class LastYearCard extends ConsumerWidget {
             if (r.answer != null) ...[
               const SizedBox(height: AppSpacing.s),
               if (q != null)
-                Text(questionWithFollowUp(q),
+                PhraseText(questionWithFollowUp(q),
                     style: AppTextStyles.footnote
                         .copyWith(color: AppColors.textSecondary)),
               const SizedBox(height: AppSpacing.xs),

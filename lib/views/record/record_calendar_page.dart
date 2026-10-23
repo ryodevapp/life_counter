@@ -25,6 +25,7 @@ import '../shared/app_input.dart';
 import '../shared/expandable_text.dart';
 import '../shared/app_segmented_control.dart';
 import '../shared/page_header.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 記録タブ（プロトタイプの RecordsTab 再現）
 class RecordCalendarPage extends ConsumerStatefulWidget {
@@ -160,7 +161,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
   /// カードの頭: 日付・その日の気分の札・編集のボタン
   /// 大きい文字では横に入らないので、日付と編集を1行目、気分の札を2行目に積む
   List<Widget> _buildCardHeader(DailyRecord r) {
-    final date = Text(_formatDate(r.day), style: AppTextStyles.headline);
+    final date = PhraseText(_formatDate(r.day), style: AppTextStyles.headline);
     final edit =
         _EditIconButton(onTap: () => setState(() => _editingRecordId = r.id));
     // その日の気分は、日付の横に小さな札で(問いの文は重ねない)
@@ -289,7 +290,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
     final filtered = _records.where((r) => _hasContent(r)).toList();
     if (filtered.isEmpty) {
       return AppCard(
-        child: Text(
+        child: PhraseText(
           context.l10n.noEntriesYet,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
@@ -381,7 +382,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
 
     if (fields.isEmpty) {
       return [
-        if (r.stamp == null) Text(l.noEntry, style: AppTextStyles.footnote),
+        if (r.stamp == null) PhraseText(l.noEntry, style: AppTextStyles.footnote),
       ];
     }
 
@@ -393,7 +394,7 @@ class RecordCalendarPageState extends ConsumerState<RecordCalendarPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(entry.value.$1, style: AppTextStyles.captionLabel),
+            PhraseText(entry.value.$1, style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
             // 長い答えは5行まで。続きはその場で全文に広げて読める(省略したまま読めない作りにしない)
             ExpandableText(entry.value.$2, style: AppTextStyles.callout),
@@ -503,13 +504,13 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
                 ? CrossAxisAlignment.start
                 : CrossAxisAlignment.center,
             children: [
-              Text(dateStr, style: AppTextStyles.headline),
+              PhraseText(dateStr, style: AppTextStyles.headline),
               Wrap(
                 children: [
                   TextButton(
                     onPressed: widget.onCancel,
                     style: _textButtonStyle,
-                    child: Text(
+                    child: PhraseText(
                       l.cancel,
                       style: AppTextStyles.footnote,
                     ),
@@ -517,7 +518,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
                   TextButton(
                     onPressed: _save,
                     style: _textButtonStyle,
-                    child: Text(
+                    child: PhraseText(
                       l.save,
                       style: AppTextStyles.footnote
                           .copyWith(color: AppColors.accent),
@@ -529,7 +530,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
           ),
           const SizedBox(height: AppSpacing.s),
           // 気分(今日の画面と同じ顔。同じ顔をもう一度押すと取り消し)
-          Text(l.editMood,
+          PhraseText(l.editMood,
               style:
                   AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
           const SizedBox(height: AppSpacing.s),
@@ -600,7 +601,7 @@ class _InlineEditCardState extends ConsumerState<_InlineEditCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
+        PhraseText(label,
             style:
                 AppTextStyles.callout.copyWith(color: AppColors.textSecondary)),
         const SizedBox(height: AppSpacing.s),
@@ -668,7 +669,7 @@ class _MoodTag extends StatelessWidget {
           MoodBadge(moodId: moodId, size: 18),
           const SizedBox(width: AppSpacing.xs + 2),
           Flexible(
-            child: Text(label,
+            child: PhraseText(label,
                 style: AppTextStyles.footnote
                     .copyWith(color: moodTextColor(moodId))),
           ),

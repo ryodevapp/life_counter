@@ -11,6 +11,7 @@ import '../shared/app_picker.dart';
 import '../shared/app_toast.dart';
 import '../shared/app_button.dart';
 import '../shared/app_input.dart';
+import '../../l10n/phrase_break.dart';
 
 class ImportantPersonFormPage extends StatefulWidget {
   const ImportantPersonFormPage({super.key, this.person});
@@ -106,7 +107,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  PhraseText(
                     isEdit ? l.editPerson : l.addPerson,
                     style: AppTextStyles.title,
                   ),
@@ -171,7 +172,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Text(
+                            child: PhraseText(
                               formatDate(DateTime(_year, _month, _day),
                                   l.localeName),
                               style: AppTextStyles.callout,
@@ -225,7 +226,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
                         color: AppColors.bgWarm,
                         borderRadius: BorderRadius.circular(AppRadius.field),
                       ),
-                      child: Text(
+                      child: PhraseText(
                         _lastMet != null
                             ? formatDate(_lastMet!, l.localeName)
                             : l.none,
@@ -298,7 +299,7 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
             borderRadius: BorderRadius.circular(AppRadius.full),
           ),
           child: Center(
-            child: Text(label,
+            child: PhraseText(label,
                 style: AppTextStyles.footnote.copyWith(
                   color: sel ? AppColors.accent : AppColors.textSecondary,
                 )),

@@ -21,6 +21,7 @@ import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
 import '../shared/page_header.dart';
 import '../shared/sheet_handle.dart';
+import '../../l10n/phrase_break.dart';
 
 /// この端末に入っているアプリの版(表示とフィードバックのメールで使う)
 final Future<PackageInfo> _packageInfo = PackageInfo.fromPlatform();
@@ -105,7 +106,7 @@ class MyPage extends ConsumerWidget {
               Center(
                 child: FutureBuilder<PackageInfo>(
                   future: _packageInfo,
-                  builder: (context, snapshot) => Text(
+                  builder: (context, snapshot) => PhraseText(
                     snapshot.hasData
                         ? l.version(snapshot.data!.version)
                         : 'LifeCounter',
@@ -209,11 +210,11 @@ class MyPage extends ConsumerWidget {
             children: [
               const SheetHandle(),
               const SizedBox(height: AppSpacing.l),
-              Text(ctx.l10n.gender, style: AppTextStyles.headline),
+              PhraseText(ctx.l10n.gender, style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
               for (final g in Gender.values)
                 ListTile(
-                  title: Text(_genderLabel(ctx.l10n, g),
+                  title: PhraseText(_genderLabel(ctx.l10n, g),
                       style: AppTextStyles.callout),
                   trailing: settings.gender == g
                       ? Icon(CupertinoIcons.checkmark, color: AppColors.accent)
@@ -253,11 +254,11 @@ class MyPage extends ConsumerWidget {
             children: [
               const SheetHandle(),
               const SizedBox(height: AppSpacing.l),
-              Text(ctx.l10n.morningNotification,
+              PhraseText(ctx.l10n.morningNotification,
                   style: AppTextStyles.headline),
               const SizedBox(height: AppSpacing.l),
               SwitchListTile(
-                title: Text(ctx.l10n.morningNotification,
+                title: PhraseText(ctx.l10n.morningNotification,
                     style: AppTextStyles.callout),
                 value: settings.notificationEnabled,
                 activeTrackColor: AppColors.accent,
@@ -276,8 +277,8 @@ class MyPage extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text(ctx.l10n.time, style: AppTextStyles.callout),
-                trailing: Text(
+                title: PhraseText(ctx.l10n.time, style: AppTextStyles.callout),
+                trailing: PhraseText(
                   '${settings.notificationHour}:${settings.notificationMinute.toString().padLeft(2, '0')}',
                   style: AppTextStyles.callout
                       .copyWith(color: AppColors.textMuted),
@@ -322,10 +323,10 @@ class MyPage extends ConsumerWidget {
   static Widget _row(BuildContext context, IconData icon, String label,
       {String? value, VoidCallback? onTap}) {
     final labelText =
-        Text(label, style: AppTextStyles.body.copyWith(height: 1.3));
+        PhraseText(label, style: AppTextStyles.body.copyWith(height: 1.3));
     final valueText = value == null
         ? null
-        : Text(value,
+        : PhraseText(value,
             style: AppTextStyles.body
                 .copyWith(height: 1.3, color: AppColors.textMuted));
     // 大きい文字では項目名と値が横に入らないので、項目名の下に値を積む
@@ -408,7 +409,7 @@ class _LegalPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bg,
       appBar: AppBar(
-        title: Text(title, style: AppTextStyles.headline),
+        title: PhraseText(title, style: AppTextStyles.headline),
         backgroundColor: AppColors.bg,
         elevation: 0,
         iconTheme: IconThemeData(color: AppColors.accent),
@@ -449,7 +450,7 @@ class _LegalPage extends StatelessWidget {
       final h2Match = h2Regex.firstMatch(line);
       if (h2Match != null) {
         widgets.add(const SizedBox(height: AppSpacing.xl));
-        widgets.add(Text(
+        widgets.add(PhraseText(
           _stripTags(h2Match.group(1)!),
           style: AppTextStyles.headline.copyWith(color: AppColors.accent),
         ));
@@ -460,7 +461,7 @@ class _LegalPage extends StatelessWidget {
       if (pMatch != null) {
         final text = _stripTags(pMatch.group(1)!).trim();
         if (text.isNotEmpty) {
-          widgets.add(Text(
+          widgets.add(PhraseText(
             text,
             style:
                 AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
@@ -477,11 +478,11 @@ class _LegalPage extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('・ ',
+              PhraseText('・ ',
                   style: AppTextStyles.callout
                       .copyWith(color: AppColors.textSecondary)),
               Expanded(
-                child: Text(
+                child: PhraseText(
                   _stripTags(liMatch.group(1)!).trim(),
                   style: AppTextStyles.callout
                       .copyWith(color: AppColors.textSecondary),

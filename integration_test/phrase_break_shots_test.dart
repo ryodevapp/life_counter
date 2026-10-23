@@ -14,6 +14,7 @@ import 'helpers.dart';
 
 /// 利用者の書いた文を文節で折る前と後を撮る(LC 日本語の改行。1.1.4)。
 /// やりたいことの項目・入力欄の案内・今日の画面の「1年前の答え」・記録の一覧(1年前の今日と各日の答え)。
+/// 40字より長い答えは文節で折らず OS の標準の折り(PhraseBreak.maxLength。decisions 2026-10-23 夕方)。
 /// --dart-define=PHRASE=off で折る前(辞書を外す)。名前は phrase_(on か off)_(画面)(shotSuffix)
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();

@@ -17,6 +17,7 @@ import '../shared/app_button.dart';
 import '../shared/count_up_text.dart';
 import 'welcome_page.dart';
 import 'birth_input_page.dart';
+import '../../l10n/phrase_break.dart';
 
 /// はじめての人の案内: はじめに → 生年月日 → 人生の日数 → これからの日々 → 毎日の問い(通知)
 /// 時間に限りがあることは、恐怖ではなく「この日々をどう過ごすか」の問いとして静かに伝える
@@ -110,7 +111,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 foregroundColor: AppColors.textSecondary,
                 textStyle: AppTextStyles.body,
               ),
-              child: Text(context.l10n.notifyLater),
+              child: PhraseText(context.l10n.notifyLater),
             ),
           ],
         );
@@ -146,7 +147,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
+        PhraseText(
           l.onboardingLifeDaysBefore,
           style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
         ),
@@ -156,12 +157,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           style: AppTextStyles.counter.copyWith(color: AppColors.accent),
         ),
         const SizedBox(height: AppSpacing.s),
-        Text(
+        PhraseText(
           l.onboardingLifeDaysAfter,
           style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.xxl),
-        Text(
+        PhraseText(
           l.onboardingLifeDaysNote,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
@@ -177,7 +178,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
+        PhraseText(
           l.onboardingDaysAheadTitle,
           style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
         ),
@@ -187,13 +188,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           style: AppTextStyles.counter.copyWith(color: AppColors.accent),
         ),
         const SizedBox(height: AppSpacing.s),
-        Text(
+        PhraseText(
           l.daysEstimateUnit(days),
           textAlign: TextAlign.center,
           style: AppTextStyles.footnote,
         ),
         const SizedBox(height: AppSpacing.xxl),
-        Text(
+        PhraseText(
           l.onboardingDaysAheadQuestion,
           textAlign: TextAlign.center,
           style: AppTextStyles.title,
@@ -212,27 +213,27 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(l.onboardingQuestionTitle, style: AppTextStyles.title),
+        PhraseText(l.onboardingQuestionTitle, style: AppTextStyles.title),
         const SizedBox(height: AppSpacing.xl),
         // 今日の問いの実物
         AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l.todaysQuestion, style: AppTextStyles.captionLabel),
+              PhraseText(l.todaysQuestion, style: AppTextStyles.captionLabel),
               const SizedBox(height: AppSpacing.s),
-              Text(questionWithFollowUp(question),
+              PhraseText(questionWithFollowUp(question),
                   style: AppTextStyles.headline),
             ],
           ),
         ),
         const SizedBox(height: AppSpacing.xl),
-        Text(
+        PhraseText(
           l.onboardingQuestionBody,
           style: AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.m),
-        Text(
+        PhraseText(
           l.onboardingNotifyBody(time),
           style: AppTextStyles.callout.copyWith(color: AppColors.textSecondary),
         ),

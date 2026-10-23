@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/common.dart';
 import 'package:integration_test/integration_test.dart';
 
+import '../test/support/phrase_split.dart';
 import '../test/support/text_truncation.dart';
 
 /// アニメーションが止まらない画面があるので、pumpAndSettle の代わりに時間で進める
@@ -17,7 +18,44 @@ Future<void> shot(IntegrationTestWidgetsFlutterBinding binding,
   await wait(tester, 1200);
   await binding.takeScreenshot(name);
   recordTruncatedText(binding, tester, name);
+  recordPhraseSplits(binding, tester, name);
 }
+
+/// 撮るたびに、日本語が語の途中で折れていないかを見る(test/support/phrase_split.dart。1.1.4)。
+/// 切れの検査と同じく、最後まで撮ってから、割れた所を全部並べて失敗にする
+void recordPhraseSplits(IntegrationTestWidgetsFlutterBinding binding,
+    WidgetTester tester, String name) {
+  var pending = _splits;
+  if (pending == null) {
+    pending = _splits = {};
+    addTearDown(() {
+      final found = _splits!;
+      _splits = null;
+      if (found.isEmpty) return;
+      final message = '語の途中で折れています(${found.length}箇所)。画像の名前・文・折れ目\n'
+          '${found.values.map((v) => '  - $v').join('\n')}';
+      // ignore: avoid_print
+      print('PHRASE_SPLITS\n$message');
+      binding.results['語の途中の折れ(${binding.results.length})'] =
+          Failure('語の途中の折れ', message);
+      fail(message);
+    });
+  }
+  for (final s in findPhraseSplits(tester)) {
+    pending.putIfAbsent(s.summary, () => '$name $s');
+  }
+  for (final s in findShrunkPhraseTexts(tester)) {
+    if (_shrunk.add(s)) {
+      // ignore: avoid_print
+      print('PHRASE_SHRUNK $name $s');
+    }
+  }
+}
+
+/// 1語を入れるために縮めた所(失敗にはしない。一覧に出す)
+final _shrunk = <String>{};
+
+Map<String, String>? _splits;
 
 /// 撮るたびに、文字が「…」や行数の上限で切れていないかを見る(test/support/text_truncation.dart)。
 /// 1枚目で止めずに最後まで撮り、テストの終わりに切れた所を全部並べて失敗にする。

@@ -43,9 +43,9 @@ class _ExpandableTextState extends State<ExpandableText> {
             duration: AppMotion.base,
             curve: Curves.easeOutCubic,
             alignment: Alignment.topCenter,
-            child: Text(
-              shown,
-              semanticsLabel: shown == widget.text ? null : widget.text,
+            // 1文節が1行に入らないときの扱い(語の切れ目で折る・縮める)も PhraseText に任せる
+            child: PhraseText(
+              widget.text,
               style: widget.style,
               maxLines: _expanded ? null : widget.maxLines,
               overflow: _expanded ? TextOverflow.visible : TextOverflow.ellipsis,

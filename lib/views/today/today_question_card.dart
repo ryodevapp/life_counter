@@ -26,7 +26,7 @@ class MoodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(context.l10n.moodQuestion, style: AppTextStyles.headline),
+          PhraseText(context.l10n.moodQuestion, style: AppTextStyles.headline),
           const SizedBox(height: AppSpacing.m),
           MoodPicker(selectedId: selectedId, onSelect: onSelect),
         ],
@@ -98,7 +98,7 @@ class _MoodButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = moodLabel(context, stamp.id);
-    final text = Text(
+    final text = PhraseText(
       label,
       style: AppTextStyles.captionLabel.copyWith(
         color: selected ? moodTextColor(stamp.id) : AppColors.textSecondary,
@@ -190,10 +190,10 @@ class TodayQuestionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l.todaysQuestion, style: AppTextStyles.captionLabel),
+          PhraseText(l.todaysQuestion, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
           // 問いと、理由を聞くもう一歩を1つの文で(「没頭したいことは？ それに惹かれるのは、なぜ？」)
-          Text(questionWithFollowUp(question), style: AppTextStyles.headline),
+          PhraseText(questionWithFollowUp(question), style: AppTextStyles.headline),
           const SizedBox(height: AppSpacing.l),
           // 書く場所だと分かるように、うすい枠の欄にする
           TextField(
@@ -207,10 +207,11 @@ class TodayQuestionCard extends StatelessWidget {
             cursorColor: AppColors.accent,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
-              hintText: l.answerHint,
-              // 案内の文は行数で切らない(最大の文字では3行に入らず「…」で切れていた)。欄は答えと同じく下へ伸びる
-              hintStyle:
-                  AppTextStyles.body.copyWith(color: AppColors.textDisabled),
+              // 案内の文は行数で切らない(最大の文字では3行に入らず「…」で切れていた)。欄は答えと同じく下へ伸びる。
+              // 文節で折る(読み上げは元の文)
+              hint: PhraseText(l.answerHint,
+                  style: AppTextStyles.body
+                      .copyWith(color: AppColors.textDisabled)),
               counterText: '',
               filled: true,
               fillColor: AppColors.bg,
@@ -239,7 +240,7 @@ class TodayQuestionCard extends StatelessWidget {
                     Icon(CupertinoIcons.checkmark_alt,
                         size: 14, color: AppColors.textMuted),
                     const SizedBox(width: AppSpacing.xs),
-                    Text(l.answerSaved, style: AppTextStyles.footnote),
+                    PhraseText(l.answerSaved, style: AppTextStyles.footnote),
                   ],
                 ),
               ),
@@ -247,7 +248,7 @@ class TodayQuestionCard extends StatelessWidget {
           ),
           if (lastYearAnswer != null && lastYearAnswer!.trim().isNotEmpty) ...[
             const SizedBox(height: AppSpacing.l),
-            Text(l.lastYearAnswerLabel, style: AppTextStyles.captionLabel),
+            PhraseText(l.lastYearAnswerLabel, style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
             PhraseText(
               lastYearAnswer!,
@@ -264,7 +265,7 @@ class TodayQuestionCard extends StatelessWidget {
                 style: TextButton.styleFrom(
                   minimumSize: const Size(AppSpacing.minTap, AppSpacing.minTap),
                 ),
-                child: Text(
+                child: PhraseText(
                   l.addToBucketList,
                   style:
                       AppTextStyles.footnote.copyWith(color: AppColors.accent),

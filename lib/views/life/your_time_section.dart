@@ -8,6 +8,7 @@ import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
+import '../../l10n/phrase_break.dart';
 
 /// あなたの時間セクション（プロトタイプの LifeTab time セグメント再現）
 class YourTimeSection extends ConsumerWidget {
@@ -22,7 +23,7 @@ class YourTimeSection extends ConsumerWidget {
 
     if (birthDate == null) {
       return AppCard(
-        child: Text(
+        child: PhraseText(
           l.birthDateNeeded,
           textAlign: TextAlign.center,
           style: AppTextStyles.callout.copyWith(color: AppColors.textMuted),
@@ -49,12 +50,12 @@ class YourTimeSection extends ConsumerWidget {
           child: Column(
             children: [
               // 何の日数かを先に言う(数字だけだと分からないため)
-              Text(l.daysAheadRow, style: AppTextStyles.captionLabel),
+              PhraseText(l.daysAheadRow, style: AppTextStyles.captionLabel),
               const SizedBox(height: AppSpacing.s),
               // 飾りの大きな数字は途中で折り返さない。大きい文字で入らないときだけ縮める
               FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(
+                child: PhraseText(
                   formatter.format(remainingDays),
                   maxLines: 1,
                   style: AppTextStyles.display.copyWith(
@@ -64,21 +65,21 @@ class YourTimeSection extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xs),
-              Text(l.daysEstimateUnit(remainingDays),
+              PhraseText(l.daysEstimateUnit(remainingDays),
                   textAlign: TextAlign.center, style: AppTextStyles.footnote),
               if (pastAL) ...[
                 const SizedBox(height: AppSpacing.s),
-                Text(l.pastAverageSelf,
+                PhraseText(l.pastAverageSelf,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.footnote),
               ],
               if (!pastHL) ...[
                 const SizedBox(height: AppSpacing.l),
                 // 長い1文にすると「日」だけが次の行に落ちるので、言葉と数を2行に分ける
-                Text(l.healthyDaysLabel,
+                PhraseText(l.healthyDaysLabel,
                     textAlign: TextAlign.center, style: AppTextStyles.footnote),
                 const SizedBox(height: AppSpacing.xs),
-                Text(l.aboutDays(healthyRemaining),
+                PhraseText(l.aboutDays(healthyRemaining),
                     style: AppTextStyles.headline),
               ],
             ],
@@ -88,7 +89,7 @@ class YourTimeSection extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(
               left: AppSpacing.xs, bottom: AppSpacing.s),
-          child: Text(l.aheadOfYou, style: AppTextStyles.captionLabel),
+          child: PhraseText(l.aheadOfYou, style: AppTextStyles.captionLabel),
         ),
         // 同じ数(夏・桜・正月)を3回並べないよう、1行にまとめた一覧にする
         AppCard(
@@ -113,7 +114,7 @@ class YourTimeSection extends ConsumerWidget {
         // 平均から出した目安だと、静かに添える
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-          child: Text(l.estimateNote, style: AppTextStyles.footnote),
+          child: PhraseText(l.estimateNote, style: AppTextStyles.footnote),
         ),
       ],
     );
@@ -124,8 +125,8 @@ class YourTimeSection extends ConsumerWidget {
 
   static Widget _row(
       BuildContext context, IconData icon, String label, String value) {
-    final labelText = Text(label, style: AppTextStyles.body);
-    final valueText = Text(value,
+    final labelText = PhraseText(label, style: AppTextStyles.body);
+    final valueText = PhraseText(value,
         style: AppTextStyles.body.copyWith(color: AppColors.textMuted));
     // 大きい文字では言葉と数が横に入らないので、言葉の下に数を積む
     final stacked = AppTextStyles.isAccessibilitySize(context);

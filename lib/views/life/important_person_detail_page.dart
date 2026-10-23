@@ -12,6 +12,7 @@ import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_card.dart';
+import '../../l10n/phrase_break.dart';
 
 /// 大切な人の詳細画面（プロトタイプの showPD 再現）
 class ImportantPersonDetailPage extends ConsumerWidget {
@@ -66,7 +67,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
             children: [
               Icon(CupertinoIcons.chevron_left,
                   size: 18, color: AppColors.accent),
-              Text(l.peopleWhoMatter,
+              PhraseText(l.peopleWhoMatter,
                   style: AppTextStyles.body.copyWith(color: AppColors.accent)),
             ],
           ),
@@ -79,16 +80,16 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(person.nickname, style: AppTextStyles.title),
+                  PhraseText(person.nickname, style: AppTextStyles.title),
                   const SizedBox(height: AppSpacing.xs),
-                  Text(l.ageYears(pAge), style: AppTextStyles.footnote),
+                  PhraseText(l.ageYears(pAge), style: AppTextStyles.footnote),
                 ],
               ),
             ),
             TextButton(
               onPressed: onEdit,
               style: _textButtonStyle,
-              child: Text(l.edit,
+              child: PhraseText(l.edit,
                   style: AppTextStyles.body.copyWith(color: AppColors.accent)),
             ),
             TextButton(
@@ -100,7 +101,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
                 if (confirmed) onDelete();
               },
               style: _textButtonStyle,
-              child: Text(l.delete,
+              child: PhraseText(l.delete,
                   style: AppTextStyles.body.copyWith(color: AppColors.danger)),
             ),
           ],
@@ -109,7 +110,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
 
         // 平均寿命を越えた人にも数字は出し、ひとこと添えるだけにする
         if (pPastAL) ...[
-          Text(l.pastAveragePerson,
+          PhraseText(l.pastAveragePerson,
               style: AppTextStyles.callout
                   .copyWith(color: AppColors.textSecondary)),
           const SizedBox(height: AppSpacing.m),
@@ -139,7 +140,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l.sinceLastMet, style: AppTextStyles.captionLabel),
+                  PhraseText(l.sinceLastMet, style: AppTextStyles.captionLabel),
                   const SizedBox(height: AppSpacing.s),
                   Text.rich(
                     TextSpan(children: [
@@ -161,7 +162,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
         ],
         const SizedBox(height: AppSpacing.l),
         // 平均から出した目安だと、静かに添える
-        Text(l.estimateNote, style: AppTextStyles.footnote),
+        PhraseText(l.estimateNote, style: AppTextStyles.footnote),
       ],
     );
   }
@@ -179,7 +180,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTextStyles.captionLabel),
+          PhraseText(label, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
           Text.rich(
             TextSpan(children: [
@@ -196,7 +197,7 @@ class ImportantPersonDetailPage extends ConsumerWidget {
           ),
           if (sub != null) ...[
             const SizedBox(height: AppSpacing.xs),
-            Text(sub, style: AppTextStyles.footnote),
+            PhraseText(sub, style: AppTextStyles.footnote),
           ],
         ],
       ),

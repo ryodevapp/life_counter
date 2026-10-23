@@ -18,6 +18,7 @@ import '../shared/readable_width.dart';
 import '../shared/app_text_styles.dart';
 import '../shared/app_toast.dart';
 import 'today_question_card.dart';
+import '../../l10n/phrase_break.dart';
 
 class TodayPage extends ConsumerStatefulWidget {
   const TodayPage({super.key});
@@ -260,7 +261,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
     final birthDate = settings.birthDate;
     if (birthDate == null) {
       return Center(
-          child: Text(l.birthDateNeeded,
+          child: PhraseText(l.birthDateNeeded,
               style: AppTextStyles.callout
                   .copyWith(color: AppColors.textMuted)));
     }
@@ -288,7 +289,7 @@ class _TodayPageState extends ConsumerState<TodayPage> {
                 child: Column(
                   children: [
                     // 日付 → 「人生 12,616 日目」「Day 12,616 of your life」(数字の下の線に、前後の言葉を揃える)
-                    Text(dateStr, style: AppTextStyles.footnote),
+                    PhraseText(dateStr, style: AppTextStyles.footnote),
                     const SizedBox(height: AppSpacing.s),
                     LayoutBuilder(builder: (context, constraints) {
                       final number = formatter.format(lifeDays);

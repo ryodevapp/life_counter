@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
+import '../../l10n/phrase_break.dart';
 
 /// プロトタイプのInコンポーネント再現
 class AppInput extends StatelessWidget {
@@ -43,8 +44,12 @@ class AppInput extends StatelessWidget {
       cursorColor: AppColors.accent,
       // 今日の答えの欄と同じ見た目: 地より一段沈んだ面 + うすい枠。暗い表示でも書く場所が分かるように
       decoration: InputDecoration(
-        hintText: placeholder,
-        hintStyle: AppTextStyles.callout.copyWith(color: AppColors.textDisabled),
+        // 案内は文節で折る(読み上げは元の文)
+        hint: placeholder == null
+            ? null
+            : PhraseText(placeholder!,
+                style: AppTextStyles.callout
+                    .copyWith(color: AppColors.textDisabled)),
         filled: true,
         fillColor: AppColors.bg,
         counterText: '',

@@ -122,7 +122,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l.bucketIntro,
+        PhraseText(l.bucketIntro,
             style: AppTextStyles.callout.copyWith(color: AppColors.textMuted)),
         const SizedBox(height: AppSpacing.l),
         _AddField(
@@ -142,7 +142,7 @@ class _BucketSectionState extends ConsumerState<BucketSection> {
         ],
         if (items.isEmpty) ...[
           const SizedBox(height: AppSpacing.xl),
-          Text(l.forExample, style: AppTextStyles.captionLabel),
+          PhraseText(l.forExample, style: AppTextStyles.captionLabel),
           const SizedBox(height: AppSpacing.s),
           Wrap(
             spacing: AppSpacing.s,
@@ -181,7 +181,7 @@ class _SectionLabel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
           left: AppSpacing.xs, bottom: AppSpacing.s),
-      child: Text('$text  $count', style: AppTextStyles.captionLabel),
+      child: PhraseText('$text  $count', style: AppTextStyles.captionLabel),
     );
   }
 }
@@ -253,7 +253,7 @@ class _BucketRow extends StatelessWidget {
                       PhraseText(item.title,
                           style: AppTextStyles.body.copyWith(height: 1.4)),
                       if (sub.isNotEmpty)
-                        Text(sub, style: AppTextStyles.footnote),
+                        PhraseText(sub, style: AppTextStyles.footnote),
                     ],
                   ),
                 ),
@@ -341,7 +341,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                   _TextAction(l.cancel,
                       onTap: () => Navigator.of(context).pop()),
                   Expanded(
-                    child: Text(l.edit,
+                    child: PhraseText(l.edit,
                         textAlign: TextAlign.center,
                         style: AppTextStyles.headline),
                   ),
@@ -387,7 +387,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                         child: Row(
                           children: [
                             Expanded(
-                                child: Text(l.bucketDone,
+                                child: PhraseText(l.bucketDone,
                                     style: AppTextStyles.body)),
                             CupertinoSwitch(
                               value: _done,
@@ -417,7 +417,7 @@ class _BucketEditorState extends ConsumerState<_BucketEditor> {
                         minimumSize:
                             const Size(AppSpacing.minTap, AppSpacing.minTap)),
                     icon: const Icon(CupertinoIcons.trash, size: 18),
-                    label: Text(l.delete,
+                    label: PhraseText(l.delete,
                         style: AppTextStyles.body
                             .copyWith(color: AppColors.danger)),
                   ),
@@ -450,7 +450,7 @@ class _TextAction extends StatelessWidget {
           constraints: const BoxConstraints(
               minHeight: AppSpacing.minTap, minWidth: AppSpacing.minTap + 20),
           child: Center(
-            child: Text(label,
+            child: PhraseText(label,
                 style: AppTextStyles.body.copyWith(
                   fontWeight: strong ? FontWeight.w600 : FontWeight.w400,
                   color: onTap == null
@@ -483,7 +483,7 @@ class _PersonChips extends StatelessWidget {
       runSpacing: AppSpacing.s,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Text(context.l10n.withWhomOptional, style: AppTextStyles.footnote),
+        PhraseText(context.l10n.withWhomOptional, style: AppTextStyles.footnote),
         for (final p in persons)
           _Chip(
             label: p.nickname,
@@ -651,7 +651,7 @@ class _Chip extends StatelessWidget {
               ],
               // 大きい文字では札の中で折り返す(選ぶ文字は切らない)
               Flexible(
-                child: Text(label,
+                child: PhraseText(label,
                     style: AppTextStyles.callout.copyWith(color: color)),
               ),
             ],
