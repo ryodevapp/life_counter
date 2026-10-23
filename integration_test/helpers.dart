@@ -133,8 +133,10 @@ Future<void> shotAt(IntegrationTestWidgetsFlutterBinding binding,
   await shot(binding, tester, name);
 }
 
-Finder byText(String text) => find.byWidgetPredicate(
-    (w) => w is Text && (w.data ?? '').contains(text));
+/// 文の一部で探す。findText と同じく、行を折らせない印(U+2060)を無視して比べる
+/// (1.1.4 から日本語の文は文節の中に印が入る。PhraseText)
+Finder byText(String text) => find.byWidgetPredicate((w) =>
+    w is Text && (w.data ?? '').replaceAll('\u2060', '').contains(text));
 
 // ---- 撮影の条件(2026-10-18 本人の決定。3アプリ共通の2段) ----
 // 毎回: 昼夜・既定と最大の文字・iOS 27 / 出す前だけ: iOS 26・SE・透明度を下げる・ロック画面
