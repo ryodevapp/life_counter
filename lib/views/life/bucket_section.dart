@@ -249,7 +249,8 @@ class _BucketRow extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.title,
+                      // 利用者の書いた文も、文節の途中で折らない(表示だけ。保存の値と読み上げは元の文)
+                      PhraseText(item.title,
                           style: AppTextStyles.body.copyWith(height: 1.4)),
                       if (sub.isNotEmpty)
                         Text(sub, style: AppTextStyles.footnote),
@@ -556,10 +557,14 @@ class _AddField extends StatelessWidget {
               style: AppTextStyles.body,
               cursorColor: AppColors.accent,
               decoration: InputDecoration(
-                hintText: context.l10n.addToBucketList,
-                hintMaxLines: 3,
-                hintStyle:
-                    AppTextStyles.body.copyWith(color: AppColors.textDisabled),
+                // 案内も文節で折る(「バケットリ/ストに追加」と割らない)。読み上げは元の文
+                hint: PhraseText(
+                  context.l10n.addToBucketList,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.body
+                      .copyWith(color: AppColors.textDisabled),
+                ),
                 counterText: '',
                 isCollapsed: true,
                 border: InputBorder.none,

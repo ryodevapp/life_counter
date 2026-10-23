@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../l10n/l10n.dart';
+import '../../l10n/phrase_break.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
 import '../shared/app_card.dart';
@@ -248,7 +249,7 @@ class TodayQuestionCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.l),
             Text(l.lastYearAnswerLabel, style: AppTextStyles.captionLabel),
             const SizedBox(height: AppSpacing.xs),
-            Text(
+            PhraseText(
               lastYearAnswer!,
               style:
                   AppTextStyles.callout.copyWith(color: AppColors.textSecondary),

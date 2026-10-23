@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
+import '../../l10n/phrase_break.dart';
 import '../../models/daily_record.dart';
 import '../../models/question.dart';
 import '../../models/stamp.dart';
@@ -150,7 +151,8 @@ class LastYearCard extends ConsumerWidget {
                     style: AppTextStyles.footnote
                         .copyWith(color: AppColors.textSecondary)),
               const SizedBox(height: AppSpacing.xs),
-              Text(r.answer!, style: AppTextStyles.body),
+              // 利用者の答えも文節の途中で折らない(表示だけ)
+              PhraseText(r.answer!, style: AppTextStyles.body),
             ],
           ],
         ),
