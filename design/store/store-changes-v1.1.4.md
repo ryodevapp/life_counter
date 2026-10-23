@@ -33,3 +33,4 @@ No account or login is required. There are no in-app purchases, no ads, and no n
 - 今のストア: 公開の検索 API(`itunes.apple.com/lookup?id=6761015343`、10/23)で、日本・米国とも iPad の画像が5枚ずつ載っている(公開中は 1.1.2)。正本は `screenshots/{ja,en}-ipad13/1〜5.png`(2064×2752、10/17 f8928f3)
 - 足りなくはないが、10/17 の画像は 1.1.4 より前の、画面いっぱいに横へ広がる iPad の見た目。1.1.4 では中身が真ん中の幅に集まるので、画像とアプリの見た目が変わる → 1.1.4 と一緒に差し替えるのをすすめる
 - 撮り方(10/17 と同じ): `integration_test/store_shots_test.dart` を iOS 27 の iPad Pro 13-inch (M5) で日本語・英語(`--dart-define=LANG=en`)に撮る → 見出しを付けて合成(2064×2752、見出しは `listing-v1.1.0.md` のスクリーンショットの表の1〜5)→ 透明度なしの PNG に書き出す → App Store Connect の 1.1.4 の「iPad 13インチ」の欄で入れ替える(本人の手)
+- 10/23 撮り直した(このブランチの別のコミット。前の画像は f8928f3 で戻せる): feat/1.1.4 を iOS 27 の iPad Pro 13-inch (M5) で store_shots_test(ja・en)→ 10/17 と同じ合成(見出しの文字・枠・影の大きさ)→ 2064×2752・透明度なし。今日の問いは撮った日(10/23)の問いになる(「今日、少しだけ丁寧にしたいことは何ですか？」に答え「実家の庭の草取り…」)。10/17 の画像も撮った日の問い(「一度は行ってみたい場所は？」)で、答えは同じ
