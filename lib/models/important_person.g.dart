@@ -22,34 +22,44 @@ const ImportantPersonSchema = CollectionSchema(
       name: r'birthDate',
       type: IsarType.dateTime,
     ),
-    r'createdAt': PropertySchema(
+    r'birthDayKey': PropertySchema(
       id: 1,
+      name: r'birthDayKey',
+      type: IsarType.string,
+    ),
+    r'createdAt': PropertySchema(
+      id: 2,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'gender': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'gender',
       type: IsarType.string,
       enumMap: _ImportantPersongenderEnumValueMap,
     ),
     r'lastMetDate': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lastMetDate',
       type: IsarType.dateTime,
     ),
+    r'lastMetDayKey': PropertySchema(
+      id: 5,
+      name: r'lastMetDayKey',
+      type: IsarType.string,
+    ),
     r'meetingFrequency': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'meetingFrequency',
       type: IsarType.long,
     ),
     r'nickname': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'nickname',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -74,7 +84,19 @@ int _importantPersonEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.birthDayKey;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.gender.name.length * 3;
+  {
+    final value = object.lastMetDayKey;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.nickname.length * 3;
   return bytesCount;
 }
@@ -86,12 +108,14 @@ void _importantPersonSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.birthDate);
-  writer.writeDateTime(offsets[1], object.createdAt);
-  writer.writeString(offsets[2], object.gender.name);
-  writer.writeDateTime(offsets[3], object.lastMetDate);
-  writer.writeLong(offsets[4], object.meetingFrequency);
-  writer.writeString(offsets[5], object.nickname);
-  writer.writeDateTime(offsets[6], object.updatedAt);
+  writer.writeString(offsets[1], object.birthDayKey);
+  writer.writeDateTime(offsets[2], object.createdAt);
+  writer.writeString(offsets[3], object.gender.name);
+  writer.writeDateTime(offsets[4], object.lastMetDate);
+  writer.writeString(offsets[5], object.lastMetDayKey);
+  writer.writeLong(offsets[6], object.meetingFrequency);
+  writer.writeString(offsets[7], object.nickname);
+  writer.writeDateTime(offsets[8], object.updatedAt);
 }
 
 ImportantPerson _importantPersonDeserialize(
@@ -102,15 +126,17 @@ ImportantPerson _importantPersonDeserialize(
 ) {
   final object = ImportantPerson();
   object.birthDate = reader.readDateTime(offsets[0]);
-  object.createdAt = reader.readDateTime(offsets[1]);
+  object.birthDayKey = reader.readStringOrNull(offsets[1]);
+  object.createdAt = reader.readDateTime(offsets[2]);
   object.gender =
-      _ImportantPersongenderValueEnumMap[reader.readStringOrNull(offsets[2])] ??
+      _ImportantPersongenderValueEnumMap[reader.readStringOrNull(offsets[3])] ??
           Gender.male;
   object.id = id;
-  object.lastMetDate = reader.readDateTimeOrNull(offsets[3]);
-  object.meetingFrequency = reader.readLong(offsets[4]);
-  object.nickname = reader.readString(offsets[5]);
-  object.updatedAt = reader.readDateTime(offsets[6]);
+  object.lastMetDate = reader.readDateTimeOrNull(offsets[4]);
+  object.lastMetDayKey = reader.readStringOrNull(offsets[5]);
+  object.meetingFrequency = reader.readLong(offsets[6]);
+  object.nickname = reader.readString(offsets[7]);
+  object.updatedAt = reader.readDateTime(offsets[8]);
   return object;
 }
 
@@ -124,18 +150,22 @@ P _importantPersonDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
+      return (reader.readDateTime(offset)) as P;
+    case 3:
       return (_ImportantPersongenderValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Gender.male) as P;
-    case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -300,6 +330,160 @@ extension ImportantPersonQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'birthDayKey',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'birthDayKey',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'birthDayKey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'birthDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'birthDayKey',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'birthDayKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      birthDayKeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'birthDayKey',
+        value: '',
       ));
     });
   }
@@ -627,6 +811,160 @@ extension ImportantPersonQueryFilter
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastMetDayKey',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastMetDayKey',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastMetDayKey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'lastMetDayKey',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'lastMetDayKey',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastMetDayKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
+      lastMetDayKeyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'lastMetDayKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterFilterCondition>
       meetingFrequencyEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -898,6 +1236,20 @@ extension ImportantPersonQuerySortBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthDayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByBirthDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthDayKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -935,6 +1287,20 @@ extension ImportantPersonQuerySortBy
       sortByLastMetDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastMetDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByLastMetDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastMetDayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      sortByLastMetDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastMetDayKey', Sort.desc);
     });
   }
 
@@ -998,6 +1364,20 @@ extension ImportantPersonQuerySortThenBy
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthDayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByBirthDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'birthDayKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
       thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1047,6 +1427,20 @@ extension ImportantPersonQuerySortThenBy
       thenByLastMetDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastMetDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByLastMetDayKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastMetDayKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QAfterSortBy>
+      thenByLastMetDayKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastMetDayKey', Sort.desc);
     });
   }
 
@@ -1103,6 +1497,13 @@ extension ImportantPersonQueryWhereDistinct
   }
 
   QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
+      distinctByBirthDayKey({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'birthDayKey', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
       distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -1120,6 +1521,14 @@ extension ImportantPersonQueryWhereDistinct
       distinctByLastMetDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastMetDate');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, ImportantPerson, QDistinct>
+      distinctByLastMetDayKey({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastMetDayKey',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -1160,6 +1569,13 @@ extension ImportantPersonQueryProperty
     });
   }
 
+  QueryBuilder<ImportantPerson, String?, QQueryOperations>
+      birthDayKeyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'birthDayKey');
+    });
+  }
+
   QueryBuilder<ImportantPerson, DateTime, QQueryOperations>
       createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1177,6 +1593,13 @@ extension ImportantPersonQueryProperty
       lastMetDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastMetDate');
+    });
+  }
+
+  QueryBuilder<ImportantPerson, String?, QQueryOperations>
+      lastMetDayKeyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastMetDayKey');
     });
   }
 

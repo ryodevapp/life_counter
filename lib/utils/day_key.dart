@@ -56,3 +56,13 @@ String legacyDayKey(DateTime stored, {Duration? localOffset}) {
 }
 
 String _two(int n) => n.toString().padLeft(2, '0');
+
+/// dayKey があればその日、無い・読めなければ古い時刻の一点から [legacyDayKey] で決めた日(LC-30)。
+/// どちらも無ければ null
+DateTime? dayFromKeyOrLegacy(String? key, DateTime? legacy,
+    {Duration? localOffset}) {
+  final fromKey = key == null ? null : parseDayKey(key);
+  if (fromKey != null) return fromKey;
+  if (legacy == null) return null;
+  return parseDayKey(legacyDayKey(legacy, localOffset: localOffset)) ?? legacy;
+}

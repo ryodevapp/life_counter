@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
 import '../../models/important_person.dart';
-import 'important_people_section.dart' show sharedDays;
+import 'important_people_section.dart' show daysSince, sharedDays;
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
 import '../../utils/freq_label.dart';
@@ -35,20 +35,20 @@ class ImportantPersonDetailPage extends ConsumerWidget {
     final myBirthDate = settings.birthDate;
     if (myBirthDate == null) return const SizedBox.shrink();
 
-    final pAge = LifeCalculator.currentAge(person.birthDate);
-    final pPastAL = LifeCalculator.isPastAverage(person.birthDate, person.gender);
+    final pAge = LifeCalculator.currentAge(person.birthDay);
+    final pPastAL = LifeCalculator.isPastAverage(person.birthDay, person.gender);
     // これからの年数は、その年齢の平均余命(生命表)から
     final myAhead =
         LifeCalculator.expectedYearsAhead(myBirthDate, settings.gender);
     final pAhead =
-        LifeCalculator.expectedYearsAhead(person.birthDate, person.gender);
+        LifeCalculator.expectedYearsAhead(person.birthDay, person.gender);
     final pRemaining = pAhead.floor();
     final together = (myAhead < pAhead ? myAhead : pAhead).floor();
     final meetCount = calcMeetCount(together, person.meetingFrequency);
-    final shared = sharedDays(myBirthDate, person.birthDate);
+    final shared = sharedDays(myBirthDate, person.birthDay);
 
-    final lastMetDays = person.lastMetDate != null
-        ? DateTime.now().difference(person.lastMetDate!).inDays
+    final lastMetDays = person.lastMetDay != null
+        ? daysSince(person.lastMetDay!)
         : null;
 
     final l = context.l10n;

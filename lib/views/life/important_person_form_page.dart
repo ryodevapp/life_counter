@@ -47,12 +47,12 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
     if (widget.person != null) {
       final p = widget.person!;
       _nickController.text = p.nickname;
-      _year = p.birthDate.year;
-      _month = p.birthDate.month;
-      _day = p.birthDate.day;
+      _year = p.birthDay.year;
+      _month = p.birthDay.month;
+      _day = p.birthDay.day;
       _gender = p.gender;
       _freq = snapToNearestFreq(p.meetingFrequency);
-      _lastMet = p.lastMetDate;
+      _lastMet = p.lastMetDay;
     }
   }
 
@@ -78,10 +78,10 @@ class _ImportantPersonFormPageState extends State<ImportantPersonFormPage> {
     final person = widget.person ?? ImportantPerson();
     person
       ..nickname = nick
-      ..birthDate = birthDate
+      ..setBirthDay(birthDate)
       ..gender = _gender
       ..meetingFrequency = _freq
-      ..lastMetDate = _lastMet;
+      ..setLastMetDay(_lastMet);
     Navigator.of(context).pop(person);
   }
 

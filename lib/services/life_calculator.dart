@@ -1,4 +1,5 @@
 import '../models/important_person.dart';
+import '../utils/date_only.dart';
 import 'country_lifespans.dart';
 import 'life_tables.dart';
 
@@ -58,11 +59,10 @@ class LifeCalculator {
     }
   }
 
-  /// 誕生日から今日までの日数（1日目始まり）
-  static int lifeDays(DateTime birthDate) {
-    final today = DateTime.now();
-    return today.difference(birthDate).inDays + 1;
-  }
+  /// 誕生日から今日までの日数（1日目始まり）。暦の日で数える(夏時間でもずれない。LC-30 の続き)
+  /// [now] はテスト用。省略すると今
+  static int lifeDays(DateTime birthDate, [DateTime? now]) =>
+      calendarDaysBetween(birthDate, now ?? DateTime.now()) + 1;
 
   /// 現在の年齢
   static int currentAge(DateTime birthDate) {
@@ -80,9 +80,10 @@ class LifeCalculator {
       (expectedYearsAhead(birthDate, gender) * 365.25).floor();
 
   /// 健康寿命までの残り日数
-  static int healthyRemainingDays(DateTime birthDate, Gender gender) {
+  static int healthyRemainingDays(DateTime birthDate, Gender gender,
+      [DateTime? now]) {
     final hl = healthyLifespan(gender);
-    final daysSinceBirth = DateTime.now().difference(birthDate).inDays;
+    final daysSinceBirth = calendarDaysBetween(birthDate, now ?? DateTime.now());
     return (hl * 365.25 - daysSinceBirth).floor().clamp(0, 999999);
   }
 
@@ -96,7 +97,7 @@ class LifeCalculator {
 
   /// いまの正確な年齢(年。誕生日からの日数 ÷ 365.25)
   static double exactAge(DateTime birthDate, [DateTime? now]) =>
-      (now ?? DateTime.now()).difference(birthDate).inDays / 365.25;
+      calendarDaysBetween(birthDate, now ?? DateTime.now()) / 365.25;
 
   /// 日本の生命表(1歳ごと)を、年齢の間は直線でつないで引く
   static double _jp(List<double> table, double age) {

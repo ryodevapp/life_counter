@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'l10n/phrase_break.dart';
 import 'services/notification_service.dart';
+import 'services/birth_day_key_migration.dart';
 import 'services/day_key_migration.dart';
 import 'services/question_bank.dart';
 import 'models/bucket_item.dart';
@@ -69,6 +70,12 @@ Future<void> _start(SharedPreferences prefs, QuestionBank questionBank) async {
     await migrateDayKeys(isar, prefs);
   } catch (e, st) {
     debugPrint('dayKey migration error: $e\n$st');
+  }
+  // 誕生日・大切な人の日付を「yyyy-MM-dd」にする(1回だけ、LC-30)。失敗しても始め、次の起動でやり直す
+  try {
+    await migrateBirthDayKeys(isar, prefs);
+  } catch (e, st) {
+    debugPrint('birthDayKey migration error: $e\n$st');
   }
 
   runApp(

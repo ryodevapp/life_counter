@@ -9,6 +9,7 @@ import '../../providers/isar_provider.dart';
 import '../../models/user_settings.dart';
 import '../../providers/user_settings_provider.dart';
 import '../../services/life_calculator.dart';
+import '../../utils/date_only.dart';
 import '../../utils/freq_label.dart';
 import '../shared/app_colors.dart';
 import '../shared/app_spacing.dart';
@@ -135,9 +136,9 @@ class _ImportantPeopleSectionState
 
   Widget _personCard(ImportantPerson p, double myAhead, DateTime? myBirthDate,
       NumberFormat fmt) {
-    final pAge = LifeCalculator.currentAge(p.birthDate);
-    final pAhead = LifeCalculator.expectedYearsAhead(p.birthDate, p.gender);
-    final pPastAL = LifeCalculator.isPastAverage(p.birthDate, p.gender);
+    final pAge = LifeCalculator.currentAge(p.birthDay);
+    final pAhead = LifeCalculator.expectedYearsAhead(p.birthDay, p.gender);
+    final pPastAL = LifeCalculator.isPastAverage(p.birthDay, p.gender);
     final together = (myAhead < pAhead ? myAhead : pAhead).floor();
     final meet = calcMeetCount(together, p.meetingFrequency);
     final l = context.l10n;
@@ -191,9 +192,14 @@ class _ImportantPeopleSectionState
   }
 }
 
-/// 一緒に過ごしてきた日数(ふたりのうち、あとに生まれた人の誕生日から今日まで)
-int? sharedDays(DateTime? myBirth, DateTime theirBirth) {
+/// 一緒に過ごしてきた日数(ふたりのうち、あとに生まれた人の誕生日から今日まで)。
+/// 暦の日で数える(夏時間でもずれない。LC-30 の続き)。[now] はテスト用
+int? sharedDays(DateTime? myBirth, DateTime theirBirth, [DateTime? now]) {
   if (myBirth == null) return null;
   final start = myBirth.isAfter(theirBirth) ? myBirth : theirBirth;
-  return DateTime.now().difference(start).inDays + 1;
+  return calendarDaysBetween(start, now ?? DateTime.now()) + 1;
 }
+
+/// [day] から今日まで何日たったか(最後に会ってからの日数など)。暦の日で数える。[now] はテスト用
+int daysSince(DateTime day, [DateTime? now]) =>
+    calendarDaysBetween(day, now ?? DateTime.now());

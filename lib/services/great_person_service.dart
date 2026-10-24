@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../utils/date_only.dart';
+
 /// 偉人データの読み込みと選出ロジック
 class GreatPersonService {
   GreatPersonService._();
@@ -21,11 +23,13 @@ class GreatPersonService {
     }
   }
 
+  /// その年の何日目か(1月1日が 0)。暦の日で数える(夏時間の0時台でもずれない。LC-30 の続き)
+  static int dayOfYear(DateTime d) => calendarDaysBetween(DateTime(d.year), d);
+
   /// 今日の偉人エピソード（ユーザーの年齢±5歳の範囲で選出）
   static Future<Map<String, dynamic>?> todayEpisode(int userAge) async {
     final persons = await loadAll();
-    final today = DateTime.now();
-    final dayOfYear = today.difference(DateTime(today.year)).inDays;
+    final dayOfYear = GreatPersonService.dayOfYear(DateTime.now());
 
     // 年齢±5の範囲に該当するachievementsを集める
     final candidates = <Map<String, dynamic>>[];
