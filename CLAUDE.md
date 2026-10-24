@@ -24,7 +24,7 @@ App Store で配信中(v1.1.1+39 が `main`)。日本語と英語。課題の台
 
 - 検査: `flutter analyze`(警告0)
 - テスト: `flutter test`
-- 生成: `dart run build_runner build --delete-conflicting-outputs`(models を変えたとき)
+- 生成: `dart run build_runner build --delete-conflicting-outputs`(models を変えたとき)。Isar の生成は `build.yaml` で `lib/models/` だけに絞っている(isar_generator 3.1 は analyzer 5 で、Dart 3.8 以降の `?x` などを読めない)。`@collection` の型は `lib/models/` に置く
 - 結合テスト・撮影: `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/<名前>.dart`
 - 撮影の条件は2段(2026-10-18 本人の決定。3アプリ共通)。**毎回**(画面を直したら)= 昼夜・既定と最大の文字・iOS 27・ウィジェットの色合い → `tools/shots.sh every [テストの名前]`(昼夜は `--dart-define=THEME=dark`、最大の文字は `--dart-define=TEXT=max`。色合いはウィジェットを直したときにホーム画面を「色合い」にして手で撮る)。**出す前だけ**(審査に出す前)= iOS 26・SE・透明度を下げる・ロック画面 → `tools/shots.sh release`(透明度を下げるは Flutter に値が無いのでシミュレーターの設定で手で、ロック画面のウィジェットは無い)。既定(昼・既定の文字)の画像の名前は今のまま
 - 直す前と後を並べて撮る・iPhone と iPad を同時に撮る・作業中の本体を動かさずに撮るときは、`tools/shots_copy.sh [--rev <コミット>] <画像の場所> <UDID> <テスト...> -- <flutter drive の引数>` で撮る。毎回 `mktemp -d` の新しい場所に写す。**同じ写しの場所に上書きして2回撮らない**(残った `build/`・`.dart_tool/`・`ios/Pods/` が前の回の pub-cache の場所と前の回のアプリを指したまま走り、直した後のつもりで直す前を撮った。10/23)。直す前は `--rev` か `git stash create` のコミットで固定する(撮っている間に本体を直しても混ざらない)

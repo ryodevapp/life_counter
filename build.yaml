@@ -1,0 +1,10 @@
+# isar_generator 3.1.0+1 は analyzer <6 に縛られ、Dart 3.8 以降の書き方
+# (null-aware elements の `?x` など)を読めない。生成の対象を Isar の型を
+# 置く lib/models/ に絞り、画面のファイルを読ませない。
+# 新しい @collection の型も lib/models/ に置く。
+targets:
+  $default:
+    builders:
+      isar_generator:isar_generator:
+        generate_for:
+          - lib/models/**.dart
